@@ -74,7 +74,7 @@ class MainViewNavigator extends ConsumerWidget {
                 height: 100,
                 width: double.infinity,
                 margin: const EdgeInsets.all(4),
-                child: const Center(child: Text('Kunden/Projeke')),
+                child: const Center(child: Text('Zeiteintrag')),
               ),
             ),
             GestureDetector(
@@ -86,7 +86,7 @@ class MainViewNavigator extends ConsumerWidget {
                 height: 100,
                 width: double.infinity,
                 margin: const EdgeInsets.all(4),
-                child: const Center(child: Text('Berichte')),
+                child: const Center(child: Text('Kunden/Projeke')),
               ),
             ),
             GestureDetector(
