@@ -8,4 +8,4 @@ enum MainView {
   users,
 }
 
-final mainNavProvider = StateProvider((ref) => MainView.home);
+final mainNavProvider = StateProvider((ref) => MainView.timeEntry);
