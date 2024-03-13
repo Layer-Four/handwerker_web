@@ -13,19 +13,23 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
   final CalendarController _calendarController = CalendarController();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      width: double.infinity,
-      height: double.infinity,
-      child: Center(
-          child: SfCalendar(
-        headerDateFormat: 'yyyy.MM',
-        headerStyle: CalendarHeaderStyle(textAlign: TextAlign.center),
-        controller: _calendarController,
-        headerHeight: 80,
-        view: CalendarView.week,
-        firstDayOfWeek: 1,
-      )),
+    return Localizations.override(
+      context: context,
+      locale: const Locale('de'),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        width: double.infinity,
+        height: double.infinity,
+        child: Center(
+            child: SfCalendar(
+          headerDateFormat: 'MMMM.yyyy',
+          headerStyle: const CalendarHeaderStyle(textAlign: TextAlign.center),
+          controller: _calendarController,
+          headerHeight: 80,
+          view: CalendarView.week,
+          firstDayOfWeek: 1,
+        )),
+      ),
     );
   }
 }

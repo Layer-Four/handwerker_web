@@ -9,7 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
   flutter_riverpod: ^2.5.1
+  intl: any
   syncfusion_flutter_calendar: ^24.2.9
 
 dev_dependencies:
