@@ -24,6 +24,8 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
             child: SfCalendar(
           headerDateFormat: 'MMMM.yyyy',
           headerStyle: const CalendarHeaderStyle(textAlign: TextAlign.center),
+          initialDisplayDate: DateTime.now(),
+          initialSelectedDate: DateTime.now(),
           controller: _calendarController,
           headerHeight: 80,
           view: CalendarView.week,
