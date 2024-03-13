@@ -23,7 +23,7 @@ mixin _$TimeEntry {
   String get timeEntryID => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime get startTime => throw _privateConstructorUsedError;
-  DateTime? get endTime => throw _privateConstructorUsedError;
+  DateTime get endTime => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get useForColor => throw _privateConstructorUsedError;
 
@@ -42,7 +42,7 @@ abstract class $TimeEntryCopyWith<$Res> {
       {String timeEntryID,
       String title,
       DateTime startTime,
-      DateTime? endTime,
+      DateTime endTime,
       String? description,
       String? useForColor});
 }
@@ -63,7 +63,7 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
     Object? timeEntryID = null,
     Object? title = null,
     Object? startTime = null,
-    Object? endTime = freezed,
+    Object? endTime = null,
     Object? description = freezed,
     Object? useForColor = freezed,
   }) {
@@ -80,10 +80,10 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      endTime: freezed == endTime
+      endTime: null == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -108,7 +108,7 @@ abstract class _$$TimeEntryImplCopyWith<$Res>
       {String timeEntryID,
       String title,
       DateTime startTime,
-      DateTime? endTime,
+      DateTime endTime,
       String? description,
       String? useForColor});
 }
@@ -127,7 +127,7 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
     Object? timeEntryID = null,
     Object? title = null,
     Object? startTime = null,
-    Object? endTime = freezed,
+    Object? endTime = null,
     Object? description = freezed,
     Object? useForColor = freezed,
   }) {
@@ -144,10 +144,10 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      endTime: freezed == endTime
+      endTime: null == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -167,7 +167,7 @@ class _$TimeEntryImpl implements _TimeEntry {
       {this.timeEntryID = '',
       required this.title,
       required this.startTime,
-      this.endTime,
+      required this.endTime,
       this.description,
       this.useForColor});
 
@@ -182,7 +182,7 @@ class _$TimeEntryImpl implements _TimeEntry {
   @override
   final DateTime startTime;
   @override
-  final DateTime? endTime;
+  final DateTime endTime;
   @override
   final String? description;
   @override
@@ -234,7 +234,7 @@ abstract class _TimeEntry implements TimeEntry {
       {final String timeEntryID,
       required final String title,
       required final DateTime startTime,
-      final DateTime? endTime,
+      required final DateTime endTime,
       final String? description,
       final String? useForColor}) = _$TimeEntryImpl;
 
@@ -248,7 +248,7 @@ abstract class _TimeEntry implements TimeEntry {
   @override
   DateTime get startTime;
   @override
-  DateTime? get endTime;
+  DateTime get endTime;
   @override
   String? get description;
   @override

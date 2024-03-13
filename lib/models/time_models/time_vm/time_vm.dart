@@ -9,7 +9,7 @@ class TimeEntry with _$TimeEntry {
     @Default('') String timeEntryID,
     required String title,
     required DateTime startTime,
-    DateTime? endTime,
+    required DateTime endTime,
     String? description,
     String? useForColor,
   }) = _TimeEntry;
