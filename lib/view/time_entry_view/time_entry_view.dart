@@ -53,7 +53,7 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
                       color: Colors.orange,
                       height: 30,
                       width: 150,
-                      child: Text('+ Neuer Termin'),
+                      child: const Text('+ Neuer Termin'),
                     ),
                   ),
                 ),
@@ -70,52 +70,55 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
         data: (data) {
           log('${data?.length}');
           if (data == null) {
-            ref.read(timeEntryProvider.notifier).loadTimeEntrys();
-            return CircularProgressIndicator();
+            // ref.read(timeEntryProvider.notifier).loadTimeEntrys();
           }
-          return Card(
-            elevation: 9,
-            child: Localizations.override(
-              context: context,
-              locale: const Locale('de'),
-              child: Container(
-                  height: MediaQuery.of(context).size.height - 106,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
-                  child: SfCalendar(
-                    dataSource: data,
-                    showDatePickerButton: true,
-                    showNavigationArrow: true,
-                    todayHighlightColor: Colors.orange,
-                    viewNavigationMode: ViewNavigationMode.none,
-                    showWeekNumber: true,
-                    minDate: DateTime(2020),
-                    maxDate: DateTime(2100),
-                    headerDateFormat: 'MMMM.yyyy',
-                    headerStyle: const CalendarHeaderStyle(
-                      textAlign: TextAlign.center,
-                    ),
-                    initialDisplayDate: DateTime.now(),
-                    initialSelectedDate: DateTime.now(),
-                    controller: _calendarController,
-                    headerHeight: 65,
-                    view: CalendarView.week,
-                    firstDayOfWeek: 1,
-                    onTap: (calendarTapDetails) {
-                      if (calendarTapDetails.appointments != null) {
-                        showDialog(
-                            context: context,
-                            builder: (context) => _showAppointmentDetails(calendarTapDetails));
-                      }
-                    },
-                  )),
-            ),
-          );
+          return _buildCalendarWidget(context, data);
         },
         error: (e, st) {
-          return Container(child: Text('$e'));
+          return Text('$e');
         },
-        loading: () => CircularProgressIndicator.adaptive());
+        loading: () => const CircularProgressIndicator.adaptive());
+  }
+
+  Card _buildCalendarWidget(BuildContext context, EventSource? data) {
+    return Card(
+      elevation: 9,
+      child: Localizations.override(
+        context: context,
+        locale: const Locale('de'),
+        child: Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height - 106,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+            child: SfCalendar(
+              dataSource: data,
+              showDatePickerButton: true,
+              showNavigationArrow: true,
+              todayHighlightColor: Colors.orange,
+              viewNavigationMode: ViewNavigationMode.none,
+              showWeekNumber: true,
+              minDate: DateTime(2020),
+              maxDate: DateTime(2100),
+              headerDateFormat: 'MMMM.yyyy',
+              headerStyle: const CalendarHeaderStyle(
+                textAlign: TextAlign.center,
+              ),
+              initialDisplayDate: DateTime.now(),
+              initialSelectedDate: DateTime.now(),
+              controller: _calendarController,
+              headerHeight: 65,
+              view: CalendarView.week,
+              firstDayOfWeek: 1,
+              onTap: (calendarTapDetails) {
+                if (calendarTapDetails.appointments != null) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => _showAppointmentDetails(calendarTapDetails));
+                }
+              },
+            )),
+      ),
+    );
   }
 
   Padding _searchHeader(BuildContext context) {
