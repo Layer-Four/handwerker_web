@@ -64,7 +64,6 @@ class MainViewNavigator extends ConsumerWidget {
                         const NavButtonWidget(
                           title: 'Home',
                           nextView: MainView.home,
-                          color: Colors.blue,
                         ),
                         const NavButtonWidget(
                           title: 'Zeiteintrag',
@@ -73,23 +72,19 @@ class MainViewNavigator extends ConsumerWidget {
                         const NavButtonWidget(
                           title: 'Kunde/Projekt',
                           nextView: MainView.docs,
-                          color: Colors.blueGrey,
                         ),
                         const NavButtonWidget(
                           title: 'Material',
                           nextView: MainView.consumables,
-                          color: Colors.brown,
                         ),
                         const NavButtonWidget(
                           title: 'Mitarbeiter',
                           nextView: MainView.users,
-                          color: Colors.cyan,
                         ),
                         const Spacer(),
                         const NavButtonWidget(
                           title: 'Log Out',
                           nextView: MainView.docs,
-                          color: Colors.teal,
                         ),
                       ],
                     ),
@@ -133,7 +128,6 @@ class MainViewNavigator extends ConsumerWidget {
               const NavButtonWidget(
                 title: 'Material',
                 nextView: MainView.consumables,
-                color: Colors.brown,
               ),
               const NavButtonWidget(
                 title: 'Mitarbeiter',
@@ -143,7 +137,7 @@ class MainViewNavigator extends ConsumerWidget {
               const Spacer(),
               const NavButtonWidget(
                 title: 'Log Out',
-                nextView: MainView.docs,
+                // nextView: MainView.docs,
                 color: Colors.teal,
               ),
             ],
@@ -167,6 +161,10 @@ class NavButtonWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final viewFromTitle = ref.read(mainNavProvider).getMainview(title);
+    final selecetView = ref.watch(mainNavProvider);
+    final isCurrent = viewFromTitle == selecetView;
+
     return GestureDetector(
       onTap: () {
         if (nextView != null) {
@@ -179,9 +177,16 @@ class NavButtonWidget extends ConsumerWidget {
       child: Container(
         color: color,
         width: double.infinity,
-        height: 100,
+        height: isCurrent ? 130 : 100,
         margin: const EdgeInsets.all(4),
-        child: Center(child: Text(title)),
+        child: Center(
+            child: Text(
+          title,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: isCurrent ? Colors.orange : Colors.black,
+              fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
+              fontSize: isCurrent ? 21 : 19),
+        )),
       ),
     );
   }
