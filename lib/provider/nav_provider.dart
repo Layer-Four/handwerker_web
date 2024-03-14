@@ -8,4 +8,18 @@ enum MainView {
   users,
 }
 
-final mainNavProvider = StateProvider((ref) => MainView.timeEntry);
+extension MainViewExtennsion on MainView {
+  MainView? getMainview(String current) {
+    return switch (current) {
+      'Home' => MainView.home,
+      'Zeiteintrag' => MainView.timeEntry,
+      'Kunde/Projekt' => MainView.docs,
+      'Material' => MainView.consumables,
+      'Mitarbeiter' => MainView.users,
+      'Log Out' => null,
+      _ => null,
+    };
+  }
+}
+
+final mainNavProvider = StateProvider((ref) => MainView.consumables);
