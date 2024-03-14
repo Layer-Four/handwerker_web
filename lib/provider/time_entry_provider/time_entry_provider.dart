@@ -5,7 +5,7 @@ import 'package:handwerker_web/models/time_models/time_vm/time_vm.dart';
 // import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:handwerker_web/constants/api/url.dart';
-import 'package:handwerker_web/models/time_models/time_vm/time_entry_calendar_source.dart';
+import 'package:handwerker_web/models/time_models/time_vm/time_entry_adapter.dart';
 
 final timeEntryProvider = AsyncNotifierProvider<TimeEntryNotifier, EventSource?>(
   () => TimeEntryNotifier(),
@@ -26,7 +26,7 @@ class TimeEntryNotifier extends AsyncNotifier<EventSource?> {
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.data);
-        final entrys = data.map((e) => TimeEntry.fromJson(e)).toList();
+        final entrys = data.map((e) => TimeEntryVM.fromJson(e)).toList();
         state = AsyncValue.data(entrys);
       }
     } catch (e) {

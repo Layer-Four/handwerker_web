@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:handwerker_web/models/time_models/time_vm/time_entry_calendar_source.dart';
+import 'package:handwerker_web/models/time_models/time_vm/time_entry_adapter.dart';
 import 'package:handwerker_web/provider/time_entry_provider/time_entry_provider.dart';
+import 'package:handwerker_web/view/time_entry_view/time_entry_dialog.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class TimeEntryBody extends ConsumerStatefulWidget {
@@ -41,26 +42,55 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
               //     top: 15,
               //     child: IconButton.filled(
               //         onPressed: () {}, icon: Icon(Icons.arrow_forward_ios_sharp))),
-              Positioned(
-                right: MediaQuery.of(context).size.width / 20.0,
-                top: 15,
-                child: InkWell(
-                  onTap: () {},
-                  child: Card(
-                    clipBehavior: Clip.antiAlias,
-                    child: Container(
-                      alignment: Alignment.center,
-                      color: Colors.orange,
-                      height: 30,
-                      width: 150,
-                      child: const Text('+ Neuer Termin'),
-                    ),
-                  ),
-                ),
-              ),
+              _addNewAppointment(context),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _addNewAppointment(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Positioned(
+      right: width / 20.0,
+      top: 15,
+      child: InkWell(
+        onTap: () {
+          showDialog(
+              barrierColor: Colors.transparent,
+              context: context,
+              builder: (context) => Container(
+                    width: 600,
+                    height: 1000,
+                    margin: EdgeInsets.only(
+                        left: (width / 10) * 5,
+                        top: (height / 10) * 1.0,
+                        right: (width / 10) * 1.0,
+                        bottom: (height / 10) * 1.0),
+                    child: Card(
+                        elevation: 5,
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                // border: Border.all(
+                                //   color: const Color.fromARGB(255, 220, 217, 217),
+                                // ),
+                                borderRadius: BorderRadius.circular(12)),
+                            child: const TimeEntryDialog())),
+                  ));
+        },
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.orange,
+            height: 30,
+            width: 150,
+            child: const Text('+ Neuer Termin'),
+          ),
+        ),
       ),
     );
   }
@@ -82,6 +112,7 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
 
   Card _buildCalendarWidget(BuildContext context, EventSource? data) {
     return Card(
+      clipBehavior: Clip.antiAlias,
       elevation: 9,
       child: Localizations.override(
         context: context,
@@ -89,7 +120,10 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
         child: Container(
             width: double.infinity,
             height: MediaQuery.of(context).size.height - 106,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+            ),
             child: SfCalendar(
               dataSource: data,
               showDatePickerButton: true,
@@ -121,7 +155,7 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
     );
   }
 
-  Padding _searchHeader(BuildContext context) {
+  Widget _searchHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: SizedBox(
