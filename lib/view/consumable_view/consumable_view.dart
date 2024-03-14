@@ -133,8 +133,8 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                     context: context,
                     builder: (context) => Container(
                       color: Colors.amber,
-                      margin: EdgeInsets.all(300),
-                      child: Text(''),
+                      margin: const EdgeInsets.all(300),
+                      child: const Text(''),
                     ),
                   );
                 },
