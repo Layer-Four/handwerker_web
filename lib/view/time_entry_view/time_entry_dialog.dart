@@ -329,13 +329,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: const Color.fromARGB(255, 220, 217, 217),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 220, 217, 217),
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: const Color.fromARGB(255, 220, 217, 217)),
+                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
                         ),
                       ),
                     ),
@@ -380,13 +380,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: const Color.fromARGB(255, 220, 217, 217),
+                            borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 220, 217, 217),
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: const Color.fromARGB(255, 220, 217, 217)),
+                            borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
                           ),
                         )),
                   ),
@@ -407,7 +407,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             // TODO: uncommand this, after API is ready           ref.read(timeEntryProvider.notifier).uploadTimeEntry(_entry);
             if (_startController.text.isEmpty || _endController.text.isEmpty) {
               return ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Text('Bitte wählen sie Start- und Endzeit'),
                 ),
               );
@@ -425,7 +425,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 _dayPickerController.text = '${now.day}.${now.month}.${now.year}';
               });
               return ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Text('Erfolg'),
                 ),
               );
@@ -468,13 +468,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: const Color.fromARGB(255, 220, 217, 217),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 220, 217, 217),
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: const Color.fromARGB(255, 220, 217, 217)),
+                        borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
                       ),
                     ),
                     onTap: () async {
@@ -526,13 +526,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: const Color.fromARGB(255, 220, 217, 217),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 220, 217, 217),
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: const Color.fromARGB(255, 220, 217, 217)),
+                        borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
                       ),
                     ),
                     onTap: () async {

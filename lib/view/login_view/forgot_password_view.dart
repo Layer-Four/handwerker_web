@@ -13,7 +13,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
   @override
   Widget build(BuildContext context) {
     bool obscure = true;
-    bool isFocused = false;
+    // bool isFocused = false;
     return Material(
       child: Scaffold(
         appBar: AppBar(),
@@ -50,12 +50,14 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                     child: Focus(
                       onFocusChange: (hasFocus) {
                         setState(() {
-                          isFocused = hasFocus;
+                          // isFocused = hasFocus;
                         });
                       },
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
-                        height: isFocused ? 40 : 35,
+                        duration: const Duration(milliseconds: 300),
+                        height:
+                            //  isFocused ? 40 :
+                            35,
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
                           validator: (value) => value!.length < 6 ? "Required" : null,
@@ -63,7 +65,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                           controller: _userNameController,
                           decoration: InputDecoration(
                             hintText: 'Nutzername',
-                            hintStyle: TextStyle(color: Colors.grey),
+                            hintStyle: const TextStyle(color: Colors.grey),
                             filled: true,
                             fillColor: Colors.transparent,
                             suffixIcon: IconButton(
@@ -77,14 +79,15 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide:
-                                  BorderSide(color: const Color.fromARGB(255, 224, 142, 60)),
+                                  const BorderSide(color: Color.fromARGB(255, 224, 142, 60)),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: isFocused
-                                    ? const Color.fromARGB(255, 224, 142, 60)
-                                    : Colors.transparent,
+                              borderSide: const BorderSide(
+                                color:
+                                    // isFocused
+                                    // ? const Color.fromARGB(255, 224, 142, 60)                                    :
+                                    Colors.transparent,
                               ),
                             ),
                           ),
