@@ -132,13 +132,12 @@ class MainViewNavigator extends ConsumerWidget {
               const NavButtonWidget(
                 title: 'Mitarbeiter',
                 nextView: MainView.users,
-                color: Colors.cyan,
               ),
               const Spacer(),
               const NavButtonWidget(
                 title: 'Log Out',
                 // nextView: MainView.docs,
-                color: Colors.teal,
+                // color: Colors.teal,
               ),
             ],
           ),

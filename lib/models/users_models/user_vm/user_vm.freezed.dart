@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Users _$UsersFromJson(Map<String, dynamic> json) {
-  return _Users.fromJson(json);
+UserVM _$UserVMFromJson(Map<String, dynamic> json) {
+  return _UserVM.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Users {
+mixin _$UserVM {
   String get userID => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
@@ -28,13 +28,13 @@ mixin _$Users {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UsersCopyWith<Users> get copyWith => throw _privateConstructorUsedError;
+  $UserVMCopyWith<UserVM> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UsersCopyWith<$Res> {
-  factory $UsersCopyWith(Users value, $Res Function(Users) then) =
-      _$UsersCopyWithImpl<$Res, Users>;
+abstract class $UserVMCopyWith<$Res> {
+  factory $UserVMCopyWith(UserVM value, $Res Function(UserVM) then) =
+      _$UserVMCopyWithImpl<$Res, UserVM>;
   @useResult
   $Res call(
       {String userID,
@@ -45,9 +45,9 @@ abstract class $UsersCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UsersCopyWithImpl<$Res, $Val extends Users>
-    implements $UsersCopyWith<$Res> {
-  _$UsersCopyWithImpl(this._value, this._then);
+class _$UserVMCopyWithImpl<$Res, $Val extends UserVM>
+    implements $UserVMCopyWith<$Res> {
+  _$UserVMCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -89,10 +89,10 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
 }
 
 /// @nodoc
-abstract class _$$UsersImplCopyWith<$Res> implements $UsersCopyWith<$Res> {
-  factory _$$UsersImplCopyWith(
-          _$UsersImpl value, $Res Function(_$UsersImpl) then) =
-      __$$UsersImplCopyWithImpl<$Res>;
+abstract class _$$UserVMImplCopyWith<$Res> implements $UserVMCopyWith<$Res> {
+  factory _$$UserVMImplCopyWith(
+          _$UserVMImpl value, $Res Function(_$UserVMImpl) then) =
+      __$$UserVMImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -104,11 +104,11 @@ abstract class _$$UsersImplCopyWith<$Res> implements $UsersCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$UsersImplCopyWithImpl<$Res>
-    extends _$UsersCopyWithImpl<$Res, _$UsersImpl>
-    implements _$$UsersImplCopyWith<$Res> {
-  __$$UsersImplCopyWithImpl(
-      _$UsersImpl _value, $Res Function(_$UsersImpl) _then)
+class __$$UserVMImplCopyWithImpl<$Res>
+    extends _$UserVMCopyWithImpl<$Res, _$UserVMImpl>
+    implements _$$UserVMImplCopyWith<$Res> {
+  __$$UserVMImplCopyWithImpl(
+      _$UserVMImpl _value, $Res Function(_$UserVMImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -120,7 +120,7 @@ class __$$UsersImplCopyWithImpl<$Res>
     Object? token = freezed,
     Object? userRole = null,
   }) {
-    return _then(_$UsersImpl(
+    return _then(_$UserVMImpl(
       userID: null == userID
           ? _value.userID
           : userID // ignore: cast_nullable_to_non_nullable
@@ -147,16 +147,17 @@ class __$$UsersImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$UsersImpl implements _Users {
-  const _$UsersImpl(
+class _$UserVMImpl extends _UserVM {
+  const _$UserVMImpl(
       {required this.userID,
       this.firstName,
       this.lastName,
       this.token,
-      this.userRole = 'worker'});
+      this.userRole = 'worker'})
+      : super._();
 
-  factory _$UsersImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UsersImplFromJson(json);
+  factory _$UserVMImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserVMImplFromJson(json);
 
   @override
   final String userID;
@@ -172,14 +173,14 @@ class _$UsersImpl implements _Users {
 
   @override
   String toString() {
-    return 'Users(userID: $userID, firstName: $firstName, lastName: $lastName, token: $token, userRole: $userRole)';
+    return 'UserVM(userID: $userID, firstName: $firstName, lastName: $lastName, token: $token, userRole: $userRole)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UsersImpl &&
+            other is _$UserVMImpl &&
             (identical(other.userID, userID) || other.userID == userID) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
@@ -198,26 +199,27 @@ class _$UsersImpl implements _Users {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UsersImplCopyWith<_$UsersImpl> get copyWith =>
-      __$$UsersImplCopyWithImpl<_$UsersImpl>(this, _$identity);
+  _$$UserVMImplCopyWith<_$UserVMImpl> get copyWith =>
+      __$$UserVMImplCopyWithImpl<_$UserVMImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UsersImplToJson(
+    return _$$UserVMImplToJson(
       this,
     );
   }
 }
 
-abstract class _Users implements Users {
-  const factory _Users(
+abstract class _UserVM extends UserVM {
+  const factory _UserVM(
       {required final String userID,
       final String? firstName,
       final String? lastName,
       final String? token,
-      final String userRole}) = _$UsersImpl;
+      final String userRole}) = _$UserVMImpl;
+  const _UserVM._() : super._();
 
-  factory _Users.fromJson(Map<String, dynamic> json) = _$UsersImpl.fromJson;
+  factory _UserVM.fromJson(Map<String, dynamic> json) = _$UserVMImpl.fromJson;
 
   @override
   String get userID;
@@ -231,6 +233,6 @@ abstract class _Users implements Users {
   String get userRole;
   @override
   @JsonKey(ignore: true)
-  _$$UsersImplCopyWith<_$UsersImpl> get copyWith =>
+  _$$UserVMImplCopyWith<_$UserVMImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
