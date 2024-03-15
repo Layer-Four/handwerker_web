@@ -46,20 +46,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
       child: Column(
         children: [
           _searchHeader(context),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text('Material', style: headStyle),
-                Text('Mengeeinheit', style: headStyle),
-                Text('Preis/Einheit', style: headStyle),
-                SizedBox(
-                  width: (contentWidth / 10) * 1.5,
-                )
-              ],
-            ),
-          ),
+          _tableHead(headStyle, contentWidth),
           SingleChildScrollView(
             child: SizedBox(
               width: (contentWidth / 10) * 7.5,
@@ -134,6 +121,23 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                 },
               ),
             ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Padding _tableHead(TextStyle? headStyle, double contentWidth) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text('Material', style: headStyle),
+          Text('Mengeeinheit', style: headStyle),
+          Text('Preis/Einheit', style: headStyle),
+          SizedBox(
+            width: (contentWidth / 10) * 1.5,
           )
         ],
       ),

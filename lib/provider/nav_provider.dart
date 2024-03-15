@@ -22,4 +22,4 @@ extension MainViewExtennsion on MainView {
   }
 }
 
-final mainNavProvider = StateProvider((ref) => MainView.consumables);
+final mainNavProvider = StateProvider((ref) => MainView.users);
