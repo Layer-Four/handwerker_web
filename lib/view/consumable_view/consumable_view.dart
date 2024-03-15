@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:handwerker_web/models/consumable_models/consumable_vm/consumable_vm.dart';
 import 'package:handwerker_web/view/view_widgets/symetric_button_widget.dart';
 
@@ -131,11 +129,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                 onPressed: () {
                   showAdaptiveDialog(
                     context: context,
-                    builder: (context) => Container(
-                      color: Colors.amber,
-                      margin: const EdgeInsets.all(300),
-                      child: const Text(''),
-                    ),
+                    builder: (context) => const AddNewConsumable(),
                   );
                 },
               ),
@@ -195,6 +189,180 @@ class _ConsumableBodyState extends State<ConsumableBody> {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class AddNewConsumable extends StatelessWidget {
+  const AddNewConsumable({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final contentWidth = MediaQuery.of(context).size.width;
+    final contentHeight = MediaQuery.of(context).size.height;
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: (contentWidth / 10) * 3, vertical: (contentHeight / 10) * 2.2),
+      child: Card(
+        elevation: 7,
+        child: Container(
+          color: Colors.white,
+          height: 600,
+          width: 450,
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              const Text('Neues Material Erstellen'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text('Name'),
+                  ),
+                  SizedBox(
+                    width: 400,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: const Color.fromARGB(255, 220, 217, 217),
+                            ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 5,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 220, 217, 217),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text('Maßeinheit'),
+                  ),
+                  SizedBox(
+                    width: 400,
+                    // TODO: change to DropDownButton Measurment
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: const Color.fromARGB(255, 220, 217, 217),
+                            ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 5,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 220, 217, 217),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text('Menge'),
+                  ),
+                  SizedBox(
+                    width: 400,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: const Color.fromARGB(255, 220, 217, 217),
+                            ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 5,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 220, 217, 217),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text("Preis in Cent's"),
+                  ),
+                  SizedBox(
+                    width: 400,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: const Color.fromARGB(255, 220, 217, 217),
+                            ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 5,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 220, 217, 217),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SymmetricButton(
+                  color: Colors.orange,
+                  text: 'Neues Material',
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
