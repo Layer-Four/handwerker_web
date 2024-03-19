@@ -16,6 +16,7 @@ class MainApp extends ConsumerWidget {
     // if (ref.watch(timeEntryProvider).value == null) {
     //   ref.read(timeEntryProvider.notifier).loadTimeEntrys();
     // }
+
     return MaterialApp(
       theme: ThemeData().copyWith(
           cardTheme: const CardTheme(
