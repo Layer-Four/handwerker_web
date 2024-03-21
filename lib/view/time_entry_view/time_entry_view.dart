@@ -101,7 +101,7 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
         data: (data) {
           log('${data?.length}');
           if (data == null) {
-            // ref.read(timeEntryProvider.notifier).loadTimeEntrys();
+            ref.read(timeEntryProvider.notifier).loadTimeEntrys();
           }
           return _buildCalendarWidget(context, data);
         },

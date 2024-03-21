@@ -38,11 +38,11 @@ class _ConsumableBodyState extends State<ConsumableBody> {
     final headStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w600,
         );
-    final contentWidth = MediaQuery.of(context).size.width;
-    final contentHeight = MediaQuery.of(context).size.height;
+    final contentWidth = MediaQuery.of(context).size.width - 100;
+    final contentHeight = MediaQuery.of(context).size.height - 100;
     return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
+      width: contentWidth,
+      height: contentHeight,
       child: Column(
         children: [
           _searchHeader(context),
