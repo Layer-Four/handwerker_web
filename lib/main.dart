@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:handwerker_web/constants/themes/app_theme.dart';
 // import 'package:handwerker_web/provider/time_entry_provider/time_entry_provider.dart';
 import 'package:handwerker_web/routes/app_routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,16 +18,7 @@ class MainApp extends ConsumerWidget {
     //   ref.read(timeEntryProvider.notifier).loadTimeEntrys();
     // }
     return MaterialApp(
-      theme: ThemeData().copyWith(
-          cardTheme: const CardTheme(
-            color: Colors.white,
-            clipBehavior: Clip.antiAlias,
-          ),
-          primaryTextTheme: const TextTheme().apply(fontFamily: 'poppins'),
-          textTheme: const TextTheme().apply(fontFamily: 'poppins'),
-          primaryColor: Colors.amber,
-          highlightColor: Colors.amber,
-          focusColor: Colors.amber),
+      theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
