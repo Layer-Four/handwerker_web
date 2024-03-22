@@ -39,7 +39,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
           fontWeight: FontWeight.w600,
         );
     final contentWidth = MediaQuery.of(context).size.width - 100;
-    final contentHeight = MediaQuery.of(context).size.height - 100;
+    final contentHeight = MediaQuery.of(context).size.height;
     return SizedBox(
       width: contentWidth,
       height: contentHeight,
@@ -49,7 +49,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
           _tableHead(headStyle, contentWidth),
           SingleChildScrollView(
             child: SizedBox(
-              width: (contentWidth / 10) * 7.5,
+              width: contentWidth < 1000 ? contentWidth : (contentWidth / 10) * 7.5,
               height: contentHeight - 600,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

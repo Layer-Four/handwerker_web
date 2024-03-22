@@ -22,7 +22,7 @@ class MainViewNavigator extends ConsumerWidget {
         children: [
           _navToolbar(context),
           SizedBox(
-              width: width <= 1000 ? width - 50 : width - width / 4,
+              width: width <= 1000 ? width - 50 : width - width / 5,
               child: switch (view) {
                 MainView.home => const HomeBody(),
                 MainView.timeEntry => const TimeEntryBody(),
@@ -44,9 +44,9 @@ class MainViewNavigator extends ConsumerWidget {
           barrierColor: Colors.transparent,
           context: context,
           builder: (context) => Container(
-            margin: EdgeInsets.only(right: MediaQuery.of(context).size.width / 1.5),
+            margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width / 100) * 80),
             height: double.infinity,
-            width: MediaQuery.of(context).size.width / 4,
+            width: MediaQuery.of(context).size.width / 5,
             color: const Color.fromARGB(255, 208, 207, 207),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -94,7 +94,7 @@ class MainViewNavigator extends ConsumerWidget {
     }
     return Container(
       height: double.infinity,
-      width: MediaQuery.of(context).size.width / 4,
+      width: MediaQuery.of(context).size.width / 5,
       color: const Color.fromARGB(255, 208, 207, 207),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -166,6 +166,7 @@ class NavButtonWidget extends ConsumerWidget {
           return;
         } else {
           Navigator.of(context).pushReplacementNamed(AppRoutes.initialRoute);
+          return;
         }
       },
       child: Container(

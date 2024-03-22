@@ -13,7 +13,7 @@ final timeEntryProvider = AsyncNotifierProvider<TimeEntryNotifier, EventSource?>
 
 class TimeEntryNotifier extends AsyncNotifier<EventSource?> {
   @override
-  FutureOr<EventSource?> build() => null;
+  FutureOr<EventSource?> build() => EventSource();
 
   void loadTimeEntrys() async {
     final uri = const DbAdress().getTimeEntrys;
