@@ -14,9 +14,6 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    // if (ref.watch(timeEntryProvider).value == null) {
-    //   ref.read(timeEntryProvider.notifier).loadTimeEntrys();
-    // }
     return MaterialApp(
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,

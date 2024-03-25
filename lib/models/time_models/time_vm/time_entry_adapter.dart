@@ -2,7 +2,7 @@ import 'package:handwerker_web/models/time_models/time_vm/time_vm.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class EventSource extends CalendarDataSource {
-  EventSource(List<TimeEntryVM> appointments) {
+  EventSource({List<TimeEntryVM>? appointments}) {
     this.appointments = appointments;
   }
   TimeEntryVM getTimeEntry(int index) => appointments![index] as TimeEntryVM;
