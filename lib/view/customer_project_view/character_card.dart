@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:handwerker_web/view/customer_project_view/custom_project.dart';
 
-// ignore: must_be_immutable
 class CharacterCard extends StatefulWidget {
   final CustomeProject project;
   final bool isLast;
@@ -20,18 +19,10 @@ class CharacterCard extends StatefulWidget {
 class _CharacterCardState extends State<CharacterCard> {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    // final screenHeight = MediaQuery.of(context).size.height;
-
-    // Calculate the percentage of screen width
-    // final screenWidthPercentage = screenWidth / 100;
     final screenWihdthinProzents = (MediaQuery.of(context).size.width / 100);
-    // final screenHeightnProzents = (MediaQuery.of(context).size.height / 100);
 
     return Container(
-      // width: screenWihdthinProzents * 100,
-      width: screenWidth > 600 ? double.infinity : null,
-
+      width: double.infinity,
       decoration: BoxDecoration(
         border: Border(
           top: const BorderSide(),
@@ -40,133 +31,249 @@ class _CharacterCardState extends State<CharacterCard> {
           bottom: widget.isLast ? const BorderSide() : BorderSide.none,
         ),
       ),
-      // height: widget.isLast ? 160 : null,
-      child: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    widget.isContainerOpen = !widget.isContainerOpen;
-                  });
-                },
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        width: screenWihdthinProzents * 25,
-                        child: Row(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                widget.project.name,
-                                textAlign: TextAlign.left,
-                              ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  widget.isContainerOpen = !widget.isContainerOpen;
+                });
+              },
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      width: screenWihdthinProzents * 25,
+                      child: Row(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              widget.project.customer,
+                              textAlign: TextAlign.left,
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                widget.project.customer,
-                                textAlign: TextAlign.left,
-                              ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenWihdthinProzents * 20,
+                      child: Text(
+                        widget.project.description,
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenWihdthinProzents * 11,
+                      child: Text(
+                        '${widget.project.projectNumber}',
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenWihdthinProzents * 11,
+                      child: Text(
+                        '${widget.project.projectNumber} EUR',
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenWihdthinProzents * 11,
+                      child: Text(
+                        '${widget.project.totalTime} EUR',
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenWihdthinProzents * 11,
+                      child: Text(
+                        '${widget.project.costItems} EUR',
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenWihdthinProzents * 11,
+                      child: Text(
+                        '${widget.project.revenue} EUR',
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Icon(widget.isContainerOpen
+                        ? Icons.arrow_drop_up
+                        : Icons.arrow_drop_down)
+                  ],
+                ),
+              ),
+            ),
+            if (widget.isContainerOpen)
+              Container(
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Berlin Ag',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              'KundenNummer:134D8282',
+                              style: TextStyle(color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        width: screenWihdthinProzents * 20,
-                        child: Text(
-                          widget.project.description,
+                        SizedBox(width: screenWihdthinProzents * 11),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '2',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Text('11 h'),
+                        Text(
+                          '1.099 EUR ',
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      SizedBox(
-                        width: screenWihdthinProzents * 15,
-                        child: Text(
-                          '${widget.project.lastChange.day}.${widget.project.lastChange.month}.${widget.project.lastChange.year}',
-                          textAlign: TextAlign.right,
+                        Text(
+                          '100.00 EUr EUR ',
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      SizedBox(
-                        width: screenWihdthinProzents * 20,
-                        child: Text(
-                          '${widget.project.revenue} EUR',
-                          textAlign: TextAlign.right,
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Kontakt:',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                'Ansprechpartner:Jürgen Holz',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Text(
+                                'Telefon:016037372',
+                                style: TextStyle(color: Colors.grey),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                'E-mail:Kunde@handwerker.de',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Icon(widget.isContainerOpen
-                          ? Icons.arrow_drop_up
-                          : Icons.arrow_drop_down)
-                    ],
-                  ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 180,
+                            width: 120,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 1),
+                                child: Text(
+                                  'Der Kunde\nist blöd \nantwortet nie\nzahlt nicht',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                              '1 Begründung Herkules \n 2 Begründung Schlosswiese'),
+                        ),
+                        Column(
+                          children: [
+                            Text('5 h '),
+                            Text('6 h '),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text('1000 EUR  '),
+                            Text('99 EUR '),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text('10.000 EUR '),
+                            Text('990.000 EUR '),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Kontakt:',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              'Adresse:',
+                              style: TextStyle(color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              'Berliner Straße 234',
+                              style: TextStyle(color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              '22990 Berlin',
+                              style: TextStyle(color: Colors.grey),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
-              if (widget.isContainerOpen)
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                  ),
-                  child: const Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(child: Text('23.09.2024')),
-                          Expanded(child: Text('Montage')),
-                          Expanded(child: Text('8 h')),
-                          Expanded(child: Text('10m Leisten ')),
-                          Row(
-                            children: [
-                              Text('2.0000'),
-                              Icon(Icons.image),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(child: Text('23.09.2024')),
-                          Expanded(child: Text('Montage')),
-                          Expanded(child: Text('8 h')),
-                          Expanded(child: Text('10m Leisten ')),
-                          Row(
-                            children: [
-                              Text('2.0000'),
-                              Icon(Icons.image),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(child: Text('23.09.2024')),
-                          Expanded(child: Text('Montage')),
-                          Expanded(child: Text('8 h')),
-                          Expanded(child: Text('10m Leisten ')),
-                          Row(
-                            children: [
-                              Text('2.0000'),
-                              Icon(Icons.image),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
+          ],
         ),
       ),
     );

@@ -8,82 +8,45 @@ void docScreen() {
 
 class MyApp extends StatelessWidget {
   final List<CustomeProject> project = [
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
+    const CustomeProject(
+      'Layer Four GmbH',
+      'Austausch der\nHeizungsanlage',
+      2,
+      11,
+      1009,
+      1009,
     ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
+    const CustomeProject(
+      'Berlin AG',
+      'Tisch gebaut',
+      2,
+      11,
+      2099,
+      9000,
     ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
+    const CustomeProject(
+      'Creative GmbH',
+      'Fenster eingesetzt',
+      1009,
+      11,
+      2,
+      900000,
     ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
+    const CustomeProject(
+      'Fio Bestmann',
+      'Steinloch 43\n22880, Hamburg',
+      1009,
+      2,
+      2,
+      1009,
     ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
-    ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
-    ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
-    ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
-    ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
-    ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
-    ),
-    CustomeProject(
-      'Kunde',
-      'Timo Meyer',
-      'Leisten abringen und anderer Pfusch',
-      DateTime(2024, 09, 23),
-      50000,
+    const CustomeProject(
+      'Florian hensel',
+      'große Straße 54\n22449, Kassel',
+      1999,
+      2,
+      2,
+      122000,
     ),
   ];
 
@@ -141,11 +104,13 @@ class MyApp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Kunde/Projekt',
+                    'Kunde',
                     style: TextStyle(color: Colors.grey),
                   ),
                   Text('Beschreibung', style: TextStyle(color: Colors.grey)),
-                  Text('Letztes Datum', style: TextStyle(color: Colors.grey)),
+                  Text('Anzahl Projekte', style: TextStyle(color: Colors.grey)),
+                  Text('Gesamtzeit', style: TextStyle(color: Colors.grey)),
+                  Text('Materialkosten', style: TextStyle(color: Colors.grey)),
                   Text('Umsatz', style: TextStyle(color: Colors.grey))
                 ],
               ),
