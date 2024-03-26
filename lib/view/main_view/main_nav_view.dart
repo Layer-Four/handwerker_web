@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:handwerker_web/provider/nav_provider.dart';
 import 'package:handwerker_web/routes/app_routes.dart';
 import 'package:handwerker_web/view/consumable_view/consumable_view.dart';
-import 'package:handwerker_web/view/doc_view/doc_view.dart';
+import 'package:handwerker_web/view/customer_project_view/doc_view.dart';
 import 'package:handwerker_web/view/home_view/home_body.dart';
 import 'package:handwerker_web/view/time_entry_view/time_entry_view.dart';
 import 'package:handwerker_web/view/users_view/user_view.dart';
@@ -45,7 +45,8 @@ class MainViewNavigator extends ConsumerWidget {
                   barrierColor: Colors.transparent,
                   context: context,
                   builder: (context) => Container(
-                    margin: EdgeInsets.only(right: MediaQuery.of(context).size.width / 1.5),
+                    margin: EdgeInsets.only(
+                        right: MediaQuery.of(context).size.width / 1.5),
                     height: double.infinity,
                     width: MediaQuery.of(context).size.width / 4,
                     color: const Color.fromARGB(255, 208, 207, 207),

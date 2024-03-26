@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:handwerker_web/view/customer_project_view/doc_screen.dart';
 
 class DocumentBody extends StatelessWidget {
   const DocumentBody({super.key});
@@ -9,8 +10,8 @@ class DocumentBody extends StatelessWidget {
       color: Colors.blueGrey,
       width: double.infinity,
       height: double.infinity,
-      child: const Center(
-        child: Text('Berichte'),
+      child: Center(
+        child: MyApp(),
       ),
     );
   }
