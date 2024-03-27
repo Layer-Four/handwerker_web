@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     const CustomeProject(
       'Layer Four GmbH',
       'Austausch der\nHeizungsanlage',
-      2,
+      60000,
       11,
       1009,
       1009,
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     const CustomeProject(
       'Berlin AG',
       'Tisch gebaut',
-      2,
+      20000,
       11,
       2099,
       9000,
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     const CustomeProject(
       'Creative GmbH',
       'Fenster eingesetzt',
-      1009,
+      20000,
       11,
       2,
       900000,
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
     const CustomeProject(
       'Fio Bestmann',
       'Steinloch 43\n22880, Hamburg',
-      1009,
+      20000,
       2,
       2,
       1009,
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
     const CustomeProject(
       'Florian hensel',
       'große Straße 54\n22449, Kassel',
-      1999,
+      20.000,
       2,
       2,
       122000,
@@ -107,10 +107,10 @@ class MyApp extends StatelessWidget {
                     'Kunde',
                     style: TextStyle(color: Colors.grey),
                   ),
-                  Text('Beschreibung', style: TextStyle(color: Colors.grey)),
-                  Text('Anzahl Projekte', style: TextStyle(color: Colors.grey)),
-                  Text('Gesamtzeit', style: TextStyle(color: Colors.grey)),
-                  Text('Materialkosten', style: TextStyle(color: Colors.grey)),
+                  // Text('Beschreibung', style: TextStyle(color: Colors.grey)),
+                  // Text('Anzahl Projekte', style: TextStyle(color: Colors.grey)),
+                  // Text('Gesamtzeit', style: TextStyle(color: Colors.grey)),
+                  // Text('Materialkosten', style: TextStyle(color: Colors.grey)),
                   Text('Umsatz', style: TextStyle(color: Colors.grey))
                 ],
               ),
