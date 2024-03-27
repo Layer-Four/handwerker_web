@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 enum MainView {
   home,
   timeEntry,
-  docs,
+  projectCustomer,
   consumables,
   users,
 }
@@ -13,7 +13,7 @@ extension MainViewExtennsion on MainView {
     return switch (current) {
       'Home' => MainView.home,
       'Zeiteintrag' => MainView.timeEntry,
-      'Kunde/Projekt' => MainView.docs,
+      'Kunde/Projekt' => MainView.projectCustomer,
       'Material' => MainView.consumables,
       'Mitarbeiter' => MainView.users,
       'Log Out' => null,
@@ -22,4 +22,4 @@ extension MainViewExtennsion on MainView {
   }
 }
 
-final mainNavProvider = StateProvider((ref) => MainView.users);
+final mainNavProvider = StateProvider((ref) => MainView.home);

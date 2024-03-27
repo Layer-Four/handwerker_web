@@ -38,18 +38,18 @@ class _ConsumableBodyState extends State<ConsumableBody> {
     final headStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w600,
         );
-    final contentWidth = MediaQuery.of(context).size.width;
+    final contentWidth = MediaQuery.of(context).size.width - 100;
     final contentHeight = MediaQuery.of(context).size.height;
     return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
+      width: contentWidth,
+      height: contentHeight,
       child: Column(
         children: [
           _searchHeader(context),
           _tableHead(headStyle, contentWidth),
           SingleChildScrollView(
             child: SizedBox(
-              width: (contentWidth / 10) * 7.5,
+              width: contentWidth < 1000 ? contentWidth : (contentWidth / 10) * 7.5,
               height: contentHeight - 600,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
