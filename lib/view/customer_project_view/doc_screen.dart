@@ -52,79 +52,101 @@ class MyApp extends StatelessWidget {
 
   MyApp({super.key});
 
+  //  const Text('Berichte', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
       home: Scaffold(
-        body: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(28),
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(75, 30, 30, 30),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 120, top: 20, right: 200),
-                child: TextField(
-                  decoration: InputDecoration(
-                    isDense: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide:
-                          const BorderSide(width: 1.0, color: Colors.grey),
+              Row(
+                children: [
+                  const Text('Berichte',
+                      style: TextStyle(color: Colors.orange, fontSize: 20, fontWeight: FontWeight.bold)),
+                  Container(
+                    width: 800,
+                    child: const Padding(
+                      padding: EdgeInsets.only(
+                        left: 80,
+                      ),
+                      child: Material(
+                        elevation: 5,
+                        //  borderRadius: BorderRadius.circular(16),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: OutlineInputBorder(
+                              //      borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(width: 1.0, color: Colors.grey),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blueGrey),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.redAccent),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.orangeAccent),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            contentPadding: EdgeInsets.all(8.0),
+                            hintText: 'Suche...',
+                            suffixIcon: Icon(
+                              Icons.search,
+                              color: Colors.grey,
+                            ),
+                            suffixStyle: TextStyle(color: Colors.green),
+                          ),
+                        ),
+                      ),
                     ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blueGrey),
-                    ),
-                    errorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.redAccent),
-                    ),
-                    focusedErrorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.orangeAccent),
-                    ),
-                    disabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    contentPadding: const EdgeInsets.all(8.0),
-                    hintText: 'Suche',
-                    suffixIcon: const Icon(
-                      Icons.search,
-                      color: Colors.grey,
-                    ),
-                    suffixStyle: const TextStyle(color: Colors.green),
                   ),
-                ),
+                ],
               ),
               const SizedBox(
                 height: 60,
               ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Kunde',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  // Text('Beschreibung', style: TextStyle(color: Colors.grey)),
-                  // Text('Anzahl Projekte', style: TextStyle(color: Colors.grey)),
-                  // Text('Gesamtzeit', style: TextStyle(color: Colors.grey)),
-                  // Text('Materialkosten', style: TextStyle(color: Colors.grey)),
-                  Text('Umsatz', style: TextStyle(color: Colors.grey))
-                ],
+              const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Kunde',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Spacer(),
+                    // Text('Beschreibung', style: TextStyle(color: Colors.grey)),
+                    // Text('Anzahl Projekte', style: TextStyle(color: Colors.grey)),
+                    // Text('Gesamtzeit', style: TextStyle(color: Colors.grey)),
+                    // Text('Materialkosten', style: TextStyle(color: Colors.grey)),
+                    Text('Umsatz', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      width: 245,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 60,
               ),
               SizedBox(
                 width: screenWidth > 600 ? double.infinity : null,
                 height: 700,
                 child: ListView.builder(
                   itemCount: project.length,
-                  itemBuilder: (_, index) {
-                    return CharacterCard(
-                      project[index],
-                      isLast: index == project.length - 1,
-                    );
-                  },
+                  itemBuilder: (_, index) => CharacterCard(
+                    project[index],
+                    isFirst: index == 0,
+                    isLast: index == project.length - 1,
+                  ),
                 ),
               ),
             ],

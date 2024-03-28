@@ -6,11 +6,14 @@ import 'package:handwerker_web/view/customer_project_view/custom_project.dart';
 // ignore: must_be_immutable
 class CharacterCard extends StatefulWidget {
   final CustomeProject project;
+  final bool isFirst;
   final bool isLast;
   bool isContainerOpen;
+
   CharacterCard(
     this.project, {
     super.key,
+    this.isFirst = false,
     this.isLast = false,
     this.isContainerOpen = false,
   });
@@ -28,14 +31,14 @@ class _CharacterCardState extends State<CharacterCard> {
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border(
-          top: const BorderSide(),
+          top: widget.isFirst ? BorderSide.none : const BorderSide(),
           // left: const BorderSide(),
           // right: const BorderSide(),
           bottom: widget.isLast ? const BorderSide() : BorderSide.none,
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -89,29 +92,44 @@ class _CharacterCardState extends State<CharacterCard> {
                     // SizedBox(
                     //   width: 260,
                     // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.project.customer,
-                          textAlign: TextAlign.left,
-                        ),
-                        Text(
-                          '${widget.project.revenue} EUR',
-                          textAlign: TextAlign.right,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Icon(widget.isContainerOpen
-                            ? Icons.arrow_drop_up
-                            : Icons.arrow_drop_down),
-                      ],
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    SizedBox(
+                      width: 2000, //If we remove this, it crashes. Sloppy fix
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.project.customer,
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          const Spacer(),
+                          Text(
+                            '${widget.project.revenue},- €',
+                            textAlign: TextAlign.right,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 200,
+                          ),
+                          Icon(widget.isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+                          const SizedBox(
+                            //pushes icon into visible range, otherwise icon is invisible
+                            width: 85,
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 25,
             ),
             if (widget.isContainerOpen)
               const Row(
@@ -121,6 +139,7 @@ class _CharacterCardState extends State<CharacterCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 20),
                         Text(
                           "Berlin AG",
                           style: TextStyle(fontWeight: FontWeight.bold),
