@@ -6,7 +6,7 @@ import 'package:handwerker_web/view/consumable_view/consumable_view.dart';
 import 'package:handwerker_web/view/customer_project_view/doc_view.dart';
 import 'package:handwerker_web/view/home_view/home_body.dart';
 import 'package:handwerker_web/view/time_entry_view/time_entry_view.dart';
-import 'package:handwerker_web/view/users_view/user_view.dart';
+import '../users_view/user_view.dart';
 
 class MainViewNavigator extends ConsumerWidget {
   const MainViewNavigator({super.key});
@@ -39,76 +39,75 @@ class MainViewNavigator extends ConsumerWidget {
   Widget _navToolbar(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     if (width <= 1000) {
-
-      return Consumer(
-          builder: (context, ref, child) => IconButton(
-                onPressed: () => showDialog(
-                  barrierColor: Colors.transparent,
-                  context: context,
-                  builder: (context) => Container(
-                    margin: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width / 1.5),
-                    height: double.infinity,
-                    width: MediaQuery.of(context).size.width / 4,
-                    color: const Color.fromARGB(255, 208, 207, 207),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 50),
-                          child: SizedBox(
-                            height: 40,
-                            child: Image.asset(
-                              'assets/images/img_techtool.png',
-                            ),
-                          ),
-                        ),
-                        const NavButtonWidget(
-                          title: 'Home',
-                          nextView: MainView.home,
-                        ),
-                        const NavButtonWidget(
-                          title: 'Zeiteintrag',
-                          nextView: MainView.timeEntry,
-                        ),
-                        const NavButtonWidget(
-                          title: 'Kunde/Projekt',
-                          nextView: MainView.docs,
-                        ),
-                        const NavButtonWidget(
-                          title: 'Material',
-                          nextView: MainView.consumables,
-                        ),
-                        const NavButtonWidget(
-                          title: 'Mitarbeiter',
-                          nextView: MainView.users,
-                        ),
-                        const Spacer(),
-                        const NavButtonWidget(
-                          title: 'Log Out',
-                          nextView: MainView.docs,
-                        ),
-                      ],
+      //
+      // return Consumer(
+      //     builder: (context, ref, child) => IconButton(
+      //           onPressed: () => showDialog(
+      //             barrierColor: Colors.transparent,
+      //             context: context,
+      //             builder: (context) => Container(
+      //               margin: EdgeInsets.only(
+      //                   right: MediaQuery.of(context).size.width / 1.5),
+      //               height: double.infinity,
+      //               width: MediaQuery.of(context).size.width / 4,
+      //               color: const Color.fromARGB(255, 208, 207, 207),
+      //               child: Column(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //                 children: [
+      //                   Padding(
+      //                     padding: const EdgeInsets.symmetric(vertical: 50),
+      //                     child: SizedBox(
+      //                       height: 40,
+      //                       child: Image.asset(
+      //                         'assets/images/img_techtool.png',
+      //                       ),
+      //                     ),
+      //                   ),
+      //                   const NavButtonWidget(
+      //                     title: 'Home',
+      //                     nextView: MainView.home,
+      //                   ),
+      //                   const NavButtonWidget(
+      //                     title: 'Zeiteintrag',
+      //                     nextView: MainView.timeEntry,
+      //                   ),
+      //                   const NavButtonWidget(
+      //                     title: 'Kunde/Projekt',
+      //                     nextView: MainView.docs,
+      //                   ),
+      //                   const NavButtonWidget(
+      //                     title: 'Material',
+      //                     nextView: MainView.consumables,
+      //                   ),
+      //                   const NavButtonWidget(
+      //                     title: 'Mitarbeiter',
+      //                     nextView: MainView.users,
+      //                   ),
+      //                   const Spacer(),
+      //                   const NavButtonWidget(
+      //                     title: 'Log Out',
+      //                     nextView: MainView.docs,
+      //                   ),
+      //                 ],
 // Old?
-//      return IconButton(
-//        onPressed: () => showDialog(
-//          barrierColor: Colors.transparent,
-//          context: context,
-//          builder: (context) => Container(
-//            margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width / 100) * 80),
-//            height: double.infinity,
-//            width: MediaQuery.of(context).size.width / 5,
-//            color: const Color.fromARGB(255, 208, 207, 207),
-//            child: Column(
-//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//              children: [
-//                Padding(
-//                  padding: const EdgeInsets.symmetric(vertical: 50),
-//                  child: SizedBox(
-//                    height: 40,
-//                    child: Image.asset(
-//                      'assets/images/img_techtool.png',
-
+      return IconButton(
+        onPressed: () => showDialog(
+          barrierColor: Colors.transparent,
+          context: context,
+          builder: (context) => Container(
+            margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width / 100) * 80),
+            height: double.infinity,
+            width: MediaQuery.of(context).size.width / 5,
+            color: const Color.fromARGB(255, 208, 207, 207),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 50),
+                  child: SizedBox(
+                    height: 40,
+                    child: Image.asset(
+                      'assets/images/img_techtool.png',
                     ),
                   ),
                 ),
