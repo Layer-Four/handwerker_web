@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:handwerker_web/view/customer_project_view/custom_project.dart';
+import 'package:handwerker_web/view/customer_project_view/project_overview.dart';
 
 // ignore: must_be_immutable
 class CharacterCard extends StatefulWidget {
@@ -25,7 +26,7 @@ class CharacterCard extends StatefulWidget {
 class _CharacterCardState extends State<CharacterCard> {
   @override
   Widget build(BuildContext context) {
-    final screenWihdthinProzents = (MediaQuery.of(context).size.width / 100);
+    final screenWidthInPercent = (MediaQuery.of(context).size.width / 100);
 
     return Container(
       width: double.infinity,
@@ -96,7 +97,7 @@ class _CharacterCardState extends State<CharacterCard> {
                       height: 40,
                     ),
                     SizedBox(
-                      width: 2000, //If we remove this, it crashes. Sloppy fix
+                      width: screenWidthInPercent * 80, //If we remove this, it crashes. Sloppy fix
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -117,12 +118,12 @@ class _CharacterCardState extends State<CharacterCard> {
                             ),
                           ),
                           const SizedBox(
-                            width: 200,
+                            width: 100,
                           ),
                           Icon(widget.isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down),
                           const SizedBox(
                             //pushes icon into visible range, otherwise icon is invisible
-                            width: 85,
+                            width: 130,
                           ),
                         ],
                       ),
@@ -131,6 +132,7 @@ class _CharacterCardState extends State<CharacterCard> {
                 ),
               ),
             ),
+            Visibility(visible: widget.isContainerOpen, child: const ProjectOverview()),
             if (widget.isContainerOpen)
               const Row(
                 children: [
