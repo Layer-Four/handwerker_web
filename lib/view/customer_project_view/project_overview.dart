@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:handwerker_web/view/customer_project_view/custom_project.dart';
-import 'package:handwerker_web/view/customer_project_view/project_card.dart';
+import 'custom_project.dart';
+import 'project_card.dart';
 
 // ignore: must_be_immutable
 class ProjectOverview extends StatefulWidget {
@@ -114,19 +114,31 @@ class _CharacterCardState extends State<ProjectOverview> {
           'Außenanlagen',
           'Gestaltung der Außenanlagen',
           '08.04.2026',
-          ['assets/images/construction1.png', 'assets/images/construction2.png', 'assets/images/construction2.png'],
+          [
+            'assets/images/construction1.png',
+            'assets/images/construction2.png',
+            'assets/images/construction2.png'
+          ],
         ),
         ProjectReport(
           'Außenanlagen',
           'Gestaltung der Außenanlagen',
           '08.04.2026',
-          ['assets/images/construction1.png', 'assets/images/construction2.png', 'assets/images/construction2.png'],
+          [
+            'assets/images/construction1.png',
+            'assets/images/construction2.png',
+            'assets/images/construction2.png'
+          ],
         ),
         ProjectReport(
           'Außenanlagen',
           'Gestaltung der Außenanlagen',
           '08.04.2026',
-          ['assets/images/construction1.png', 'assets/images/construction2.png', 'assets/images/construction2.png'],
+          [
+            'assets/images/construction1.png',
+            'assets/images/construction2.png',
+            'assets/images/construction2.png'
+          ],
         ),
       ],
     ),
@@ -143,6 +155,7 @@ class _CharacterCardState extends State<ProjectOverview> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(width: screenWidthInPercent * 2),
+            // ignore: sized_box_for_whitespace
             Container(
               width: screenWidthInPercent * 70,
               child: Padding(
@@ -173,14 +186,12 @@ class _CharacterCardState extends State<ProjectOverview> {
                       ),
                     ),
                     //        const Spacer(),
-                    Expanded(
+                    const Expanded(
                       flex: 8,
-                      child: Container(
-                        child: const Text(
-                          '',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.right,
-                        ),
+                      child: Text(
+                        '',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.right,
                       ), //Placeholder so the spacers space accordingly.
                     ),
                     Expanded(

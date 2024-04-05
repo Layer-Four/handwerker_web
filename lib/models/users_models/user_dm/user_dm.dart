@@ -27,9 +27,8 @@ class UserDM {
     this.userID,
     this.zipCode,
   });
-  DriverLicenceCategory getDriverLincense(int userID) {
-    return UserDriverLicence.getDriverLicenseCategory();
-  }
+  DriverLicenceCategory getDriverLincense(int userID) =>
+      UserDriverLicence.getDriverLicenseCategory();
 }
 
 class UserDriverLicence {

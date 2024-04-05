@@ -1,14 +1,13 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:handwerker_web/models/project_models/project_vm/project_vm.dart';
-import 'package:handwerker_web/models/service_models/service_vm/service_vm.dart';
-import 'package:handwerker_web/models/time_models/time_vm/time_vm.dart';
-import 'package:handwerker_web/provider/project_provders/project_vm_provider.dart';
-import 'package:handwerker_web/provider/service_provider/service_vm_provider.dart';
-import 'package:handwerker_web/view/view_widgets/symetric_button_widget.dart';
+import '../../models/project_models/project_vm/project_vm.dart';
+import '../../models/service_models/service_vm/service_vm.dart';
+import '../../models/time_models/time_vm/time_vm.dart';
+import '../../provider/project_provders/project_vm_provider.dart';
+import '../../provider/service_provider/service_vm_provider.dart';
+import '../shared_view_widgets/symetric_button_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
   const TimeEntryDialog({super.key});
@@ -50,85 +49,82 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
     _startController.text = '${selectedTime!.hour}:$minute';
   }
 
+  void loadProjects() {}
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        children: [
-          _dayInputRow(),
-          _timeInputRow(),
-          _buildCustomerProjectField(),
-          _buildServiceDropdown(),
-          _buildDescription(),
-          const SizedBox(height: 46),
-          _submitInput(),
-          SizedBox(
-            height: 70,
-            child: Center(
-              child: Image.asset('assets/images/img_techtool.png', height: 20),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCustomerProjectField() {
-    return ref.read(projectVMProvider).when(
-          error: (error, stackTrace) => const SizedBox(),
-          loading: () => const CircularProgressIndicator.adaptive(),
-          data: (data) {
-            if (data == null) {
-              ref.read(projectVMProvider.notifier).loadpProject();
-            }
-            final projects = data;
-            if (projects != null && !isProjectSet) {
-              _project = projects.first;
-              _entry = _entry.copyWith(projectID: projects.first.id);
-              isProjectSet = true;
-            }
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      'KUNDE/PROJEKT',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ),
-                  Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
-                    ),
-                    child: DropdownButton(
-                      underline: const SizedBox(),
-                      isExpanded: true,
-                      value: _project,
-                      items: projects
-                          ?.map(
-                            (e) => DropdownMenuItem(value: e, child: Text(' ${e.title}')),
-                          )
-                          .toList(),
-                      onChanged: (e) {
-                        setState(() {
-                          _project = e!;
-                          _entry = _entry.copyWith(projectID: e.id);
-                        });
-                      },
-                    ),
-                  ),
-                ],
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          children: [
+            _dayInputRow(),
+            _timeInputRow(),
+            _buildCustomerProjectField(),
+            _buildServiceDropdown(),
+            _buildDescription(),
+            const SizedBox(height: 46),
+            _submitInput(),
+            SizedBox(
+              height: 70,
+              child: Center(
+                child: Image.asset('assets/images/img_techtool.png', height: 20),
               ),
-            );
-          },
-        );
-  }
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildCustomerProjectField() => ref.read(projectVMProvider).when(
+        error: (error, stackTrace) => const SizedBox(),
+        loading: () => const CircularProgressIndicator(),
+        data: (data) {
+          if (data == null) {
+            ref.read(projectVMProvider.notifier).loadpProject();
+          }
+          final projects = data;
+          if (projects != null && !isProjectSet) {
+            _project = projects.first;
+            _entry = _entry.copyWith(projectID: projects.first.id);
+            isProjectSet = true;
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    'KUNDE/PROJEKT',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ),
+                Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+                  ),
+                  child: DropdownButton(
+                    underline: const SizedBox(),
+                    isExpanded: true,
+                    value: _project,
+                    items: projects
+                        ?.map(
+                          (e) => DropdownMenuItem(value: e, child: Text(' ${e.title}')),
+                        )
+                        .toList(),
+                    onChanged: (e) {
+                      setState(() {
+                        _project = e!;
+                        _entry = _entry.copyWith(projectID: e.id);
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
 
   Padding _buildDescription() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -183,70 +179,64 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
 
-  Widget _buildServiceDropdown() {
-    return ref.watch(serviceVMProvider).when(
-      data: (data) {
-        if (data == null) {
-          ref.watch(serviceVMProvider.notifier).loadServices();
-        }
-        final services = data;
-        if (services != null && !isServiceSet) {
-          setState(() {
-            _choosenService = services.first;
-            _entry = _entry.copyWith(serviceID: services.first.id);
-            isServiceSet = true;
-          });
-        }
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                  'Leistung',
-                  style: Theme.of(context).textTheme.labelMedium,
+  Widget _buildServiceDropdown() => ref.watch(serviceVMProvider).when(
+        data: (data) {
+          if (data == null) {
+            ref.watch(serviceVMProvider.notifier).loadServices();
+          }
+          final services = data;
+          if (services != null && !isServiceSet) {
+            setState(() {
+              _choosenService = services.first;
+              _entry = _entry.copyWith(serviceID: services.first.id);
+              isServiceSet = true;
+            });
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    'Leistung',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
                 ),
-              ),
-              Container(
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+                Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+                  ),
+                  child: DropdownButton(
+                    underline: const SizedBox(),
+                    isExpanded: true,
+                    value: _choosenService,
+                    items: services
+                        ?.map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(' ${e.name}'),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (e) => setState(() {
+                      log(_choosenService!.name);
+                      _choosenService = e;
+                      log(_choosenService!.name);
+                      _entry = _entry.copyWith(serviceID: e!.id);
+                    }),
+                  ),
                 ),
-                child: DropdownButton(
-                  underline: const SizedBox(),
-                  isExpanded: true,
-                  value: _choosenService,
-                  items: services?.map(
-                    (e) {
-                      return DropdownMenuItem(
-                        value: e,
-                        child: Text(' ${e.name}'),
-                      );
-                    },
-                  ).toList(),
-                  onChanged: (e) => setState(() {
-                    log(_choosenService!.name);
-                    _choosenService = e;
-                    log(_choosenService!.name);
-                    _entry = _entry.copyWith(serviceID: e!.id);
-                  }),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-      loading: () {
-        return const CircularProgressIndicator.adaptive();
-      },
-      error: (error, stackTrace) {
-        return const SizedBox();
-      },
-    );
-  }
+              ],
+            ),
+          );
+        },
+        loading: () => const CircularProgressIndicator.adaptive(),
+        error: (error, stackTrace) => const SizedBox(),
+      );
 
   /// Split the [String] values from the TextEdingController with the given
   /// format and build [DateTime] objects with the Compination from
@@ -413,8 +403,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               );
               // TODO: change wählen to an editable object
             } else {
-              final data = _entry.toJson();
-              log(json.encode(data));
+              // final data = _entry.toJson();
+              // log(json.encode(data));
               // ref.read(timeEntryVMProvider.notifier).uploadTimeEntry(_entry);
               final now = DateTime.now();
               setState(() {
