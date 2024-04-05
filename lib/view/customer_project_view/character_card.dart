@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'custom_project.dart';
 import 'project_overview.dart';
 
+import 'project_card.dart';
+
 // ignore: must_be_immutable
 class CharacterCard extends StatefulWidget {
   final CustomeProject project;
@@ -51,46 +53,6 @@ class _CharacterCardState extends State<CharacterCard> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    // SizedBox(
-                    //   width: screenWihdthinProzents * 20,
-                    //   child: Text(
-                    //     widget.project.description,
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   width: screenWihdthinProzents * 11,
-                    //   child: Text(
-                    //     '${widget.project.projectNumber}',
-                    //     textAlign: TextAlign.right,
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   width: screenWihdthinProzents * 11,
-                    //   child: Text(
-                    //     '${widget.project.projectNumber} EUR',
-                    //     textAlign: TextAlign.right,
-                    //     overflow: TextOverflow.ellipsis,
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   width: screenWihdthinProzents * 11,
-                    //   child: Text(
-                    //     '${widget.project.totalTime} EUR',
-                    //     textAlign: TextAlign.right,
-                    //     overflow: TextOverflow.ellipsis,
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   width: screenWihdthinProzents * 11,
-                    //   child: Text(
-                    //     '${widget.project.costItems} EUR',
-                    //     textAlign: TextAlign.right,
-                    //     overflow: TextOverflow.ellipsis,
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   width: 260,
-                    // ),
                     const SizedBox(
                       height: 40,
                     ),
@@ -105,6 +67,59 @@ class _CharacterCardState extends State<CharacterCard> {
                             textAlign: TextAlign.left,
                             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                           ),
+                          const SizedBox(width: 10),
+                          const Tooltip(
+                            message:
+                                'Kundennummer: 12345\nKontaktname: Max Mustermann\nTelefonnummer: +49 123 456789\nE-Mail: max@example.com\nAdresse: Musterstraße 1, 12345 Musterstadt',
+                            textStyle: TextStyle(fontSize: 20, color: Colors.white),
+/*                            richMessage: const TextSpan(
+                              children: [
+                                TextSpan(
+                                  text:
+                                      'Kundennummer: 12345\nKontaktname: Max Mustermann\nTelefonnummer: +49 123 456789\nE-Mail: max@example.com\nAdresse: Musterstraße 1, 12345 Musterstadt',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),*/
+                            child: Icon(
+                              Icons.info_outline,
+                              size: 20,
+                            ),
+                          ),
+/*                          GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Details'),
+                                    content: SelectableText(
+                                      'Kundennummer: 12345\n'
+                                      'Kontaktname: Max Mustermann\n'
+                                      'Telefonnummer: +49 123 456789\n'
+                                      'E-Mail: max@example.com\n'
+                                      'Adresse: Musterstraße 1, 12345 Musterstadt',
+                                      style: TextStyle(height: 1.5), // Increase line spacing for better readability
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('Close'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: const Icon(
+                              Icons.info_outline,
+                              size: 20,
+                            ),
+                          ),*/
                           const Spacer(),
                           Text(
                             '${widget.project.revenue},- €',
@@ -131,8 +146,12 @@ class _CharacterCardState extends State<CharacterCard> {
                 ),
               ),
             ),
-            Visibility(visible: widget.isContainerOpen, child: const ProjectOverview()),
-            if (widget.isContainerOpen)
+            Visibility(
+                visible: widget.isContainerOpen,
+                child: ProjectOverview(
+                  project: widget.project,
+                )),
+            if (false) //widget.isContainerOpen
               const Row(
                 children: [
                   Flexible(
