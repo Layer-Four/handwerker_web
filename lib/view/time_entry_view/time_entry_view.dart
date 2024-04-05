@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../shared_view_widgets/search_line_header.dart';
-import 'time_entry_dialog.dart';
 import 'time_entry_widgets/custom_calendar.dart';
+import 'time_entry_widgets/time_entry_dialog.dart';
 
 class TimeEntryBody extends StatelessWidget {
   const TimeEntryBody({super.key});
