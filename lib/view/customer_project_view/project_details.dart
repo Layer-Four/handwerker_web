@@ -1,20 +1,14 @@
-import 'dart:ui';
+import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:handwerker_web/view/customer_project_view/custom_project.dart';
-import 'package:handwerker_web/view/customer_project_view/project_overview.dart';
-import 'package:handwerker_web/view/customer_project_view/project_report.dart';
+
+import 'custom_project.dart';
+import 'project_report.dart';
 
 // ignore: must_be_immutable
 class ProjectDetails extends StatefulWidget {
   final CustomeProject project;
-
-  ProjectDetails(
-    this.project, {
-    super.key,
-  });
+  const ProjectDetails(this.project, {super.key});
 
   @override
   State<ProjectDetails> createState() => _ProjectDetailsState();
@@ -59,16 +53,16 @@ class _ProjectDetailsState extends State<ProjectDetails> {
             ),
           ),
           SizedBox(width: screenWidthInPercent * 2),
-          Container(
+          SizedBox(
             // width: double.infinity,
             width: screenWidthInPercent * 60,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  Row(
+                  const Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         flex: 2,
                         child: Text(
                           'Leistung/Material',
@@ -77,7 +71,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                         ),
                       ),
                       //  const Spacer(),
-                      const Expanded(
+                      Expanded(
                           flex: 2,
                           child: Text(
                             'Menge',
@@ -85,7 +79,7 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           )),
                       //   const Spacer(),
-                      const Expanded(
+                      Expanded(
                         flex: 2,
                         child: Text(
                           'Preis',
@@ -96,11 +90,9 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                       //  const Spacer(),
                       Expanded(
                         flex: 1,
-                        child: Container(
-                          child: const Text(
-                            '',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
+                        child: Text(
+                          '',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -128,14 +120,12 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        print('clicked');
+                        log('clicked');
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                              child: ProjectReportScreen(project: widget.project),
-                            );
-                          },
+                          builder: (BuildContext context) => Dialog(
+                            child: ProjectReportScreen(project: widget.project),
+                          ),
                         );
                       },
                       child: const Row(
