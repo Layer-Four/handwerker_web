@@ -71,15 +71,16 @@ class Api {
     // TODO: Talk with Dennis about a base route for options path
     api.options = baseOption;
     api.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        if (!options.path.contains('http')) {
-          options.path = _baseUrl + options.path;
-        }
-        options.headers['Authorization'] = 'Bearer $accessToken';
-        return handler.next(options);
-      },
-      // TODO: when its a way to centralise the logout logic than use it in the 401 statemend.
-      onError: (DioException error, handler) async {
+        onRequest: (options, handler) async {
+          if (!options.path.contains('http')) {
+            options.path = _baseUrl + options.path;
+          }
+          options.headers['Authorization'] = 'Bearer $accessToken';
+          return handler.next(options);
+        },
+        // TODO: when its a way to centralise the logout logic than use it in the 401 statemend.
+        onError: (DioException error, handler) async => handler.next(error)
+        // {
         // final storage = await _storage;
         // if (error.response?.statusCode == 401
         // && error.response?.data['message'] == 'Invalid JWT'
@@ -92,9 +93,9 @@ class Api {
         // return handler.resolve(await api.fetch(error.requestOptions));
         // return handler.resolve(await _retry(error.requestOptions));
         // }
-        return handler.next(error);
-      },
-    ));
+        // return handler.next(error);
+        // },
+        ));
   }
   // Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
   //   final options = Options(

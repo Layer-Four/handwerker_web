@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,15 +16,14 @@ class TimeEntryNotifier extends AsyncNotifier<EventSource?> {
   FutureOr<EventSource?> build() => EventSource();
 
   void loadTimeEntrys() async {
-    try {
-      final response = await api.getAllTimeEntrys;
-      if (response.statusCode == 200) {
-        final data = json.decode(response.data);
-        final entrys = data.map((e) => TimeEntryVM.fromJson(e)).toList();
-        state = AsyncValue.data(entrys);
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
+    // try {
+    //   final response = await api.getAllTimeEntrys;
+    //   if (response.statusCode == 200) {
+    //     final entrys = data.map((e) => TimeEntryVM.fromJson(e)).toList();
+    //     state = AsyncValue.data(entrys);
+    //   }
+    // } catch (e) {
+    //   throw Exception(e);
+    // }
   }
 }

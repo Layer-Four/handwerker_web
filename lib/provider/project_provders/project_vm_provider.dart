@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:core';
 import 'dart:developer';
 
@@ -16,18 +15,18 @@ class ProjectVMNotifer extends AsyncNotifier<List<ProjectVM>?> {
 
   void loadpProject() async {
     try {
-      final response = await api.getAllProjects;
-      if (response.statusCode == 200) {
-        final data = json.decode(response.data);
-        final projects = data.map<ProjectVM>((e) => ProjectVM.fromJson(e)).toList();
-        state = AsyncValue.data(projects);
-      }
-      if (response.statusCode != 200) {
-        log('request dismissed statuscode: ${response.statusCode}');
-        return;
-      }
+      //   final response = await api.getAllProjects;
+      //   if (response.statusCode == 200) {
+      //     final projects = data.map<ProjectVM>((e) => ProjectVM.fromJson(e)).toList();
+      //     state = AsyncValue.data(projects);
+      //   }
+      //   if (response.statusCode != 200) {
+      //     log('request dismissed statuscode: ${response.statusCode}');
+      //     return;
+      //   }
     } catch (e) {
-      throw Exception(e);
+      log(e.toString());
+      // throw Exception(e);
     }
     return;
   }

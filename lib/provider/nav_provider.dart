@@ -20,4 +20,4 @@ extension MainViewExtennsion on MainView {
       };
 }
 
-final mainNavProvider = StateProvider((ref) => MainView.home);
+final mainNavProvider = StateProvider((ref) => MainView.timeEntry);

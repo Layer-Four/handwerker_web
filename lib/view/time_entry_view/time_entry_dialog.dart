@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -50,6 +49,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
     _startController.text = '${selectedTime!.hour}:$minute';
   }
 
+  void loadProjects() {}
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -74,7 +74,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
 
   Widget _buildCustomerProjectField() => ref.read(projectVMProvider).when(
         error: (error, stackTrace) => const SizedBox(),
-        loading: () => const CircularProgressIndicator.adaptive(),
+        loading: () => const CircularProgressIndicator(),
         data: (data) {
           if (data == null) {
             ref.read(projectVMProvider.notifier).loadpProject();
@@ -404,7 +404,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               // TODO: change wählen to an editable object
             } else {
               final data = _entry.toJson();
-              log(json.encode(data));
+              // log(json.encode(data));
               // ref.read(timeEntryVMProvider.notifier).uploadTimeEntry(_entry);
               final now = DateTime.now();
               setState(() {

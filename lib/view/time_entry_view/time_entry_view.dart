@@ -18,9 +18,10 @@ class TimeEntryBody extends ConsumerStatefulWidget {
 class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
   final CalendarController _calendarController = CalendarController();
   final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) => Container(
-        color: Colors.white,
+        // color: Colors.white,
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -38,33 +39,25 @@ class _TimeEntryBodyState extends ConsumerState<TimeEntryBody> {
 
   Widget _addNewAppointment(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return Positioned(
       right: width / 20.0,
       top: 15,
       child: InkWell(
         onTap: () {
           showDialog(
-              barrierColor: Colors.transparent,
+              // barrierColor: Colors.transparent,
               context: context,
-              builder: (context) => Container(
-                    width: 600,
-                    height: 1000,
-                    margin: EdgeInsets.only(
-                        left: (width / 10) * 5,
-                        top: (height / 10) * 1.0,
-                        right: (width / 10) * 1.0,
-                        bottom: (height / 10) * 1.0),
-                    child: Card(
-                        elevation: 5,
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                // border: Border.all(
-                                //   color: const Color.fromARGB(255, 220, 217, 217),
-                                // ),
-                                borderRadius: BorderRadius.circular(12)),
-                            child: const TimeEntryDialog())),
+              builder: (context) => Dialog(
+                    elevation: 5,
+                    // shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                      height: MediaQuery.of(context).size.height - 200,
+                      width: 500,
+                      child: const TimeEntryDialog(),
+                    ),
                   ));
         },
         child: Card(

@@ -29,7 +29,7 @@ class MainViewNavigator extends ConsumerWidget {
                 MainView.projectCustomer => const DocumentBody(),
                 MainView.consumables => const ConsumableBody(),
                 MainView.users => const UserBody(),
-                // _ => const HomeBody(),
+                // _ => const TimeEntryBody(),
               }),
         ],
       ),
