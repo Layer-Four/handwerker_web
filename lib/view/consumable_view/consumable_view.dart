@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:handwerker_web/models/consumable_models/consumable_vm/consumable_vm.dart';
-import 'package:handwerker_web/view/view_widgets/symetric_button_widget.dart';
+import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
+import '../view_widgets/symetric_button_widget.dart';
 
 class ConsumableBody extends StatefulWidget {
   const ConsumableBody({super.key});
@@ -127,76 +127,72 @@ class _ConsumableBodyState extends State<ConsumableBody> {
     );
   }
 
-  Padding _tableHead(TextStyle? headStyle, double contentWidth) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text('Material', style: headStyle),
-          Text('Mengeeinheit', style: headStyle),
-          Text('Preis/Einheit', style: headStyle),
-          SizedBox(
-            width: (contentWidth / 10) * 1.5,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _searchHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: SizedBox(
-        height: 50,
-        width: double.infinity,
+  Padding _tableHead(TextStyle? headStyle, double contentWidth) => Padding(
+        padding: const EdgeInsets.all(8),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              '',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontWeight: FontWeight.w600, color: Colors.orange),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 100.0),
-              child: Card(
-                elevation: 5,
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 3,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (value) {
-                      _searchController.text = value;
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                      suffixIcon: const Icon(Icons.search),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
+            Text('Material', style: headStyle),
+            Text('Mengeeinheit', style: headStyle),
+            Text('Preis/Einheit', style: headStyle),
+            SizedBox(
+              width: (contentWidth / 10) * 1.5,
+            )
+          ],
+        ),
+      );
+
+  Widget _searchHeader(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: SizedBox(
+          height: 50,
+          width: double.infinity,
+          child: Row(
+            children: [
+              Text(
+                '',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(fontWeight: FontWeight.w600, color: Colors.orange),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 100.0),
+                child: Card(
+                  elevation: 5,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 3,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        _searchController.text = value;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                        suffixIcon: const Icon(Icons.search),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class AddNewConsumable extends StatelessWidget {

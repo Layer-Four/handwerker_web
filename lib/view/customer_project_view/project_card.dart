@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:handwerker_web/view/customer_project_view/custom_project.dart';
-import 'package:handwerker_web/view/customer_project_view/project_overview.dart';
+import 'custom_project.dart';
 
 // ignore: must_be_immutable
 class ProjectCard extends StatefulWidget {
@@ -93,6 +90,7 @@ class _ProjectCardState extends State<ProjectCard> {
                 //  const Spacer(),
                 Expanded(
                   flex: 2,
+                  // ignore: avoid_unnecessary_containers
                   child: Container(
                     child: Text(
                       '${widget.project.revenue},- €',

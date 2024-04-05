@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:handwerker_web/view/login_view/forgot_password_view.dart';
-import 'package:handwerker_web/view/login_view/login_view.dart';
-import 'package:handwerker_web/view/login_view/reset_password.dart';
-import 'package:handwerker_web/view/main_view/main_nav_view.dart';
-import 'package:handwerker_web/view/start_view/start_view.dart';
+import '../view/login_view/forgot_password_view.dart';
+import '../view/login_view/login_view.dart';
+import '../view/login_view/reset_password.dart';
+import '../view/main_view/main_nav_view.dart';
+import '../view/start_view/start_view.dart';
 
 class AppRoutes {
   static const initialRoute = '/start_view';

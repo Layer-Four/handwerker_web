@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:handwerker_web/view/customer_project_view/custom_project.dart';
-import 'package:handwerker_web/view/customer_project_view/project_overview.dart';
+import 'custom_project.dart';
+import 'project_overview.dart';
 
 // ignore: must_be_immutable
 class CharacterCard extends StatefulWidget {
@@ -120,7 +118,8 @@ class _CharacterCardState extends State<CharacterCard> {
                           const SizedBox(
                             width: 100,
                           ),
-                          Icon(widget.isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+                          Icon(
+                              widget.isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down),
                           const SizedBox(
                             //pushes icon into visible range, otherwise icon is invisible
                             width: 130,
@@ -143,7 +142,7 @@ class _CharacterCardState extends State<CharacterCard> {
                       children: [
                         SizedBox(height: 20),
                         Text(
-                          "Berlin AG",
+                          'Berlin AG',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(

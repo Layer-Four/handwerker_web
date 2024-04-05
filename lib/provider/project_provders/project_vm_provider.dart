@@ -4,8 +4,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:handwerker_web/constants/api/url.dart';
-import 'package:handwerker_web/models/project_models/project_vm/project_vm.dart';
+import '../../constants/api/url.dart';
+import '../../models/project_models/project_vm/project_vm.dart';
 
 final projectVMProvider =
     AsyncNotifierProvider<ProjectVMNotifer, List<ProjectVM>?>(() => ProjectVMNotifer());

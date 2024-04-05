@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:handwerker_web/provider/user_provider/user_provider.dart';
-import 'package:handwerker_web/view/view_widgets/symetric_button_widget.dart';
+import '../../provider/user_provider/user_provider.dart';
+import '../view_widgets/symetric_button_widget.dart';
 
 class UserBody extends ConsumerStatefulWidget {
   const UserBody({super.key});
@@ -41,159 +41,152 @@ class _UserBodyState extends ConsumerState<UserBody> {
     );
   }
 
-  Container _createUserButton(double contentWidth, BuildContext context) {
-    return Container(
-      alignment: Alignment.topLeft,
-      width: contentWidth,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 8.0),
-        child: SymmetricButton(
-          color: Colors.orange,
-          text: '+',
-          onPressed: () {
-            showAdaptiveDialog(
-              context: context,
-              builder: (context) => const AddNewUser(),
-            );
-          },
+  Container _createUserButton(double contentWidth, BuildContext context) => Container(
+        alignment: Alignment.topLeft,
+        width: contentWidth,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 8.0),
+          child: SymmetricButton(
+            color: Colors.orange,
+            text: '+',
+            onPressed: () {
+              showAdaptiveDialog(
+                context: context,
+                builder: (context) => const AddNewUser(),
+              );
+            },
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   SingleChildScrollView _buildUserRows(
-      double contentWidth, double contentHeight, List<dynamic>? listOfWorkers) {
-    return SingleChildScrollView(
-      child: SizedBox(
-        width: (contentWidth / 10) * 7.5,
-        height: contentHeight - 600,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView.builder(
-              itemCount: listOfWorkers?.length,
-              itemBuilder: (context, i) {
-                final user = listOfWorkers?[i];
-                return Card(
-                  child: Container(
-                    height: 80,
-                    decoration: const BoxDecoration(color: Colors.white),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
+          double contentWidth, double contentHeight, List<dynamic>? listOfWorkers) =>
+      SingleChildScrollView(
+        child: SizedBox(
+          width: (contentWidth / 10) * 7.5,
+          height: contentHeight - 600,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+                itemCount: listOfWorkers?.length,
+                itemBuilder: (context, i) {
+                  final user = listOfWorkers?[i];
+                  return Card(
+                    child: Container(
+                      height: 80,
+                      decoration: const BoxDecoration(color: Colors.white),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                              width: (contentWidth / 10) * 1.5,
+                              child: Center(
+                                  child: Text('${user.firstName ?? ''} ${user.lastName ?? ''}'))),
+                          SizedBox(
                             width: (contentWidth / 10) * 1.5,
                             child: Center(
-                                child: Text('${user.firstName ?? ''} ${user.lastName ?? ''}'))),
-                        SizedBox(
-                          width: (contentWidth / 10) * 1.5,
-                          child: Center(
-                            child: Text(
-                              user.userRole,
+                              child: Text(
+                                user.userRole,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
+                          SizedBox(
+                              width: (contentWidth / 10) * 1.5,
+                              child: Center(child: Text('${user.userID}'))),
+                          SizedBox(
                             width: (contentWidth / 10) * 1.5,
-                            child: Center(child: Text('${user.userID}'))),
-                        SizedBox(
-                          width: (contentWidth / 10) * 1.5,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    showAboutDialog(context: context);
-                                  },
-                                  icon: const Icon(Icons.edit_document)),
-                              // TODO: maybe a checkbox or something else when
-                              IconButton(
-                                  onPressed: () {
-                                    showAboutDialog(context: context);
-                                  },
-                                  icon: const Icon(Icons.visibility_sharp)),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              }),
-        ),
-      ),
-    );
-  }
-
-  Padding _tableHead(TextStyle? headStyle, double contentWidth) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text('Name', style: headStyle),
-          Text('Angestelltenrolle', style: headStyle),
-          Text('MitarbeiteID', style: headStyle),
-          SizedBox(
-            width: (contentWidth / 10) * 1.9,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _searchHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: SizedBox(
-        height: 50,
-        width: double.infinity,
-        child: Row(
-          children: [
-            Text(
-              '',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontWeight: FontWeight.w600, color: Colors.orange),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 100.0),
-              child: Card(
-                elevation: 5,
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 3,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (value) {
-                      _searchController.text = value;
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                      suffixIcon: const Icon(Icons.search),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
-                        ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      showAboutDialog(context: context);
+                                    },
+                                    icon: const Icon(Icons.edit_document)),
+                                // TODO: maybe a checkbox or something else when
+                                IconButton(
+                                    onPressed: () {
+                                      showAboutDialog(context: context);
+                                    },
+                                    icon: const Icon(Icons.visibility_sharp)),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
+                    ),
+                  );
+                }),
+          ),
+        ),
+      );
+
+  Padding _tableHead(TextStyle? headStyle, double contentWidth) => Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('Name', style: headStyle),
+            Text('Angestelltenrolle', style: headStyle),
+            Text('MitarbeiteID', style: headStyle),
+            SizedBox(
+              width: (contentWidth / 10) * 1.9,
+            )
+          ],
+        ),
+      );
+
+  Widget _searchHeader(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: SizedBox(
+          height: 50,
+          width: double.infinity,
+          child: Row(
+            children: [
+              Text(
+                '',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(fontWeight: FontWeight.w600, color: Colors.orange),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 100.0),
+                child: Card(
+                  elevation: 5,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 3,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        _searchController.text = value;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                        suffixIcon: const Icon(Icons.search),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class AddNewUser extends StatelessWidget {

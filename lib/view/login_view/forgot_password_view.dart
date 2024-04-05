@@ -33,7 +33,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                   height: 20,
                 ),
                 Text(
-                  "bitte benachrichtige den Adminstrator",
+                  'bitte benachrichtige den Adminstrator',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 // !start Textformfield
@@ -60,7 +60,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                             35,
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
-                          validator: (value) => value!.length < 6 ? "Required" : null,
+                          validator: (value) => value!.length < 6 ? 'Required' : null,
                           obscureText: obscure,
                           controller: _userNameController,
                           decoration: InputDecoration(
@@ -113,7 +113,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      "Senden".toUpperCase(),
+                      'Senden'.toUpperCase(),
                       style: const TextStyle(color: Colors.black),
                     ),
                   ),

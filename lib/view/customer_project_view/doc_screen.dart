@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:handwerker_web/view/customer_project_view/character_card.dart';
-import 'package:handwerker_web/view/customer_project_view/custom_project.dart';
+import 'character_card.dart';
+import 'custom_project.dart';
 
+// TODO: why doesent rename and open this widget direct on ViewScreen?
 void docScreen() {
   runApp(MyApp());
 }
@@ -72,13 +73,14 @@ class MyApp extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(75, 30, 30, 30),
           child: Column(
             children: [
-              Row(
+              const Row(
                 children: [
-                  const Text('Berichte',
-                      style: TextStyle(color: Colors.orange, fontSize: 20, fontWeight: FontWeight.bold)),
-                  Container(
+                  Text('Berichte',
+                      style: TextStyle(
+                          color: Colors.orange, fontSize: 20, fontWeight: FontWeight.bold)),
+                  SizedBox(
                     width: 800,
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(
                         left: 80,
                       ),

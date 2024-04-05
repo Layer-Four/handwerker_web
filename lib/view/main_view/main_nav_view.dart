@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:handwerker_web/provider/nav_provider.dart';
-import 'package:handwerker_web/routes/app_routes.dart';
-import 'package:handwerker_web/view/consumable_view/consumable_view.dart';
-import 'package:handwerker_web/view/customer_project_view/doc_view.dart';
-import 'package:handwerker_web/view/home_view/home_body.dart';
-import 'package:handwerker_web/view/time_entry_view/time_entry_view.dart';
+import '../../provider/nav_provider.dart';
+import '../../routes/app_routes.dart';
+import '../consumable_view/consumable_view.dart';
+import '../customer_project_view/doc_view.dart';
+import '../home_view/home_body.dart';
+import '../time_entry_view/time_entry_view.dart';
 import '../users_view/user_view.dart';
 
 class MainViewNavigator extends ConsumerWidget {

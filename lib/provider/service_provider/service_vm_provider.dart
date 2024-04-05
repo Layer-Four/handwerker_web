@@ -2,17 +2,15 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:handwerker_web/constants/api/url.dart';
-import 'package:handwerker_web/models/service_models/service_vm/service_vm.dart';
+import '../../constants/api/url.dart';
+import '../../models/service_models/service_vm/service_vm.dart';
 
 final serviceVMProvider =
     AsyncNotifierProvider<ServiceNotifer, List<ServiceVM>?>(() => ServiceNotifer());
 
 class ServiceNotifer extends AsyncNotifier<List<ServiceVM>?> {
   @override
-  List<ServiceVM>? build() {
-    return null;
-  }
+  List<ServiceVM>? build() => null;
 
   void loadServices() async {
     final uri = const DbAdress().getServices;

@@ -16,27 +16,25 @@ class SymmetricButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
-      elevation: 5,
-      color: color,
-      borderRadius: BorderRadius.circular(11),
-      type: MaterialType.card,
-      child: InkWell(
-        onTap: onPressed,
-        child: Center(
-          widthFactor: 1.5,
-          heightFactor: 1.2,
-          child: Padding(
-            padding: padding,
-            child: Text(
-              text,
-              textAlign: TextAlign.center,
-              style: style,
+  Widget build(BuildContext context) => Material(
+        elevation: 5,
+        color: color,
+        borderRadius: BorderRadius.circular(11),
+        type: MaterialType.card,
+        child: InkWell(
+          onTap: onPressed,
+          child: Center(
+            widthFactor: 1.5,
+            heightFactor: 1.2,
+            child: Padding(
+              padding: padding,
+              child: Text(
+                text,
+                textAlign: TextAlign.center,
+                style: style,
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

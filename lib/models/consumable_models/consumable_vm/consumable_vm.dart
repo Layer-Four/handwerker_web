@@ -9,17 +9,15 @@ enum Measurement {
 }
 
 extension MeasurementExtension on Measurement {
-  String getTitle() {
-    return switch (this) {
-      Measurement.m => 'Meter',
-      Measurement.stk => 'Stück',
-      Measurement.cm => 'Centimeter',
-      Measurement.l => 'Liter',
-      Measurement.mm => 'MilliMeter',
-      Measurement.qm => 'Quadrat Meter',
-      Measurement.qcm => 'Quadrat Centimeter',
-    };
-  }
+  String getTitle() => switch (this) {
+        Measurement.m => 'Meter',
+        Measurement.stk => 'Stück',
+        Measurement.cm => 'Centimeter',
+        Measurement.l => 'Liter',
+        Measurement.mm => 'MilliMeter',
+        Measurement.qm => 'Quadrat Meter',
+        Measurement.qcm => 'Quadrat Centimeter',
+      };
 }
 
 class ConsumableVM {
