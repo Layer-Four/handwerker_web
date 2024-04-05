@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
-import '../view_widgets/symetric_button_widget.dart';
+import '../shared_view_widgets/symetric_button_widget.dart';
 
 class ConsumableBody extends StatefulWidget {
   const ConsumableBody({super.key});

@@ -2,66 +2,8 @@ import 'package:flutter/material.dart';
 import 'character_card.dart';
 import 'custom_project.dart';
 
-// TODO: why doesent rename and open this widget direct on ViewScreen?
-void docScreen() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  final List<CustomeProject> project = [
-    const CustomeProject(
-      'Layer Four GmbH',
-      'Austausch der\nHeizungsanlage',
-      false,
-      60000,
-      11,
-      '01.01.2024 - 01.06.2025',
-      1009,
-      1009,
-    ),
-    const CustomeProject(
-      'Berlin AG',
-      'Tisch gebaut',
-      true,
-      20000,
-      11,
-      '01.01.2024 - 01.06.2025',
-      2099,
-      9000,
-    ),
-    const CustomeProject(
-      'Creative GmbH',
-      'Fenster eingesetzt',
-      true,
-      20000,
-      11,
-      '01.01.2024 - 01.06.2025',
-      2,
-      900000,
-    ),
-    const CustomeProject(
-      'Fio Bestmann',
-      'Steinloch 43\n22880, Hamburg',
-      true,
-      20000,
-      2,
-      '01.01.2024 - 01.06.2025',
-      2,
-      1009,
-    ),
-    const CustomeProject(
-      'Florian hensel',
-      'große Straße 54\n22449, Kassel',
-      true,
-      20.000,
-      2,
-      '01.01.2024 - 01.06.2025',
-      2,
-      122000,
-    ),
-  ];
-
-  MyApp({super.key});
+class CustomerProjectMain extends StatelessWidget {
+  const CustomerProjectMain({super.key});
 
   //  const Text('Berichte', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
   @override
@@ -167,3 +109,56 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+final List<CustomeProject> project = [
+  const CustomeProject(
+    'Layer Four GmbH',
+    'Austausch der\nHeizungsanlage',
+    false,
+    60000,
+    11,
+    '01.01.2024 - 01.06.2025',
+    1009,
+    1009,
+  ),
+  const CustomeProject(
+    'Berlin AG',
+    'Tisch gebaut',
+    true,
+    20000,
+    11,
+    '01.01.2024 - 01.06.2025',
+    2099,
+    9000,
+  ),
+  const CustomeProject(
+    'Creative GmbH',
+    'Fenster eingesetzt',
+    true,
+    20000,
+    11,
+    '01.01.2024 - 01.06.2025',
+    2,
+    900000,
+  ),
+  const CustomeProject(
+    'Fio Bestmann',
+    'Steinloch 43\n22880, Hamburg',
+    true,
+    20000,
+    2,
+    '01.01.2024 - 01.06.2025',
+    2,
+    1009,
+  ),
+  const CustomeProject(
+    'Florian hensel',
+    'große Straße 54\n22449, Kassel',
+    true,
+    20.000,
+    2,
+    '01.01.2024 - 01.06.2025',
+    2,
+    122000,
+  ),
+];

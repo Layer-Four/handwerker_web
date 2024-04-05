@@ -7,7 +7,7 @@ import '../../models/service_models/service_vm/service_vm.dart';
 import '../../models/time_models/time_vm/time_vm.dart';
 import '../../provider/project_provders/project_vm_provider.dart';
 import '../../provider/service_provider/service_vm_provider.dart';
-import '../view_widgets/symetric_button_widget.dart';
+import '../shared_view_widgets/symetric_button_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
   const TimeEntryDialog({super.key});

@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../../routes/app_routes.dart';
-import '../view_widgets/background_widget.dart';
+import '../shared_view_widgets/background_widget.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/user_provider/user_provider.dart';
-import '../view_widgets/symetric_button_widget.dart';
+import '../shared_view_widgets/symetric_button_widget.dart';
 
 class UserBody extends ConsumerStatefulWidget {
   const UserBody({super.key});
