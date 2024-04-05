@@ -403,7 +403,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               );
               // TODO: change wählen to an editable object
             } else {
-              final data = _entry.toJson();
+              // final data = _entry.toJson();
               // log(json.encode(data));
               // ref.read(timeEntryVMProvider.notifier).uploadTimeEntry(_entry);
               final now = DateTime.now();

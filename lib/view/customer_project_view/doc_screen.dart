@@ -9,7 +9,7 @@ void docScreen() {
 
 class MyApp extends StatelessWidget {
   final List<CustomeProject> project = [
-    CustomeProject(
+    const CustomeProject(
       'Layer Four GmbH',
       'Austausch der\nHeizungsanlage',
       false,
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       1009,
       1009,
     ),
-    CustomeProject(
+    const CustomeProject(
       'Berlin AG',
       'Tisch gebaut',
       true,
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       2099,
       9000,
     ),
-    CustomeProject(
+    const CustomeProject(
       'Creative GmbH',
       'Fenster eingesetzt',
       true,
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       2,
       900000,
     ),
-    CustomeProject(
+    const CustomeProject(
       'Fio Bestmann',
       'Steinloch 43\n22880, Hamburg',
       true,
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       2,
       1009,
     ),
-    CustomeProject(
+    const CustomeProject(
       'Florian hensel',
       'große Straße 54\n22449, Kassel',
       true,
@@ -78,8 +78,8 @@ class MyApp extends StatelessWidget {
                 const Text('Berichte',
                     style:
                         TextStyle(color: Colors.orange, fontSize: 20, fontWeight: FontWeight.bold)),
-                Container(
-                  width: 800,
+                SizedBox(
+                  width: screenWidth / 2,
                   child: const Padding(
                     padding: EdgeInsets.only(
                       left: 80,

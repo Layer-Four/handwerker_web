@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:handwerker_web/view/customer_project_view/custom_project.dart';
-import 'package:handwerker_web/view/customer_project_view/project_details.dart';
-import 'package:handwerker_web/view/customer_project_view/project_overview.dart';
+import 'custom_project.dart';
+import 'project_details.dart';
 
 // ignore: must_be_immutable
 class ProjectCard extends StatefulWidget {
@@ -10,7 +8,7 @@ class ProjectCard extends StatefulWidget {
   final bool isFirst;
   final bool isLast;
 
-  ProjectCard(
+  const ProjectCard(
     this.project, {
     super.key,
     this.isFirst = false,
@@ -100,14 +98,12 @@ class _ProjectCardState extends State<ProjectCard> {
                       //  const Spacer(),
                       Expanded(
                         flex: 8,
-                        child: Container(
-                          child: Text(
-                            '${widget.project.revenue},- €',
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.right,
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
+                        child: Text(
+                          '${widget.project.revenue},- €',
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.right,
+                          style: const TextStyle(
+                            fontSize: 16,
                           ),
                         ),
                       ),

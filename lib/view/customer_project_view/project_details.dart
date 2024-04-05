@@ -110,11 +110,14 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                   const SizedBox(height: 10),
                   exampleRow(const Icon(Icons.person), 'meister', '2 stk.', '200,-€', '400,-€'),
                   const SizedBox(height: 10),
-                  exampleRow(const Icon(Icons.construction), 'Dachlatte', '2 stk.', '200,-€', '600,-€'),
+                  exampleRow(
+                      const Icon(Icons.construction), 'Dachlatte', '2 stk.', '200,-€', '600,-€'),
                   const SizedBox(height: 10),
-                  exampleRow(const Icon(Icons.construction), 'Dachlatte', '2 stk.', '200,-€', '600,-€'),
+                  exampleRow(
+                      const Icon(Icons.construction), 'Dachlatte', '2 stk.', '200,-€', '600,-€'),
                   const SizedBox(height: 10),
-                  exampleRow(const Icon(Icons.construction), 'Dachlatte', '2 stk.', '200,-€', '600,-€'),
+                  exampleRow(
+                      const Icon(Icons.construction), 'Dachlatte', '2 stk.', '200,-€', '600,-€'),
                   const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.all(10),
@@ -198,14 +201,12 @@ Widget exampleRow(Icon icon, String leistung, String menge, String preis, String
         //  const Spacer(),
         Expanded(
           flex: 1,
-          child: Container(
-            child: Text(
-              umsatz,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
+          child: Text(
+            umsatz,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 16,
             ),
           ),
         ),

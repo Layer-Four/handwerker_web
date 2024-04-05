@@ -186,14 +186,12 @@ class _CharacterCardState extends State<ProjectOverview> {
                       ),
                     ),
                     //        const Spacer(),
-                    Expanded(
+                    const Expanded(
                       flex: 8,
-                      child: Container(
-                        child: const Text(
-                          '',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.right,
-                        ),
+                      child: Text(
+                        '',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.right,
                       ), //Placeholder so the spacers space accordingly.
                     ),
                     Expanded(

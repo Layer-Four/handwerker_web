@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'custom_project.dart';
 import 'project_overview.dart';
-
-import 'project_card.dart';
 
 // ignore: must_be_immutable
 class CharacterCard extends StatefulWidget {
@@ -72,54 +71,11 @@ class _CharacterCardState extends State<CharacterCard> {
                             message:
                                 'Kundennummer: 12345\nKontaktname: Max Mustermann\nTelefonnummer: +49 123 456789\nE-Mail: max@example.com\nAdresse: Musterstraße 1, 12345 Musterstadt',
                             textStyle: TextStyle(fontSize: 20, color: Colors.white),
-/*                            richMessage: const TextSpan(
-                              children: [
-                                TextSpan(
-                                  text:
-                                      'Kundennummer: 12345\nKontaktname: Max Mustermann\nTelefonnummer: +49 123 456789\nE-Mail: max@example.com\nAdresse: Musterstraße 1, 12345 Musterstadt',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ],
-                            ),*/
                             child: Icon(
                               Icons.info_outline,
                               size: 20,
                             ),
                           ),
-/*                          GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Details'),
-                                    content: SelectableText(
-                                      'Kundennummer: 12345\n'
-                                      'Kontaktname: Max Mustermann\n'
-                                      'Telefonnummer: +49 123 456789\n'
-                                      'E-Mail: max@example.com\n'
-                                      'Adresse: Musterstraße 1, 12345 Musterstadt',
-                                      style: TextStyle(height: 1.5), // Increase line spacing for better readability
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('Close'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: const Icon(
-                              Icons.info_outline,
-                              size: 20,
-                            ),
-                          ),*/
                           const Spacer(),
                           Text(
                             '${widget.project.revenue},- €',
@@ -152,6 +108,7 @@ class _CharacterCardState extends State<CharacterCard> {
                   project: widget.project,
                 )),
             if (false) //widget.isContainerOpen
+              // ignore: dead_code
               const Row(
                 children: [
                   Flexible(
