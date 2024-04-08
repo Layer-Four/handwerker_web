@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../constants/api/api.dart';
-import '../../models/service_models/service_vm/service_vm.dart';
+import '../../../constants/api/api.dart';
+import '../../../models/service_models/service_vm/service_vm.dart';
 
 final serviceVMProvider =
     AsyncNotifierProvider<ServiceNotifer, List<ServiceVM>?>(() => ServiceNotifer());

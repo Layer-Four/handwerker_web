@@ -20,16 +20,18 @@ TimeEntryVM _$TimeEntryVMFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TimeEntryVM {
-  String get timeEntryID => throw _privateConstructorUsedError;
-  int? get projectID => throw _privateConstructorUsedError;
-  int? get serviceID => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
+  int? get projectId => throw _privateConstructorUsedError;
+  int? get serviceId => throw _privateConstructorUsedError;
   int? get duration => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  String? get serviceTitle => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   DateTime get startTime => throw _privateConstructorUsedError;
   DateTime get endTime => throw _privateConstructorUsedError;
+  DateTime? get pauseEnd => throw _privateConstructorUsedError;
+  DateTime? get pauseStart => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  String? get useForColor => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,16 +46,18 @@ abstract class $TimeEntryVMCopyWith<$Res> {
       _$TimeEntryVMCopyWithImpl<$Res, TimeEntryVM>;
   @useResult
   $Res call(
-      {String timeEntryID,
-      int? projectID,
-      int? serviceID,
+      {int? id,
+      String userId,
+      int? projectId,
+      int? serviceId,
       int? duration,
-      String title,
+      String? serviceTitle,
       DateTime date,
       DateTime startTime,
       DateTime endTime,
-      String? description,
-      String? useForColor});
+      DateTime? pauseEnd,
+      DateTime? pauseStart,
+      String? description});
 }
 
 /// @nodoc
@@ -69,38 +73,44 @@ class _$TimeEntryVMCopyWithImpl<$Res, $Val extends TimeEntryVM>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? timeEntryID = null,
-    Object? projectID = freezed,
-    Object? serviceID = freezed,
+    Object? id = freezed,
+    Object? userId = null,
+    Object? projectId = freezed,
+    Object? serviceId = freezed,
     Object? duration = freezed,
-    Object? title = null,
+    Object? serviceTitle = freezed,
     Object? date = null,
     Object? startTime = null,
     Object? endTime = null,
+    Object? pauseEnd = freezed,
+    Object? pauseStart = freezed,
     Object? description = freezed,
-    Object? useForColor = freezed,
   }) {
     return _then(_value.copyWith(
-      timeEntryID: null == timeEntryID
-          ? _value.timeEntryID
-          : timeEntryID // ignore: cast_nullable_to_non_nullable
-              as String,
-      projectID: freezed == projectID
-          ? _value.projectID
-          : projectID // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      serviceID: freezed == serviceID
-          ? _value.serviceID
-          : serviceID // ignore: cast_nullable_to_non_nullable
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      projectId: freezed == projectId
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      serviceId: freezed == serviceId
+          ? _value.serviceId
+          : serviceId // ignore: cast_nullable_to_non_nullable
               as int?,
       duration: freezed == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as int?,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
+      serviceTitle: freezed == serviceTitle
+          ? _value.serviceTitle
+          : serviceTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -113,13 +123,17 @@ class _$TimeEntryVMCopyWithImpl<$Res, $Val extends TimeEntryVM>
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      pauseEnd: freezed == pauseEnd
+          ? _value.pauseEnd
+          : pauseEnd // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      pauseStart: freezed == pauseStart
+          ? _value.pauseStart
+          : pauseStart // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      useForColor: freezed == useForColor
-          ? _value.useForColor
-          : useForColor // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -134,16 +148,18 @@ abstract class _$$TimeEntryVMImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String timeEntryID,
-      int? projectID,
-      int? serviceID,
+      {int? id,
+      String userId,
+      int? projectId,
+      int? serviceId,
       int? duration,
-      String title,
+      String? serviceTitle,
       DateTime date,
       DateTime startTime,
       DateTime endTime,
-      String? description,
-      String? useForColor});
+      DateTime? pauseEnd,
+      DateTime? pauseStart,
+      String? description});
 }
 
 /// @nodoc
@@ -157,38 +173,44 @@ class __$$TimeEntryVMImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? timeEntryID = null,
-    Object? projectID = freezed,
-    Object? serviceID = freezed,
+    Object? id = freezed,
+    Object? userId = null,
+    Object? projectId = freezed,
+    Object? serviceId = freezed,
     Object? duration = freezed,
-    Object? title = null,
+    Object? serviceTitle = freezed,
     Object? date = null,
     Object? startTime = null,
     Object? endTime = null,
+    Object? pauseEnd = freezed,
+    Object? pauseStart = freezed,
     Object? description = freezed,
-    Object? useForColor = freezed,
   }) {
     return _then(_$TimeEntryVMImpl(
-      timeEntryID: null == timeEntryID
-          ? _value.timeEntryID
-          : timeEntryID // ignore: cast_nullable_to_non_nullable
-              as String,
-      projectID: freezed == projectID
-          ? _value.projectID
-          : projectID // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      serviceID: freezed == serviceID
-          ? _value.serviceID
-          : serviceID // ignore: cast_nullable_to_non_nullable
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      projectId: freezed == projectId
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      serviceId: freezed == serviceId
+          ? _value.serviceId
+          : serviceId // ignore: cast_nullable_to_non_nullable
               as int?,
       duration: freezed == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as int?,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
+      serviceTitle: freezed == serviceTitle
+          ? _value.serviceTitle
+          : serviceTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -201,13 +223,17 @@ class __$$TimeEntryVMImplCopyWithImpl<$Res>
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      pauseEnd: freezed == pauseEnd
+          ? _value.pauseEnd
+          : pauseEnd // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      pauseStart: freezed == pauseStart
+          ? _value.pauseStart
+          : pauseStart // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      useForColor: freezed == useForColor
-          ? _value.useForColor
-          : useForColor // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -217,31 +243,34 @@ class __$$TimeEntryVMImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TimeEntryVMImpl implements _TimeEntryVM {
   const _$TimeEntryVMImpl(
-      {this.timeEntryID = '',
-      this.projectID,
-      this.serviceID,
+      {this.id,
+      required this.userId,
+      this.projectId,
+      this.serviceId,
       this.duration,
-      required this.title,
+      this.serviceTitle,
       required this.date,
       required this.startTime,
       required this.endTime,
-      this.description,
-      this.useForColor});
+      this.pauseEnd,
+      this.pauseStart,
+      this.description});
 
   factory _$TimeEntryVMImpl.fromJson(Map<String, dynamic> json) =>
       _$$TimeEntryVMImplFromJson(json);
 
   @override
-  @JsonKey()
-  final String timeEntryID;
+  final int? id;
   @override
-  final int? projectID;
+  final String userId;
   @override
-  final int? serviceID;
+  final int? projectId;
+  @override
+  final int? serviceId;
   @override
   final int? duration;
   @override
-  final String title;
+  final String? serviceTitle;
   @override
   final DateTime date;
   @override
@@ -249,13 +278,15 @@ class _$TimeEntryVMImpl implements _TimeEntryVM {
   @override
   final DateTime endTime;
   @override
-  final String? description;
+  final DateTime? pauseEnd;
   @override
-  final String? useForColor;
+  final DateTime? pauseStart;
+  @override
+  final String? description;
 
   @override
   String toString() {
-    return 'TimeEntryVM(timeEntryID: $timeEntryID, projectID: $projectID, serviceID: $serviceID, duration: $duration, title: $title, date: $date, startTime: $startTime, endTime: $endTime, description: $description, useForColor: $useForColor)';
+    return 'TimeEntryVM(id: $id, userId: $userId, projectId: $projectId, serviceId: $serviceId, duration: $duration, serviceTitle: $serviceTitle, date: $date, startTime: $startTime, endTime: $endTime, pauseEnd: $pauseEnd, pauseStart: $pauseStart, description: $description)';
   }
 
   @override
@@ -263,39 +294,44 @@ class _$TimeEntryVMImpl implements _TimeEntryVM {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TimeEntryVMImpl &&
-            (identical(other.timeEntryID, timeEntryID) ||
-                other.timeEntryID == timeEntryID) &&
-            (identical(other.projectID, projectID) ||
-                other.projectID == projectID) &&
-            (identical(other.serviceID, serviceID) ||
-                other.serviceID == serviceID) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.projectId, projectId) ||
+                other.projectId == projectId) &&
+            (identical(other.serviceId, serviceId) ||
+                other.serviceId == serviceId) &&
             (identical(other.duration, duration) ||
                 other.duration == duration) &&
-            (identical(other.title, title) || other.title == title) &&
+            (identical(other.serviceTitle, serviceTitle) ||
+                other.serviceTitle == serviceTitle) &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.startTime, startTime) ||
                 other.startTime == startTime) &&
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
+            (identical(other.pauseEnd, pauseEnd) ||
+                other.pauseEnd == pauseEnd) &&
+            (identical(other.pauseStart, pauseStart) ||
+                other.pauseStart == pauseStart) &&
             (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.useForColor, useForColor) ||
-                other.useForColor == useForColor));
+                other.description == description));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      timeEntryID,
-      projectID,
-      serviceID,
+      id,
+      userId,
+      projectId,
+      serviceId,
       duration,
-      title,
+      serviceTitle,
       date,
       startTime,
       endTime,
-      description,
-      useForColor);
+      pauseEnd,
+      pauseStart,
+      description);
 
   @JsonKey(ignore: true)
   @override
@@ -313,30 +349,34 @@ class _$TimeEntryVMImpl implements _TimeEntryVM {
 
 abstract class _TimeEntryVM implements TimeEntryVM {
   const factory _TimeEntryVM(
-      {final String timeEntryID,
-      final int? projectID,
-      final int? serviceID,
+      {final int? id,
+      required final String userId,
+      final int? projectId,
+      final int? serviceId,
       final int? duration,
-      required final String title,
+      final String? serviceTitle,
       required final DateTime date,
       required final DateTime startTime,
       required final DateTime endTime,
-      final String? description,
-      final String? useForColor}) = _$TimeEntryVMImpl;
+      final DateTime? pauseEnd,
+      final DateTime? pauseStart,
+      final String? description}) = _$TimeEntryVMImpl;
 
   factory _TimeEntryVM.fromJson(Map<String, dynamic> json) =
       _$TimeEntryVMImpl.fromJson;
 
   @override
-  String get timeEntryID;
+  int? get id;
   @override
-  int? get projectID;
+  String get userId;
   @override
-  int? get serviceID;
+  int? get projectId;
+  @override
+  int? get serviceId;
   @override
   int? get duration;
   @override
-  String get title;
+  String? get serviceTitle;
   @override
   DateTime get date;
   @override
@@ -344,9 +384,11 @@ abstract class _TimeEntryVM implements TimeEntryVM {
   @override
   DateTime get endTime;
   @override
-  String? get description;
+  DateTime? get pauseEnd;
   @override
-  String? get useForColor;
+  DateTime? get pauseStart;
+  @override
+  String? get description;
   @override
   @JsonKey(ignore: true)
   _$$TimeEntryVMImplCopyWith<_$TimeEntryVMImpl> get copyWith =>

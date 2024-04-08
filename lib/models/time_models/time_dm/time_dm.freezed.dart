@@ -21,13 +21,14 @@ TimeEntry _$TimeEntryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TimeEntry {
   DateTime get date => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   int? get duration => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  DateTime? get endTime => throw _privateConstructorUsedError;
+  DateTime get endTime => throw _privateConstructorUsedError;
   DateTime? get pauseEnd => throw _privateConstructorUsedError;
   DateTime? get pauseStart => throw _privateConstructorUsedError;
-  BigInt? get projectID => throw _privateConstructorUsedError;
-  BigInt? get serviceID => throw _privateConstructorUsedError;
+  int? get projectID => throw _privateConstructorUsedError;
+  int? get serviceID => throw _privateConstructorUsedError;
   DateTime get startTime => throw _privateConstructorUsedError;
   String get userID => throw _privateConstructorUsedError;
 
@@ -44,13 +45,14 @@ abstract class $TimeEntryCopyWith<$Res> {
   @useResult
   $Res call(
       {DateTime date,
+      int? id,
       int? duration,
       String? description,
-      DateTime? endTime,
+      DateTime endTime,
       DateTime? pauseEnd,
       DateTime? pauseStart,
-      BigInt? projectID,
-      BigInt? serviceID,
+      int? projectID,
+      int? serviceID,
       DateTime startTime,
       String userID});
 }
@@ -69,9 +71,10 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
   @override
   $Res call({
     Object? date = null,
+    Object? id = freezed,
     Object? duration = freezed,
     Object? description = freezed,
-    Object? endTime = freezed,
+    Object? endTime = null,
     Object? pauseEnd = freezed,
     Object? pauseStart = freezed,
     Object? projectID = freezed,
@@ -84,6 +87,10 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       duration: freezed == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
@@ -92,10 +99,10 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      endTime: freezed == endTime
+      endTime: null == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       pauseEnd: freezed == pauseEnd
           ? _value.pauseEnd
           : pauseEnd // ignore: cast_nullable_to_non_nullable
@@ -107,11 +114,11 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
       projectID: freezed == projectID
           ? _value.projectID
           : projectID // ignore: cast_nullable_to_non_nullable
-              as BigInt?,
+              as int?,
       serviceID: freezed == serviceID
           ? _value.serviceID
           : serviceID // ignore: cast_nullable_to_non_nullable
-              as BigInt?,
+              as int?,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -134,13 +141,14 @@ abstract class _$$TimeEntryImplCopyWith<$Res>
   @useResult
   $Res call(
       {DateTime date,
+      int? id,
       int? duration,
       String? description,
-      DateTime? endTime,
+      DateTime endTime,
       DateTime? pauseEnd,
       DateTime? pauseStart,
-      BigInt? projectID,
-      BigInt? serviceID,
+      int? projectID,
+      int? serviceID,
       DateTime startTime,
       String userID});
 }
@@ -157,9 +165,10 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? date = null,
+    Object? id = freezed,
     Object? duration = freezed,
     Object? description = freezed,
-    Object? endTime = freezed,
+    Object? endTime = null,
     Object? pauseEnd = freezed,
     Object? pauseStart = freezed,
     Object? projectID = freezed,
@@ -172,6 +181,10 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       duration: freezed == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
@@ -180,10 +193,10 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      endTime: freezed == endTime
+      endTime: null == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       pauseEnd: freezed == pauseEnd
           ? _value.pauseEnd
           : pauseEnd // ignore: cast_nullable_to_non_nullable
@@ -195,11 +208,11 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
       projectID: freezed == projectID
           ? _value.projectID
           : projectID // ignore: cast_nullable_to_non_nullable
-              as BigInt?,
+              as int?,
       serviceID: freezed == serviceID
           ? _value.serviceID
           : serviceID // ignore: cast_nullable_to_non_nullable
-              as BigInt?,
+              as int?,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -217,9 +230,10 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
 class _$TimeEntryImpl implements _TimeEntry {
   const _$TimeEntryImpl(
       {required this.date,
+      this.id,
       this.duration,
       this.description,
-      this.endTime,
+      required this.endTime,
       this.pauseEnd,
       this.pauseStart,
       this.projectID,
@@ -233,19 +247,21 @@ class _$TimeEntryImpl implements _TimeEntry {
   @override
   final DateTime date;
   @override
+  final int? id;
+  @override
   final int? duration;
   @override
   final String? description;
   @override
-  final DateTime? endTime;
+  final DateTime endTime;
   @override
   final DateTime? pauseEnd;
   @override
   final DateTime? pauseStart;
   @override
-  final BigInt? projectID;
+  final int? projectID;
   @override
-  final BigInt? serviceID;
+  final int? serviceID;
   @override
   final DateTime startTime;
   @override
@@ -254,7 +270,7 @@ class _$TimeEntryImpl implements _TimeEntry {
 
   @override
   String toString() {
-    return 'TimeEntry(date: $date, duration: $duration, description: $description, endTime: $endTime, pauseEnd: $pauseEnd, pauseStart: $pauseStart, projectID: $projectID, serviceID: $serviceID, startTime: $startTime, userID: $userID)';
+    return 'TimeEntry(date: $date, id: $id, duration: $duration, description: $description, endTime: $endTime, pauseEnd: $pauseEnd, pauseStart: $pauseStart, projectID: $projectID, serviceID: $serviceID, startTime: $startTime, userID: $userID)';
   }
 
   @override
@@ -263,6 +279,7 @@ class _$TimeEntryImpl implements _TimeEntry {
         (other.runtimeType == runtimeType &&
             other is _$TimeEntryImpl &&
             (identical(other.date, date) || other.date == date) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.duration, duration) ||
                 other.duration == duration) &&
             (identical(other.description, description) ||
@@ -283,7 +300,7 @@ class _$TimeEntryImpl implements _TimeEntry {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, date, duration, description,
+  int get hashCode => Object.hash(runtimeType, date, id, duration, description,
       endTime, pauseEnd, pauseStart, projectID, serviceID, startTime, userID);
 
   @JsonKey(ignore: true)
@@ -303,13 +320,14 @@ class _$TimeEntryImpl implements _TimeEntry {
 abstract class _TimeEntry implements TimeEntry {
   const factory _TimeEntry(
       {required final DateTime date,
+      final int? id,
       final int? duration,
       final String? description,
-      final DateTime? endTime,
+      required final DateTime endTime,
       final DateTime? pauseEnd,
       final DateTime? pauseStart,
-      final BigInt? projectID,
-      final BigInt? serviceID,
+      final int? projectID,
+      final int? serviceID,
       required final DateTime startTime,
       final String userID}) = _$TimeEntryImpl;
 
@@ -319,19 +337,21 @@ abstract class _TimeEntry implements TimeEntry {
   @override
   DateTime get date;
   @override
+  int? get id;
+  @override
   int? get duration;
   @override
   String? get description;
   @override
-  DateTime? get endTime;
+  DateTime get endTime;
   @override
   DateTime? get pauseEnd;
   @override
   DateTime? get pauseStart;
   @override
-  BigInt? get projectID;
+  int? get projectID;
   @override
-  BigInt? get serviceID;
+  int? get serviceID;
   @override
   DateTime get startTime;
   @override

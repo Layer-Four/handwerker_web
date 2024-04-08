@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'constants/themes/app_theme.dart';
+import 'provider/settings_provider/language_provider.dart';
 import 'routes/app_routes.dart';
 
 void main() {
@@ -20,12 +21,13 @@ class MainApp extends ConsumerWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en'), // English
-          Locale('es'), // Spanish
-          Locale('de'), // German
-          Locale('ar') // - Arabic
-        ],
+        supportedLocales: ref.watch(localizationProvider).getAllLocalization,
+        //  const [
+        //   Locale('en'), // English
+        //   Locale('es'), // Spanish
+        //   Locale('de'), // German
+        //   Locale('ar') // - Arabic
+        // ],
         initialRoute: AppRoutes.initialRoute,
         routes: AppRoutes.routes,
       );

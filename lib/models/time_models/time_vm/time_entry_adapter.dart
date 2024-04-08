@@ -12,11 +12,11 @@ class EventSource extends CalendarDataSource {
   @override
   DateTime getEndTime(int index) => getTimeEntry(index).endTime;
 
-  String getEntryTitle(int index) => getTimeEntry(index).title;
+  String? getEntryTitle(int index) => getTimeEntry(index).serviceTitle;
 
-  String getEntryID(int index) => getTimeEntry(index).timeEntryID;
+  int? getEntryID(int index) => getTimeEntry(index).id;
 
-  String? getEntryColor(int index) => getTimeEntry(index).useForColor;
+  // String? getEntryColor(int index) => getTimeEntry(index).useForColor;
 
   String? getEntryDescription(int index) => getTimeEntry(index).description;
   int? get length => appointments?.length;

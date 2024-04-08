@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../constants/api/api.dart';
 import '../../../models/project_models/project_vm/project_vm.dart';
 import '../../../models/service_models/service_vm/service_vm.dart';
-import '../../../models/time_models/time_vm/time_vm.dart';
-import '../../../provider/project_provders/project_vm_provider.dart';
-import '../../../provider/service_provider/service_vm_provider.dart';
+import '../../../models/time_models/time_dm/time_dm.dart';
+import '../../../provider/data_provider/project_provders/project_vm_provider.dart';
+import '../../../provider/data_provider/service_provider/service_vm_provider.dart';
+import '../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
@@ -28,16 +30,15 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   ServiceVM? _choosenService;
 
   ProjectVM? _project;
-  late TimeEntryVM _entry;
+  late TimeEntry _entry;
 
   @override
   void initState() {
     super.initState();
-    _entry = TimeEntryVM(
+    _entry = TimeEntry(
       date: DateTime.now(),
       startTime: DateTime.now(),
       endTime: DateTime.now(),
-      title: '',
     );
     final minute =
         _entry.startTime.minute < 10 ? '0${_entry.startTime.minute}' : '${_entry.startTime.minute}';
@@ -49,7 +50,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
     _startController.text = '${selectedTime!.hour}:$minute';
   }
 
-  void loadProjects() {}
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -180,6 +180,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
       );
 
   Widget _buildServiceDropdown() => ref.watch(serviceVMProvider).when(
+        loading: () => const CircularProgressIndicator.adaptive(),
+        error: (error, stackTrace) => const SizedBox(),
         data: (data) {
           if (data == null) {
             ref.watch(serviceVMProvider.notifier).loadServices();
@@ -223,9 +225,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         )
                         .toList(),
                     onChanged: (e) => setState(() {
-                      log(_choosenService!.name);
                       _choosenService = e;
-                      log(_choosenService!.name);
                       _entry = _entry.copyWith(serviceID: e!.id);
                     }),
                   ),
@@ -234,8 +234,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             ),
           );
         },
-        loading: () => const CircularProgressIndicator.adaptive(),
-        error: (error, stackTrace) => const SizedBox(),
       );
 
   /// Split the [String] values from the TextEdingController with the given
@@ -302,7 +300,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                           lastDate: DateTime(2100),
                         );
                         if (date != null) {
-                          log(date.toString());
                           setState(() {
                             _entry = _entry.copyWith(date: date);
                             _dayPickerController.text = '${date.day}.${date.month}.${date.year}';
@@ -384,43 +381,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               ),
             )
           ],
-        ),
-      );
-
-  Padding _submitInput() => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SymmetricButton(
-          color: Colors.orange,
-          text: 'Eintrag erstellen',
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-          onPressed: () {
-            // TODO: uncommand this, after API is ready           ref.read(timeEntryProvider.notifier).uploadTimeEntry(_entry);
-            if (_startController.text.isEmpty || _endController.text.isEmpty) {
-              return ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Bitte wählen sie Start- und Endzeit'),
-                ),
-              );
-              // TODO: change wählen to an editable object
-            } else {
-              // final data = _entry.toJson();
-              // log(json.encode(data));
-              // ref.read(timeEntryVMProvider.notifier).uploadTimeEntry(_entry);
-              final now = DateTime.now();
-              setState(() {
-                _startController.clear();
-                _descriptionController.clear();
-                _endController.clear();
-                _durationController.clear();
-                _dayPickerController.text = '${now.day}.${now.month}.${now.year}';
-              });
-              return ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Erfolg'),
-                ),
-              );
-            }
-          },
         ),
       );
 
@@ -556,4 +516,52 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           ],
         ),
       );
+  Future getData(Api apo) async {
+    final response = await apo.getAllProjects;
+    log(response.statusMessage.toString());
+    log(response.statusCode.toString());
+    log(response.data.toString());
+    return response.data;
+  }
+
+  Widget _submitInput() => Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SymmetricButton(
+          color: Colors.orange,
+          text: 'Eintrag erstellen',
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+          onPressed: () {
+            getData(Api());
+            // log(_entry.toJson().toString());
+            ref.read(timeEntryProvider.notifier).saveEntry(_entry);
+            // TODO: uncommand this, after API is ready           ref.read(timeEntryProvider.notifier).uploadTimeEntry(_entry);
+            Navigator.of(context).pop();
+            // if (_startController.text.isEmpty || _endController.text.isEmpty) {
+            //   return ScaffoldMessenger.of(context).showSnackBar(
+            //     const SnackBar(
+            //       content: Text('Bitte wählen sie Start- und Endzeit'),
+            //     ),
+            //   );
+            // } else {
+            // final data = _entry.toJson();
+            // log(json.encode(data));
+            // ref.read(timeEntryVMProvider.notifier).uploadTimeEntry(_entry);
+            //   final now = DateTime.now();
+            //   setState(() {
+            //     _startController.clear();
+            //     _descriptionController.clear();
+            //     _endController.clear();
+            //     _durationController.clear();
+            //     _dayPickerController.text = '${now.day}.${now.month}.${now.year}';
+            //   });
+            return ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Center(child: Text('Vorsicht Lügner!')),
+              ),
+            );
+            // }
+          },
+        ),
+      );
 }
+// class 

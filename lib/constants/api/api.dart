@@ -38,6 +38,7 @@ class Api {
   // String get updateProjectConsumableEntry => _baseUrl + _putProjectMaterial;
   // String getDokuforProjectURL(int projectID) => '$_baseUrl/project/$projectID/documentations';
   Future<Response> get getAllProjects => api.get(_getAllProjects);
+
   Future<Response> get getAllTimeEntrys => api.get(_getAllTimeTacks);
   Future<Response> get getAllUnits => api.get(_getAllUnitsList);
   Future<Response> get getCustomerProjects => api.get(_getCustomerProject);
@@ -55,47 +56,53 @@ class Api {
   Future<Response> postTimeEnty(data) => api.post(_postTimeEntryAdress, data: data);
   Future<Response> updateProjectConsumableEntry(data) => api.post(_putProjectMaterial, data: data);
   Future<Response> updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
-  void storeToken(String token) async {
-    final pref = await SharedPreferences.getInstance();
-    await pref.setString('bearerToken', token);
-  }
+
+  void storeToken(String token) async =>
+      await _storage.then((value) => value.setString('TOKEN', token));
+  // final pref = await SharedPreferences.getInstance();
+
+  Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
 
   final Dio api = Dio();
 
-  // final _storage = SharedPreferences.getInstance();
+  final _storage = SharedPreferences.getInstance();
   String? accessToken;
   // TODO: wait for information what choose, shared prefences or secure storage
   // final _storage = const FlutterSecureStorage();
-  final baseOption = BaseOptions(baseUrl: 'https://r-wa-happ-be.azurewebsites.net/api');
+  final baseOption = BaseOptions(
+    baseUrl: _baseUrl,
+    // contentType: ResponseType.json.name,
+  );
   Api() {
-    // TODO: Talk with Dennis about a base route for options path
     api.options = baseOption;
-    api.interceptors.add(InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          if (!options.path.contains('http')) {
-            options.path = _baseUrl + options.path;
-          }
-          options.headers['Authorization'] = 'Bearer $accessToken';
-          return handler.next(options);
-        },
-        // TODO: when its a way to centralise the logout logic than use it in the 401 statemend.
-        onError: (DioException error, handler) async => handler.next(error)
-        // {
-        // final storage = await _storage;
-        // if (error.response?.statusCode == 401
-        // && error.response?.data['message'] == 'Invalid JWT'
-        // ) {
-        // return;
-        // if (storage.containsKey('bearerToken')) {
-        // await refreshToken();
-        // }
-        // error.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
-        // return handler.resolve(await api.fetch(error.requestOptions));
-        // return handler.resolve(await _retry(error.requestOptions));
-        // }
-        // return handler.next(error);
-        // },
-        ));
+    // api.interceptors.add(DioInterceptor());
+    // api.interceptors.add(InterceptorsWrapper(
+    //     onRequest: (options, handler) async {
+    //       if (!options.path.contains('http')) {
+    //         options.path = _baseUrl + options.path;
+    //       }
+    //       options.headers['Authorization'] = 'Bearer $accessToken';
+    //       return handler.next(options);
+    //     },
+    // TODO: when its a way to centralise the logout logic than use it in the 401 statemend.
+    // onError: (DioException error, handler) async => handler.next(error)
+    // {
+    // final storage = await _storage;
+    // if (error.response?.statusCode == 401
+    // && error.response?.data['message'] == 'Invalid JWT'
+    // ) {
+    // return;
+    // if (storage.containsKey('bearerToken')) {
+    // await refreshToken();
+    // }
+    // error.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
+    // return handler.resolve(await api.fetch(error.requestOptions));
+    // return handler.resolve(await _retry(error.requestOptions));
+    // }
+    // return handler.next(error);
+    // },
+    // )
+    // );
   }
   // Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
   //   final options = Options(
@@ -113,7 +120,7 @@ class Api {
 // // TODO: when need login data than maybe hash the value in Storage?
 //   Future<void> refreshToken() async {
 //     final pref = await SharedPreferences.getInstance();
-//     final token = pref.getString('bearerToken');
+//     final token = pref.getString('TOKEN');
 //     final response = await api.post(_baseUrl + _loginUserAdress, data: token);
 //     if (response.statusCode == 201) {
 //       pref.setString('bearerToken', response.data);
@@ -122,4 +129,16 @@ class Api {
 //       pref.clear();
 //     }
 //   }
+}
+
+class DioInterceptor extends Interceptor {
+  @override
+  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    final token = await Api().getToken;
+    if (token != null && token.isNotEmpty) {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
+    options.headers['content-Type'] = 'application/json';
+    super.onRequest(options, handler);
+  }
 }

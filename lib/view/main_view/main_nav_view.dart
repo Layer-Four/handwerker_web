@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../provider/nav_provider.dart';
+import '../../provider/settings_provider/nav_provider.dart';
 import '../../routes/app_routes.dart';
 import '../consumable_view/consumable_view.dart';
 import '../customer_project_view/doc_screen.dart';
