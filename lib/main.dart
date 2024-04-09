@@ -21,6 +21,7 @@ class MainApp extends ConsumerWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        // some changes
         supportedLocales: ref.watch(localizationProvider).getAllLocalization,
         //  const [
         //   Locale('en'), // English
