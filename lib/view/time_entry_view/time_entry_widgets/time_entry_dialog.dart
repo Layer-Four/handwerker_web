@@ -1,15 +1,16 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../constants/api/api.dart';
-import '../../../models/project_models/project_vm/project_vm.dart';
-import '../../../models/service_models/service_vm/service_vm.dart';
-import '../../../models/time_models/time_dm/time_dm.dart';
-import '../../../provider/data_provider/project_provders/project_vm_provider.dart';
-import '../../../provider/data_provider/service_provider/service_vm_provider.dart';
-import '../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
+import '/constants/api/api.dart';
+import '/models/project_models/project_vm/project_vm.dart';
+import '/models/service_models/service_vm/service_vm.dart';
+import '/models/time_models/time_dm/time_dm.dart';
+import '/models/users_models/user_data_short/user_short.dart';
+import '/provider/data_provider/project_provders/project_vm_provider.dart';
+import '/provider/data_provider/service_provider/service_vm_provider.dart';
+import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
+import '/provider/user_provider/user_provider.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
   const TimeEntryDialog({super.key});
@@ -23,11 +24,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   final TextEditingController _durationController = TextEditingController();
   final TextEditingController _endController = TextEditingController();
   final TextEditingController _startController = TextEditingController();
-  bool isServiceSet = false;
+  bool initServices = false;
   bool isProjectSet = false;
   TimeOfDay? selectedTime;
-
+  List<UserDataShort>? _users;
   ServiceVM? _choosenService;
+  UserDataShort? _selectedUser;
+  bool _initUser = false;
 
   ProjectVM? _project;
   late TimeEntry _entry;
@@ -60,6 +63,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             _buildCustomerProjectField(),
             _buildServiceDropdown(),
             _buildDescription(),
+            _buildSelectUser(),
             const SizedBox(height: 46),
             _submitInput(),
             SizedBox(
@@ -71,9 +75,53 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           ],
         ),
       );
+  Future<List<UserDataShort>> loadUser() async =>
+      await ref.read(userProvider.notifier).getListUserService();
+
+  Widget _buildSelectUser() => FutureBuilder(
+      future: loadUser(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          const CircularProgressIndicator();
+        }
+        if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+          if (!_initUser) {
+            _users = snapshot.data;
+            _selectedUser = _users!.first;
+            _initUser = true;
+            _entry = _entry.copyWith(userID: _selectedUser!.id);
+          }
+        }
+        return Expanded(
+          child: Container(
+            height: 40,
+            padding: const EdgeInsets.only(left: 20, right: 15),
+            child: DropdownButton(
+                menuMaxHeight: 300,
+                underline: const SizedBox(),
+                isExpanded: true,
+                value: _selectedUser,
+                items: _users
+                    ?.map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(' ${e.userName}'),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (e) => setState(() {
+                      _selectedUser = e!;
+                      _entry = _entry.copyWith(userID: e.id);
+                    }),
+                onTap: () => (_users == null) ? loadUser() : () => null),
+          ),
+        );
+      });
 
   Widget _buildCustomerProjectField() => ref.read(projectVMProvider).when(
-        error: (error, stackTrace) => const SizedBox(),
+        error: (error, stackTrace) => const SizedBox(
+          child: Text('something went wrong'),
+        ),
         loading: () => const CircularProgressIndicator(),
         data: (data) {
           if (data == null) {
@@ -187,11 +235,14 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             ref.watch(serviceVMProvider.notifier).loadServices();
           }
           final services = data;
-          if (services != null && !isServiceSet) {
+          if (services != null && !initServices) {
             setState(() {
               _choosenService = services.first;
-              _entry = _entry.copyWith(serviceID: services.first.id);
-              isServiceSet = true;
+              _entry = _entry.copyWith(
+                serviceID: services.first.id,
+                // serviceTitle: services.first.name,
+              );
+              initServices = true;
             });
           }
           return Padding(
@@ -226,7 +277,10 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         .toList(),
                     onChanged: (e) => setState(() {
                       _choosenService = e;
-                      _entry = _entry.copyWith(serviceID: e!.id);
+                      _entry = _entry.copyWith(
+                        // serviceTitle: e!.name,
+                        serviceID: e!.id,
+                      );
                     }),
                   ),
                 ),
@@ -531,9 +585,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           text: 'Eintrag erstellen',
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
           onPressed: () {
-            getData(Api());
-            // log(_entry.toJson().toString());
-            ref.read(timeEntryProvider.notifier).saveEntry(_entry);
+            ref.read(eventSourceProvider.notifier).saveTimeEntry(_entry);
             // TODO: uncommand this, after API is ready           ref.read(timeEntryProvider.notifier).uploadTimeEntry(_entry);
             Navigator.of(context).pop();
             // if (_startController.text.isEmpty || _endController.text.isEmpty) {

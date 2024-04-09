@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-import '../../../models/time_models/time_vm/time_entry_adapter.dart';
-import '../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
+import '/models/time_models/time_vm/event_source.dart';
+import '/models/time_models/time_vm/time_vm.dart';
+import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
 
 class CustomCalendar extends ConsumerStatefulWidget {
   const CustomCalendar({super.key});
@@ -25,8 +23,9 @@ class _CustomCalendarState extends ConsumerState<CustomCalendar> {
   EventSource? data;
 
   Future<EventSource?> loadEventSource() async =>
-      ref.read(timeEntryProvider.notifier).loadTimeEntrys().then((value) => data = value);
+      ref.read(eventSourceProvider.notifier).loadTimeEntrys().then((value) => data = value);
 
+  // Future<ServiceVM> loadServiceVM() async => ref.read(serviceVMProvider.notifier).loadServices();
   @override
   Widget build(BuildContext context) => FutureBuilder<EventSource?>(
       future: loadEventSource(),
@@ -36,11 +35,6 @@ class _CustomCalendarState extends ConsumerState<CustomCalendar> {
         }
         if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
           data = snapshot.data;
-          if (data != null && data!.appointments!.length > 1) {
-            for (var i in data!.appointments!) {
-              log('we have appointments $i');
-            }
-          }
         }
         return Card(
           clipBehavior: Clip.antiAlias,
@@ -74,34 +68,82 @@ class _CustomCalendarState extends ConsumerState<CustomCalendar> {
                   headerHeight: 65,
                   view: CalendarView.week,
                   firstDayOfWeek: 1,
-                  onTap: (calendarTapDetails) {
-                    // if (calendarTapDetails.appointments != null) {
-                    showDialog(
-                        context: context,
-                        builder: (context) => Container(
-                              margin: const EdgeInsets.only(
-                                  left: 500, top: 100, right: 100, bottom: 100),
-                              child: SizedBox(
-                                width: 300,
-                                height: 500,
-                                child: Material(
-                                  elevation: 11,
-                                  child: Center(
-                                    child: Text(
-                                      '''${calendarTapDetails.date?.toIso8601String()}
-                 ${calendarTapDetails.resource}
-                  ${calendarTapDetails.appointments}
-                  ${calendarTapDetails.targetElement.name}
-                  ''',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ));
-                    // }
+                  appointmentBuilder: (context, calendarAppointmentDetails) {
+                    assert((calendarAppointmentDetails.appointments.length == 1));
+                    if (calendarAppointmentDetails.appointments.length != 1) {
+                      throw Exception(
+                          'The length of appointments are longer as wanted, please fix this bug');
+                    }
+                    return CalendarEntryItem(
+                        item: calendarAppointmentDetails.appointments.first as TimeVMAdapter);
                   },
                 )),
           ),
         );
       });
+}
+
+class CalendarEntryItem extends ConsumerStatefulWidget {
+  final TimeVMAdapter item;
+
+  const CalendarEntryItem({super.key, required this.item});
+
+  @override
+  ConsumerState<CalendarEntryItem> createState() => _CalendarEntryItemState();
+}
+
+class _CalendarEntryItemState extends ConsumerState<CalendarEntryItem> {
+  late TimeVMAdapter _item;
+  @override
+  void initState() {
+    super.initState();
+    _item = widget.item;
+  }
+
+  // Future<String> getServiceName(int id) async {
+  //   final services = ref.watch(serviceVMProvider);
+  //   if (services == null || services.isEmpty) {
+  //     final reloadeService = await ref.read(serviceVMProvider.notifier).loadServices();
+  //     return reloadeService.firstWhere((element) => element.id == id).name;
+  //   }
+  //   return services.firstWhere((element) => element.id == id).name;
+  // }
+
+  @override
+  Widget build(BuildContext context) =>
+      // FutureBuilder(
+      //       future: getServiceName(_item.id),
+      //       builder: (context, snapshot) {
+      //         String data = '';
+      //         if (snapshot.connectionState == ConnectionState.waiting) {
+      //           CircularProgressIndicator();
+      //         }
+      //         if (snapshot.data == null || snapshot.data!.isEmpty) {
+      //           getServiceName(_item.id).then((value) => data = value);
+      //         } else {
+      //           data = snapshot.data!;
+      //         }
+
+      // return
+      GestureDetector(
+          onTap: () => showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                    child: Material(
+                        child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Am ${_item.date.day}.${_item.date.month}.${_item.date.year}'),
+                        Text('von ${_item.startTime.hour}:${_item.startTime.minute}'),
+                        Text('bis ${_item.endTime.hour}:${_item.endTime.minute}'),
+                        Text('Dauer ${_item.duration} min'),
+                        Text('Beschreibung ${_item.description}'),
+                      ],
+                    )),
+                  )),
+          child: Container(
+            color: Colors.lightBlue,
+          ));
+  // },
+  // );
 }

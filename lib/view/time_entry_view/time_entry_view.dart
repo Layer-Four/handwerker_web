@@ -16,7 +16,7 @@ class TimeEntryBody extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          const SearchLineHeader(),
+          const SearchLineHeader(title: 'Stundenübersicht'),
           Stack(
             children: [
               const CustomCalendar(),

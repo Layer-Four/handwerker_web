@@ -6,9 +6,9 @@ part of 'time_vm.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TimeEntryVMImpl _$$TimeEntryVMImplFromJson(Map<String, dynamic> json) =>
-    _$TimeEntryVMImpl(
-      id: json['id'] as int?,
+_$TimeVMAdapterImpl _$$TimeVMAdapterImplFromJson(Map<String, dynamic> json) =>
+    _$TimeVMAdapterImpl(
+      id: json['id'] as int,
       userId: json['userId'] as String,
       projectId: json['projectId'] as int?,
       serviceId: json['serviceId'] as int?,
@@ -24,9 +24,10 @@ _$TimeEntryVMImpl _$$TimeEntryVMImplFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['pauseStart'] as String),
       description: json['description'] as String?,
+      useForColor: json['useForColor'] as String?,
     );
 
-Map<String, dynamic> _$$TimeEntryVMImplToJson(_$TimeEntryVMImpl instance) =>
+Map<String, dynamic> _$$TimeVMAdapterImplToJson(_$TimeVMAdapterImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
@@ -40,4 +41,5 @@ Map<String, dynamic> _$$TimeEntryVMImplToJson(_$TimeEntryVMImpl instance) =>
       'pauseEnd': instance.pauseEnd?.toIso8601String(),
       'pauseStart': instance.pauseStart?.toIso8601String(),
       'description': instance.description,
+      'useForColor': instance.useForColor,
     };

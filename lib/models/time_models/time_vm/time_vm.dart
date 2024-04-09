@@ -4,9 +4,9 @@ part 'time_vm.freezed.dart';
 part 'time_vm.g.dart';
 
 @freezed
-class TimeEntryVM with _$TimeEntryVM {
-  const factory TimeEntryVM({
-    int? id,
+class TimeVMAdapter with _$TimeVMAdapter {
+  const factory TimeVMAdapter({
+    required int id,
     required String userId,
     int? projectId,
     int? serviceId,
@@ -18,7 +18,7 @@ class TimeEntryVM with _$TimeEntryVM {
     DateTime? pauseEnd,
     DateTime? pauseStart,
     String? description,
-    // String? useForColor,
-  }) = _TimeEntryVM;
-  factory TimeEntryVM.fromJson(Map<String, dynamic> json) => _$TimeEntryVMFromJson(json);
+    String? useForColor,
+  }) = _TimeVMAdapter;
+  factory TimeVMAdapter.fromJson(Map<String, dynamic> json) => _$TimeVMAdapterFromJson(json);
 }

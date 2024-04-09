@@ -5,23 +5,27 @@ class Api {
 // Routes
 // TODO: Check Api in Postman
   static const String _baseUrl = 'https://r-wa-happ-be.azurewebsites.net/api';
-  static const String _getAllProjects = '/project/read/all';
-  static const String _getAllTimeTacks = '/timetracking/read/all';
-  static const String _getProjectsAdress = '/project/list';
-  static const String _getProjectsConsumable = '/userProjectMaterial/read/1';
-  static const String _getServiceAdress = '/service/list';
-  static const String _getTimeTacks = '/timetracking/read/3';
-  static const String _getUserProjectDocumentation = '/userProjectDay/read/2';
-  static const String _loginUserAdress = '/user/login';
-  static const String _postDocumentationDay = '/userProjectDay/create';
-  static const String _postTimeEntryAdress = '/timetracking/create';
-  static const String _postProjectConsumabele = '/userProjectMaterial/create';
-  static const String _putDocumentationDay = '/userProjectDay/update';
-  static const String _putProjectMaterial = '/userProjectMaterial/update';
-  static const String _getCustomerProject = '/customer/project/read/all';
-  static const String _getMaterialsList = '/material/list';
-  static const String _getAllUnitsList = '/material/unit/list';
-// Getter
+  final String _getAllProjects = '/project/read/all';
+  final String _getAllTimeTacks = '/timetracking/read/all';
+  final String _getProjectsAdress = '/project/list';
+  final String _getProjectsConsumable = '/userProjectMaterial/read/1';
+  final String _getServiceAdress = '/service/list';
+  final String _getTimeTacks = '/timetracking/read/3';
+  final String _getUserProjectDocumentation = '/userProjectDay/read/2';
+  final String _loginUserAdress = '/user/login';
+  final String _postDocumentationDay = '/userProjectDay/create';
+  final String _postTimeEntryAdress = '  /timetracking/create';
+
+  final String _postProjectConsumabele = '/userProjectMaterial/create';
+  final String _putDocumentationDay = '/userProjectDay/update';
+  final String _putProjectMaterial = '/userProjectMaterial/update';
+  final String _getCustomerProject = '/customer/project/read/all';
+  final String _getMaterialsList = '/material/list';
+  final String _getAllUnitsList = '/material/unit/list';
+  final String _getUserServiceListByID = 'i/userservice/list?userid=';
+  final String _getUserServiceList = '/userservice/list';
+  final String _getListUsersShort = '/user/list';
+  // Getter
   // String get getAllProjects => _baseUrl + _getAllProjects;
   // String get getAllTimeEntrys => _baseUrl + _getAllTimeTacks;
   // String get getProjectsDM => _baseUrl + _getProjectsAdress;
@@ -37,25 +41,26 @@ class Api {
   // String get updateDocumentationEntry => _baseUrl + _putDocumentationDay;
   // String get updateProjectConsumableEntry => _baseUrl + _putProjectMaterial;
   // String getDokuforProjectURL(int projectID) => '$_baseUrl/project/$projectID/documentations';
-  Future<Response> get getAllProjects => api.get(_getAllProjects);
-
-  Future<Response> get getAllTimeEntrys => api.get(_getAllTimeTacks);
-  Future<Response> get getAllUnits => api.get(_getAllUnitsList);
-  Future<Response> get getCustomerProjects => api.get(_getCustomerProject);
-  Future<Response> getDokuforProjectURL(int projectID) =>
-      api.get('/project/$projectID/documentations');
-  Future<Response> get getExecuteableServices => api.get(_getServiceAdress);
-  Future<Response> get getMaterialsList => api.get(_getMaterialsList);
-  Future<Response> get getProjectsDM => api.get(_getProjectsAdress);
-  Future<Response> get getProjectConsumableEntry => api.get(_getProjectsConsumable);
-  Future<Response> get getProjectsTimeEntrys => api.get(_getTimeTacks);
-  Future<Response> get getUserDocumentationEntry => api.get(_getUserProjectDocumentation);
-  Future<Response> postloginUser(loginData) => api.post(_loginUserAdress, data: loginData);
-  Future<Response> postProjectConsumable(data) => api.post(_postProjectConsumabele, data: data);
-  Future<Response> postDocumentationEntry(data) => api.post(_postDocumentationDay, data: data);
-  Future<Response> postTimeEnty(data) => api.post(_postTimeEntryAdress, data: data);
-  Future<Response> updateProjectConsumableEntry(data) => api.post(_putProjectMaterial, data: data);
-  Future<Response> updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
+  Future get getAllProjects => api.get(_getAllProjects);
+  Future get getAllTimeEntrys => api.get(_getAllTimeTacks);
+  Future get getAllUnits => api.get(_getAllUnitsList);
+  Future get getCustomerProjects => api.get(_getCustomerProject);
+  Future get getUserDataShort => api.get(_getListUsersShort);
+  Future getDokuforProjectURL(int projectID) => api.get('/project/$projectID/documentations');
+  Future get getExecuteableServices => api.get(_getServiceAdress);
+  Future get getMaterialsList => api.get(_getMaterialsList);
+  Future get getProjectsDM => api.get(_getProjectsAdress);
+  Future get getProjectConsumableEntry => api.get(_getProjectsConsumable);
+  Future get getProjectsTimeEntrys => api.get(_getTimeTacks);
+  Future get getUserDocumentationEntry => api.get(_getUserProjectDocumentation);
+  Future get getUserServiceList => api.get(_getUserServiceList);
+  Future postloginUser(loginData) => api.post(_loginUserAdress, data: loginData);
+  Future postProjectConsumable(data) => api.post(_postProjectConsumabele, data: data);
+  Future postDocumentationEntry(data) => api.post(_postDocumentationDay, data: data);
+  Future postTimeEnty(data) => api.post(_postTimeEntryAdress, data: data);
+  Future updateProjectConsumableEntry(data) => api.post(_putProjectMaterial, data: data);
+  Future updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
+  Future getUserServiceByID(id) => api.get(_getUserServiceListByID, data: id);
 
   void storeToken(String token) async =>
       await _storage.then((value) => value.setString('TOKEN', token));
