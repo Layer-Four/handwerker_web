@@ -6,6 +6,7 @@ import 'provider/settings_provider/language_provider.dart';
 import 'routes/app_routes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: MainApp()));
 }
 
