@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../provider/user_provider/user_provider.dart';
 import '../shared_view_widgets/symetric_button_widget.dart';
 
 class UserBody extends ConsumerStatefulWidget {
@@ -14,14 +13,14 @@ class _UserBodyState extends ConsumerState<UserBody> {
   final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final listOfWorkers = ref.watch(userProvider).when(
-        data: (data) {
-          if (data.isNotEmpty) return data;
-          ref.read(userProvider.notifier).loadUsers();
-          return [];
-        },
-        error: (e, stt) {},
-        loading: () {});
+    //   final listOfWorkers = ref.watch(userProvider).when(
+    //       data: (data) {
+    //         if (data.isNotEmpty) return data;
+    //         ref.read(userProvider.notifier).loadUsers();
+    //         return [];
+    //       },
+    //       error: (e, stt) {},
+    //       loading: () {});
     final contentWidth = (MediaQuery.of(context).size.width);
     final contentHeight = (MediaQuery.of(context).size.height / 10) * 7.5;
     final headStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -34,7 +33,7 @@ class _UserBodyState extends ConsumerState<UserBody> {
         children: [
           _searchHeader(context),
           _tableHead(headStyle, contentWidth),
-          _buildUserRows(contentWidth, contentHeight, listOfWorkers),
+          _buildUserRows(contentWidth, contentHeight), //listOfWorkers
           _createUserButton(contentWidth, context),
         ],
       ),
@@ -58,68 +57,71 @@ class _UserBodyState extends ConsumerState<UserBody> {
           ),
         ),
       );
-
   SingleChildScrollView _buildUserRows(
-          double contentWidth, double contentHeight, List<dynamic>? listOfWorkers) =>
-      SingleChildScrollView(
-        child: SizedBox(
-          width: (contentWidth / 10) * 7.5,
-          height: contentHeight - 600,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-                itemCount: listOfWorkers?.length,
-                itemBuilder: (context, i) {
-                  final user = listOfWorkers?[i];
-                  return Card(
-                    child: Container(
-                      height: 80,
-                      decoration: const BoxDecoration(color: Colors.white),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                              width: (contentWidth / 10) * 1.5,
-                              child: Center(
-                                  child: Text('${user.firstName ?? ''} ${user.lastName ?? ''}'))),
-                          SizedBox(
+    double contentWidth,
+    double contentHeight,
+  ) {
+    List<dynamic>? listOfWorkers = [];
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: (contentWidth / 10) * 7.5,
+        height: contentHeight - 600,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+              itemCount: listOfWorkers.length,
+              itemBuilder: (context, i) {
+                final user = listOfWorkers[i];
+                return Card(
+                  child: Container(
+                    height: 80,
+                    decoration: const BoxDecoration(color: Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
                             width: (contentWidth / 10) * 1.5,
                             child: Center(
-                              child: Text(
-                                user.userRole,
-                              ),
+                                child: Text('${user.firstName ?? ''} ${user.lastName ?? ''}'))),
+                        SizedBox(
+                          width: (contentWidth / 10) * 1.5,
+                          child: Center(
+                            child: Text(
+                              user.userRole,
                             ),
                           ),
-                          SizedBox(
-                              width: (contentWidth / 10) * 1.5,
-                              child: Center(child: Text('${user.userID}'))),
-                          SizedBox(
+                        ),
+                        SizedBox(
                             width: (contentWidth / 10) * 1.5,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      showAboutDialog(context: context);
-                                    },
-                                    icon: const Icon(Icons.edit_document)),
-                                // TODO: maybe a checkbox or something else when
-                                IconButton(
-                                    onPressed: () {
-                                      showAboutDialog(context: context);
-                                    },
-                                    icon: const Icon(Icons.visibility_sharp)),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                            child: Center(child: Text('${user.userID}'))),
+                        SizedBox(
+                          width: (contentWidth / 10) * 1.5,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    showAboutDialog(context: context);
+                                  },
+                                  icon: const Icon(Icons.edit_document)),
+                              // TODO: maybe a checkbox or something else when
+                              IconButton(
+                                  onPressed: () {
+                                    showAboutDialog(context: context);
+                                  },
+                                  icon: const Icon(Icons.visibility_sharp)),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  );
-                }),
-          ),
+                  ),
+                );
+              }),
         ),
-      );
+      ),
+    );
+  }
 
   Padding _tableHead(TextStyle? headStyle, double contentWidth) => Padding(
         padding: const EdgeInsets.all(8),

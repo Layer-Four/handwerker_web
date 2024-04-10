@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import '../../routes/app_routes.dart';
 
@@ -140,7 +139,6 @@ class _PasswordViewState extends State<PasswordView> {
                       setState(() {
                         newpasswordController.text = password;
                       });
-                      log(newpasswordController.text);
                       onPasswordChanged(password);
                     },
                     validator: (value) {

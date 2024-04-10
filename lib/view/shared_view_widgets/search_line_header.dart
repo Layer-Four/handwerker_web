@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SearchLineHeader extends StatefulWidget {
-  const SearchLineHeader({super.key});
+  final String _currentViewTitle;
+  const SearchLineHeader({super.key, required String title}) : _currentViewTitle = title;
 
   @override
   State<SearchLineHeader> createState() => _SearchLineHeaderState();
@@ -18,7 +19,7 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
           child: Row(
             children: [
               Text(
-                'Stundenübersicht',
+                widget._currentViewTitle,
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge

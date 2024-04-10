@@ -21,10 +21,17 @@ UserVM _$UserVMFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserVM {
   String get userID => throw _privateConstructorUsedError;
+  String get userToken => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
-  String? get token => throw _privateConstructorUsedError;
-  String get userRole => throw _privateConstructorUsedError;
+  DateTime? get hiringDate => throw _privateConstructorUsedError;
+  DateTime? get cancellationDate => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  String? get profilePictureUrl => throw _privateConstructorUsedError;
+  DateTime? get dateOfBirth => throw _privateConstructorUsedError;
+  String? get address => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,10 +45,17 @@ abstract class $UserVMCopyWith<$Res> {
   @useResult
   $Res call(
       {String userID,
+      String userToken,
+      String username,
       String? firstName,
       String? lastName,
-      String? token,
-      String userRole});
+      DateTime? hiringDate,
+      DateTime? cancellationDate,
+      String? email,
+      String? profilePictureUrl,
+      DateTime? dateOfBirth,
+      String? address,
+      String? phoneNumber});
 }
 
 /// @nodoc
@@ -58,15 +72,30 @@ class _$UserVMCopyWithImpl<$Res, $Val extends UserVM>
   @override
   $Res call({
     Object? userID = null,
+    Object? userToken = null,
+    Object? username = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
-    Object? token = freezed,
-    Object? userRole = null,
+    Object? hiringDate = freezed,
+    Object? cancellationDate = freezed,
+    Object? email = freezed,
+    Object? profilePictureUrl = freezed,
+    Object? dateOfBirth = freezed,
+    Object? address = freezed,
+    Object? phoneNumber = freezed,
   }) {
     return _then(_value.copyWith(
       userID: null == userID
           ? _value.userID
           : userID // ignore: cast_nullable_to_non_nullable
+              as String,
+      userToken: null == userToken
+          ? _value.userToken
+          : userToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
       firstName: freezed == firstName
           ? _value.firstName
@@ -76,14 +105,34 @@ class _$UserVMCopyWithImpl<$Res, $Val extends UserVM>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
-      token: freezed == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
+      hiringDate: freezed == hiringDate
+          ? _value.hiringDate
+          : hiringDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      cancellationDate: freezed == cancellationDate
+          ? _value.cancellationDate
+          : cancellationDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      userRole: null == userRole
-          ? _value.userRole
-          : userRole // ignore: cast_nullable_to_non_nullable
-              as String,
+      profilePictureUrl: freezed == profilePictureUrl
+          ? _value.profilePictureUrl
+          : profilePictureUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dateOfBirth: freezed == dateOfBirth
+          ? _value.dateOfBirth
+          : dateOfBirth // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -97,10 +146,17 @@ abstract class _$$UserVMImplCopyWith<$Res> implements $UserVMCopyWith<$Res> {
   @useResult
   $Res call(
       {String userID,
+      String userToken,
+      String username,
       String? firstName,
       String? lastName,
-      String? token,
-      String userRole});
+      DateTime? hiringDate,
+      DateTime? cancellationDate,
+      String? email,
+      String? profilePictureUrl,
+      DateTime? dateOfBirth,
+      String? address,
+      String? phoneNumber});
 }
 
 /// @nodoc
@@ -115,15 +171,30 @@ class __$$UserVMImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userID = null,
+    Object? userToken = null,
+    Object? username = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
-    Object? token = freezed,
-    Object? userRole = null,
+    Object? hiringDate = freezed,
+    Object? cancellationDate = freezed,
+    Object? email = freezed,
+    Object? profilePictureUrl = freezed,
+    Object? dateOfBirth = freezed,
+    Object? address = freezed,
+    Object? phoneNumber = freezed,
   }) {
     return _then(_$UserVMImpl(
       userID: null == userID
           ? _value.userID
           : userID // ignore: cast_nullable_to_non_nullable
+              as String,
+      userToken: null == userToken
+          ? _value.userToken
+          : userToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
       firstName: freezed == firstName
           ? _value.firstName
@@ -133,47 +204,89 @@ class __$$UserVMImplCopyWithImpl<$Res>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
-      token: freezed == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
+      hiringDate: freezed == hiringDate
+          ? _value.hiringDate
+          : hiringDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      cancellationDate: freezed == cancellationDate
+          ? _value.cancellationDate
+          : cancellationDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      userRole: null == userRole
-          ? _value.userRole
-          : userRole // ignore: cast_nullable_to_non_nullable
-              as String,
+      profilePictureUrl: freezed == profilePictureUrl
+          ? _value.profilePictureUrl
+          : profilePictureUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dateOfBirth: freezed == dateOfBirth
+          ? _value.dateOfBirth
+          : dateOfBirth // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$UserVMImpl extends _UserVM {
+class _$UserVMImpl implements _UserVM {
   const _$UserVMImpl(
-      {required this.userID,
+      {this.userID = '',
+      this.userToken = '',
+      this.username = '',
       this.firstName,
       this.lastName,
-      this.token,
-      this.userRole = 'worker'})
-      : super._();
+      this.hiringDate,
+      this.cancellationDate,
+      this.email,
+      this.profilePictureUrl,
+      this.dateOfBirth,
+      this.address,
+      this.phoneNumber});
 
   factory _$UserVMImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserVMImplFromJson(json);
 
   @override
+  @JsonKey()
   final String userID;
+  @override
+  @JsonKey()
+  final String userToken;
+  @override
+  @JsonKey()
+  final String username;
   @override
   final String? firstName;
   @override
   final String? lastName;
   @override
-  final String? token;
+  final DateTime? hiringDate;
   @override
-  @JsonKey()
-  final String userRole;
+  final DateTime? cancellationDate;
+  @override
+  final String? email;
+  @override
+  final String? profilePictureUrl;
+  @override
+  final DateTime? dateOfBirth;
+  @override
+  final String? address;
+  @override
+  final String? phoneNumber;
 
   @override
   String toString() {
-    return 'UserVM(userID: $userID, firstName: $firstName, lastName: $lastName, token: $token, userRole: $userRole)';
+    return 'UserVM(userID: $userID, userToken: $userToken, username: $username, firstName: $firstName, lastName: $lastName, hiringDate: $hiringDate, cancellationDate: $cancellationDate, email: $email, profilePictureUrl: $profilePictureUrl, dateOfBirth: $dateOfBirth, address: $address, phoneNumber: $phoneNumber)';
   }
 
   @override
@@ -182,19 +295,44 @@ class _$UserVMImpl extends _UserVM {
         (other.runtimeType == runtimeType &&
             other is _$UserVMImpl &&
             (identical(other.userID, userID) || other.userID == userID) &&
+            (identical(other.userToken, userToken) ||
+                other.userToken == userToken) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
-            (identical(other.token, token) || other.token == token) &&
-            (identical(other.userRole, userRole) ||
-                other.userRole == userRole));
+            (identical(other.hiringDate, hiringDate) ||
+                other.hiringDate == hiringDate) &&
+            (identical(other.cancellationDate, cancellationDate) ||
+                other.cancellationDate == cancellationDate) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.profilePictureUrl, profilePictureUrl) ||
+                other.profilePictureUrl == profilePictureUrl) &&
+            (identical(other.dateOfBirth, dateOfBirth) ||
+                other.dateOfBirth == dateOfBirth) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, userID, firstName, lastName, token, userRole);
+  int get hashCode => Object.hash(
+      runtimeType,
+      userID,
+      userToken,
+      username,
+      firstName,
+      lastName,
+      hiringDate,
+      cancellationDate,
+      email,
+      profilePictureUrl,
+      dateOfBirth,
+      address,
+      phoneNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -210,27 +348,47 @@ class _$UserVMImpl extends _UserVM {
   }
 }
 
-abstract class _UserVM extends UserVM {
+abstract class _UserVM implements UserVM {
   const factory _UserVM(
-      {required final String userID,
+      {final String userID,
+      final String userToken,
+      final String username,
       final String? firstName,
       final String? lastName,
-      final String? token,
-      final String userRole}) = _$UserVMImpl;
-  const _UserVM._() : super._();
+      final DateTime? hiringDate,
+      final DateTime? cancellationDate,
+      final String? email,
+      final String? profilePictureUrl,
+      final DateTime? dateOfBirth,
+      final String? address,
+      final String? phoneNumber}) = _$UserVMImpl;
 
   factory _UserVM.fromJson(Map<String, dynamic> json) = _$UserVMImpl.fromJson;
 
   @override
   String get userID;
   @override
+  String get userToken;
+  @override
+  String get username;
+  @override
   String? get firstName;
   @override
   String? get lastName;
   @override
-  String? get token;
+  DateTime? get hiringDate;
   @override
-  String get userRole;
+  DateTime? get cancellationDate;
+  @override
+  String? get email;
+  @override
+  String? get profilePictureUrl;
+  @override
+  DateTime? get dateOfBirth;
+  @override
+  String? get address;
+  @override
+  String? get phoneNumber;
   @override
   @JsonKey(ignore: true)
   _$$UserVMImplCopyWith<_$UserVMImpl> get copyWith =>
