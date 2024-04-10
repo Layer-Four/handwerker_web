@@ -1,4 +1,6 @@
 enum Measurement {
+  x,
+  m3,
   m,
   stk,
   cm,
@@ -17,6 +19,8 @@ extension MeasurementExtension on Measurement {
         Measurement.mm => 'MilliMeter',
         Measurement.qm => 'Quadrat Meter',
         Measurement.qcm => 'Quadrat Centimeter',
+        Measurement.x => 'X',
+        Measurement.m3 => 'm3',
       };
 }
 
