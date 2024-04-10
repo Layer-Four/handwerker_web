@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../shared_view_widgets/symetric_button_widget.dart';
 
@@ -68,7 +66,6 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                         ),
                       ),
                       height: 80,
-                      // decoration: const BoxDecoration(color: Colors.white),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -91,7 +88,13 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                               width: (contentWidth / 10) * 1.5,
                               child: Text('${item.priceInCents / 100} €')),
                           Spacer(),
-                          SizedBox(child: const Icon(Icons.edit)),
+                          GestureDetector(
+                            onTap: () {
+                              // Handle edit action here
+                              // _editItem(context, item);
+                            },
+                            child: SizedBox(child: const Icon(Icons.edit)),
+                          ),
                         ],
                       ),
                     );
