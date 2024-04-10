@@ -20,4 +20,5 @@ extension MainViewExtennsion on MainView {
       };
 }
 
-final mainNavProvider = StateProvider((ref) => MainView.timeEntry);
+// TODO: set to home view
+final mainNavProvider = StateProvider((ref) => MainView.consumables);
