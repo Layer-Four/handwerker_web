@@ -6,30 +6,40 @@ part of 'time_vm.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TimeEntryVMImpl _$$TimeEntryVMImplFromJson(Map<String, dynamic> json) =>
-    _$TimeEntryVMImpl(
-      timeEntryID: json['timeEntryID'] as String? ?? '',
-      projectID: json['projectID'] as int?,
-      serviceID: json['serviceID'] as int?,
+_$TimeVMAdapterImpl _$$TimeVMAdapterImplFromJson(Map<String, dynamic> json) =>
+    _$TimeVMAdapterImpl(
+      id: json['id'] as int,
+      userId: json['userId'] as String,
+      projectId: json['projectId'] as int?,
+      serviceId: json['serviceId'] as int?,
       duration: json['duration'] as int?,
-      title: json['title'] as String,
+      serviceTitle: json['serviceTitle'] as String?,
       date: DateTime.parse(json['date'] as String),
       startTime: DateTime.parse(json['startTime'] as String),
       endTime: DateTime.parse(json['endTime'] as String),
+      pauseEnd: json['pauseEnd'] == null
+          ? null
+          : DateTime.parse(json['pauseEnd'] as String),
+      pauseStart: json['pauseStart'] == null
+          ? null
+          : DateTime.parse(json['pauseStart'] as String),
       description: json['description'] as String?,
       useForColor: json['useForColor'] as String?,
     );
 
-Map<String, dynamic> _$$TimeEntryVMImplToJson(_$TimeEntryVMImpl instance) =>
+Map<String, dynamic> _$$TimeVMAdapterImplToJson(_$TimeVMAdapterImpl instance) =>
     <String, dynamic>{
-      'timeEntryID': instance.timeEntryID,
-      'projectID': instance.projectID,
-      'serviceID': instance.serviceID,
+      'id': instance.id,
+      'userId': instance.userId,
+      'projectId': instance.projectId,
+      'serviceId': instance.serviceId,
       'duration': instance.duration,
-      'title': instance.title,
+      'serviceTitle': instance.serviceTitle,
       'date': instance.date.toIso8601String(),
       'startTime': instance.startTime.toIso8601String(),
       'endTime': instance.endTime.toIso8601String(),
+      'pauseEnd': instance.pauseEnd?.toIso8601String(),
+      'pauseStart': instance.pauseStart?.toIso8601String(),
       'description': instance.description,
       'useForColor': instance.useForColor,
     };

@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   dio: ^5.4.1
+  firebase_core: ^2.29.0
   flutter:
     sdk: flutter
 
