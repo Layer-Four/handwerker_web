@@ -43,11 +43,9 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
       startTime: DateTime.now(),
       endTime: DateTime.now(),
     );
-    final minute =
-        _entry.startTime.minute < 10 ? '0${_entry.startTime.minute}' : '${_entry.startTime.minute}';
+    final minute = _entry.startTime.minute < 10 ? '0${_entry.startTime.minute}' : '${_entry.startTime.minute}';
     if (selectedTime == null || _dayPickerController.text.isEmpty) {
-      _dayPickerController.text =
-          '${_entry.startTime.day}.${_entry.startTime.month}.${_entry.startTime.year}';
+      _dayPickerController.text = '${_entry.startTime.day}.${_entry.startTime.month}.${_entry.startTime.year}';
       selectedTime = TimeOfDay(hour: _entry.startTime.hour, minute: _entry.startTime.minute);
     }
     _startController.text = '${selectedTime!.hour}:$minute';
@@ -75,8 +73,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           ],
         ),
       );
-  Future<List<UserDataShort>> loadUser() async =>
-      await ref.read(userProvider.notifier).getListUserService();
+  Future<List<UserDataShort>> loadUser() async => await ref.read(userProvider.notifier).getListUserService();
 
   Widget _buildSelectUser() => FutureBuilder(
       future: loadUser(),
@@ -482,8 +479,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       ),
                     ),
                     onTap: () async {
-                      final time =
-                          await showTimePicker(context: context, initialTime: selectedTime!);
+                      final time = await showTimePicker(context: context, initialTime: selectedTime!);
                       if (time != null) {
                         final minute = time.minute < 10 ? '0${time.minute}' : '${time.minute}';
                         _entry = _entry.copyWith(
@@ -571,7 +567,9 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
   Future getData(Api apo) async {
+    print('Attempt to call api');
     final response = await apo.getAllProjects;
+    print('Done calling api');
     log(response.statusMessage.toString());
     log(response.statusCode.toString());
     log(response.data.toString());
@@ -616,4 +614,4 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
 }
-// class 
+// class

@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
 import 'character_card.dart';
 import 'custom_project.dart';
+import '../../provider/customer_project_provider/customer_project_provider.dart';
+import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '/constants/api/api.dart';
+import '/models/project_models/project_vm/project_vm.dart';
+import '/models/service_models/service_vm/service_vm.dart';
+import '/models/time_models/time_dm/time_dm.dart';
+import '/models/users_models/user_data_short/user_short.dart';
+import '/provider/data_provider/project_provders/project_vm_provider.dart';
+import '/provider/data_provider/service_provider/service_vm_provider.dart';
+import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
+import '/provider/user_provider/user_provider.dart';
 
-class CustomerProjectMain extends StatelessWidget {
+class CustomerProjectMain extends ConsumerWidget {
+  //StatelessWidget
   const CustomerProjectMain({super.key});
+
+  //Call fetch infos here
 
   //  const Text('Berichte', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width;
+    ref.read(customerProjectProvider.notifier).fetchInfos();
+
     return Container(
       color: Colors.white,
       child: Padding(
@@ -18,8 +36,7 @@ class CustomerProjectMain extends StatelessWidget {
             Row(
               children: [
                 const Text('Berichte',
-                    style:
-                        TextStyle(color: Colors.orange, fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: TextStyle(color: Colors.orange, fontSize: 20, fontWeight: FontWeight.bold)),
                 SizedBox(
                   width: screenWidth / 2,
                   child: const Padding(
