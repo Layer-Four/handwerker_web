@@ -14,7 +14,7 @@ also must initialzied two "part" file like
 
 important, the file include the parent file name like "project_vm" followed with ".freezed.dart" or ".g.dart" for the mixin class that freezed generated or the json convert class from json_annotation
 the mixin class must have the same name of original class and the prefix " _$ " like " _$ProjectVM "
-instead of classic constructor we need a factory that return the name of the original class and the prefix " _ " like "_ProjectVM"
+instead of classic constructor we need a factory that return the name of the original class and the prefix " _ " like _ProjectVM
 the attributes must required or nullable on some Cases use "@Default" to set defautl value.
 if u need  some own mehtod for the generated class you must also write a private Constructor like " Project._();".
 ### freezed toJson/fromJson
