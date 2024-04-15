@@ -4,6 +4,7 @@ import '../../provider/settings_provider/nav_provider.dart';
 import '../../routes/app_routes.dart';
 import '../consumable_view/consumable_view.dart';
 import '../customer_project_view/doc_screen.dart';
+import '../customers_view/doc_screen.dart';
 import '../home_view/home_body.dart';
 import '../time_entry_view/time_entry_view.dart';
 import '../users_view/user_view.dart';
@@ -28,6 +29,7 @@ class MainViewNavigator extends ConsumerWidget {
                 MainView.timeEntry => const TimeEntryBody(),
                 MainView.projectCustomer => const CustomerProjectMain(),
                 MainView.consumables => const ConsumableBody(),
+                MainView.customer => const CustomerBody(),
                 MainView.users => const UserBody(),
                 // _ => const TimeEntryBody(),
               }),
@@ -77,6 +79,10 @@ class MainViewNavigator extends ConsumerWidget {
                       nextView: MainView.consumables,
                     ),
                     const NavButtonWidget(
+                      title: 'Kunden',
+                      nextView: MainView.customer,
+                    ),
+                    const NavButtonWidget(
                       title: 'Mitarbeiter',
                       nextView: MainView.users,
                     ),
@@ -122,6 +128,10 @@ class MainViewNavigator extends ConsumerWidget {
                 const NavButtonWidget(
                   title: 'Material',
                   nextView: MainView.consumables,
+                ),
+                const NavButtonWidget(
+                  title: 'Kunden',
+                  nextView: MainView.customer,
                 ),
                 const NavButtonWidget(
                   title: 'Mitarbeiter',
