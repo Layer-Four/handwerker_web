@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../shared_view_widgets/search_line_header.dart';
 import 'character_card.dart';
 import 'custom_project.dart';
 import '../../provider/customer_project_provider/customer_project_provider.dart';
@@ -25,15 +26,16 @@ class CustomerProjectMain extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width;
-    ref.read(customerProjectProvider.notifier).fetchInfos();
+    //ref.read(customerProjectProvider.notifier).fetchInfos(); //todo: implement api
 
     return Container(
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(75, 30, 30, 30),
+        padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
         child: Column(
           children: [
-            Row(
+            const SearchLineHeader(title: 'Berichte'),
+/*            Row(
               children: [
                 const Text('Berichte',
                     style: TextStyle(color: Colors.orange, fontSize: 20, fontWeight: FontWeight.bold)),
@@ -81,7 +83,7 @@ class CustomerProjectMain extends ConsumerWidget {
                   ),
                 ),
               ],
-            ),
+            ),*/
             const SizedBox(
               height: 60,
             ),
