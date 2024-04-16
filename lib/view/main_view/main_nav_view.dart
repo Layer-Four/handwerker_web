@@ -69,11 +69,11 @@ class MainViewNavigator extends ConsumerWidget {
                       nextView: MainView.timeEntry,
                     ),
                     const NavButtonWidget(
-                      title: 'Kunde/Projekt',
+                      title: 'Berichte',
                       nextView: MainView.projectCustomer,
                     ),
                     const NavButtonWidget(
-                      title: 'Material',
+                      title: 'Verwaltung',
                       nextView: MainView.consumables,
                     ),
                     const NavButtonWidget(
@@ -110,22 +110,32 @@ class MainViewNavigator extends ConsumerWidget {
                 const NavButtonWidget(
                   title: 'Home',
                   nextView: MainView.home,
+                  icon: Icons.home_outlined,
                 ),
                 const NavButtonWidget(
                   title: 'Zeiteintrag',
                   nextView: MainView.timeEntry,
+                  icon: Icons.access_time,
                 ),
                 const NavButtonWidget(
-                  title: 'Kunde/Projekt',
+                  title: 'Kunden/Projekte',
                   nextView: MainView.projectCustomer,
+                  icon: Icons.signal_cellular_alt_sharp,
+                  subcategories: ['Kunden/Projekte'],
                 ),
+                const SizedBox(height: 20,),
                 const NavButtonWidget(
                   title: 'Material',
                   nextView: MainView.consumables,
+                  icon: Icons.folder_open,
+                  subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
                 ),
+                const SizedBox(height: 20,),
                 const NavButtonWidget(
                   title: 'Mitarbeiter',
                   nextView: MainView.users,
+                  icon: Icons.people_outline,
+                  subcategories: ['Rechte'],
                 ),
                 const Spacer(),
                 const NavButtonWidget(
@@ -142,11 +152,15 @@ class MainViewNavigator extends ConsumerWidget {
 class NavButtonWidget extends ConsumerWidget {
   final String title;
   final MainView? nextView;
+  final IconData? icon;
+  final List<String>? subcategories;
   final Color? color;
   const NavButtonWidget({
     super.key,
     required this.title,
     this.nextView,
+    this.icon,
+    this.subcategories,
     this.color,
   });
 
@@ -170,15 +184,53 @@ class NavButtonWidget extends ConsumerWidget {
         color: color,
         width: double.infinity,
         height: isCurrent ? 130 : 100,
-        margin: const EdgeInsets.all(4),
-        child: Center(
-            child: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: isCurrent ? Colors.orange : Colors.black,
-              fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
-              fontSize: isCurrent ? 21 : 19),
-        )),
+        margin: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon, // Display the icon
+                  color: isCurrent ? Colors.orange : Colors.black, // Apply color based on current state
+                  size: isCurrent ? 30 : 24, // Adjust size based on current state
+                ),
+                const SizedBox(width: 8), // Add spacing between icon and title
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: isCurrent ? Colors.orange : Colors.black,
+                    fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
+                    fontSize: isCurrent ? 21 : 19,
+                  ),
+                ),
+              ],
+            ),
+            if (subcategories != null)
+              Row(
+                children: [
+                  SizedBox(width: 32), // Adjust as needed for indentation
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: subcategories!.map((subcategory) => Padding(
+                        padding: const EdgeInsets.only(left: 24),
+                        child: Text(
+                          subcategory,
+                          style: TextStyle(
+                            color: isCurrent ? Colors.orange : Colors.black,
+                            fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
+                            fontSize: isCurrent ? 18 : 16,
+                          ),
+                        ),
+                      )).toList(),
+                    ),
+                  ),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
