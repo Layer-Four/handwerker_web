@@ -4,6 +4,7 @@ import '../../provider/settings_provider/nav_provider.dart';
 import '../../routes/app_routes.dart';
 import '../consumable_view/consumable_view.dart';
 import '../customer_project_view/doc_screen.dart';
+import '../customers_view/doc_screen.dart';
 import '../home_view/home_body.dart';
 import '../time_entry_view/time_entry_view.dart';
 import '../users_view/user_view.dart';
@@ -28,6 +29,7 @@ class MainViewNavigator extends ConsumerWidget {
                 MainView.timeEntry => const TimeEntryBody(),
                 MainView.projectCustomer => const CustomerProjectMain(),
                 MainView.consumables => const ConsumableBody(),
+                MainView.customer => const CustomerBody(),
                 MainView.users => const UserBody(),
                 // _ => const TimeEntryBody(),
               }),
@@ -38,64 +40,64 @@ class MainViewNavigator extends ConsumerWidget {
 
   Widget _navToolbar(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    if (width <= 1000) {
-      //
-      // return Consumer(
-      //     builder: (context, ref, child) => IconButton(
-      //           onPressed: () => showDialog(
-      //             barrierColor: Colors.transparent,
-      //             context: context,
-      //             builder: (context) => Container(
-      //               margin: EdgeInsets.only(
-      //                   right: MediaQuery.of(context).size.width / 1.5),
-      //               height: double.infinity,
-      //               width: MediaQuery.of(context).size.width / 4,
-      //               color: const Color.fromARGB(255, 208, 207, 207),
-      //               child: Column(
-      //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //                 children: [
-      //                   Padding(
-      //                     padding: const EdgeInsets.symmetric(vertical: 50),
-      //                     child: SizedBox(
-      //                       height: 40,
-      //                       child: Image.asset(
-      //                         'assets/images/img_techtool.png',
-      //                       ),
-      //                     ),
-      //                   ),
-      //                   const NavButtonWidget(
-      //                     title: 'Home',
-      //                     nextView: MainView.home,
-      //                   ),
-      //                   const NavButtonWidget(
-      //                     title: 'Zeiteintrag',
-      //                     nextView: MainView.timeEntry,
-      //                   ),
-      //                   const NavButtonWidget(
-      //                     title: 'Kunde/Projekt',
-      //                     nextView: MainView.docs,
-      //                   ),
-      //                   const NavButtonWidget(
-      //                     title: 'Material',
-      //                     nextView: MainView.consumables,
-      //                   ),
-      //                   const NavButtonWidget(
-      //                     title: 'Mitarbeiter',
-      //                     nextView: MainView.users,
-      //                   ),
-      //                   const Spacer(),
-      //                   const NavButtonWidget(
-      //                     title: 'Log Out',
-      //                     nextView: MainView.docs,
-      //                   ),
-      //                 ],
-// Old?
-      return IconButton(
-        onPressed: () => showDialog(
-          barrierColor: Colors.transparent,
-          context: context,
-          builder: (context) => Container(
-            margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width / 100) * 80),
+    return width <= 1000
+        ? IconButton(
+            onPressed: () => showDialog(
+              barrierColor: Colors.transparent,
+              context: context,
+              builder: (context) => Container(
+                margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width / 100) * 80),
+                height: double.infinity,
+                width: MediaQuery.of(context).size.width / 5,
+                color: const Color.fromARGB(255, 208, 207, 207),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      child: SizedBox(
+                        height: 40,
+                        child: Image.asset(
+                          'assets/images/img_techtool.png',
+                        ),
+                      ),
+                    ),
+                    const NavButtonWidget(
+                      title: 'Home',
+                      nextView: MainView.home,
+                    ),
+                    const NavButtonWidget(
+                      title: 'Zeiteintrag',
+                      nextView: MainView.timeEntry,
+                    ),
+                    const NavButtonWidget(
+                      title: 'Kunde/Projekt',
+                      nextView: MainView.projectCustomer,
+                    ),
+                    const NavButtonWidget(
+                      title: 'Material',
+                      nextView: MainView.consumables,
+                    ),
+                    const NavButtonWidget(
+                      title: 'Kunden',
+                      nextView: MainView.customer,
+                    ),
+                    const NavButtonWidget(
+                      title: 'Mitarbeiter',
+                      nextView: MainView.users,
+                    ),
+                    const Spacer(),
+                    const NavButtonWidget(
+                      title: 'Log Out',
+                      nextView: MainView.projectCustomer,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            icon: const Icon(Icons.menu),
+          )
+        : Container(
             height: double.infinity,
             width: MediaQuery.of(context).size.width / 5,
             color: const Color.fromARGB(255, 208, 207, 207),
@@ -128,68 +130,22 @@ class MainViewNavigator extends ConsumerWidget {
                   nextView: MainView.consumables,
                 ),
                 const NavButtonWidget(
+                  title: 'Kunden',
+                  nextView: MainView.customer,
+                ),
+                const NavButtonWidget(
                   title: 'Mitarbeiter',
                   nextView: MainView.users,
                 ),
                 const Spacer(),
                 const NavButtonWidget(
                   title: 'Log Out',
-                  nextView: MainView.projectCustomer,
+                  // nextView: MainView.docs,
+                  // color: Colors.teal,
                 ),
               ],
             ),
-          ),
-        ),
-        icon: const Icon(Icons.menu),
-      );
-    }
-    return Container(
-      height: double.infinity,
-      width: MediaQuery.of(context).size.width / 5,
-      color: const Color.fromARGB(255, 208, 207, 207),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 50),
-            child: SizedBox(
-              height: 40,
-              child: Image.asset(
-                'assets/images/img_techtool.png',
-              ),
-            ),
-          ),
-          const NavButtonWidget(
-            title: 'Home',
-            nextView: MainView.home,
-            color: Colors.blue,
-          ),
-          const NavButtonWidget(
-            title: 'Zeiteintrag',
-            nextView: MainView.timeEntry,
-          ),
-          const NavButtonWidget(
-            title: 'Kunde/Projekt',
-            nextView: MainView.projectCustomer,
-            color: Colors.blueGrey,
-          ),
-          const NavButtonWidget(
-            title: 'Material',
-            nextView: MainView.consumables,
-          ),
-          const NavButtonWidget(
-            title: 'Mitarbeiter',
-            nextView: MainView.users,
-          ),
-          const Spacer(),
-          const NavButtonWidget(
-            title: 'Log Out',
-            // nextView: MainView.docs,
-            // color: Colors.teal,
-          ),
-        ],
-      ),
-    );
+          );
   }
 }
 

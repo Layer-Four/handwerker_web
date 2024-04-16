@@ -5,6 +5,7 @@ enum MainView {
   timeEntry,
   projectCustomer,
   consumables,
+  customer,
   users,
 }
 
@@ -14,6 +15,7 @@ extension MainViewExtennsion on MainView {
         'Zeiteintrag' => MainView.timeEntry,
         'Kunde/Projekt' => MainView.projectCustomer,
         'Material' => MainView.consumables,
+        'Kunden' => MainView.customer,
         'Mitarbeiter' => MainView.users,
         'Log Out' => null,
         _ => null,
