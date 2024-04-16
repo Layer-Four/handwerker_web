@@ -10,35 +10,129 @@ class ConsumableBody extends StatefulWidget {
 }
 
 class _ConsumableBodyState extends State<ConsumableBody> {
+  void onSave() {
+    try {
+      int amount = int.parse(amountController.text);
+      int priceInCents = int.parse(priceController.text) *
+          100; // converting dollars/euros to cents, if necessary
+
+      final newConsumable = ConsumableVM(
+          title: titleController.text,
+          measurement: parseMeasurement('assssss'),
+          amount: amount,
+          priceInCents: priceInCents);
+
+      setState(() {
+        listOfConsumables.add(newConsumable);
+        _isAddConsumableOpen = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Consumable added successfully")));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Error when adding consumable: ${e.toString()}")));
+    }
+  }
+
+  int selectedIndex = -1;
   final TextEditingController _searchController = TextEditingController();
+  late List<TextEditingController> _controllers;
+  late List<bool> _isEditing;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController measurmentController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+
   bool _isAddConsumableOpen = false;
 
-  final listOfConsumables = [
-    const ConsumableVM(
+  List<ConsumableVM> listOfConsumables = [
+    ConsumableVM(
       measurement: Measurement.m,
       priceInCents: 3000,
       title: 'Montage Algemein',
       amount: 2,
     ),
-    const ConsumableVM(
+    ConsumableVM(
       measurement: Measurement.m3,
       priceInCents: 9000000,
       title: 'Montage Fenster',
       amount: 2,
     ),
-    const ConsumableVM(
+    ConsumableVM(
       measurement: Measurement.x,
       priceInCents: 3000,
       title: 'Montage Algemeine Meister',
       amount: 20,
     ),
   ];
-// table data
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controllers
+    _controllers = List.generate(
+        listOfConsumables.length, (index) => TextEditingController());
+    // Initialize editing state
+    _isEditing = List.generate(listOfConsumables.length, (_) => false);
+    // Set initial text values for controllers
+    for (int i = 0; i < listOfConsumables.length; i++) {
+      _controllers[i].text = listOfConsumables[i].title;
+    }
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers to prevent memory leaks
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    titleController.dispose();
+    amountController.dispose();
+    measurmentController.dispose();
+    super.dispose();
+  }
+
+  Measurement parseMeasurement(String title) {
+    for (var m in Measurement.values) {
+      if (m.getTitle() == title) {
+        return m;
+      }
+    }
+    throw const FormatException(
+        'Invalid measurement title'); // More explicit error handling
+  }
+
+  void _saveConsumableEdit(int index) {
+    final newMeasurement = parseMeasurement(measurmentController.text);
+
+    // Assuming other validations are successful
+    setState(() {
+      listOfConsumables[index] = ConsumableVM(
+        title: titleController.text,
+        amount: int.parse(amountController.text),
+        measurement: newMeasurement,
+        priceInCents: int.parse(priceController.text),
+      );
+      // Don't toggle _isEditing here since it's managed by _handleSave now
+    });
+  }
+
+  void _handleSave() {
+    if (selectedIndex != -1) {
+      // Check for a valid index
+      setState(() {
+        _saveConsumableEdit(selectedIndex);
+        _isEditing[selectedIndex] = false; // Set editing to false
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final headStyle = Theme.of(context)
         .textTheme
-        .titleMedium
+        .titleLarge
         ?.copyWith(fontWeight: FontWeight.w600);
     final contentWidth = MediaQuery.of(context).size.width - 100;
     final contentHeight = MediaQuery.of(context).size.height;
@@ -49,61 +143,138 @@ class _ConsumableBodyState extends State<ConsumableBody> {
         children: [
           _searchHeader(context),
           _tableHead(headStyle, contentWidth),
-          SingleChildScrollView(
-            child: SizedBox(
-              width: contentWidth < 1000
-                  ? contentWidth
-                  : (contentWidth / 10) * 7.5,
-              height: contentHeight - 600,
-              child: ListView.builder(
-                  itemCount: listOfConsumables.length,
-                  itemBuilder: (context, i) {
-                    final item = listOfConsumables[i];
-                    return Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: Colors.black),
+          SizedBox(
+            width:
+                contentWidth < 1000 ? contentWidth : (contentWidth / 10) * 7.5,
+            height: contentHeight - 600,
+            child: ListView.builder(
+                itemCount: listOfConsumables.length,
+                itemBuilder: (context, i) {
+                  final item = listOfConsumables[i];
+                  // Unique controller for each item
+                  return Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    height: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: (contentWidth / 10) * 1.7,
+                          child: _isEditing[i]
+                              ? TextField(
+                                  // controller: _controllers[i],
+                                  controller: titleController,
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                  onSubmitted: (value) {
+                                    _handleSave();
+                                  },
+                                )
+                              : Text(item.title),
                         ),
-                      ),
-                      height: 80,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // this text should be aligned more to right
-                          Container(
-                              width: (contentWidth / 10) * 1.7,
-                              child: Text(item.title)),
-                          SizedBox(
-                            width: (contentWidth / 10) * 1.5,
-                            child: Text(
-                              '${item.amount}',
-                            ),
-                          ),
-                          SizedBox(
-                              width: (contentWidth / 10) * 1.5,
-                              child: Text(
-                                item.measurement.getTitle(),
-                              )),
-                          SizedBox(
-                              width: (contentWidth / 10) * 1.5,
-                              child: Text('${item.priceInCents / 100} €')),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              // Handle edit action here
-                              // _editItem(context, item);
-                            },
-                            child: SizedBox(child: const Icon(Icons.edit)),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-            ),
+                        SizedBox(
+                          width: (contentWidth / 10) * 1.5,
+                          child: _isEditing[i]
+                              ? TextField(
+                                  // controller: _controllers[i],
+                                  controller: amountController,
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                  onSubmitted: (value) {
+                                    _handleSave();
+                                  },
+                                )
+                              : Text('${item.amount}'),
+                        ),
+                        SizedBox(
+                          width: (contentWidth / 10) * 1.5,
+                          child: _isEditing[i]
+                              ? TextField(
+                                  // controller: _controllers[i],
+                                  controller: measurmentController,
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                  onSubmitted: (value) {
+                                    _handleSave();
+                                  },
+                                )
+                              : Text(item.measurement.getTitle()),
+                        ),
+                        SizedBox(
+                          width: (contentWidth / 10) * 1.5,
+                          child: _isEditing[i]
+                              ? TextField(
+                                  // controller: _controllers[i],
+                                  controller: priceController,
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                  onSubmitted: (value) {
+                                    _handleSave();
+                                  },
+                                )
+                              : Text('${item.priceInCents / 100} €'),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            // Handle delete action here
+                          },
+                          icon: const Icon(Icons.delete),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            print(
+                                "Before toggle: _isEditing[$i] = ${_isEditing[i]}");
+
+                            if (_isEditing[i]) {
+                              _saveConsumableEdit(
+                                  i); // This will save the current edits
+                            } else {
+                              setState(() {
+                                selectedIndex =
+                                    i; // Set selectedIndex to current item
+                                _isEditing[i] =
+                                    true; // Set this item as being edited
+                                // Load current values into controllers
+                                titleController.text =
+                                    listOfConsumables[i].title;
+                                amountController.text =
+                                    listOfConsumables[i].amount.toString();
+                                measurmentController.text =
+                                    listOfConsumables[i].measurement.getTitle();
+                                priceController.text =
+                                    (listOfConsumables[i].priceInCents / 100)
+                                        .toString();
+                              });
+                            }
+                            print(
+                                "After toggle: _isEditing[$i] = ${_isEditing[i]}");
+                          },
+                          icon: Icon(_isEditing[i] ? Icons.save : Icons.edit),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
           ),
           Container(
             alignment: Alignment.topLeft,
-            // width: contentWidth,
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
@@ -125,11 +296,10 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                         onPressed: () {
                           setState(() {
                             _isAddConsumableOpen = !_isAddConsumableOpen;
+                            if (_isAddConsumableOpen) {
+                              _addNewConsumable(); // Add a new consumable when opening
+                            }
                           });
-                          // showAdaptiveDialog(
-                          //   context: context,
-                          //   builder: (context) => const AddNewConsumable(),
-                          // );
                         },
                       ),
                     ),
@@ -139,17 +309,36 @@ class _ConsumableBodyState extends State<ConsumableBody> {
             ),
           ),
           Visibility(
-              visible: _isAddConsumableOpen, child: const AddNewConsumable())
+            visible: _isAddConsumableOpen,
+            child: AddNewConsumable(
+              onSave: () {
+                setState(() {
+                  _addNewConsumable();
+                });
+              },
+              onCancel: () {
+                setState(() {
+                  _isAddConsumableOpen = false;
+                });
+              },
+            ),
+          )
         ],
       ),
     );
   }
-  // table head section
+
+  void _addNewConsumable() {
+    setState(() {
+      final newController = TextEditingController();
+      _controllers.add(newController);
+      _isEditing.add(true);
+    });
+  }
 
   Padding _tableHead(TextStyle? headStyle, double contentWidth) => Padding(
         padding: const EdgeInsets.all(8),
         child: Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
               width: (contentWidth / 10) * 1.2,
@@ -167,10 +356,6 @@ class _ConsumableBodyState extends State<ConsumableBody> {
               'Preis/mengeneinheit',
               style: headStyle,
             ),
-            // Container(
-            //     color: Colors.green,
-            //     height: 20,
-            //     width: (contentWidth / 10) * 1.5)
           ],
         ),
       );
@@ -229,32 +414,28 @@ class _ConsumableBodyState extends State<ConsumableBody> {
 }
 
 class AddNewConsumable extends StatelessWidget {
+  final VoidCallback onSave;
+  final VoidCallback onCancel;
+
   const AddNewConsumable({
     super.key,
+    required this.onSave,
+    required this.onCancel,
   });
 
   @override
-  // ignore: prefer_expression_function_bodies
-  Widget build(BuildContext context) {
-    // final contentWidth = MediaQuery.of(context).size.width;
-    // final contentHeight = MediaQuery.of(context).size.height;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
-      child: Container(
-        // margin: EdgeInsets.symmetric(
-        //     horizontal: (contentWidth / 5) * 3,
-        //     vertical: (contentHeight / 10) * 2.2),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
         child: Card(
           elevation: 9,
           child: Container(
-            color: Color.fromARGB(255, 255, 255, 255),
+            color: const Color.fromARGB(255, 255, 255, 255),
             height: 300,
             width: double.infinity,
             padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // const Text('Neues Material Erstellen'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -270,12 +451,12 @@ class AddNewConsumable extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 6),
                             child: SizedBox(
-                              // width: 400,
                               child: TextField(
                                 decoration: InputDecoration(
+                                  hintText: 'Leistung',
                                   hintStyle: Theme.of(context)
                                       .textTheme
-                                      .bodySmall!
+                                      .bodyMedium!
                                       .copyWith(
                                         color: const Color.fromARGB(
                                             255, 220, 217, 217),
@@ -315,13 +496,12 @@ class AddNewConsumable extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 8, right: 8),
                             child: SizedBox(
-                              // width: 400,
-                              // TODO: change to DropDownButton Measurment
                               child: TextField(
                                 decoration: InputDecoration(
+                                  hintText: 'Menge',
                                   hintStyle: Theme.of(context)
                                       .textTheme
-                                      .bodySmall!
+                                      .bodyMedium!
                                       .copyWith(
                                         color: const Color.fromARGB(
                                             255, 220, 217, 217),
@@ -361,12 +541,12 @@ class AddNewConsumable extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 8, right: 8),
                             child: SizedBox(
-                              // width: 400,
                               child: TextField(
                                 decoration: InputDecoration(
+                                  hintText: 'Einheit',
                                   hintStyle: Theme.of(context)
                                       .textTheme
-                                      .bodySmall!
+                                      .bodyMedium!
                                       .copyWith(
                                         color: const Color.fromARGB(
                                             255, 220, 217, 217),
@@ -406,12 +586,12 @@ class AddNewConsumable extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 8, right: 8),
                             child: SizedBox(
-                              // width: 400,
                               child: TextField(
                                 decoration: InputDecoration(
+                                  hintText: 'Preis/mengeneinheit',
                                   hintStyle: Theme.of(context)
                                       .textTheme
-                                      .bodySmall!
+                                      .bodyMedium!
                                       .copyWith(
                                         color: const Color.fromARGB(
                                             255, 220, 217, 217),
@@ -450,9 +630,7 @@ class AddNewConsumable extends StatelessWidget {
                         color: const Color.fromARGB(255, 241, 241, 241),
                         text: 'Verwerfen',
                         style: const TextStyle(color: Colors.orange),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: onCancel,
                       ),
                     ),
                     Padding(
@@ -460,9 +638,7 @@ class AddNewConsumable extends StatelessWidget {
                       child: SymmetricButton(
                         color: Colors.orange,
                         text: 'Speichern',
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: onSave,
                       ),
                     ),
                   ],
@@ -471,7 +647,154 @@ class AddNewConsumable extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
+
+
+
+// import 'package:flutter/material.dart';
+// import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
+// import '../shared_view_widgets/symetric_button_widget.dart';
+
+// // Assume Measurement is an enum or class you've defined elsewhere.
+// // enum Measurement { m, m3, x }
+
+// class ConsumableBody extends StatefulWidget {
+//   const ConsumableBody({Key? key}) : super(key: key);
+
+//   @override
+//   _ConsumableBodyState createState() => _ConsumableBodyState();
+// }
+
+// class _ConsumableBodyState extends State<ConsumableBody> {
+//   List<ConsumableVM> listOfConsumables = [];
+//   bool _isAddConsumableOpen = false;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     // Initialize your consumable list here if needed
+//     listOfConsumables = [
+//       ConsumableVM(measurement: Measurement.m, priceInCents: 3000, title: 'Montage Algemein', amount: 2),
+//       ConsumableVM(measurement: Measurement.m3, priceInCents: 9000000, title: 'Montage Fenster', amount: 2),
+//       ConsumableVM(measurement: Measurement.x, priceInCents: 3000, title: 'Montage Algemeine Meister', amount: 20),
+//     ];
+//   }
+
+//   void _addNewConsumable(ConsumableVM newConsumable) {
+//     setState(() {
+//       listOfConsumables.add(newConsumable);
+//       _isAddConsumableOpen = false;  // Close the form
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Consumables")),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: listOfConsumables.length,
+//               itemBuilder: (context, index) {
+//                 final item = listOfConsumables[index];
+//                 return ListTile(
+//                   title: Text(item.title),
+//                   subtitle: Text("${item.amount} units, ${item.measurement.getTitle()}"),
+//                 );
+//               },
+//             ),
+//           ),
+//           Visibility(
+//             visible: _isAddConsumableOpen,
+//             child: AddNewConsumable(
+//               onSave: _addNewConsumable,
+//               onCancel: () {
+//                 setState(() {
+//                   _isAddConsumableOpen = false;
+//                 });
+//               },
+//             ),
+//           ),
+//           ElevatedButton(
+//             onPressed: () {
+//               setState(() {
+//                 _isAddConsumableOpen = true;
+//               });
+//             },
+//             child: Text("Add New Consumable"),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class AddNewConsumable extends StatelessWidget {
+//   final Function(ConsumableVM) onSave;
+//   final VoidCallback onCancel;
+
+//   final TextEditingController titleController = TextEditingController();
+//   final TextEditingController amountController = TextEditingController();
+//   final TextEditingController measurementController = TextEditingController();
+//   final TextEditingController priceController = TextEditingController();
+
+//   AddNewConsumable({
+//     Key? key,
+//     required this.onSave,
+//     required this.onCancel,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       child: Padding(
+//         padding: const EdgeInsets.all(16),
+//         child: Column(
+//           children: [
+//             TextField(
+//               controller: titleController,
+//               decoration: InputDecoration(labelText: 'Title'),
+//             ),
+//             TextField(
+//               controller: amountController,
+//               decoration: InputDecoration(labelText: 'Amount'),
+//               keyboardType: TextInputType.number,
+//             ),
+//             TextField(
+//               controller: measurementController,
+//               decoration: InputDecoration(labelText: 'Measurement'),
+//             ),
+//             TextField(
+//               controller: priceController,
+//               decoration: InputDecoration(labelText: 'Price in Cents'),
+//               keyboardType: TextInputType.number,
+//             ),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//               children: [
+//                 ElevatedButton(
+//                   onPressed: onCancel,
+//                   child: Text("Cancel"),
+//                 ),
+//                 ElevatedButton(
+//                   onPressed: () {
+//                     final newConsumable = ConsumableVM(
+//                       title: titleController.text,
+//                       amount: int.tryParse(amountController.text) ?? 0,
+//                       measurement: Measurement.values.first, // Adjust as necessary
+//                       priceInCents: int.tryParse(priceController.text) ?? 0,
+//                     );
+//                     onSave(newConsumable);
+//                   },
+//                   child: Text("Save"),
+//                 ),
+//               ],
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
