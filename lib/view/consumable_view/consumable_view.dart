@@ -213,7 +213,7 @@ class _CardWidgetState extends State<CardWidget> {
         child: SizedBox(
           height: 300,
           child: Card(
-            color: const Color.fromARGB(255, 255, 255, 255),
+            surfaceTintColor: Colors.white,
             elevation: 6,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
