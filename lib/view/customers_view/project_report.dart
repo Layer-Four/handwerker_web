@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'custom_project.dart';
+
+import '../customer_project_view/custom_project.dart';
 
 class ProjectReportScreen extends StatefulWidget {
   final CustomeProject project;
@@ -65,88 +66,84 @@ class _ProjectReportScreenState extends State<ProjectReportScreen> {
             const SizedBox(
               height: 20,
             ),
-            Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Datum',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          report.date,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
+            Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Datum',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Beschreibung',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          report.description,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
+                    const SizedBox(height: 10),
+                    Text(
+                      report.date,
+                      style: const TextStyle(fontSize: 18),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Fotos',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 10),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          // Use this to prevent the GridView from expanding infinitely.
-                          physics: const NeverScrollableScrollPhysics(),
-                          // Use this to disable scroll within the GridView.
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, // Two images per row.
-                            crossAxisSpacing: 15, // Desired spacing between images horizontally.
-                            mainAxisSpacing: 20, // Desired spacing between rows.
-                            childAspectRatio: 2, // Aspect ratio of each item (width / height).
-                          ),
-                          itemCount: report.imagePaths.length,
-                          itemBuilder: (context, index) => ClipRect(
-                            child: SizedBox(
-                              width: 200, // Desired width of each image.
-                              height: 100, // Desired height of each image.
-                              child: Image.asset(
-                                report.imagePaths[index],
-                                fit: BoxFit
-                                    .cover, // This ensures the image covers the container, cropping if necessary.
-                              ),
-                            ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Beschreibung',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      report.description,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                width: 50,
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Fotos',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      // Use this to prevent the GridView from expanding infinitely.
+                      physics: const NeverScrollableScrollPhysics(),
+                      // Use this to disable scroll within the GridView.
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, // Two images per row.
+                        crossAxisSpacing: 15, // Desired spacing between images horizontally.
+                        mainAxisSpacing: 20, // Desired spacing between rows.
+                        childAspectRatio: 2, // Aspect ratio of each item (width / height).
+                      ),
+                      itemCount: report.imagePaths.length,
+                      itemBuilder: (context, index) => ClipRect(
+                        child: SizedBox(
+                          width: 200, // Desired width of each image.
+                          height: 100, // Desired height of each image.
+                          child: Image.asset(
+                            report.imagePaths[index],
+                            fit: BoxFit.cover, // This ensures the image covers the container, cropping if necessary.
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ]),
+                  ],
+                ),
+              ),
+            ]),
 
             const Divider(height: 30, thickness: 2), // Optional: Adds a divider between reports
           ],
