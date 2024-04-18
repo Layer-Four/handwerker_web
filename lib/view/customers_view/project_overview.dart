@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'custom_project.dart';
+import '../customer_project_view/custom_project.dart';
 import 'project_card.dart';
 
 // ignore: must_be_immutable
@@ -114,31 +114,19 @@ class _CharacterCardState extends State<ProjectOverview> {
           'Außenanlagen',
           'Gestaltung der Außenanlagen',
           '08.04.2026',
-          [
-            'assets/images/construction1.png',
-            'assets/images/construction2.png',
-            'assets/images/construction2.png'
-          ],
+          ['assets/images/construction1.png', 'assets/images/construction2.png', 'assets/images/construction2.png'],
         ),
         ProjectReport(
           'Außenanlagen',
           'Gestaltung der Außenanlagen',
           '08.04.2026',
-          [
-            'assets/images/construction1.png',
-            'assets/images/construction2.png',
-            'assets/images/construction2.png'
-          ],
+          ['assets/images/construction1.png', 'assets/images/construction2.png', 'assets/images/construction2.png'],
         ),
         ProjectReport(
           'Außenanlagen',
           'Gestaltung der Außenanlagen',
           '08.04.2026',
-          [
-            'assets/images/construction1.png',
-            'assets/images/construction2.png',
-            'assets/images/construction2.png'
-          ],
+          ['assets/images/construction1.png', 'assets/images/construction2.png', 'assets/images/construction2.png'],
         ),
       ],
     ),
