@@ -25,10 +25,18 @@ class _ConsumableBodyState extends State<ConsumableBody> {
         Measurement: 'm3',
         price: '540€'),
   ];
+
   bool isCardVisible = false;
+
   void hideCard() {
     setState(() {
       isCardVisible = false;
+    });
+  }
+
+  void removeRow(RowData row) {
+    setState(() {
+      rowDataList.remove(row); // Remove the specified row
     });
   }
 
@@ -85,63 +93,42 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 44,
-                ),
+                const SizedBox(height: 44),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text(
-                        'Material',
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
-                      ),
+                      child: Text('Material',
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
                     Expanded(
-                      child: Text(
-                        'Menge',
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
-                      ),
+                      child: Text('Menge',
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
-                    SizedBox(
-                      width: 9,
-                    ),
+                    SizedBox(width: 9),
                     Expanded(
-                      child: Text(
-                        'Einheit',
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
-                      ),
+                      child: Text('Einheit',
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
-                    SizedBox(
-                      width: 30,
-                    ),
+                    SizedBox(width: 30),
                     Expanded(
-                      child: Text(
-                        'Preis/mengeneinheit',
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
-                      ),
+                      child: Text('Preis/mengeneinheit',
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
-                    // Spacer(),
-                    SizedBox(
-                      width: 110,
-                    )
+                    SizedBox(width: 110)
                   ],
                 ),
-                for (var rowData in rowDataList)
+                for (int i = 0; i < rowDataList.length; i++)
                   EditableRow(
-                    originalTitle: rowData.title,
-                    originalMenge: rowData.Menge,
-                    originalMeausrement: rowData.Measurement,
-                    originalPrice: rowData.price,
-                    onDelete: () {
-                      setState(() {
-                        rowDataList.remove(rowData);
-                      });
-                    },
+                    originalTitle: rowDataList[i].title,
+                    originalMenge: rowDataList[i].Menge,
+                    originalMeausrement: rowDataList[i].Measurement,
+                    originalPrice: rowDataList[i].price,
+                    onDelete: () => removeRow(rowDataList[i]),
                   ),
                 const SizedBox(height: 40),
                 Padding(
@@ -556,52 +543,50 @@ class _EditableRowState extends State<EditableRow> {
                 readOnly: !isEditing,
               ),
             ),
+
+            // IconButton to handle cancel action
             IconButton(
-              // Icon for saving changes. This should only be visible and functional if editing is enabled.
-              icon: Icon(isEditing
-                  ? Icons.save
-                  : Icons
-                      .edit), // Show save icon only if in editing mode, otherwise show edit icon
-              onPressed: () {
-                if (isEditing) {
-                  setState(() {
-                    // Save the current text field contents to the state
-                    final newTitle = _titleController.text;
-                    final newPrice = '${_priceController.text}€';
-                    currentTitle = newTitle;
-                    currentPrice = newPrice;
-                    isEditing =
-                        !isEditing; // Toggle editing mode off after saving
-                  });
-                } else {
-                  setState(() {
-                    isEditing =
-                        !isEditing; // Toggle editing mode on if not already editing
-                  });
-                }
-              },
-            ),
-            IconButton(
-              // Icon to toggle editing or delete depending on the state.
-              icon: Icon(isEditing
-                  ? Icons.cancel
-                  : Icons.delete), // Show cancel if editing, delete if not
+              icon: Icon(Icons.cancel),
               onPressed: () {
                 setState(() {
+                  // Check if currently editing
                   if (isEditing) {
-                    // If editing, cancel the edits and revert to the original
-                    isEditing = !isEditing;
-                    _titleController.text =
-                        currentTitle; // Revert to original title
-                    _priceController.text =
-                        currentPrice; // Revert to original price
-                  } else {
-                    // If not editing, perform delete action
-                    widget.onDelete();
+                    isEditing = false; // Disable editing mode
+                    // Revert text fields to their original values
+                    _titleController.text = currentTitle;
+                    _priceController.text = currentPrice;
                   }
                 });
               },
             ),
+
+// IconButton to toggle between save and edit modes
+            IconButton(
+              icon: Icon(isEditing ? Icons.save : Icons.edit),
+              onPressed: () {
+                setState(() {
+                  if (isEditing) {
+                    // Save the current text field contents
+                    currentTitle = _titleController.text;
+                    currentPrice =
+                        _priceController.text; // Append currency symbol
+                    isEditing = false; // Exit editing mode
+                  } else {
+                    isEditing = true; // Enter editing mode
+                  }
+                });
+              },
+            ),
+
+            // IconButton(
+            //   icon: Icon(Icons.delete),
+            //   onPressed: () {
+            //     setState(() {
+            //       // Perform delete action
+            //       widget.onDelete();
+            //     });
+            //   },
+            // ),
 
             // IconButton(
             //   icon: Icon(isEditing ? Icons.settings : Icons.delete),
