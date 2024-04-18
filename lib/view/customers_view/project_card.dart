@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'custom_project.dart';
+import '../customer_project_view/custom_project.dart';
 import 'project_details.dart';
 
 // ignore: must_be_immutable

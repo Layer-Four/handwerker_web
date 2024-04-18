@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../customer_project_view/custom_project.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import 'customer_card.dart';
-import 'custom_project.dart';
-import '../../provider/customer_project_provider/customer_project_provider.dart';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,115 +15,147 @@ import '/provider/data_provider/project_provders/project_vm_provider.dart';
 import '/provider/data_provider/service_provider/service_vm_provider.dart';
 import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '/provider/user_provider/user_provider.dart';
+import 'edit_customer.dart';
 
-class CustomerBody extends ConsumerWidget {
+class CustomerBody extends ConsumerStatefulWidget {
   //StatelessWidget
   const CustomerBody({super.key});
 
+  @override
+  _CustomerBodyState createState() => _CustomerBodyState();
+}
+
+class _CustomerBodyState extends ConsumerState<CustomerBody> {
   //Call fetch infos here
 
   //  const Text('Berichte', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+  bool isAddConsumableOpen = false;
+  int editingProjectIndex = -1;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    //, WidgetRef ref
     final screenWidth = MediaQuery.of(context).size.width;
     //ref.read(customerProjectProvider.notifier).fetchInfos(); //todo: implement api
+
+/*    late List<TextEditingController> _controllers;
+    late List<bool> _isEditing;
+
+    void _addNewConsumable() {
+      setState(() {
+        final newController = TextEditingController();
+        _controllers.add(newController);
+        _isEditing.add(true);
+      });
+    }*/
 
     return Container(
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(75, 30, 75, 30),
-        child: Column(
-          children: [
-            const SearchLineHeader(title: 'Kundenverwaltung'),
-/*            Row(
-              children: [
-                const Text('Kundenverwaltung',
-                    style: TextStyle(color: Colors.orange, fontSize: 20, fontWeight: FontWeight.bold)),
-                SizedBox(
-                  width: screenWidth / 2,
-                  child: const Padding(
-                    padding: EdgeInsets.only(
-                      left: 80,
+        padding: const EdgeInsets.fromLTRB(75, 30, 65, 30),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SearchLineHeader(title: 'Kundenverwaltung'),
+              const SizedBox(
+                height: 60,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Name',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              SizedBox(
+                width: screenWidth > 600 ? double.infinity : null,
+                height: MediaQuery.of(context).size.height / 2 - 100,
+                /*isAddConsumableOpen
+                    ? MediaQuery.of(context).size.height / 3
+                    : MediaQuery.of(context).size.height - 300,*/
+                child: ListView.builder(
+                  itemCount: project.length,
+                  itemBuilder: (_, index) => GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isAddConsumableOpen = !isAddConsumableOpen;
+                        editingProjectIndex = index;
+                      });
+                    },
+                    child: CustomerCard(
+                      project[index],
+                      isFirst: index == 0,
+                      isLast: index == project.length,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: SizedBox(
+                    height: 30,
+                    width: 30,
                     child: Material(
-                      elevation: 5,
-                      //  borderRadius: BorderRadius.circular(16),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          isDense: true,
-                          border: OutlineInputBorder(
-                            //      borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(width: 1.0, color: Colors.grey),
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(50),
+                      child: Center(
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            isAddConsumableOpen ? Icons.remove : Icons.add,
+                            color: Colors.white,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blueGrey),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.redAccent),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orangeAccent),
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          contentPadding: EdgeInsets.all(8.0),
-                          hintText: 'Suche...',
-                          suffixIcon: Icon(
-                            Icons.search,
-                            color: Colors.grey,
-                          ),
-                          suffixStyle: TextStyle(color: Colors.green),
+                          onPressed: () {
+                            setState(() {
+                              isAddConsumableOpen = !isAddConsumableOpen;
+                            });
+                          },
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),*/
-            const SizedBox(
-              height: 60,
-            ),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Name',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Visibility(
+                visible: isAddConsumableOpen,
+                child: Container(
+                  // alignment: Alignment.topLeft,
+                  height: MediaQuery.of(context).size.height / 3,
+                  width: screenWidth / 2,
+                  child: AddNewConsumable(
+                    onSave: () {
+                      print('save');
+                      //Todo: Call api for saving
+                      //If Edit was clicked (therefore index != -1), also pass which customer is to be edited
+                      //Might be a different apie then
+                      /*                  setState(() {
+                        _addNewConsumable();
+                      });*/
+                    },
+                    onCancel: () {
+                      print('cancel');
+                      setState(() {
+                        isAddConsumableOpen = !isAddConsumableOpen;
+                      });
+                    },
+                    project: editingProjectIndex != -1
+                        ? project[editingProjectIndex]
+                        : null, //If a project was clicked instead of the + icon, we pass the project and prefill the data
                   ),
-                  //      Spacer(),
-                  // Text('Beschreibung', style: TextStyle(color: Colors.grey)),
-                  // Text('Anzahl Projekte', style: TextStyle(color: Colors.grey)),
-                  // Text('Gesamtzeit', style: TextStyle(color: Colors.grey)),
-                  // Text('Materialkosten', style: TextStyle(color: Colors.grey)),
-                  //     Text('Umsatz', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-/*                  SizedBox(
-                    width: 140,
-                  ),*/
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            SizedBox(
-              width: screenWidth > 600 ? double.infinity : null,
-              height: MediaQuery.of(context).size.height - 300,
-              child: ListView.builder(
-                itemCount: project.length,
-                itemBuilder: (_, index) => CustomerCard(
-                  project[index],
-                  isFirst: index == 0,
-                  isLast: index == project.length,
                 ),
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
