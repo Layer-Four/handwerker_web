@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 // import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
 // import '../shared_view_widgets/symetric_button_widget.dart';
 
@@ -209,123 +211,169 @@ class _CardWidgetState extends State<CardWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        child: SizedBox(
-          height: 300,
-          child: Card(
-            surfaceTintColor: Colors.white,
-            elevation: 6,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
-                          controller: _leistungController,
-                          decoration: InputDecoration(
-                            hintText: 'Material',
-                            contentPadding: const EdgeInsets.all(10),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 0),
-                              borderRadius: BorderRadius.circular(
-                                  12), // Consistent rounded corners when focused
-                            ),
+  Widget build(BuildContext context) => SizedBox(
+        width: double.maxFinite,
+        height: 350,
+        child: Card(
+          surfaceTintColor: Colors.white,
+          elevation: 6,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.all(22.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          flex: 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'Material',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              TextField(
+                                controller: _leistungController,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Color.fromARGB(211, 245, 241, 241),
+                                  hintText: 'Material',
+                                  contentPadding: const EdgeInsets.all(10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 0),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
-                          controller: _mengeController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(10),
-                            labelText: 'Menge',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                  color: Colors.grey[200]!, width: 0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 0),
-                              borderRadius: BorderRadius.circular(
-                                  12), // Consistent rounded corners when focused
-                            ),
-                          ),
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
-                          controller: _measurementController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(10),
-                            labelText: 'Einheit',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                  color: Colors.grey[200]!, width: 0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 0),
-                              borderRadius: BorderRadius.circular(
-                                  16), // Consistent rounded corners when focused
-                            ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Align(
+                                alignment: Alignment.topLeft,
+                                child: Text('Menge',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 15),
+                              TextField(
+                                controller: _mengeController,
+                                decoration: InputDecoration(
+                                  filled: true, // Enable filling the TextField
+                                  fillColor: Color.fromARGB(211, 245, 241, 241),
+                                  hintText: 'Menge',
+                                  contentPadding: const EdgeInsets.all(10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 0),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
-                          controller: _preisController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(10),
-                            labelText: 'Preis/mengeneinheit',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                  color: Colors.grey[200]!, width: 0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 0),
-                              borderRadius: BorderRadius.circular(
-                                  12), // Consistent rounded corners when focused
-                            ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Align(
+                                alignment: Alignment.topLeft,
+                                child: Text('Einheit',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 15),
+                              TextField(
+                                controller: _measurementController,
+                                decoration: InputDecoration(
+                                  filled: true, // Enable filling the TextField
+                                  fillColor: Color.fromARGB(211, 245, 241, 241),
+                                  hintText: 'Einheit',
+                                  contentPadding: const EdgeInsets.all(10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 0),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 10),
+                        Flexible(
+                          flex: 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Align(
+                                alignment: Alignment.topLeft,
+                                child: Text('Preis/mengeneinheit',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 15),
+                              TextField(
+                                controller: _preisController,
+                                decoration: InputDecoration(
+                                  filled: true, // Enable filling the TextField
+                                  fillColor: Color.fromARGB(211, 245, 241, 241),
+                                  hintText: 'Presi/std',
+                                  contentPadding: const EdgeInsets.all(10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 0),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(22.0),
+                  child: Row(
+                    // This row will always be at the bottom
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
                         onPressed: () {
-                          // Clear the input fields
                           _leistungController.clear();
-                          _mengeController.clear();
-                          _measurementController.clear();
                           _preisController.clear();
                           widget.onHideCard();
-
-                          // Set isCardVisible to false to hide the card
-                          // setState(() {
-                          //   isCardVisible = false;
-                          // });
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
@@ -346,17 +394,17 @@ class _CardWidgetState extends State<CardWidget> {
                       TextButton(
                         onPressed: () {
                           final leistung = _leistungController.text;
-                          final menge = (_mengeController.text);
-                          final measurement = _measurementController.text;
+                          final menge = _mengeController.text;
+                          final meausurement = _measurementController.text;
                           final preis = _preisController.text;
                           if (leistung.isNotEmpty &&
-                              preis.isNotEmpty &&
-                              measurement.isNotEmpty &&
-                              menge.isNotEmpty) {
-                            widget.onSave(leistung, menge, measurement, preis);
+                              menge.isNotEmpty &&
+                              meausurement.isNotEmpty &&
+                              preis.isNotEmpty) {
+                            widget.onSave(leistung, menge, meausurement, preis);
                             _leistungController.clear();
-                            _mengeController.clear();
                             _measurementController.clear();
+                            _mengeController.clear();
                             _preisController.clear();
                           } else {
                             showDialog(
@@ -381,7 +429,8 @@ class _CardWidgetState extends State<CardWidget> {
                           backgroundColor: Colors.orange,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: BorderSide(color: Colors.grey, width: 1.0),
+                            side: const BorderSide(
+                                color: Colors.grey, width: 1.0),
                           ),
                         ),
                         child: const Text(
@@ -391,8 +440,8 @@ class _CardWidgetState extends State<CardWidget> {
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
