@@ -333,6 +333,8 @@ class _CardWidgetState extends State<CardWidget> {
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
+                            side: const BorderSide(
+                                color: Colors.grey, width: 1.0),
                           ),
                         ),
                         child: const Text(
@@ -362,7 +364,7 @@ class _CardWidgetState extends State<CardWidget> {
                               builder: (context) => AlertDialog(
                                 title: const Text('Error'),
                                 content: const Text(
-                                    'Please fill all fields and ensure valid entries.'),
+                                    'Bitte füllen Sie alle Felder aus'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
@@ -379,6 +381,7 @@ class _CardWidgetState extends State<CardWidget> {
                           backgroundColor: Colors.orange,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(color: Colors.grey, width: 1.0),
                           ),
                         ),
                         child: const Text(
@@ -455,19 +458,18 @@ class _EditableRowState extends State<EditableRow> {
     // Initialize currentPrice before using it to set up _priceController
     currentPrice =
         widget.originalPrice; // Set currentPrice from widget's originalPrice
-    _priceController = TextEditingController(text: currentPrice);
-
+    _priceController = TextEditingController(text: widget.originalPrice);
     // Listener for _priceController to append '€' if it's not already there
-    _priceController.addListener(() {
-      String text = _priceController.text;
-      if (!text.endsWith('€') && text.isNotEmpty) {
-        String newText = '$text€';
-        _priceController.value = _priceController.value.copyWith(
-          text: newText,
-          selection: TextSelection.collapsed(offset: newText.length - 1),
-        );
-      }
-    });
+    // _priceController.addListener(() {
+    //   String text = _priceController.text;
+    //   if (!text.endsWith('€') && text.isNotEmpty) {
+    //     String newText = '$text';
+    //     _priceController.value = _priceController.value.copyWith(
+    //       text: newText,
+    //       selection: TextSelection.collapsed(offset: newText.length - 1),
+    //     );
+    //   }
+    // });
 
     // Initialize currentTitle similar to how currentPrice was handled
     currentTitle = widget.originalTitle;
@@ -505,7 +507,6 @@ class _EditableRowState extends State<EditableRow> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                 ),
-                style: const TextStyle(fontWeight: FontWeight.w600),
                 readOnly: !isEditing,
               ),
             ),
@@ -516,7 +517,6 @@ class _EditableRowState extends State<EditableRow> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                 ),
-                style: const TextStyle(fontWeight: FontWeight.w600),
                 readOnly: !isEditing,
               ),
             ),
@@ -527,7 +527,6 @@ class _EditableRowState extends State<EditableRow> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                 ),
-                style: const TextStyle(fontWeight: FontWeight.w600),
                 readOnly: !isEditing,
               ),
             ),
@@ -539,7 +538,6 @@ class _EditableRowState extends State<EditableRow> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                 ),
-                style: const TextStyle(fontWeight: FontWeight.w600),
                 readOnly: !isEditing,
               ),
             ),
