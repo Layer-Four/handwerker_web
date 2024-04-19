@@ -434,7 +434,8 @@ class _CardWidgetState extends State<CardWidget> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                             side: const BorderSide(
-                                color: Colors.grey, width: 1.0),
+                                color: Color.fromARGB(255, 231, 226, 226),
+                                width: 1.0),
                           ),
                         ),
                         child: const Text(
@@ -481,8 +482,9 @@ class _CardWidgetState extends State<CardWidget> {
                           backgroundColor: Colors.orange,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: const BorderSide(
-                                color: Colors.grey, width: 1.0),
+                            side: BorderSide(
+                                color: Color.fromARGB(255, 231, 226, 226),
+                                width: 1.0),
                           ),
                         ),
                         child: const Text(
