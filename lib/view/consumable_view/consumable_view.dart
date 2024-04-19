@@ -223,7 +223,7 @@ class _CardWidgetState extends State<CardWidget> {
               children: [
                 Flexible(
                   child: Padding(
-                    padding: const EdgeInsets.all(22.0),
+                    padding: const EdgeInsets.only(top: 36),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -244,16 +244,29 @@ class _CardWidgetState extends State<CardWidget> {
                                 controller: _leistungController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: Color.fromARGB(211, 245, 241, 241),
+                                  fillColor: const Color.fromARGB(
+                                      211, 245, 241, 241), // Background color
                                   hintText: 'Material',
-                                  contentPadding: const EdgeInsets.all(10),
+                                  contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
                                     borderSide: const BorderSide(
                                         color: Colors.grey, width: 0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is enabled
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -276,17 +289,30 @@ class _CardWidgetState extends State<CardWidget> {
                               TextField(
                                 controller: _mengeController,
                                 decoration: InputDecoration(
-                                  filled: true, // Enable filling the TextField
-                                  fillColor: Color.fromARGB(211, 245, 241, 241),
+                                  filled: true,
+                                  fillColor: const Color.fromARGB(
+                                      211, 245, 241, 241), // Background color
                                   hintText: 'Menge',
-                                  contentPadding: const EdgeInsets.all(10),
+                                  contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
                                     borderSide: const BorderSide(
                                         color: Colors.grey, width: 0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is enabled
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -309,17 +335,30 @@ class _CardWidgetState extends State<CardWidget> {
                               TextField(
                                 controller: _measurementController,
                                 decoration: InputDecoration(
-                                  filled: true, // Enable filling the TextField
-                                  fillColor: Color.fromARGB(211, 245, 241, 241),
+                                  filled: true,
+                                  fillColor: const Color.fromARGB(
+                                      211, 245, 241, 241), // Background color
                                   hintText: 'Einheit',
-                                  contentPadding: const EdgeInsets.all(10),
+                                  contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
                                     borderSide: const BorderSide(
                                         color: Colors.grey, width: 0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is enabled
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -342,17 +381,30 @@ class _CardWidgetState extends State<CardWidget> {
                               TextField(
                                 controller: _preisController,
                                 decoration: InputDecoration(
-                                  filled: true, // Enable filling the TextField
-                                  fillColor: Color.fromARGB(211, 245, 241, 241),
-                                  hintText: 'Presi/std',
-                                  contentPadding: const EdgeInsets.all(10),
+                                  filled: true,
+                                  fillColor: const Color.fromARGB(
+                                      211, 245, 241, 241), // Background color
+                                  hintText: 'Preis/std',
+                                  contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
                                     borderSide: const BorderSide(
                                         color: Colors.grey, width: 0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is enabled
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -593,7 +645,7 @@ class _EditableRowState extends State<EditableRow> {
 
             // IconButton to handle cancel action
             IconButton(
-              icon: Icon(Icons.cancel),
+              icon: const Icon(Icons.cancel),
               onPressed: () {
                 setState(() {
                   // Check if currently editing
