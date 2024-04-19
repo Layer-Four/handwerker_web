@@ -1,364 +1,225 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:handwerker_web/view/users_view/role_row.dart';
+import '../customer_project_view/custom_project.dart';
+import 'edit_employee.dart';
+import '../shared_view_widgets/search_line_header.dart';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../shared_view_widgets/symetric_button_widget.dart';
+import '/constants/api/api.dart';
+import '/models/project_models/project_vm/project_vm.dart';
+import '/models/service_models/service_vm/service_vm.dart';
+import '/models/time_models/time_dm/time_dm.dart';
+import '/models/users_models/user_data_short/user_short.dart';
+import '/provider/data_provider/project_provders/project_vm_provider.dart';
+import '/provider/data_provider/service_provider/service_vm_provider.dart';
+import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
+import '/provider/user_provider/user_provider.dart';
 
-class UserBody extends ConsumerStatefulWidget {
-  const UserBody({super.key});
+class EmployeeAdministration extends ConsumerStatefulWidget {
+  //StatelessWidget
+  const EmployeeAdministration({super.key});
 
   @override
-  ConsumerState<UserBody> createState() => _UserBodyState();
+  _EmployeeAdministrationState createState() => _EmployeeAdministrationState();
 }
 
-class _UserBodyState extends ConsumerState<UserBody> {
-  final TextEditingController _searchController = TextEditingController();
+class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
+  //Call fetch infos here
+
+  //  const Text('Berichte', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+  bool isAddConsumableOpen = false;
+  int editingProjectIndex = -1;
+
   @override
   Widget build(BuildContext context) {
-    //   final listOfWorkers = ref.watch(userProvider).when(
-    //       data: (data) {
-    //         if (data.isNotEmpty) return data;
-    //         ref.read(userProvider.notifier).loadUsers();
-    //         return [];
-    //       },
-    //       error: (e, stt) {},
-    //       loading: () {});
-    final contentWidth = (MediaQuery.of(context).size.width);
-    final contentHeight = (MediaQuery.of(context).size.height / 10) * 7.5;
-    final headStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w600,
-        );
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: Column(
-        children: [
-          _searchHeader(context),
-          _tableHead(headStyle, contentWidth),
-          _buildUserRows(contentWidth, contentHeight), //listOfWorkers
-          _createUserButton(contentWidth, context),
-        ],
-      ),
-    );
-  }
+    //, WidgetRef ref
+    final screenWidth = MediaQuery.of(context).size.width;
+    //ref.read(customerProjectProvider.notifier).fetchInfos(); //todo: implement api
 
-  Container _createUserButton(double contentWidth, BuildContext context) => Container(
-        alignment: Alignment.topLeft,
-        width: contentWidth,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 8.0),
-          child: SymmetricButton(
-            color: Colors.orange,
-            text: '+',
-            onPressed: () {
-              showAdaptiveDialog(
-                context: context,
-                builder: (context) => const AddNewUser(),
-              );
-            },
-          ),
-        ),
-      );
-  SingleChildScrollView _buildUserRows(
-    double contentWidth,
-    double contentHeight,
-  ) {
-    List<dynamic>? listOfWorkers = [];
-    return SingleChildScrollView(
-      child: SizedBox(
-        width: (contentWidth / 10) * 7.5,
-        height: contentHeight - 600,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView.builder(
-              itemCount: listOfWorkers.length,
-              itemBuilder: (context, i) {
-                final user = listOfWorkers[i];
-                return Card(
-                  child: Container(
-                    height: 80,
-                    decoration: const BoxDecoration(color: Colors.white),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                            width: (contentWidth / 10) * 1.5,
-                            child: Center(
-                                child: Text('${user.firstName ?? ''} ${user.lastName ?? ''}'))),
-                        SizedBox(
-                          width: (contentWidth / 10) * 1.5,
-                          child: Center(
-                            child: Text(
-                              user.userRole,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                            width: (contentWidth / 10) * 1.5,
-                            child: Center(child: Text('${user.userID}'))),
-                        SizedBox(
-                          width: (contentWidth / 10) * 1.5,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    showAboutDialog(context: context);
-                                  },
-                                  icon: const Icon(Icons.edit_document)),
-                              // TODO: maybe a checkbox or something else when
-                              IconButton(
-                                  onPressed: () {
-                                    showAboutDialog(context: context);
-                                  },
-                                  icon: const Icon(Icons.visibility_sharp)),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              }),
-        ),
-      ),
-    );
-  }
+/*    late List<TextEditingController> _controllers;
+    late List<bool> _isEditing;
 
-  Padding _tableHead(TextStyle? headStyle, double contentWidth) => Padding(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text('Name', style: headStyle),
-            Text('Angestelltenrolle', style: headStyle),
-            Text('MitarbeiteID', style: headStyle),
-            SizedBox(
-              width: (contentWidth / 10) * 1.9,
-            )
-          ],
-        ),
-      );
+    void _addNewConsumable() {
+      setState(() {
+        final newController = TextEditingController();
+        _controllers.add(newController);
+        _isEditing.add(true);
+      });
+    }*/
 
-  Widget _searchHeader(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: SizedBox(
-          height: 50,
-          width: double.infinity,
-          child: Row(
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(75, 30, 65, 30),
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              Text(
-                '',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(fontWeight: FontWeight.w600, color: Colors.orange),
+              const SearchLineHeader(title: 'Kundenverwaltung'),
+              const SizedBox(
+                height: 60,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 100.0),
-                child: Card(
-                  elevation: 5,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 3,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
-                    child: TextField(
-                      controller: _searchController,
-                      onChanged: (value) {
-                        _searchController.text = value;
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                        suffixIcon: const Icon(Icons.search),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
+              const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Name',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      width: 50,
+                    ),
+                    Text(
+                      'Rolle',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              SizedBox(
+                width: screenWidth > 600 ? double.infinity : null,
+                height: MediaQuery.of(context).size.height / 2 - 100,
+                /*isAddConsumableOpen
+                    ? MediaQuery.of(context).size.height / 3
+                    : MediaQuery.of(context).size.height - 300,*/
+                child: ListView.builder(
+                  itemCount: project.length,
+                  itemBuilder:
+                      (_, index) => /*GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isAddConsumableOpen = !isAddConsumableOpen;
+                        editingProjectIndex = index;
+                      });
+                    },
+                    child:*/
+                          RoleRowCard(
+                    project[index],
+                    isFirst: index == 0,
+                    isLast: index == project.length,
+                  ),
+                  //       ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Material(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(50),
+                      child: Center(
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            isAddConsumableOpen ? Icons.remove : Icons.add,
+                            color: Colors.white,
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                          ),
+                          onPressed: () {
+                            setState(() {
+                              isAddConsumableOpen = !isAddConsumableOpen;
+                            });
+                          },
                         ),
                       ),
                     ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: isAddConsumableOpen,
+                child: Container(
+                  // alignment: Alignment.topLeft,
+                  height: MediaQuery.of(context).size.height / 3,
+                  width: screenWidth / 2,
+                  child: AddNewEmployee(
+                    onSave: () {
+                      print('save');
+                      //Todo: Call api for saving
+                      //If Edit was clicked (therefore index != -1), also pass which customer is to be edited
+                      //Might be a different apie then
+                      /*                  setState(() {
+                        _addNewConsumable();
+                      });*/
+                    },
+                    onCancel: () {
+                      print('cancel');
+                      setState(() {
+                        isAddConsumableOpen = !isAddConsumableOpen;
+                      });
+                    },
+                    project: editingProjectIndex != -1
+                        ? project[editingProjectIndex]
+                        : null, //If a project was clicked instead of the + icon, we pass the project and prefill the data
                   ),
                 ),
               )
             ],
           ),
         ),
-      );
-}
-
-class AddNewUser extends StatelessWidget {
-  const AddNewUser({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final contentWidth = MediaQuery.of(context).size.width;
-    final contentHeight = MediaQuery.of(context).size.height;
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: (contentWidth / 10) * 3, vertical: (contentHeight / 10) * 2.2),
-      child: Card(
-        elevation: 7,
-        child: Container(
-          color: Colors.white,
-          height: 600,
-          width: 450,
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const Text('Neues Mitarbeiter Erstellen'),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(4),
-                    child: Text('Name'),
-                  ),
-                  SizedBox(
-                    width: 400,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: const Color.fromARGB(255, 220, 217, 217),
-                            ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 5,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 220, 217, 217),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(4),
-                    child: Text('Maßeinheit'),
-                  ),
-                  SizedBox(
-                    width: 400,
-                    // TODO: change to DropDownButton Measurment
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: const Color.fromARGB(255, 220, 217, 217),
-                            ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 5,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 220, 217, 217),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(4),
-                    child: Text('Menge'),
-                  ),
-                  SizedBox(
-                    width: 400,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: const Color.fromARGB(255, 220, 217, 217),
-                            ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 5,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 220, 217, 217),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(4),
-                    child: Text("Preis in Cent's"),
-                  ),
-                  SizedBox(
-                    width: 400,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: const Color.fromARGB(255, 220, 217, 217),
-                            ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 5,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 220, 217, 217),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SymmetricButton(
-                  color: Colors.orange,
-                  text: 'Neues Material',
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
 }
+
+final List<CustomeProject> project = [
+  const CustomeProject(
+    'Kunde X',
+    'Austausch der\nHeizungsanlage',
+    false,
+    60000,
+    11,
+    '01.01.2024 - 01.06.2025',
+    1009,
+    1009,
+  ),
+  const CustomeProject(
+    'Kunde Y',
+    'Tisch gebaut',
+    true,
+    20000,
+    11,
+    '01.01.2024 - 01.06.2025',
+    2099,
+    9000,
+  ),
+  const CustomeProject(
+    'Kunde XY',
+    'Fenster eingesetzt',
+    true,
+    20000,
+    11,
+    '01.01.2024 - 01.06.2025',
+    2,
+    900000,
+  ),
+  const CustomeProject(
+    'Fio Bestmann',
+    'Steinloch 43\n22880, Hamburg',
+    true,
+    20000,
+    2,
+    '01.01.2024 - 01.06.2025',
+    2,
+    1009,
+  ),
+  const CustomeProject(
+    'Florian hensel',
+    'große Straße 54\n22449, Kassel',
+    true,
+    20.000,
+    2,
+    '01.01.2024 - 01.06.2025',
+    2,
+    122000,
+  ),
+];
