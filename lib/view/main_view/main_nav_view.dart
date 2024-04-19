@@ -4,7 +4,9 @@ import '../../provider/settings_provider/nav_provider.dart';
 import '../../routes/app_routes.dart';
 import '../consumable_view/consumable_view.dart';
 import '../customer_project_view/doc_screen.dart';
+import '../customers_view/doc_screen.dart';
 import '../home_view/home_body.dart';
+import '../project_management_view/doc_screen.dart';
 import '../time_entry_view/time_entry_view.dart';
 import '../users_view/user_view.dart';
 
@@ -28,7 +30,9 @@ class MainViewNavigator extends ConsumerWidget {
                 MainView.timeEntry => const TimeEntryBody(),
                 MainView.projectCustomer => const CustomerProjectMain(),
                 MainView.consumables => const ConsumableBody(),
-                MainView.users => const UserBody(),
+                MainView.customer => const CustomerBody(),
+                MainView.projectManagement => const ProjectManagementBody(),
+                MainView.users => const EmployeeAdministration(),
                 // _ => const TimeEntryBody(),
               }),
         ],
@@ -75,6 +79,14 @@ class MainViewNavigator extends ConsumerWidget {
                     const NavButtonWidget(
                       title: 'Verwaltung',
                       nextView: MainView.consumables,
+                    ),
+                    const NavButtonWidget(
+                      title: 'Kunden',
+                      nextView: MainView.customer,
+                    ),
+                    const NavButtonWidget(
+                      title: 'Projekte',
+                      nextView: MainView.projectManagement,
                     ),
                     const NavButtonWidget(
                       title: 'Mitarbeiter',
@@ -131,6 +143,14 @@ class MainViewNavigator extends ConsumerWidget {
                   subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
                 ),
                 const SizedBox(height: 20,),
+                const NavButtonWidget(
+                  title: 'Kunden',
+                  nextView: MainView.customer,
+                ),
+                const NavButtonWidget(
+                  title: 'Projekte',
+                  nextView: MainView.projectManagement,
+                ),
                 const NavButtonWidget(
                   title: 'Mitarbeiter',
                   nextView: MainView.users,

@@ -56,8 +56,7 @@ class _LoginViewState extends State<LoginView> {
                           Text(
                             'Nutzername',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: const Color.fromARGB(192, 255, 255, 255),
-                                fontWeight: FontWeight.bold),
+                                color: const Color.fromARGB(192, 255, 255, 255), fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             height: 3,
@@ -103,9 +102,7 @@ class _LoginViewState extends State<LoginView> {
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: isFocused
-                                            ? const Color.fromARGB(255, 224, 142, 60)
-                                            : Colors.transparent,
+                                        color: isFocused ? const Color.fromARGB(255, 224, 142, 60) : Colors.transparent,
                                       ),
                                     ),
                                   ),
@@ -129,8 +126,7 @@ class _LoginViewState extends State<LoginView> {
                           Text(
                             'Passwort',
                             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: const Color.fromARGB(192, 255, 255, 255),
-                                fontWeight: FontWeight.bold),
+                                color: const Color.fromARGB(192, 255, 255, 255), fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             height: 3,
@@ -154,7 +150,8 @@ class _LoginViewState extends State<LoginView> {
                                   //   isPass: true,
                                   textInputAction: TextInputAction.next,
                                   validator: (value) => value!.length < 6 ? 'Required' : null,
-                                  // obscureText: widget.isPass ? obscure : false,
+                                  //obscureText: widget.isPass ? obscure : false,
+                                  obscureText: true,
                                   controller: passCon,
                                   decoration: InputDecoration(
                                     filled: true,
@@ -171,15 +168,12 @@ class _LoginViewState extends State<LoginView> {
                                     contentPadding: const EdgeInsets.all(6),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
-                                      borderSide: const BorderSide(
-                                          color: Color.fromARGB(255, 224, 142, 60)),
+                                      borderSide: const BorderSide(color: Color.fromARGB(255, 224, 142, 60)),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                        color: isFocused
-                                            ? const Color.fromARGB(255, 224, 142, 60)
-                                            : Colors.transparent,
+                                        color: isFocused ? const Color.fromARGB(255, 224, 142, 60) : Colors.transparent,
                                       ),
                                     ),
                                   ),
@@ -208,8 +202,7 @@ class _LoginViewState extends State<LoginView> {
                               child: GestureDetector(
                                 child: const Text(
                                   'Passwort vergessen?',
-                                  style:
-                                      TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
                                 ),
                                 onTap: () {
                                   Navigator.of(context).pushNamed(AppRoutes.forgotPassword);
@@ -234,8 +227,7 @@ class _LoginViewState extends State<LoginView> {
                                   if (isOTP) {
                                     Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
                                   } else {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed(AppRoutes.viewScreen);
+                                    Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

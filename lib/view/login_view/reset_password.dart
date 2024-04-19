@@ -108,7 +108,7 @@ class _PasswordViewState extends State<PasswordView> {
                   ),
                   TextFormField(
                     keyboardType: TextInputType.text,
-                    obscureText: false,
+                    obscureText: true,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -173,9 +173,7 @@ class _PasswordViewState extends State<PasswordView> {
                             isVisable = !isVisable;
                           });
                         },
-                        icon: isVisable
-                            ? const Icon(Icons.visibility)
-                            : const Icon(Icons.visibility_off),
+                        icon: isVisable ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
                       ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -196,7 +194,7 @@ class _PasswordViewState extends State<PasswordView> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Passwort widerholen',
+                      'Passwort wiederholen',
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 16),
                     ),
                   ),
@@ -231,9 +229,7 @@ class _PasswordViewState extends State<PasswordView> {
                             isVisable = !isVisable;
                           });
                         },
-                        icon: isVisable
-                            ? const Icon(Icons.visibility)
-                            : const Icon(Icons.visibility_off),
+                        icon: isVisable ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
                       ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -264,8 +260,7 @@ class _PasswordViewState extends State<PasswordView> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: isPassword6Char ? Colors.green : Colors.white,
-                                  border:
-                                      Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
+                                  border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
                                 ),
                                 child: const Icon(
                                   Icons.check,
@@ -290,8 +285,7 @@ class _PasswordViewState extends State<PasswordView> {
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: isPasswordHas1Number ? Colors.green : Colors.white,
-                                      border: Border.all(
-                                          color: const Color.fromARGB(255, 189, 189, 189)),
+                                      border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
                                     ),
                                     child: const Icon(
                                       Icons.check,
@@ -318,8 +312,7 @@ class _PasswordViewState extends State<PasswordView> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: hasUppercase ? Colors.green : Colors.white,
-                                  border:
-                                      Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
+                                  border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
                                 ),
                                 child: const Icon(
                                   Icons.check,
@@ -344,8 +337,7 @@ class _PasswordViewState extends State<PasswordView> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: hasLowercase ? Colors.green : Colors.white,
-                                  border:
-                                      Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
+                                  border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
                                 ),
                                 child: const Icon(
                                   Icons.check,
@@ -370,8 +362,7 @@ class _PasswordViewState extends State<PasswordView> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: hasSpecialCharacters ? Colors.green : Colors.white,
-                                  border:
-                                      Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
+                                  border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
                                 ),
                                 child: const Icon(
                                   Icons.check,
