@@ -384,8 +384,8 @@ class _CardWidgetState extends State<CardWidget> {
                                   filled: true,
                                   fillColor: const Color.fromARGB(
                                       211, 245, 241, 241), // Background color
-                                  hintText: 'Preis/std',
-                                  contentPadding: const EdgeInsets.all(8),
+                                  hintText: 'Preis/mengeneinheit',
+                                  contentPadding: const EdgeInsets.all(10),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                     borderSide: BorderSide
@@ -482,7 +482,7 @@ class _CardWidgetState extends State<CardWidget> {
                           backgroundColor: Colors.orange,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: BorderSide(
+                            side: const BorderSide(
                                 color: Color.fromARGB(255, 231, 226, 226),
                                 width: 1.0),
                           ),

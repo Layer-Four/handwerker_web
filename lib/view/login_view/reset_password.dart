@@ -9,6 +9,9 @@ class PasswordView extends StatefulWidget {
 }
 
 class _PasswordViewState extends State<PasswordView> {
+  bool isFocused = false;
+  bool isOTP = false;
+  bool _isPasswordVisible = false;
   bool isVisable = true;
   bool isPasswordVisible = false;
 
@@ -17,6 +20,7 @@ class _PasswordViewState extends State<PasswordView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final newpasswordController = TextEditingController();
+  TextEditingController passCon = TextEditingController();
 
   bool isPassword6Char = false;
   bool isPasswordHas1Number = false;
@@ -81,201 +85,285 @@ class _PasswordViewState extends State<PasswordView> {
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    child: Image.asset('assets/images/img_anmelden.png'),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Passwort ändern',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Altes Passwort',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 16),
-                    ),
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(),
-                      ),
-                      filled: true,
-                    ).copyWith(
-                      contentPadding: const EdgeInsets.all(8),
-                      // isDense: true,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Neues Passwort',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 16),
-                    ),
-                  ),
-                  TextFormField(
-                    onChanged: (password) {
-                      setState(() {
-                        newpasswordController.text = password;
-                      });
-                      onPasswordChanged(password);
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return null;
-                      } else if (value.length < 6) {
-                        return 'Enter at least 6 Zeichen';
-                      }
-
-                      return null;
-                    },
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: newpasswordController,
-                    keyboardType: TextInputType.text,
-                    obscureText: isVisable ? true : false,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(),
-                      ),
-                      filled: true,
-                    ).copyWith(
-                      contentPadding: const EdgeInsets.all(8),
-                      isDense: true,
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isVisable = !isVisable;
-                          });
-                        },
-                        icon: isVisable ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: Colors.red),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 7,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Passwort wiederholen',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 7,
-                  ),
-                  TextFormField(
-                    onChanged: (password) {
-                      onPasswordChanged(password);
-                    },
-                    validator: (value) => value!.length < 6 ? 'Enter at least 6 characters' : null,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: passwordController,
-                    keyboardType: TextInputType.text,
-                    obscureText: isVisable ? true : false,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(),
-                      ),
-                      filled: true,
-                    ).copyWith(
-                      contentPadding: const EdgeInsets.all(8),
-                      isDense: true,
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isVisable = !isVisable;
-                          });
-                        },
-                        icon: isVisable ? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: Colors.red),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 7,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
+              child: Center(
+                child: SizedBox(
+                  width: 350,
+                  child: Column(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: isPassword6Char ? Colors.green : Colors.white,
-                                  border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
+                      const SizedBox(
+                        height: 60,
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child: Image.asset('assets/images/img_techtool.png'),
+                      ),
+                      const SizedBox(
+                        height: 90,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Passwort zurücksetzen',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                // You can add other style properties here as needed
+                              ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Altes Passwort',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(fontSize: 16),
+                        ),
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(),
+                          ),
+                          filled: true,
+                        ).copyWith(
+                          contentPadding: const EdgeInsets.all(8),
+                          // isDense: true,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const SizedBox(
+                        width: 350,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            'Neues Passwort',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            //  Theme.of(context)
+                            //     .textTheme
+                            //     .bodyLarge
+                            //     ?.copyWith(
+                            //         color: const Color.fromARGB(
+                            //             192, 255, 255, 255),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      Container(
+                        width: 350,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: const Color.fromARGB(255, 231, 226, 226),
+                        ),
+                        child: Focus(
+                          onFocusChange: (hasFocus) {
+                            setState(() {
+                              isFocused = hasFocus;
+                            });
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            height: isFocused ? 44 : 40,
+                            child: TextFormField(
+                              textInputAction: TextInputAction.next,
+                              validator: (value) =>
+                                  value!.length < 6 ? 'Required' : null,
+                              obscureText: !_isPasswordVisible,
+                              controller: passCon,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.transparent,
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordVisible =
+                                          !_isPasswordVisible; // Toggle visibility
+                                    });
+                                  },
+                                  icon: Icon(
+                                    _isPasswordVisible
+                                        ? Icons.visibility_off
+                                        : Icons
+                                            .visibility, // Toggle the icon based on the state
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
                                 ),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 15,
+                                contentPadding: const EdgeInsets.all(10),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(
+                                      color: Color.fromARGB(255, 224, 142, 60)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: isFocused
+                                        ? const Color.fromARGB(
+                                            255, 224, 142, 60)
+                                        : Colors.transparent,
+                                  ),
                                 ),
                               ),
-                              const SizedBox(width: 11),
-                              const Text('mindestens 6 Zeichen'),
-                            ],
+                            ),
                           ),
-                          const SizedBox(
-                            height: 9,
+                        ),
+                      ), // Align(
+                      //   alignment: Alignment.centerLeft,
+                      //   child: Text(
+                      //     'Neues Passwort',
+                      //     style: Theme.of(context)
+                      //         .textTheme
+                      //         .headlineSmall
+                      //         ?.copyWith(fontSize: 16),
+                      //   ),
+                      // ),
+                      // TextFormField(
+                      //   onChanged: (password) {
+                      //     setState(() {
+                      //       newpasswordController.text = password;
+                      //     });
+                      //     onPasswordChanged(password);
+                      //   },
+                      //   validator: (value) {
+                      //     if (value!.isEmpty) {
+                      //       return null;
+                      //     } else if (value.length < 6) {
+                      //       return 'Enter at least 6 Zeichen';
+                      //     }
+
+                      //     return null;
+                      //   },
+                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //   controller: newpasswordController,
+                      //   keyboardType: TextInputType.text,
+                      //   obscureText: isVisable ? true : false,
+                      //   decoration: InputDecoration(
+                      //     enabledBorder: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(8),
+                      //       borderSide: BorderSide.none,
+                      //     ),
+                      //     focusedBorder: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(8),
+                      //       borderSide: const BorderSide(),
+                      //     ),
+                      //     filled: true,
+                      //   ).copyWith(
+                      //     contentPadding: const EdgeInsets.all(8),
+                      //     isDense: true,
+                      //     suffixIcon: IconButton(
+                      //       onPressed: () {
+                      //         setState(() {
+                      //           isVisable = !isVisable;
+                      //         });
+                      //       },
+                      //       icon: isVisable
+                      //           ? const Icon(Icons.visibility)
+                      //           : const Icon(Icons.visibility_off),
+                      //     ),
+                      //     errorBorder: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(8),
+                      //       borderSide: const BorderSide(color: Colors.red),
+                      //     ),
+                      //     focusedErrorBorder: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(8),
+                      //       borderSide: const BorderSide(color: Colors.red),
+                      //     ),
+                      //   ),
+                      // ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Passwort wiederholen',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(fontSize: 16),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      TextFormField(
+                        onChanged: (password) {
+                          onPasswordChanged(password);
+                        },
+                        validator: (value) => value!.length < 6
+                            ? 'Enter at least 6 characters'
+                            : null,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        controller: passwordController,
+                        keyboardType: TextInputType.text,
+                        obscureText: isVisable ? true : false,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide.none,
                           ),
-                          Row(
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(),
+                          ),
+                          filled: true,
+                        ).copyWith(
+                          contentPadding: const EdgeInsets.all(8),
+                          isDense: true,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isVisable = !isVisable;
+                              });
+                            },
+                            icon: isVisable
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
@@ -284,8 +372,73 @@ class _PasswordViewState extends State<PasswordView> {
                                     width: 20,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: isPasswordHas1Number ? Colors.green : Colors.white,
-                                      border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
+                                      color: isPassword6Char
+                                          ? Colors.green
+                                          : Colors.white,
+                                      border: Border.all(
+                                        color: const Color.fromARGB(
+                                            255, 189, 189, 189),
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 11),
+                                  const Text('mindestens 6 Zeichen'),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 9,
+                              ),
+                              Row(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 20,
+                                        width: 20,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: isPasswordHas1Number
+                                              ? Colors.green
+                                              : Colors.white,
+                                          border: Border.all(
+                                              color: const Color.fromARGB(
+                                                  255, 189, 189, 189)),
+                                        ),
+                                        child: const Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                          size: 15,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 11,
+                                      ),
+                                      const Text('mindenstens 1 Nummer'),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 9,
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: hasUppercase
+                                          ? Colors.green
+                                          : Colors.white,
+                                      border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 189, 189, 189)),
                                     ),
                                     child: const Icon(
                                       Icons.check,
@@ -296,141 +449,131 @@ class _PasswordViewState extends State<PasswordView> {
                                   const SizedBox(
                                     width: 11,
                                   ),
-                                  const Text('mindenstens 1 Nummer'),
+                                  const Text('Großbuchstabe'),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 11,
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: hasLowercase
+                                          ? Colors.green
+                                          : Colors.white,
+                                      border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 189, 189, 189)),
+                                    ),
+                                    child: const Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 11,
+                                  ),
+                                  const Text('Kleinbuchstabe '),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 11,
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: hasSpecialCharacters
+                                          ? Colors.green
+                                          : Colors.white,
+                                      border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 189, 189, 189)),
+                                    ),
+                                    child: const Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 11,
+                                  ),
+                                  const Text('Sonderzeichen '),
                                 ],
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 9,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: hasUppercase ? Colors.green : Colors.white,
-                                  border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
-                                ),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 11,
-                              ),
-                              const Text('Großbuchstabe'),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 11,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: hasLowercase ? Colors.green : Colors.white,
-                                  border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
-                                ),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 11,
-                              ),
-                              const Text('Kleinbuchstabe '),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 11,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: hasSpecialCharacters ? Colors.green : Colors.white,
-                                  border: Border.all(color: const Color.fromARGB(255, 189, 189, 189)),
-                                ),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 11,
-                              ),
-                              const Text('Sonderzeichen '),
-                            ],
-                          ),
                         ],
+                      ),
+                      const SizedBox(
+                        height: 33,
+                      ),
+                      Center(
+                        child: SizedBox(
+                          width: 320,
+                          height: 44,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                // Check if the new password matches the confirmation password
+                                if (passwordController.text ==
+                                    newpasswordController.text) {
+                                  // Proceed with updating the password
+                                  // Replace this line with the appropriate logic to update the password
+                                  // For example, you might call an API to update the password
+                                  // Once the password is updated successfully, navigate to the login view
+                                  Navigator.pushReplacementNamed(
+                                      context, AppRoutes.anmeldeScreen);
+                                } else {
+                                  // Show error if passwords don't match
+                                }
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text(
+                                    'Die Passwörter stimmen nicht überein. Bitte versuche es erneut.',
+                                  ),
+                                ));
+                              } else {
+                                // Show error if form validation fails
+
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text(
+                                    ' Error .',
+                                  ),
+                                ));
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 224, 142, 60),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Speichern',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 33,
-                  ),
-                  Center(
-                    child: SizedBox(
-                      width: 235,
-                      height: 35,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            // Check if the new password matches the confirmation password
-                            if (passwordController.text == newpasswordController.text) {
-                              // Proceed with updating the password
-                              // Replace this line with the appropriate logic to update the password
-                              // For example, you might call an API to update the password
-                              // Once the password is updated successfully, navigate to the login view
-                              Navigator.pushReplacementNamed(context, AppRoutes.anmeldeScreen);
-                            } else {
-                              // Show error if passwords don't match
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              content: Text(
-                                'Die Passwörter stimmen nicht überein. Bitte versuche es erneut.',
-                              ),
-                            ));
-                          } else {
-                            // Show error if form validation fails
-
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              content: Text(
-                                ' Error .',
-                              ),
-                            ));
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          backgroundColor: const Color.fromARGB(255, 224, 142, 60),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Speichern',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
