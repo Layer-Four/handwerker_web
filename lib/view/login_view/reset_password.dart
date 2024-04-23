@@ -114,7 +114,7 @@ class _PasswordViewState extends State<PasswordView> {
                         ),
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 30,
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -125,6 +125,9 @@ class _PasswordViewState extends State<PasswordView> {
                               .headlineSmall
                               ?.copyWith(fontSize: 16),
                         ),
+                      ), 
+                       const SizedBox(
+                        height: 10,
                       ),
                       TextFormField(
                         keyboardType: TextInputType.text,
@@ -136,7 +139,7 @@ class _PasswordViewState extends State<PasswordView> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(),
+                            borderSide:BorderSide.none,
                           ),
                           filled: true,
                         ).copyWith(
@@ -144,9 +147,7 @@ class _PasswordViewState extends State<PasswordView> {
                           // isDense: true,
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                 
 
                       const SizedBox(
                         height: 20,
@@ -168,67 +169,69 @@ class _PasswordViewState extends State<PasswordView> {
                         ),
                       ),
                       const SizedBox(
-                        height: 3,
+                        height: 10,
                       ),
-                      Container(
-                        width: 350,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: const Color.fromARGB(255, 231, 226, 226),
-                        ),
-                        child: Focus(
-                          onFocusChange: (hasFocus) {
-                            setState(() {
-                              isFocused = hasFocus;
-                            });
-                          },
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            height: isFocused ? 44 : 40,
-                            child: TextFormField(
-                              textInputAction: TextInputAction.next,
-                              validator: (value) =>
-                                  value!.length < 6 ? 'Required' : null,
-                              obscureText: !_isPasswordVisible,
-                              controller: passCon,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.transparent,
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _isPasswordVisible =
-                                          !_isPasswordVisible; // Toggle visibility
-                                    });
-                                  },
-                                  icon: Icon(
-                                    _isPasswordVisible
-                                        ? Icons.visibility_off
-                                        : Icons
-                                            .visibility, // Toggle the icon based on the state
-                                    color: Theme.of(context).iconTheme.color,
-                                  ),
-                                ),
-                                contentPadding: const EdgeInsets.all(10),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 224, 142, 60)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
-                                    color: isFocused
-                                        ? const Color.fromARGB(
-                                            255, 224, 142, 60)
-                                        : Colors.transparent,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ), // Align(
+                      // Container(
+                      //   width: 350,
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(8),
+                      //     color: const Color.fromARGB(255, 231, 226, 226),
+                      //   ),
+                      //   child: Focus(
+                      //     onFocusChange: (hasFocus) {
+                      //       setState(() {
+                      //         isFocused = hasFocus;
+                      //       });
+                      //     },
+                      //     child: AnimatedContainer(
+                      //       duration: const Duration(milliseconds: 300),
+                      //       height: isFocused ? 44 : 40,
+                      //       child: TextFormField(
+                      //         textInputAction: TextInputAction.next,
+                      //         validator: (value) =>
+                      //             value!.length < 6 ? 'Required' : null,
+                      //         obscureText: !_isPasswordVisible,
+                      //         controller: passCon,
+                      //         decoration: InputDecoration(
+                      //           filled: true,
+                      //           fillColor: Colors.transparent,
+                      //           suffixIcon: IconButton(
+                      //             onPressed: () {
+                      //               setState(() {
+                      //                 _isPasswordVisible =
+                      //                     !_isPasswordVisible; // Toggle visibility
+                      //               });
+                      //             },
+                      //             icon: Icon(
+                      //               _isPasswordVisible
+                      //                   ? Icons.visibility_off
+                      //                   : Icons
+                      //                       .visibility, // Toggle the icon based on the state
+                      //               color: Theme.of(context).iconTheme.color,
+                      //             ),
+                      //           ),
+                      //           contentPadding: const EdgeInsets.all(10),
+                      //           focusedBorder: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(8),
+                      //             borderSide: const BorderSide(
+                      //                 color: Color.fromARGB(255, 224, 142, 60)),
+                      //           ),
+                      //           enabledBorder: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(12),
+                      //             borderSide: BorderSide(
+                      //               color: isFocused
+                      //                   ? const Color.fromARGB(
+                      //                       255, 224, 142, 60)
+                      //                   : Colors.transparent,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ), 
+                      
+                      // Align(
                       //   alignment: Alignment.centerLeft,
                       //   child: Text(
                       //     'Neues Passwort',
@@ -245,52 +248,57 @@ class _PasswordViewState extends State<PasswordView> {
                       //     });
                       //     onPasswordChanged(password);
                       //   },
-                      //   validator: (value) {
-                      //     if (value!.isEmpty) {
-                      //       return null;
-                      //     } else if (value.length < 6) {
-                      //       return 'Enter at least 6 Zeichen';
-                      //     }
 
-                      //     return null;
-                      //   },
-                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                      //   controller: newpasswordController,
-                      //   keyboardType: TextInputType.text,
-                      //   obscureText: isVisable ? true : false,
-                      //   decoration: InputDecoration(
-                      //     enabledBorder: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(8),
-                      //       borderSide: BorderSide.none,
-                      //     ),
-                      //     focusedBorder: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(8),
-                      //       borderSide: const BorderSide(),
-                      //     ),
-                      //     filled: true,
-                      //   ).copyWith(
-                      //     contentPadding: const EdgeInsets.all(8),
-                      //     isDense: true,
-                      //     suffixIcon: IconButton(
-                      //       onPressed: () {
-                      //         setState(() {
-                      //           isVisable = !isVisable;
-                      //         });
-                      //       },
-                      //       icon: isVisable
-                      //           ? const Icon(Icons.visibility)
-                      //           : const Icon(Icons.visibility_off),
-                      //     ),
-                      //     errorBorder: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(8),
-                      //       borderSide: const BorderSide(color: Colors.red),
-                      //     ),
-                      //     focusedErrorBorder: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(8),
-                      //       borderSide: const BorderSide(color: Colors.red),
-                      //     ),
-                      //   ),
-                      // ),
+                  TextFormField(
+  onChanged: (password) {
+    onPasswordChanged(password);
+  },
+  validator: (value) {
+    if (value!.isEmpty) {
+      return null;
+    } else if (value.length < 6) {
+      return 'bitte mindestens 6 Zeichen eingeben';
+    }
+    return null;
+  },
+  autovalidateMode: AutovalidateMode.onUserInteraction,
+  controller: newpasswordController,
+  keyboardType: TextInputType.text,
+  obscureText: isVisable ? true : false,
+  decoration: InputDecoration(
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide.none,
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide.none, 
+    ),
+    filled: true,
+  ).copyWith(
+    contentPadding: const EdgeInsets.all(12),
+    isDense: true,
+    suffixIcon: IconButton(
+      onPressed: () {
+        setState(() {
+          isVisable = !isVisable;
+        });
+      },
+      icon: isVisable
+          ? const Icon(Icons.visibility)
+          : const Icon(Icons.visibility_off),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(color: Color.fromARGB(255, 231, 226, 226)),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(color: Colors.red),
+    ),
+  ),
+),
+
                       const SizedBox(
                         height: 7,
                       ),
@@ -315,7 +323,7 @@ class _PasswordViewState extends State<PasswordView> {
                           onPasswordChanged(password);
                         },
                         validator: (value) => value!.length < 6
-                            ? 'Enter at least 6 characters'
+                            ? 'bitte 6 Zeichen eingeben'
                             : null,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         controller: passwordController,
@@ -328,8 +336,7 @@ class _PasswordViewState extends State<PasswordView> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(),
-                          ),
+  borderSide: BorderSide.none,                           ),
                           filled: true,
                         ).copyWith(
                           contentPadding: const EdgeInsets.all(8),
@@ -352,6 +359,7 @@ class _PasswordViewState extends State<PasswordView> {
                             borderRadius: BorderRadius.circular(8),
                             borderSide: const BorderSide(color: Colors.red),
                           ),
+
                         ),
                       ),
                       const SizedBox(
@@ -387,7 +395,7 @@ class _PasswordViewState extends State<PasswordView> {
                                     ),
                                   ),
                                   const SizedBox(width: 11),
-                                  const Text('mindestens 6 Zeichen'),
+                                  const Text('bitte 6 Zeichen eingeben'),
                                 ],
                               ),
                               const SizedBox(

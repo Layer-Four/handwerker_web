@@ -218,7 +218,7 @@ class _CardWidgetState extends State<CardWidget> {
           surfaceTintColor: Colors.white,
           elevation: 6,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
                 Flexible(
@@ -367,15 +367,15 @@ class _CardWidgetState extends State<CardWidget> {
                         ),
                         const SizedBox(width: 10),
                         Flexible(
-                          flex: 2,
+                          flex: 1,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               const Align(
                                 alignment: Alignment.topLeft,
-                                child: Text('Preis/mengeneinheit',
+                                child: Text('Preis/mengeneinheit',  overflow: TextOverflow.ellipsis,
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                        TextStyle(fontWeight: FontWeight.bold,)),
                               ),
                               const SizedBox(height: 15),
                               TextField(
