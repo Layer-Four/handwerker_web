@@ -10,119 +10,129 @@ class ForgetScreen extends ConsumerStatefulWidget {
 
 class _ForgetScreenState extends ConsumerState<ForgetScreen> {
   final TextEditingController _userNameController = TextEditingController();
+  bool obscureText = true;
+
   @override
-  Widget build(BuildContext context) {
-    bool obscure = true;
-    // bool isFocused = false;
-    return Material(
-      child: Scaffold(
-        appBar: AppBar(),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 40,
-                  child: Image.asset(
-                    'assets/images/img_techtool.png',
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'bitte benachrichtige den Adminstrator',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                // !start Textformfield
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black, width: 2), // Add border here
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: const Color.fromARGB(192, 255, 255, 255),
-                    ),
-                    child: Focus(
-                      onFocusChange: (hasFocus) {
-                        setState(() {
-                          // isFocused = hasFocus;
-                        });
-                      },
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        height:
-                            //  isFocused ? 40 :
-                            35,
-                        child: TextFormField(
-                          textInputAction: TextInputAction.next,
-                          validator: (value) => value!.length < 6 ? 'Required' : null,
-                          obscureText: obscure,
-                          controller: _userNameController,
-                          decoration: InputDecoration(
-                            hintText: 'Nutzername',
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            filled: true,
-                            fillColor: Colors.transparent,
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    obscure = !obscure;
-                                  });
-                                },
-                                icon: const Icon(Icons.remove_red_eye)),
-                            contentPadding: const EdgeInsets.all(6),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Color.fromARGB(255, 224, 142, 60)),
+  Widget build(BuildContext context) => Material(
+        child: Scaffold(
+          appBar: AppBar(),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Center(
+                child: SizedBox(
+                  width: 350,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 60),
+                      SizedBox(
+                        height: 46,
+                        child: Image.asset('assets/images/img_techtool.png'),
+                      ),
+                      const SizedBox(height: 90),
+                      SizedBox(
+                        width: 350,
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            child: const Text(
+                              'Passwort zurücksetzen',
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.w700,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Colors.orange,
+                                decorationThickness: 2.0,
+                              ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                color:
-                                    // isFocused
-                                    // ? const Color.fromARGB(255, 224, 142, 60)                                    :
-                                    Colors.transparent,
+                            onTap: () {
+                              // Navigator.of(context).pushNamed(AppRoutes.forgotPassword);
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      const SizedBox(
+                        width: 355,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            'Mandantennamme',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 11),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: const Color.fromARGB(255, 231, 226, 226),
+                        ),
+                        child: Focus(
+                          onFocusChange: (hasFocus) {
+                            setState(() {
+                              // Use this to update UI on focus changes if needed
+                            });
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            height: 40,
+                            child: TextFormField(
+                              textInputAction: TextInputAction.next,
+                              validator: (value) =>
+                                  value!.length < 6 ? 'Required' : null,
+                              obscureText: obscureText,
+                              controller: _userNameController,
+                              decoration: InputDecoration(
+                                // hintStyle: const TextStyle(color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.transparent,
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      obscureText = !obscureText;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    obscureText
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.all(6),
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  // child: UserAndPasswordField(
-                  //   hintText: 'Nutzername',
-                  //   controller: emailCon,
-                  // ),
-                ),
-                // !end Textrformfield
-                const SizedBox(
-                  height: 16,
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    backgroundColor: const Color.fromARGB(255, 224, 142, 60),
-                    padding: const EdgeInsets.all(10),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Senden'.toUpperCase(),
-                      style: const TextStyle(color: Colors.black),
-                    ),
+                      const SizedBox(height: 140),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          backgroundColor:
+                              const Color.fromARGB(255, 224, 142, 60),
+                          padding: const EdgeInsets.all(10),
+                          fixedSize: const Size.fromHeight(40),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Layer Four kontaktieren',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
