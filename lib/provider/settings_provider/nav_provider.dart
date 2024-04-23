@@ -18,6 +18,8 @@ extension MainViewExtennsion on MainView {
         'Verwaltung' => MainView.consumables,
         'Kunden' => MainView.customer,
         'Projekte' => MainView.projectManagement,
+        'Material' => MainView.consumables,
+        //'Leistungen' => MainView.,
         'Mitarbeiter' => MainView.users,
         'Log Out' => null,
         _ => null,
