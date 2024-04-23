@@ -24,7 +24,7 @@ class MainViewNavigator extends ConsumerWidget {
         children: [
           _navToolbar(context),
           SizedBox(
-              width: width <= 1000 ? width - 50 : width - width / 5,
+              width: width <= 1000 ? width - 50 : width - width / 7,
               child: switch (view) {
                 MainView.home => const HomeBody(),
                 MainView.timeEntry => const TimeEntryBody(),
@@ -50,13 +50,13 @@ class MainViewNavigator extends ConsumerWidget {
               builder: (context) => Container(
                 margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width / 100) * 80),
                 height: double.infinity,
-                width: MediaQuery.of(context).size.width / 5,
+                width: MediaQuery.of(context).size.width / 7,
                 color: const Color.fromARGB(255, 208, 207, 207),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      padding: const EdgeInsets.symmetric(vertical: 35),
                       child: SizedBox(
                         height: 40,
                         child: Image.asset(
@@ -67,35 +67,51 @@ class MainViewNavigator extends ConsumerWidget {
                     const NavButtonWidget(
                       title: 'Home',
                       nextView: MainView.home,
+                      width: 200,
+                      height: 60,
                     ),
                     const NavButtonWidget(
                       title: 'Zeiteintrag',
                       nextView: MainView.timeEntry,
+                      width: 200,
+                      height: 60,
                     ),
                     const NavButtonWidget(
                       title: 'Berichte',
                       nextView: MainView.projectCustomer,
+                      width: 200,
+                      height: 60,
                     ),
                     const NavButtonWidget(
                       title: 'Verwaltung',
                       nextView: MainView.consumables,
+                      width: 200,
+                      height: 150,
                     ),
                     const NavButtonWidget(
                       title: 'Kunden',
                       nextView: MainView.customer,
+                      width: 200,
+                      height: 60,
                     ),
                     const NavButtonWidget(
                       title: 'Projekte',
                       nextView: MainView.projectManagement,
+                      width: 200,
+                      height: 60,
                     ),
                     const NavButtonWidget(
                       title: 'Mitarbeiter',
                       nextView: MainView.users,
+                      width: 200,
+                      height: 60,
                     ),
                     const Spacer(),
                     const NavButtonWidget(
                       title: 'Log Out',
                       nextView: MainView.projectCustomer,
+                      width: 200,
+                      height: 60,
                     ),
                   ],
                 ),
@@ -105,13 +121,13 @@ class MainViewNavigator extends ConsumerWidget {
           )
         : Container(
             height: double.infinity,
-            width: MediaQuery.of(context).size.width / 5,
+            width: MediaQuery.of(context).size.width / 7,
             color: const Color.fromARGB(255, 208, 207, 207),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 50),
+                  padding: const EdgeInsets.symmetric(vertical: 35),
                   child: SizedBox(
                     height: 40,
                     child: Image.asset(
@@ -123,45 +139,60 @@ class MainViewNavigator extends ConsumerWidget {
                   title: 'Home',
                   nextView: MainView.home,
                   icon: Icons.home_outlined,
+                  width: 200,
+                  height: 100,
                 ),
                 const NavButtonWidget(
                   title: 'Zeiteintrag',
                   nextView: MainView.timeEntry,
                   icon: Icons.access_time,
+                  width: 200,
+                  height: 100,
                 ),
                 const NavButtonWidget(
-                  title: 'Kunden/Projekte',
+                  title: 'Berichte',
                   nextView: MainView.projectCustomer,
                   icon: Icons.signal_cellular_alt_sharp,
                   subcategories: ['Kunden/Projekte'],
+                  width: 200,
+                  height: 100,
                 ),
-                const SizedBox(height: 20,),
                 const NavButtonWidget(
-                  title: 'Material',
+                  title: 'Verwaltung',
                   nextView: MainView.consumables,
                   icon: Icons.folder_open,
-                  subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
+                  subcategories: ['Projekte', 'Material', 'Kunden', 'Leistungen'],
+                  width: 200,
+                  height: 200,
+                  subcategoryRoutes: [AppRoutes.projectAdmin, '/verwaltung/material', '/verwaltung/kunden', '/verwaltung/leistungen'], // Pass the route strings
                 ),
-                const SizedBox(height: 20,),
                 const NavButtonWidget(
                   title: 'Kunden',
                   nextView: MainView.customer,
+                  width: 200,
+                  height: 100,
                 ),
                 const NavButtonWidget(
                   title: 'Projekte',
                   nextView: MainView.projectManagement,
+                  width: 200,
+                  height: 100,
                 ),
                 const NavButtonWidget(
                   title: 'Mitarbeiter',
                   nextView: MainView.users,
                   icon: Icons.people_outline,
                   subcategories: ['Rechte'],
+                  width: 200,
+                  height: 100,
                 ),
                 const Spacer(),
                 const NavButtonWidget(
                   title: 'Log Out',
                   // nextView: MainView.docs,
                   // color: Colors.teal,
+                  width: 200,
+                  height: 100,
                 ),
               ],
             ),
@@ -175,14 +206,21 @@ class NavButtonWidget extends ConsumerWidget {
   final IconData? icon;
   final List<String>? subcategories;
   final Color? color;
+  final double width; // Custom width for container
+  final double height; // Custom height for container
+  final List<String>? subcategoryRoutes; // List of route strings for subcategories
+
   const NavButtonWidget({
-    super.key,
+    Key? key,
     required this.title,
     this.nextView,
     this.icon,
     this.subcategories,
     this.color,
-  });
+    required this.width, // Accept width as a parameter
+    required this.height, // Accept height as a parameter
+    this.subcategoryRoutes, // Accept list of route strings as a parameter
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
@@ -194,17 +232,18 @@ class NavButtonWidget extends ConsumerWidget {
       onTap: () {
         if (nextView != null) {
           ref.read(mainNavProvider.notifier).state = nextView!;
-          return;
+        } else if (subcategoryRoutes != null && subcategoryRoutes!.isNotEmpty) {
+          // Handle navigation for subcategories directly by pushing named routes
+          Navigator.of(context).pushNamed(subcategoryRoutes![0]); // Navigate to the first subcategory for now
         } else {
           Navigator.of(context).pushReplacementNamed(AppRoutes.initialRoute);
-          return;
         }
       },
       child: Container(
         color: color,
-        width: double.infinity,
-        height: isCurrent ? 130 : 100,
-        margin: const EdgeInsets.all(24),
+        width: width,
+        height: height,
+        margin: const EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -212,9 +251,13 @@ class NavButtonWidget extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  icon, // Display the icon
-                  color: isCurrent ? Colors.orange : Colors.black, // Apply color based on current state
-                  size: isCurrent ? 30 : 24, // Adjust size based on current state
+                  icon ?? Icons.home,
+                  // Display the icon, default to home icon if not provided
+                  color: isCurrent ? Colors.orange : Colors.black,
+                  // Apply color based on current state
+                  size: isCurrent
+                      ? 30
+                      : 24, // Adjust size based on current state
                 ),
                 const SizedBox(width: 8), // Add spacing between icon and title
                 Text(
@@ -230,21 +273,31 @@ class NavButtonWidget extends ConsumerWidget {
             if (subcategories != null)
               Row(
                 children: [
-                  SizedBox(width: 32), // Adjust as needed for indentation
+                  SizedBox(width: 32),
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: subcategories!.map((subcategory) => Padding(
-                        padding: const EdgeInsets.only(left: 24),
-                        child: Text(
-                          subcategory,
-                          style: TextStyle(
-                            color: isCurrent ? Colors.orange : Colors.black,
-                            fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
-                            fontSize: isCurrent ? 18 : 16,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: List.generate(
+                        subcategories!.length,
+                            (index) => GestureDetector(
+                          onTap: () {
+                            if (index < subcategoryRoutes!.length) {
+                              Navigator.of(context).pushNamed(subcategoryRoutes![index]);
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 1),
+                            child: Text(
+                              subcategories![index],
+                              style: TextStyle(
+                                color: isCurrent ? Colors.orange : Colors.black,
+                                fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
+                                fontSize: isCurrent ? 18 : 16,
+                              ),
+                            ),
                           ),
                         ),
-                      )).toList(),
+                      ),
                     ),
                   ),
                 ],
