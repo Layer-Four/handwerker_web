@@ -15,7 +15,7 @@ import '/provider/data_provider/project_provders/project_vm_provider.dart';
 import '/provider/data_provider/service_provider/service_vm_provider.dart';
 import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '/provider/user_provider/user_provider.dart';
-import 'edit_customer.dart';
+import 'edit_project.dart';
 
 class ProjectManagementBody extends ConsumerStatefulWidget {
   //StatelessWidget
@@ -29,7 +29,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
   //Call fetch infos here
 
   //  const Text('Berichte', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-  bool isAddConsumableOpen = false;
+  bool isAddNewProject = false;
   int editingProjectIndex = -1;
 
   @override
@@ -78,7 +78,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
               SizedBox(
                 width: screenWidth > 600 ? double.infinity : null,
                 height: MediaQuery.of(context).size.height / 2 - 100,
-                /*isAddConsumableOpen
+                /*isAddNewProject
                     ? MediaQuery.of(context).size.height / 3
                     : MediaQuery.of(context).size.height - 300,*/
                 child: ListView.builder(
@@ -86,7 +86,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                   itemBuilder: (_, index) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        isAddConsumableOpen = !isAddConsumableOpen;
+                        isAddNewProject = !isAddNewProject;
                         editingProjectIndex = index;
                       });
                     },
@@ -112,12 +112,12 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                         child: IconButton(
                           padding: EdgeInsets.zero,
                           icon: Icon(
-                            isAddConsumableOpen ? Icons.remove : Icons.add,
+                            isAddNewProject ? Icons.remove : Icons.add,
                             color: Colors.white,
                           ),
                           onPressed: () {
                             setState(() {
-                              isAddConsumableOpen = !isAddConsumableOpen;
+                              isAddNewProject = !isAddNewProject;
                             });
                           },
                         ),
@@ -127,12 +127,12 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                 ),
               ),
               Visibility(
-                visible: isAddConsumableOpen,
+                visible: isAddNewProject,
                 child: Container(
                   // alignment: Alignment.topLeft,
                   height: MediaQuery.of(context).size.height / 3,
                   width: screenWidth / 2,
-                  child: AddNewConsumable(
+                  child: AddNewProject(
                     onSave: () {
                       print('save');
                       //Todo: Call api for saving
@@ -145,7 +145,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                     onCancel: () {
                       print('cancel');
                       setState(() {
-                        isAddConsumableOpen = !isAddConsumableOpen;
+                        isAddNewProject = !isAddNewProject;
                       });
                     },
                     project: editingProjectIndex != -1
@@ -164,7 +164,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
 
 final List<CustomeProject> project = [
   const CustomeProject(
-    'Kunde X',
+    'Project X',
     'Austausch der\nHeizungsanlage',
     false,
     60000,
@@ -174,7 +174,7 @@ final List<CustomeProject> project = [
     1009,
   ),
   const CustomeProject(
-    'Kunde Y',
+    'Project Y',
     'Tisch gebaut',
     true,
     20000,
@@ -184,7 +184,7 @@ final List<CustomeProject> project = [
     9000,
   ),
   const CustomeProject(
-    'Kunde XY',
+    'Experiment R',
     'Fenster eingesetzt',
     true,
     20000,
@@ -193,7 +193,7 @@ final List<CustomeProject> project = [
     2,
     900000,
   ),
-  const CustomeProject(
+/*  const CustomeProject(
     'Fio Bestmann',
     'Steinloch 43\n22880, Hamburg',
     true,
@@ -212,5 +212,5 @@ final List<CustomeProject> project = [
     '01.01.2024 - 01.06.2025',
     2,
     122000,
-  ),
+  ),*/
 ];

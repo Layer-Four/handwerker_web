@@ -56,26 +56,44 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SearchLineHeader(title: 'Kundenverwaltung'),
+              const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
               const SizedBox(
                 height: 60,
               ),
               const Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'Name',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Expanded(
+                      //Expandeds here to make sure the headers are aligned with the context below
+                      flex: 3,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Name',
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Rolle',
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    Text(
-                      'Rolle',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
+                    Expanded(flex: 3, child: SizedBox()),
+                    Expanded(
+                        flex: 1,
+                        child: Text(
+                          '',
+                        )),
                   ],
                 ),
               ),
@@ -107,7 +125,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                   //       ),
                 ),
               ),
-              Container(
+/*              Container(
                 alignment: Alignment.topLeft,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
@@ -134,7 +152,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                     ),
                   ),
                 ),
-              ),
+              ),*/
               Visibility(
                 visible: isAddConsumableOpen,
                 child: Container(
