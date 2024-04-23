@@ -91,7 +91,7 @@ class MainViewNavigator extends ConsumerWidget {
                 subcategories: ['Projekte', 'Kunden', 'Material', 'Leistungen'],
                 subcategoryMainViews: [MainView.projectManagement, MainView.customer],
               ),
-              const NavButtonWidget(
+              /*const NavButtonWidget(
                 title: 'Kunden',
                 nextView: MainView.customer,
                 width: 200,
@@ -102,7 +102,7 @@ class MainViewNavigator extends ConsumerWidget {
                 nextView: MainView.projectManagement,
                 width: 200,
                 height: 60,
-              ),
+              ),*/
               const NavButtonWidget(
                 title: 'Mitarbeiter',
                 nextView: MainView.users,
@@ -169,7 +169,7 @@ class MainViewNavigator extends ConsumerWidget {
             height: 200,
             subcategoryMainViews: [MainView.projectManagement, MainView.customer],
           ),
-          const NavButtonWidget(
+          /*const NavButtonWidget(
             title: 'Kunden',
             nextView: MainView.customer,
             width: 200,
@@ -180,7 +180,7 @@ class MainViewNavigator extends ConsumerWidget {
             nextView: MainView.projectManagement,
             width: 200,
             height: 100,
-          ),
+          ),*/
           const NavButtonWidget(
             title: 'Mitarbeiter',
             nextView: MainView.users,
@@ -212,6 +212,7 @@ class NavButtonWidget extends ConsumerWidget {
   final Color? color;
   final double width;
   final double height;
+  final bool isMainCategory; // Indicates whether it's a main category or not
 
   const NavButtonWidget({
     Key? key,
@@ -223,30 +224,30 @@ class NavButtonWidget extends ConsumerWidget {
     this.color,
     required this.width,
     required this.height,
+    this.isMainCategory = true, // Default is true
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSelected = subcategoryMainViews != null
-        ? ref.watch(mainNavProvider) == subcategoryMainViews!.first || subcategoryMainViews!.contains(ref.watch(mainNavProvider))
-        : nextView != null
-        ? ref.watch(mainNavProvider) == nextView
-        : false;
+    final currentView = ref.watch(mainNavProvider);
+    final isSelected = nextView != null
+        ? currentView == nextView
+        : subcategoryMainViews != null &&
+        subcategoryMainViews!.contains(currentView);
 
-
-
+    final isSubCategory = !isMainCategory && isSelected; // Check if it's a subcategory
 
     return GestureDetector(
       onTap: () {
         if (nextView != null) {
           ref.read(mainNavProvider.notifier).state = nextView!;
-        } else if (subcategoryMainViews != null && subcategoryMainViews!.isNotEmpty) {
-          // Update the state to indicate the selected subcategory
-          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first;
+        } else if (isMainCategory) {
+          // Update the state only if it's a main category
+          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first!;
         }
       },
       child: Container(
-        color: color,
+        color: isSubCategory ? Colors.orange : (isSelected ? Colors.transparent : color),
         width: width,
         height: height,
         margin: const EdgeInsets.all(4),
@@ -258,14 +259,14 @@ class NavButtonWidget extends ConsumerWidget {
               children: [
                 Icon(
                   icon ?? Icons.home,
-                  color: isSelected ? Colors.orange : Colors.black,
+                  color: isSubCategory || isSelected ? Colors.orange : Colors.black,
                   size: 24,
                 ),
                 const SizedBox(width: 8),
                 Text(
                   title,
                   style: TextStyle(
-                    color: isSelected ? Colors.orange : Colors.black,
+                    color: isSubCategory || isSelected ? Colors.orange : Colors.black,
                     fontWeight: FontWeight.w500,
                     fontSize: 19,
                   ),
@@ -285,15 +286,15 @@ class NavButtonWidget extends ConsumerWidget {
                           padding: const EdgeInsets.only(left: 1),
                           child: TextButton(
                             onPressed: () {
-                              if (subcategoryMainViews != null && index < subcategoryMainViews!.length) {
-                                // Update the state to indicate the selected subcategory
+                              // Update the state only if it's a subcategory
+                              if (isMainCategory && subcategoryMainViews != null && index < subcategoryMainViews!.length) {
                                 ref.read(mainNavProvider.notifier).state = subcategoryMainViews![index];
                               }
                             },
                             child: Text(
                               subcategories![index],
                               style: TextStyle(
-                                color: isSelected ? Colors.orange : Colors.black,
+                                color: isSubCategory || isSelected ? Colors.orange : Colors.black,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,
                               ),
