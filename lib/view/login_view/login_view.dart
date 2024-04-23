@@ -81,60 +81,65 @@ class _LoginViewState extends State<LoginView> {
                       const SizedBox(
                         height: 3,
                       ),
+Container(
+  width: 355,
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(8),
+    color: const Color.fromARGB(255, 231, 226, 226),
+  ),
+  child: Focus(
+    onFocusChange: (hasFocus) {
+      setState(() {
+        isFocused = hasFocus;
+      });
+    },
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: isFocused ? 44 : 40,
+      child: TextFormField(
+        textInputAction: TextInputAction.next,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return null;
+          } else if (value.length < 3) {
+            return 'Bitte eine gültige Mandatenname eingeben';
+          }
+          return null;
+        },
+        controller: emailCon,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.transparent,
+          contentPadding: const EdgeInsets.all(10),  // Ensure uniform padding
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color.fromARGB(255, 224, 142, 60),
+              width: 2,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: isFocused ? const Color.fromARGB(255, 224, 142, 60) : Colors.transparent,
+              width: 1,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide:  BorderSide.none
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Colors.red, width: 2),
+          ),
+          errorStyle: const TextStyle(height: 0.5),  // Adjust as needed
+        ),
+      ),
+    ),
+  ),
+),
 
-                      Container(
-                        width: 355,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: const Color.fromARGB(255, 231, 226, 226),
-                        ),
-                        child: Focus(
-                          onFocusChange: (hasFocus) {
-                            setState(() {
-                              isFocused = hasFocus;
-                            });
-                          },
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            height: isFocused ? 44 : 40,
-                            child: TextFormField(
-                              textInputAction: TextInputAction.next,
-                              validator: (value) =>
-                                  value!.length < 6 ? 'Required' : null,
-                              // obscureText: widget.isPass ? obscure : false,
-                              controller: emailCon,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.transparent,
-                                // suffixIcon: widget.isPass
-                                //     ? IconButton(
-                                //         onPressed: () {
-                                //           setState(() {
-                                //             obscure = !obscure;
-                                //           });
-                                //         },
-                                //         icon: const Icon(Icons.remove_red_eye))
-                                //     : const SizedBox(),
-                                contentPadding: const EdgeInsets.all(6),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 224, 142, 60),
-                                    )),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
-                                    color: isFocused
-                                        ? const Color.fromARGB(
-                                            255, 224, 142, 60)
-                                        : Colors.transparent,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                       // UserAndPasswordField(
                       //   controller: emailCon,
                       //   validator: (value) {
@@ -184,8 +189,14 @@ class _LoginViewState extends State<LoginView> {
                             height: isFocused ? 44 : 40,
                             child: TextFormField(
                               textInputAction: TextInputAction.next,
-                              validator: (value) =>
-                                  value!.length < 6 ? 'Required' : null,
+                       validator: (value) {
+          if (value!.isEmpty) {
+            return null;
+          } else if (value.length < 6) {
+            return 'Bitte eine gültige Passwort eingeben';
+          }
+          return null;
+        },
                               obscureText: !_isPasswordVisible,
                               controller: passCon,
                               decoration: InputDecoration(
@@ -220,7 +231,10 @@ class _LoginViewState extends State<LoginView> {
                                             255, 224, 142, 60)
                                         : Colors.transparent,
                                   ),
-                                ),
+                                ), errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide:  BorderSide.none
+          ),
                               ),
                             ),
                           ),

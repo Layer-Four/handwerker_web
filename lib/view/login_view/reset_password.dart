@@ -12,6 +12,7 @@ class _PasswordViewState extends State<PasswordView> {
   bool isFocused = false;
   bool isOTP = false;
   bool _isPasswordVisible = false;
+  bool _isOldPasswordVisible=false;
   bool isVisable = true;
   bool isPasswordVisible = false;
 
@@ -118,14 +119,16 @@ class _PasswordViewState extends State<PasswordView> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Altes Passwort',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(fontSize: 16),
-                        ),
-                      ), 
+                      child: Text(
+                            'Altes Passwort',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            //  Theme.of(context)
+                            //     .textTheme
+                            //     .bodyLarge
+                            //     ?.copyWith(
+                            //         color: const Color.fromARGB(
+                            //             192, 255, 255, 255),
+                          ),),
                        const SizedBox(
                         height: 10,
                       ),
@@ -143,8 +146,8 @@ class _PasswordViewState extends State<PasswordView> {
                           ),
                           filled: true,
                         ).copyWith(
-                          contentPadding: const EdgeInsets.all(8),
-                          // isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          isDense: true,
                         ),
                       ),
                  
@@ -264,7 +267,7 @@ class _PasswordViewState extends State<PasswordView> {
   autovalidateMode: AutovalidateMode.onUserInteraction,
   controller: newpasswordController,
   keyboardType: TextInputType.text,
-  obscureText: isVisable ? true : false,
+  obscureText: _isOldPasswordVisible ? true : false,
   decoration: InputDecoration(
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
@@ -281,10 +284,10 @@ class _PasswordViewState extends State<PasswordView> {
     suffixIcon: IconButton(
       onPressed: () {
         setState(() {
-          isVisable = !isVisable;
+          _isOldPasswordVisible = !_isOldPasswordVisible;
         });
       },
-      icon: isVisable
+      icon: _isOldPasswordVisible
           ? const Icon(Icons.visibility)
           : const Icon(Icons.visibility_off),
     ),
@@ -309,10 +312,7 @@ class _PasswordViewState extends State<PasswordView> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Passwort wiederholen',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(fontSize: 16),
+                            style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                       const SizedBox(
