@@ -103,13 +103,14 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                       child: Text('Material',
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.bold)),
-                    ),
+                    ),                    SizedBox(width: 22),
+
                     Expanded(
                       child: Text('Menge',
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
-                    SizedBox(width: 9),
+                    SizedBox(width: 44),
                     Expanded(
                       child: Text('Einheit',
                           style: TextStyle(
@@ -128,7 +129,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                   EditableRow(
                     originalTitle: rowDataList[i].title,
                     originalMenge: rowDataList[i].Menge,
-                    originalMeausrement: rowDataList[i].Measurement,
+                    originalMeasurement: rowDataList[i].Measurement,
                     originalPrice: rowDataList[i].price,
                     onDelete: () => removeRow(rowDataList[i]),
                   ),
@@ -522,21 +523,20 @@ class RowData {
 class EditableRow extends StatefulWidget {
   final String originalTitle;
   final String originalMenge;
-  final String originalMeausrement;
+  final String originalMeasurement;
   final String originalPrice;
   final VoidCallback onDelete;
 
   const EditableRow({
-    super.key,
+    Key? key,
     required this.originalTitle,
     required this.originalMenge,
-    required this.originalMeausrement,
+    required this.originalMeasurement,
     required this.originalPrice,
     required this.onDelete,
-  });
+  }) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _EditableRowState createState() => _EditableRowState();
 }
 
@@ -545,37 +545,16 @@ class _EditableRowState extends State<EditableRow> {
   late TextEditingController _mengeController;
   late TextEditingController _measurementController;
   late TextEditingController _priceController;
-  late String currentTitle;
-  late String currentPrice;
+
   bool isEditing = false;
 
   @override
   void initState() {
     super.initState();
-    // Initialize all controllers here
     _titleController = TextEditingController(text: widget.originalTitle);
     _mengeController = TextEditingController(text: widget.originalMenge);
-    _measurementController =
-        TextEditingController(text: widget.originalMeausrement);
-
-    // Initialize currentPrice before using it to set up _priceController
-    currentPrice =
-        widget.originalPrice; // Set currentPrice from widget's originalPrice
+    _measurementController = TextEditingController(text: widget.originalMeasurement);
     _priceController = TextEditingController(text: widget.originalPrice);
-    // Listener for _priceController to append '€' if it's not already there
-    // _priceController.addListener(() {
-    //   String text = _priceController.text;
-    //   if (!text.endsWith('€') && text.isNotEmpty) {
-    //     String newText = '$text';
-    //     _priceController.value = _priceController.value.copyWith(
-    //       text: newText,
-    //       selection: TextSelection.collapsed(offset: newText.length - 1),
-    //     );
-    //   }
-    // });
-
-    // Initialize currentTitle similar to how currentPrice was handled
-    currentTitle = widget.originalTitle;
   }
 
   @override
@@ -584,7 +563,6 @@ class _EditableRowState extends State<EditableRow> {
     _mengeController.dispose();
     _measurementController.dispose();
     _priceController.dispose();
-
     super.dispose();
   }
 
@@ -602,108 +580,38 @@ class _EditableRowState extends State<EditableRow> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: TextField(
-                maxLines: null,
-                controller: _titleController,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
+            Expanded(child: TextField(controller: _titleController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
+            Expanded(child: TextField(controller: _mengeController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
+            Expanded(child: TextField(controller: _measurementController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
+            Expanded(child: TextField(controller: _priceController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
+            
+            if (isEditing) // Only show the cancel icon if isEditing is true
+              IconButton(
+                icon: const Icon(Icons.cancel),
+                onPressed: () {
+                  setState(() {
+                    isEditing = false;
+                    _titleController.text = widget.originalTitle;
+                    _mengeController.text = widget.originalMenge;
+                    _measurementController.text = widget.originalMeasurement;
+                    _priceController.text = widget.originalPrice;
+                  });
+                },
               ),
-            ),
-            Expanded(
-              child: TextField(
-                controller: _mengeController,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
-              ),
-            ),
-            Expanded(
-              child: TextField(
-                controller: _measurementController,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: TextField(
-                controller: _priceController,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
-              ),
-            ),
 
-            // IconButton to handle cancel action
-            IconButton(
-              icon: const Icon(Icons.cancel),
-              onPressed: () {
-                setState(() {
-                  // Check if currently editing
-                  if (isEditing) {
-                    isEditing = false; // Disable editing mode
-                    // Revert text fields to their original values
-                    _titleController.text = currentTitle;
-                    _priceController.text = currentPrice;
-                  }
-                });
-              },
-            ),
-
-// IconButton to toggle between save and edit modes
             IconButton(
               icon: Icon(isEditing ? Icons.save : Icons.edit),
               onPressed: () {
                 setState(() {
                   if (isEditing) {
                     // Save the current text field contents
-                    currentTitle = _titleController.text;
-                    currentPrice =
-                        _priceController.text; // Append currency symbol
-                    isEditing = false; // Exit editing mode
+                    isEditing = false;
                   } else {
                     isEditing = true; // Enter editing mode
                   }
                 });
               },
             ),
-
-            // IconButton(
-            //   icon: Icon(Icons.delete),
-            //   onPressed: () {
-            //     setState(() {
-            //       // Perform delete action
-            //       widget.onDelete();
-            //     });
-            //   },
-            // ),
-
-            // IconButton(
-            //   icon: Icon(isEditing ? Icons.settings : Icons.delete),
-            //   onPressed: () {
-            //     setState(() {
-            //       if (!isEditing) {
-            //         widget.onDelete();
-            //       }
-            //       isEditing = !isEditing;
-            //       if (!isEditing) {
-            //         _titleController.text = currentTitle;
-            //         _priceController.text = currentPrice;
-            //       }
-            //     });
-            //   },
-            // ),
           ],
         ),
       );
