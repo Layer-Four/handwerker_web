@@ -14,8 +14,8 @@ extension MainViewExtennsion on MainView {
   MainView? getMainview(String current) => switch (current) {
         'Home' => MainView.home,
         'Zeiteintrag' => MainView.timeEntry,
-        'Kunde/Projekt' => MainView.projectCustomer,
-        'Material' => MainView.consumables,
+        'Berichte' => MainView.projectCustomer,
+        'Verwaltung' => MainView.consumables,
         'Kunden' => MainView.customer,
         'Projekte' => MainView.projectManagement,
         'Mitarbeiter' => MainView.users,
