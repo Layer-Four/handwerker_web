@@ -1,5 +1,7 @@
-
-class ConsumableBody extends StatefulWidget {
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+class ConsumableLeistungBody extends StatefulWidget {
   const ConsumableLeistungBody({super.key}); // Constructor with key initialization
 
   @override
@@ -7,7 +9,8 @@ class ConsumableBody extends StatefulWidget {
   _ConsumableBodyState createState() => _ConsumableBodyState();
 }
 
-class _ConsumableBodyState extends State<ConsumableBody> {
+class _ConsumableBodyState extends State<ConsumableBody> 
+{
   List<RowData> rowDataList = [
     const RowData(title: 'Montage Allgemein', price: '120€'),
     const RowData(title: 'Montage Fenster', price: '80€'),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/settings_provider/nav_provider.dart';
 import '../../routes/app_routes.dart';
 import '../consumable_view/consumable_view.dart';
+import '../consumable_view/customer_project_view.dart';
 import '../customer_project_view/doc_screen.dart';
 import '../customers_view/doc_screen.dart';
 import '../home_view/home_body.dart';
@@ -31,6 +32,7 @@ class MainViewNavigator extends ConsumerWidget {
               MainView.projectCustomer => const CustomerProjectMain(),
               MainView.consumables => const ConsumableBody(),
               MainView.customer => const CustomerBody(),
+              MainView.material => const ConsumableLeistungBody(),
               MainView.projectManagement => const ProjectManagementBody(),
               MainView.users => const EmployeeAdministration(),
               // _ => const TimeEntryBody(),
@@ -89,7 +91,7 @@ class MainViewNavigator extends ConsumerWidget {
                       width: 200,
                       height: 150,
                       subcategories: ['Projekte', 'Kunden', 'Material', 'Leistungen'],
-                      subcategoryMainViews: [MainView.projectManagement, MainView.customer, MainView.consumables],
+                      subcategoryMainViews: [MainView.projectManagement, MainView.customer, MainView.consumables,MainView.material],
                     ),
                     /*const NavButtonWidget(
                 title: 'Kunden',
