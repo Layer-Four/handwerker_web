@@ -80,7 +80,7 @@ class MainViewNavigator extends ConsumerWidget {
                     const NavButtonWidget(
                       title: 'Berichte',
                       nextView: MainView.projectCustomer,
-                      icon: Icons.access_time,
+                      icon: Icons.signal_cellular_alt_sharp,
                       subcategories: ['Kunden/Projekte'],
                       subcategoryMainViews: [MainView.projectCustomer],
                       width: 200,
@@ -166,7 +166,7 @@ class MainViewNavigator extends ConsumerWidget {
                 const NavButtonWidget(
                   title: 'Berichte',
                   nextView: MainView.projectCustomer,
-                  icon: Icons.access_time,
+                  icon: Icons.signal_cellular_alt_sharp,
                   subcategories: ['Kunden/Projekte'],
                   subcategoryMainViews: [MainView.projectCustomer],
                   width: 200,
