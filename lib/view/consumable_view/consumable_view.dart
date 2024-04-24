@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../shared_view_widgets/search_line_header.dart';
+
 // import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
 // import '../shared_view_widgets/symetric_button_widget.dart';
 
@@ -16,9 +17,17 @@ class ConsumableBody extends StatefulWidget {
 
 class _ConsumableBodyState extends State<ConsumableBody> {
   List<RowData> rowDataList = [
-    const RowData(title: 'Montage Allgemein', Menge: '2', Measurement: 'm', price: '120€'),
-    const RowData(title: 'Montage Fenster', Menge: '6', Measurement: 'cm', price: '80€'),
-    const RowData(title: 'Montage Allgemein Meister', Menge: '7', Measurement: 'm3', price: '540€'),
+    //const RowData(title: 'Montage Allgemein', Menge: '2', Measurement: 'm', price: '120€'),
+    //const RowData(title: 'Montage Fenster', Menge: '6', Measurement: 'cm', price: '80€'),
+    //const RowData(title: 'Montage Allgemein Meister', Menge: '7', Measurement: 'm3', price: '540€'),
+    const RowData(title: 'Kupferrohr', Menge: '100', Measurement: 'Meter', price: '1000 €'),
+    const RowData(title: 'Wandfarbe', Menge: '10', Measurement: 'Liter', price: '60 €'),
+    const RowData(title: 'Eichenholz', Menge: '1', Measurement: 'm3', price: '800 €'),
+    const RowData(title: 'Dachziegel', Menge: '1', Measurement: 'm2', price: '30 €'),
+    const RowData(title: 'Keramikfliesen', Menge: '1', Measurement: 'm2', price: '27 €'),
+    const RowData(title: 'Rindenmulch', Menge: '100', Measurement: 'Liter', price: '30 €'),
+    const RowData(title: 'kl. Nägel', Menge: '1000', Measurement: 'Stück', price: '10 €'),
+    const RowData(title: 'gr. Nägel', Menge: '500', Measurement: 'Stück', price: '7 €'),
   ];
 
   bool isCardVisible = false;
@@ -92,19 +101,19 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text('Material', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      child: Text('Material', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 22),
                     Expanded(
-                      child: Text('Menge', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      child: Text('Menge', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 44),
                     Expanded(
-                      child: Text('Einheit', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      child: Text('Einheit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 30),
                     Expanded(
-                      child: Text('Preis/mengeneinheit', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      child: Text('Preis/mengeneinheit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 110)
                   ],
@@ -135,9 +144,12 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                             isCardVisible = !isCardVisible;
                           });
                         },
-                        iconSize: 30, // Adjust the size of the icon if necessary
-                        padding: EdgeInsets.zero, // Remove any default padding to ensure centering
-                        alignment: Alignment.center, // Ensure the icon is centered in the button
+                        iconSize: 30,
+                        // Adjust the size of the icon if necessary
+                        padding: EdgeInsets.zero,
+                        // Remove any default padding to ensure centering
+                        alignment: Alignment.center,
+                        // Ensure the icon is centered in the button
                         icon: isCardVisible
                             ? const Icon(Icons.remove, color: Colors.white)
                             : const Icon(Icons.add, color: Colors.white),
@@ -223,7 +235,8 @@ class _CardWidgetState extends State<CardWidget> {
                                 controller: _leistungController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241), // Background color
+                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                  // Background color
                                   hintText: 'Material',
                                   contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
@@ -262,7 +275,8 @@ class _CardWidgetState extends State<CardWidget> {
                                 controller: _mengeController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241), // Background color
+                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                  // Background color
                                   hintText: 'Menge',
                                   contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
@@ -301,7 +315,8 @@ class _CardWidgetState extends State<CardWidget> {
                                 controller: _measurementController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241), // Background color
+                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                  // Background color
                                   hintText: 'Einheit',
                                   contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
@@ -344,7 +359,8 @@ class _CardWidgetState extends State<CardWidget> {
                                 controller: _preisController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241), // Background color
+                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                  // Background color
                                   hintText: 'Preis/mengeneinheit',
                                   contentPadding: const EdgeInsets.all(10),
                                   border: OutlineInputBorder(
@@ -451,8 +467,10 @@ class _CardWidgetState extends State<CardWidget> {
 
 class RowData {
   final String title;
+
   // ignore: non_constant_identifier_names
   final String Menge;
+
   // ignore: non_constant_identifier_names
   final String Measurement;
   final String price;

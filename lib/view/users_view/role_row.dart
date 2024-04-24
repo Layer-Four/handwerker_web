@@ -81,7 +81,7 @@ class _RoleRowCardState extends State<RoleRowCard> {
                     ),*/
                     Expanded(
                       child: buildDropdown(
-                        options: ['MOBIL', 'Mitarbeiter', 'Abteilungsleiter', 'Admin'],
+                        options: ['Admin', 'Mitarbeiter'],
                         // selectedValue: roleOption,
                         onChanged: (value) {
                           setState(() {

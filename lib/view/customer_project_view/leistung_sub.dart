@@ -97,11 +97,11 @@ class _ConsumableBodyState extends State<ConsumableLeistungBody> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text('Leistung', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 30),
                     Expanded(
-                      child: Text('Preis/std', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     Spacer(),
                     SizedBox(width: 110)
@@ -256,7 +256,7 @@ class _CardWidgetState extends State<CardWidget> {
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: const Color.fromARGB(211, 245, 241, 241),
-                                      hintText: 'Presi/std',
+                                      hintText: 'Preis/std',
                                       contentPadding: const EdgeInsets.all(10),
                                       border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
@@ -440,6 +440,7 @@ class _EditableRowState extends State<EditableRow> {
               child: TextField(
                 maxLines: null,
                 controller: _titleController,
+                style: TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
@@ -452,6 +453,7 @@ class _EditableRowState extends State<EditableRow> {
             Expanded(
               child: TextField(
                 controller: _priceController,
+                style: TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
