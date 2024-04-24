@@ -5,7 +5,6 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        color: Colors.blue,
         width: double.infinity,
         height: double.infinity,
         child: Center(
@@ -19,7 +18,7 @@ class HomeBody extends StatelessWidget {
                 child: Text(
                   'PREVIEW',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
