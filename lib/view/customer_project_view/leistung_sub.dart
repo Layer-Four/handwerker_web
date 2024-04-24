@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:flutter/widgets.dart';
 
 import '../shared_view_widgets/search_line_header.dart';
 
-
 class ConsumableLeistungBody extends StatefulWidget {
-  const ConsumableLeistungBody(
-      {super.key}); // Constructor with key initialization
+  const ConsumableLeistungBody({super.key}); // Constructor with key initialization
 
   @override
   // ignore: library_private_types_in_public_api
   _ConsumableLeistungBodyState createState() => _ConsumableLeistungBodyState();
 }
 
-
-class _ConsumableBodyState extends State<ConsumableLeistungBody> {
-
+class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   List<RowData> rowDataList = [
-    const RowData(title: 'Montage Allgemein', price: '120€'),
-    const RowData(title: 'Montage Fenster', price: '80€'),
-    const RowData(title: 'Montage Allgemein Meister', price: '540€'),
+    const RowData(title: 'Kupferrohr', price: '1000 EUR'),
+    const RowData(title: 'Wandfarbe', price: '60 EUR'),
+    const RowData(title: 'Eichenholz', price: '800 EUR'),
+    const RowData(title: 'Dachziegel', price: '30 EUR'),
+    const RowData(title: 'Keramikfliesen', price: '27 EUR'),
+    const RowData(title: 'Rindenmulch', price: '30 EUR'),
+    const RowData(title: 'kl. Nägel', price: '10 EUR'),
+    const RowData(title: 'gr. Nägel', price: '7 EUR'),
   ];
 
   bool isCardVisible = false;
@@ -48,7 +48,6 @@ class _ConsumableBodyState extends State<ConsumableLeistungBody> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 const SearchLineHeader(title: 'Leistungsverwaltung'),
                 /*              Row(
                   children: [

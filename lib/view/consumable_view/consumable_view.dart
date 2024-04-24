@@ -54,7 +54,6 @@ class _ConsumableBodyState extends State<ConsumableBody> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 const SearchLineHeader(title: 'Material'),
                 /*                Padding(
                     padding: const EdgeInsets.only(left: 40),
@@ -519,8 +518,7 @@ class _EditableRowState extends State<EditableRow> {
     super.initState();
     _titleController = TextEditingController(text: widget.originalTitle);
     _mengeController = TextEditingController(text: widget.originalMenge);
-    _measurementController =
-        TextEditingController(text: widget.originalMeasurement);
+    _measurementController = TextEditingController(text: widget.originalMeasurement);
     _priceController = TextEditingController(text: widget.originalPrice);
   }
 
@@ -595,27 +593,18 @@ class _EditableRowState extends State<EditableRow> {
               maintainState: true,
               maintainAnimation: true,
               child: IconButton(
-
-                icon: const Icon(Icons.cancel),
+                icon: Icon(isEditing ? Icons.save : Icons.edit),
                 onPressed: () {
                   setState(() {
-                    isEditing = false;
-                    // Reset fields, etc.
+                    if (isEditing) {
+                      // Save the current text field contents
+                      isEditing = false;
+                    } else {
+                      isEditing = true; // Enter editing mode
+                    }
                   });
                 },
               ),
-            IconButton(
-              icon: Icon(isEditing ? Icons.save : Icons.edit),
-              onPressed: () {
-                setState(() {
-                  if (isEditing) {
-                    // Save the current text field contents
-                    isEditing = false;
-                  } else {
-                    isEditing = true; // Enter editing mode
-                  }
-                });
-              },
             ),
           ],
         ),
