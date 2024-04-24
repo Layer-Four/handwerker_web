@@ -14,14 +14,15 @@ class ConsumableLeistungBody extends StatefulWidget {
 
 class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   List<RowData> rowDataList = [
-    const RowData(title: 'Kupferrohr', price: '1000 EUR'),
-    const RowData(title: 'Wandfarbe', price: '60 EUR'),
-    const RowData(title: 'Eichenholz', price: '800 EUR'),
-    const RowData(title: 'Dachziegel', price: '30 EUR'),
-    const RowData(title: 'Keramikfliesen', price: '27 EUR'),
-    const RowData(title: 'Rindenmulch', price: '30 EUR'),
-    const RowData(title: 'kl. Nägel', price: '10 EUR'),
-    const RowData(title: 'gr. Nägel', price: '7 EUR'),
+    const RowData(title: 'Reparatur Schaltung', price: '50 EUR'),
+    const RowData(title: 'Installation Beleuchtung', price: '60 EUR'),
+    const RowData(title: 'Reparatur Wasserleitung', price: '70 EUR'),
+    const RowData(title: 'Behebung Leckage', price: '60 EUR'),
+    const RowData(title: 'Anstrich Innenwand', price: '70 EUR'),
+    const RowData(title: 'Tapezierarbeiten', price: '50 EUR'),
+    const RowData(title: 'Kücheneinbau', price: '70 EUR'),
+    const RowData(title: 'Fensterherstellung', price: '60 EUR'),
+    const RowData(title: 'Dachisolierung', price: '40 EUR')
   ];
 
   bool isCardVisible = false;
