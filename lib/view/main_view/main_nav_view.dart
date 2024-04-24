@@ -31,7 +31,7 @@ class MainViewNavigator extends ConsumerWidget {
               MainView.consumables => const ConsumableBody(),
               MainView.customer => const CustomerBody(),
               MainView.projectManagement => const ProjectManagementBody(),
-              MainView.material => const ConsumableLeistungBody(),
+              MainView.performance => const ConsumableLeistungBody(),
               MainView.users => const EmployeeAdministration(),
               // _ => const TimeEntryBody(),
             },
@@ -49,8 +49,7 @@ class MainViewNavigator extends ConsumerWidget {
               barrierColor: Colors.transparent,
               context: context,
               builder: (context) => Container(
-                margin: EdgeInsets.only(
-                    right: (MediaQuery.of(context).size.width / 100) * 80),
+                margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width / 100) * 80),
                 height: double.infinity,
                 width: MediaQuery.of(context).size.width / 7,
                 color: const Color.fromARGB(255, 208, 207, 207),
@@ -81,6 +80,9 @@ class MainViewNavigator extends ConsumerWidget {
                     const NavButtonWidget(
                       title: 'Berichte',
                       nextView: MainView.projectCustomer,
+                      icon: Icons.signal_cellular_alt_sharp,
+                      subcategories: ['Kunden/Projekte'],
+                      subcategoryMainViews: [MainView.projectCustomer],
                       width: 200,
                       height: 60,
                     ),
@@ -89,17 +91,12 @@ class MainViewNavigator extends ConsumerWidget {
                       nextView: MainView.consumables,
                       width: 200,
                       height: 150,
-                      subcategories: [
-                        'Projekte',
-                        'Kunden',
-                        'Material',
-                        'Leistungen'
-                      ],
+                      subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
                       subcategoryMainViews: [
-                        MainView.projectManagement,
+                        MainView.consumables,
                         MainView.customer,
-                        MainView.material, // Link to ConsumableLeistungBody
-                        MainView.consumables
+                        MainView.projectManagement,
+                        MainView.performance,
                       ],
                     ),
                     /*const NavButtonWidget(
@@ -117,6 +114,9 @@ class MainViewNavigator extends ConsumerWidget {
                     const NavButtonWidget(
                       title: 'Mitarbeiter',
                       nextView: MainView.users,
+                      icon: Icons.people_outline,
+                      subcategories: ['Rechte'],
+                      subcategoryMainViews: [MainView.users],
                       width: 200,
                       height: 60,
                     ),
@@ -168,6 +168,7 @@ class MainViewNavigator extends ConsumerWidget {
                   nextView: MainView.projectCustomer,
                   icon: Icons.signal_cellular_alt_sharp,
                   subcategories: ['Kunden/Projekte'],
+                  subcategoryMainViews: [MainView.projectCustomer],
                   width: 200,
                   height: 100,
                 ),
@@ -175,19 +176,14 @@ class MainViewNavigator extends ConsumerWidget {
                   title: 'Verwaltung',
                   nextView: MainView.consumables,
                   icon: Icons.folder_open,
-                  subcategories: [
-                    'Projekte',
-                    'Kunden',
-                    'Material',
-                    'Leistungen'
-                  ],
+                  subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
                   width: 200,
                   height: 200,
                   subcategoryMainViews: [
-                    MainView.projectManagement,
+                    MainView.consumables,
                     MainView.customer,
-                    MainView.material,
-                    MainView.consumables
+                    MainView.projectManagement,
+                    MainView.performance,
                   ],
                 ),
                 /*const NavButtonWidget(
@@ -207,6 +203,7 @@ class MainViewNavigator extends ConsumerWidget {
                   nextView: MainView.users,
                   icon: Icons.people_outline,
                   subcategories: ['Rechte'],
+                  subcategoryMainViews: [MainView.users],
                   width: 200,
                   height: 100,
                 ),
@@ -251,18 +248,17 @@ class NavButtonWidget extends ConsumerWidget {
     final currentView = ref.watch(mainNavProvider);
     final isSelected = nextView != null
         ? currentView == nextView
-        : subcategoryMainViews != null &&
-            subcategoryMainViews!.contains(currentView);
-    final isSubCategory =
-        !isMainCategory && isSelected; // Check if it's a subcategory
+        : subcategoryMainViews != null && subcategoryMainViews!.contains(currentView);
+    final isSubCategory = !isMainCategory && isSelected; // Check if it's a subcategory
     return GestureDetector(
       onTap: () {
         if (nextView != null) {
           ref.read(mainNavProvider.notifier).state = nextView!;
         } else if (isMainCategory) {
           // Update the state only if it's a main category
-          ref.read(mainNavProvider.notifier).state =
-              subcategoryMainViews!.first!;
+          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first!;
+        } else if (!isMainCategory) {
+          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first!;
         }
       },
       child: Container(
@@ -280,20 +276,16 @@ class NavButtonWidget extends ConsumerWidget {
               children: [
                 Icon(
                   icon ?? Icons.home,
-                  color: isSubCategory || isSelected
-                      ? Colors.orange
-                      : Colors.black,
+                  color: isSubCategory ? Colors.orange : Colors.black, //|| isSelected
                   size: 24,
                 ),
                 const SizedBox(width: 8),
                 Text(
                   title,
                   style: TextStyle(
-                    color: isSubCategory || isSelected
-                        ? Colors.orange
-                        : Colors.black,
+                    color: isSubCategory ? Colors.orange : Colors.black, //|| isSelected
                     fontWeight: FontWeight.w500,
-                    fontSize: 19,
+                    fontSize: 22,
                   ),
                 ),
               ],
@@ -301,10 +293,10 @@ class NavButtonWidget extends ConsumerWidget {
             if (subcategories != null)
               Row(
                 children: [
-                  SizedBox(width: 32),
+                  SizedBox(width: 50),
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: List.generate(
                         subcategories!.length,
                         (index) => Padding(
@@ -315,18 +307,18 @@ class NavButtonWidget extends ConsumerWidget {
                               if (isMainCategory &&
                                   subcategoryMainViews != null &&
                                   index < subcategoryMainViews!.length) {
-                                ref.read(mainNavProvider.notifier).state =
-                                    subcategoryMainViews![index];
+                                ref.read(mainNavProvider.notifier).state = subcategoryMainViews![index];
                               }
                             },
                             child: Text(
                               subcategories![index],
+                              //     textAlign: TextAlign.start,
                               style: TextStyle(
-                                color: isSubCategory || isSelected
+                                color: subcategoryMainViews?[index] == currentView
                                     ? Colors.orange
-                                    : Colors.black,
+                                    : Colors.black, //isSubCategory || isSelected
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16,
+                                fontSize: 18,
                               ),
                             ),
                           ),
