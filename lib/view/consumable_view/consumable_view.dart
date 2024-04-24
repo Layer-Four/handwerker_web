@@ -113,7 +113,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
-                    SizedBox(width: 30),
+                    // SizedBox(width: 30),
                     Expanded(
                       child: Text('Preis/mengeneinheit',
                           style: TextStyle(
@@ -363,7 +363,7 @@ class _CardWidgetState extends State<CardWidget> {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 30),
                         Flexible(
                           flex: 1,
                           child: Column(
@@ -583,6 +583,7 @@ class _EditableRowState extends State<EditableRow> {
           children: [
             Expanded(
                 child: TextField(
+              maxLines: null,
               controller: _titleController,
               decoration: const InputDecoration(
                 border: InputBorder.none,
@@ -600,36 +601,43 @@ class _EditableRowState extends State<EditableRow> {
               readOnly: !isEditing,
             )),
             Expanded(
-                child: TextField(
-              controller: _measurementController,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
+              child: TextField(
+                controller: _measurementController,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
               ),
-              readOnly: !isEditing,
-            )),
+            ),
             Expanded(
                 child: TextField(
               controller: _priceController,
+              maxLines: null,
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
               ),
               readOnly: !isEditing,
             )),
-            if (isEditing) // Only show the cancel icon if isEditing is true
-              IconButton(
+            // const Spacer(),
+            // if (isEditing) // Only show the cancel icon if isEditing is true
+            Visibility(
+              visible: isEditing,
+              maintainSize: true,
+              maintainState: true,
+              maintainAnimation: true,
+              child: IconButton(
                 icon: const Icon(Icons.cancel),
                 onPressed: () {
                   setState(() {
                     isEditing = false;
-                    _titleController.text = widget.originalTitle;
-                    _mengeController.text = widget.originalMenge;
-                    _measurementController.text = widget.originalMeasurement;
-                    _priceController.text = widget.originalPrice;
+                    // Reset fields, etc.
                   });
                 },
               ),
+            ),
+
             IconButton(
               icon: Icon(isEditing ? Icons.save : Icons.edit),
               onPressed: () {

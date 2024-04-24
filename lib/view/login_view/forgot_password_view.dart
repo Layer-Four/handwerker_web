@@ -41,7 +41,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                               style: TextStyle(
                                 color: Colors.orange,
                                 fontWeight: FontWeight.w700,
-                                decoration: TextDecoration.underline,
+                                // decoration: TextDecoration.underline,
                                 decorationColor: Colors.orange,
                                 decorationThickness: 2.0,
                               ),
@@ -82,26 +82,14 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                               textInputAction: TextInputAction.next,
                               validator: (value) =>
                                   value!.length < 6 ? 'Required' : null,
-                              obscureText: obscureText,
+                              obscureText: !obscureText,
                               controller: _userNameController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 // hintStyle: const TextStyle(color: Colors.grey),
                                 filled: true,
                                 fillColor: Colors.transparent,
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      obscureText = !obscureText;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    obscureText
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color: Theme.of(context).iconTheme.color,
-                                  ),
-                                ),
-                                contentPadding: const EdgeInsets.all(6),
+
+                                contentPadding: EdgeInsets.all(6),
                                 focusedBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
                               ),
