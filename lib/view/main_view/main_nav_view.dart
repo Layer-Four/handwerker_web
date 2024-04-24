@@ -80,7 +80,7 @@ class MainViewNavigator extends ConsumerWidget {
                     const NavButtonWidget(
                       title: 'Berichte',
                       nextView: MainView.projectCustomer,
-                      icon: Icons.signal_cellular_alt_sharp,
+                      icon: Icons.access_time,
                       subcategories: ['Kunden/Projekte'],
                       subcategoryMainViews: [MainView.projectCustomer],
                       width: 200,
@@ -166,7 +166,7 @@ class MainViewNavigator extends ConsumerWidget {
                 const NavButtonWidget(
                   title: 'Berichte',
                   nextView: MainView.projectCustomer,
-                  icon: Icons.signal_cellular_alt_sharp,
+                  icon: Icons.access_time,
                   subcategories: ['Kunden/Projekte'],
                   subcategoryMainViews: [MainView.projectCustomer],
                   width: 200,
@@ -254,14 +254,11 @@ class NavButtonWidget extends ConsumerWidget {
       onTap: () {
         if (nextView != null) {
           ref.read(mainNavProvider.notifier).state = nextView!;
-          print('nextView: $nextView');
         } else if (isMainCategory) {
           // Update the state only if it's a main category
           ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first!;
-          print('isMainCategory: $title');
         } else if (!isMainCategory) {
           ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first!;
-          print('Subcategory: $title');
         }
       },
       child: Container(
