@@ -117,20 +117,22 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        log('clicked');
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Dialog(
-                            child: ProjectReportScreen(project: widget.project),
-                          ),
-                        );
+                        try {
+                          log('clicked');
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                              child: ProjectReportScreen(project: widget.project),
+                            ),
+                          );
+                        } catch (e) {
+                          log('Error opening dialog: $e');
+                        }
                       },
                       child: const Row(
                         children: [
                           Icon(Icons.folder_open),
-                          SizedBox(
-                            width: 10,
-                          ),
+                          SizedBox(width: 10),
                           Text('Projektberichte (3)',
                               style: TextStyle(
                                 fontSize: 16,

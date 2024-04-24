@@ -25,6 +25,26 @@ class _CharacterCardState extends State<ProjectOverview> {
       '01.05.2024 - 15.05.2024',
       1009,
       1009,
+      [
+        ProjectReport(
+          'Heizkörperinstallation',
+          'Im Herzen Berlins steht ein historisches Gebäude, das dringend einer Sanierung bedarf. Unser Projektziel ist es, den Charme des alten Gebäudes zu bewahren, während wir moderne Technologien einsetzen, um Energieeffizienz und Wohnkomfort zu verbessern. Die Sanierungsarbeiten umfassen die Restaurierung der Fassade unter Denkmalschutzauflagen, die Erneuerung der Elektro- und Wasserinstallationen sowie die Dämmung der Außenwände und des Daches. Besondere Aufmerksamkeit wird der sorgfältigen Auswahl von Materialien gewidmet, die sowohl historisch authentisch als auch umweltfreundlich sind. Durch die Kombination traditioneller Handwerkstechniken mit modernster Technologie schaffen wir ein energieeffizientes Zuhause, das die Geschichte atmet. Das Projekt wird in enger Zusammenarbeit mit Denkmalschutzbehörden durchgeführt, um sicherzustellen, dass alle Renovierungsarbeiten den gesetzlichen Anforderungen entsprechen. Unsere Vision ist es, eine Brücke zwischen Vergangenheit und Zukunft zu schlagen und einen Wohnraum zu schaffen, der Generationen überdauert.',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation 2',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation3 ',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+      ],
     ),
     const CustomeProject(
       'Sanitärinstallation Villa Schmidt',
@@ -35,6 +55,14 @@ class _CharacterCardState extends State<ProjectOverview> {
       '10.04.2024 - 30.04.2024',
       2099,
       9000,
+      [
+        ProjectReport(
+          'Tischlerei',
+          'Herstellung eines maßgeschneiderten Tisches aus Eichenholz',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+      ],
     ),
     const CustomeProject(
       'Fassadenanstrich Meier',
@@ -45,6 +73,14 @@ class _CharacterCardState extends State<ProjectOverview> {
       '20.04.2024 - 05.05.2024',
       2,
       900000,
+      [
+        ProjectReport(
+          'Fensterinstallation',
+          'Einsetzen der Fenster in Neubau',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+      ],
     ),
     const CustomeProject(
       'Küchenmontage Weber',
@@ -55,6 +91,14 @@ class _CharacterCardState extends State<ProjectOverview> {
       '15.05.2024 - 30.05.2024',
       3,
       1009,
+      [
+        ProjectReport(
+          'Sanierung',
+          'Sanierung des Steinlochs',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+      ],
     ),
     const CustomeProject(
       'Dachreparatur Leibniz Gymnasium',
@@ -65,6 +109,26 @@ class _CharacterCardState extends State<ProjectOverview> {
       '01.06.2024 - 15.07.2024',
       4,
       122000,
+      [
+        ProjectReport(
+          'Heizkörperinstallation',
+          'Im Herzen Berlins steht ein historisches Gebäude, das dringend einer Sanierung bedarf. Unser Projektziel ist es, den Charme des alten Gebäudes zu bewahren, während wir moderne Technologien einsetzen, um Energieeffizienz und Wohnkomfort zu verbessern. Die Sanierungsarbeiten umfassen die Restaurierung der Fassade unter Denkmalschutzauflagen, die Erneuerung der Elektro- und Wasserinstallationen sowie die Dämmung der Außenwände und des Daches. Besondere Aufmerksamkeit wird der sorgfältigen Auswahl von Materialien gewidmet, die sowohl historisch authentisch als auch umweltfreundlich sind. Durch die Kombination traditioneller Handwerkstechniken mit modernster Technologie schaffen wir ein energieeffizientes Zuhause, das die Geschichte atmet. Das Projekt wird in enger Zusammenarbeit mit Denkmalschutzbehörden durchgeführt, um sicherzustellen, dass alle Renovierungsarbeiten den gesetzlichen Anforderungen entsprechen. Unsere Vision ist es, eine Brücke zwischen Vergangenheit und Zukunft zu schlagen und einen Wohnraum zu schaffen, der Generationen überdauert.',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation 2',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation3 ',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+      ],
     ),
     const CustomeProject(
       'Badezimmerrenovierung Bauer',
@@ -75,6 +139,26 @@ class _CharacterCardState extends State<ProjectOverview> {
       '05.06.2024 - 20.06.2024',
       5,
       122000,
+      [
+        ProjectReport(
+          'Heizkörperinstallation',
+          'Im Herzen Berlins steht ein historisches Gebäude, das dringend einer Sanierung bedarf. Unser Projektziel ist es, den Charme des alten Gebäudes zu bewahren, während wir moderne Technologien einsetzen, um Energieeffizienz und Wohnkomfort zu verbessern. Die Sanierungsarbeiten umfassen die Restaurierung der Fassade unter Denkmalschutzauflagen, die Erneuerung der Elektro- und Wasserinstallationen sowie die Dämmung der Außenwände und des Daches. Besondere Aufmerksamkeit wird der sorgfältigen Auswahl von Materialien gewidmet, die sowohl historisch authentisch als auch umweltfreundlich sind. Durch die Kombination traditioneller Handwerkstechniken mit modernster Technologie schaffen wir ein energieeffizientes Zuhause, das die Geschichte atmet. Das Projekt wird in enger Zusammenarbeit mit Denkmalschutzbehörden durchgeführt, um sicherzustellen, dass alle Renovierungsarbeiten den gesetzlichen Anforderungen entsprechen. Unsere Vision ist es, eine Brücke zwischen Vergangenheit und Zukunft zu schlagen und einen Wohnraum zu schaffen, der Generationen überdauert.',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation 2',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation3 ',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+      ],
     ),
     const CustomeProject(
       'Gartengestaltung Grünwald',
@@ -85,6 +169,26 @@ class _CharacterCardState extends State<ProjectOverview> {
       '25.04.2024 - 10.05.2024',
       6,
       122000,
+      [
+        ProjectReport(
+          'Heizkörperinstallation',
+          'Im Herzen Berlins steht ein historisches Gebäude, das dringend einer Sanierung bedarf. Unser Projektziel ist es, den Charme des alten Gebäudes zu bewahren, während wir moderne Technologien einsetzen, um Energieeffizienz und Wohnkomfort zu verbessern. Die Sanierungsarbeiten umfassen die Restaurierung der Fassade unter Denkmalschutzauflagen, die Erneuerung der Elektro- und Wasserinstallationen sowie die Dämmung der Außenwände und des Daches. Besondere Aufmerksamkeit wird der sorgfältigen Auswahl von Materialien gewidmet, die sowohl historisch authentisch als auch umweltfreundlich sind. Durch die Kombination traditioneller Handwerkstechniken mit modernster Technologie schaffen wir ein energieeffizientes Zuhause, das die Geschichte atmet. Das Projekt wird in enger Zusammenarbeit mit Denkmalschutzbehörden durchgeführt, um sicherzustellen, dass alle Renovierungsarbeiten den gesetzlichen Anforderungen entsprechen. Unsere Vision ist es, eine Brücke zwischen Vergangenheit und Zukunft zu schlagen und einen Wohnraum zu schaffen, der Generationen überdauert.',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation 2',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation3 ',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+      ],
     ),
     const CustomeProject(
       'Fliesenlegung Penthouse Richter',
@@ -95,8 +199,29 @@ class _CharacterCardState extends State<ProjectOverview> {
       '03.04.2024 - 18.04.2024',
       7,
       122000,
+      [
+        ProjectReport(
+          'Heizkörperinstallation',
+          'Im Herzen Berlins steht ein historisches Gebäude, das dringend einer Sanierung bedarf. Unser Projektziel ist es, den Charme des alten Gebäudes zu bewahren, während wir moderne Technologien einsetzen, um Energieeffizienz und Wohnkomfort zu verbessern. Die Sanierungsarbeiten umfassen die Restaurierung der Fassade unter Denkmalschutzauflagen, die Erneuerung der Elektro- und Wasserinstallationen sowie die Dämmung der Außenwände und des Daches. Besondere Aufmerksamkeit wird der sorgfältigen Auswahl von Materialien gewidmet, die sowohl historisch authentisch als auch umweltfreundlich sind. Durch die Kombination traditioneller Handwerkstechniken mit modernster Technologie schaffen wir ein energieeffizientes Zuhause, das die Geschichte atmet. Das Projekt wird in enger Zusammenarbeit mit Denkmalschutzbehörden durchgeführt, um sicherzustellen, dass alle Renovierungsarbeiten den gesetzlichen Anforderungen entsprechen. Unsere Vision ist es, eine Brücke zwischen Vergangenheit und Zukunft zu schlagen und einen Wohnraum zu schaffen, der Generationen überdauert.',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation 2',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+        ProjectReport(
+          'Heizkörperinstallation3 ',
+          'Installation neuer Heizkörper im gesamten Gebäude',
+          '08.04.2026',
+          ['assets/images/construction1.png', 'assets/images/construction2.png'],
+        ),
+      ],
     ),
   ];
+
 /*  final List<CustomeProject> project = [
     const CustomeProject(
       'Layer Four GmbH',
