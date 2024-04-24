@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 // import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
 // import '../shared_view_widgets/symetric_button_widget.dart';
 
@@ -60,8 +58,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                     width: 400,
                     child: Material(
                       elevation: 4,
-                      borderRadius: BorderRadius.circular(
-                          12), // Ensure the Material also has rounded corners
+                      borderRadius: BorderRadius.circular(12),
                       child: TextField(
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(10),
@@ -103,8 +100,8 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                       child: Text('Material',
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.bold)),
-                    ),                    SizedBox(width: 22),
-
+                    ),
+                    SizedBox(width: 22),
                     Expanded(
                       child: Text('Menge',
                           style: TextStyle(
@@ -374,9 +371,11 @@ class _CardWidgetState extends State<CardWidget> {
                             children: [
                               const Align(
                                 alignment: Alignment.topLeft,
-                                child: Text('Preis/mengeneinheit',  overflow: TextOverflow.ellipsis,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold,)),
+                                child: Text('Preis/mengeneinheit',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    )),
                               ),
                               const SizedBox(height: 15),
                               TextField(
@@ -537,6 +536,7 @@ class EditableRow extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditableRowState createState() => _EditableRowState();
 }
 
@@ -553,7 +553,8 @@ class _EditableRowState extends State<EditableRow> {
     super.initState();
     _titleController = TextEditingController(text: widget.originalTitle);
     _mengeController = TextEditingController(text: widget.originalMenge);
-    _measurementController = TextEditingController(text: widget.originalMeasurement);
+    _measurementController =
+        TextEditingController(text: widget.originalMeasurement);
     _priceController = TextEditingController(text: widget.originalPrice);
   }
 
@@ -580,11 +581,42 @@ class _EditableRowState extends State<EditableRow> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: TextField(controller: _titleController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
-            Expanded(child: TextField(controller: _mengeController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
-            Expanded(child: TextField(controller: _measurementController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
-            Expanded(child: TextField(controller: _priceController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
-            
+            Expanded(
+                child: TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              readOnly: !isEditing,
+            )),
+            Expanded(
+                child: TextField(
+              controller: _mengeController,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              readOnly: !isEditing,
+            )),
+            Expanded(
+                child: TextField(
+              controller: _measurementController,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              readOnly: !isEditing,
+            )),
+            Expanded(
+                child: TextField(
+              controller: _priceController,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              readOnly: !isEditing,
+            )),
             if (isEditing) // Only show the cancel icon if isEditing is true
               IconButton(
                 icon: const Icon(Icons.cancel),
@@ -598,7 +630,6 @@ class _EditableRowState extends State<EditableRow> {
                   });
                 },
               ),
-
             IconButton(
               icon: Icon(isEditing ? Icons.save : Icons.edit),
               onPressed: () {

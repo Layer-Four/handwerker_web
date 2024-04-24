@@ -8,6 +8,7 @@ enum MainView {
   customer,
   projectManagement,
   users,
+  material,
 }
 
 extension MainViewExtennsion on MainView {
