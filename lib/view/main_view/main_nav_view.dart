@@ -114,6 +114,7 @@ class MainViewNavigator extends ConsumerWidget {
                     const NavButtonWidget(
                       title: 'Mitarbeiter',
                       nextView: MainView.users,
+                      icon: Icons.people_outline,
                       subcategories: ['Rechte'],
                       subcategoryMainViews: [MainView.users],
                       width: 200,
