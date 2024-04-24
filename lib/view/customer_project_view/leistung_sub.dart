@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../shared_view_widgets/search_line_header.dart';
+
 class ConsumableLeistungBody extends StatefulWidget {
   const ConsumableLeistungBody({super.key}); // Constructor with key initialization
 
@@ -32,119 +34,123 @@ class _ConsumableBodyState extends State<ConsumableLeistungBody> {
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Leistungsverwaltung',
-                      style: TextStyle(color: Colors.orange, fontSize: 16, fontWeight: FontWeight.w500),
+  Widget build(BuildContext context) => Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SearchLineHeader(title: 'Leistungsverwaltung'),
+                /*              Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'Leistungsverwaltung',
+                        style: TextStyle(color: Colors.orange, fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 40),
-                      child: SizedBox(
-                        width: 400,
-                        child: Material(
-                          elevation: 4,
-                          borderRadius: BorderRadius.circular(12), // Ensure the Material also has rounded corners
-                          child: TextField(
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(10),
-                              hintText: 'Suchen...',
-                              // Placeholder text
-                              fillColor: Colors.white,
-                              // Background color of the text field
-                              filled: true,
-                              suffixIcon: const Icon(Icons.search, color: Colors.grey),
-                              // Search icon on the right
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded corners
-                                borderSide: BorderSide.none, // No visible border
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: const BorderSide(
-                                    color: Colors.transparent, width: 0), // Transparent border to maintain consistency
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2), // Highlight with an orange border when focused
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 40),
+                        child: SizedBox(
+                          width: 400,
+                          child: Material(
+                            elevation: 4,
+                            borderRadius: BorderRadius.circular(12), // Ensure the Material also has rounded corners
+                            child: TextField(
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(10),
+                                hintText: 'Suchen...',
+                                // Placeholder text
+                                fillColor: Colors.white,
+                                // Background color of the text field
+                                filled: true,
+                                suffixIcon: const Icon(Icons.search, color: Colors.grey),
+                                // Search icon on the right
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                                  borderSide: BorderSide.none, // No visible border
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                      color: Colors.transparent, width: 0), // Transparent border to maintain consistency
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                      color: Colors.white, width: 2), // Highlight with an orange border when focused
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 44),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text('Leistung', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-                  ),
-                  SizedBox(width: 30),
-                  Expanded(
-                    child: Text('Preis/std', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-                  ),
-                  Spacer(),
-                  SizedBox(width: 110)
-                ],
-              ),
-              for (int i = 0; i < rowDataList.length; i++)
-                EditableRow(
-                  originalTitle: rowDataList[i].title,
-                  originalPrice: rowDataList[i].price,
-                  onDelete: () => removeRow(rowDataList[i]),
-                ),
-              const SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(50), // Fully rounded corners
+                  ],
+                ),*/
+                const SizedBox(height: 44),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text('Leistung', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isCardVisible = !isCardVisible;
-                        });
-                      },
-                      iconSize: 30,
-                      // Adjust the size of the icon if necessary
-                      padding: EdgeInsets.zero,
-                      // Remove any default padding to ensure centering
-                      alignment: Alignment.center,
-                      // Ensure the icon is centered in the button
-                      icon: isCardVisible
-                          ? const Icon(Icons.remove, color: Colors.white)
-                          : const Icon(Icons.add, color: Colors.white),
+                    SizedBox(width: 30),
+                    Expanded(
+                      child: Text('Preis/std', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                    ),
+                    Spacer(),
+                    SizedBox(width: 110)
+                  ],
+                ),
+                for (int i = 0; i < rowDataList.length; i++)
+                  EditableRow(
+                    originalTitle: rowDataList[i].title,
+                    originalPrice: rowDataList[i].price,
+                    onDelete: () => removeRow(rowDataList[i]),
+                  ),
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(50), // Fully rounded corners
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isCardVisible = !isCardVisible;
+                          });
+                        },
+                        iconSize: 30,
+                        // Adjust the size of the icon if necessary
+                        padding: EdgeInsets.zero,
+                        // Remove any default padding to ensure centering
+                        alignment: Alignment.center,
+                        // Ensure the icon is centered in the button
+                        icon: isCardVisible
+                            ? const Icon(Icons.remove, color: Colors.white)
+                            : const Icon(Icons.add, color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              if (isCardVisible)
-                CardWidget(
-                  onSave: _addRow,
-                  onHideCard: hideCard,
-                ),
-            ],
+                if (isCardVisible)
+                  CardWidget(
+                    onSave: _addRow,
+                    onHideCard: hideCard,
+                  ),
+              ],
+            ),
           ),
         ),
       );

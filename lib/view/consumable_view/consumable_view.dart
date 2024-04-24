@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import '../shared_view_widgets/search_line_header.dart';
 // import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
 // import '../shared_view_widgets/symetric_button_widget.dart';
 
@@ -14,18 +16,9 @@ class ConsumableBody extends StatefulWidget {
 
 class _ConsumableBodyState extends State<ConsumableBody> {
   List<RowData> rowDataList = [
-    const RowData(
-        title: 'Montage Allgemein',
-        Menge: '2',
-        Measurement: 'm',
-        price: '120€'),
-    const RowData(
-        title: 'Montage Fenster', Menge: '6', Measurement: 'cm', price: '80€'),
-    const RowData(
-        title: 'Montage Allgemein Meister',
-        Menge: '7',
-        Measurement: 'm3',
-        price: '540€'),
+    const RowData(title: 'Montage Allgemein', Menge: '2', Measurement: 'm', price: '120€'),
+    const RowData(title: 'Montage Fenster', Menge: '6', Measurement: 'cm', price: '80€'),
+    const RowData(title: 'Montage Allgemein Meister', Menge: '7', Measurement: 'm3', price: '540€'),
   ];
 
   bool isCardVisible = false;
@@ -43,84 +36,75 @@ class _ConsumableBodyState extends State<ConsumableBody> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text(''),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
+  Widget build(BuildContext context) => Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: SizedBox(
-                    width: 400,
-                    child: Material(
-                      elevation: 4,
-                      borderRadius: BorderRadius.circular(
-                          12), // Ensure the Material also has rounded corners
-                      child: TextField(
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(10),
-                          hintText: 'Suchen...', // Placeholder text
-                          fillColor: Colors
-                              .white, // Background color of the text field
-                          filled: true,
-                          suffixIcon: const Icon(Icons.search,
-                              color: Colors.grey), // Search icon on the right
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.circular(12), // Rounded corners
-                            borderSide: BorderSide.none, // No visible border
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                                color: Colors.transparent,
-                                width:
-                                    0), // Transparent border to maintain consistency
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                                color: Colors.white,
-                                width:
-                                    2), // Highlight with an orange border when focused
+                const SearchLineHeader(title: 'Material'),
+                /*                Padding(
+                    padding: const EdgeInsets.only(left: 40),
+                    child: SizedBox(
+                      width: 400,
+                      child: Material(
+                        elevation: 4,
+                        borderRadius: BorderRadius.circular(
+                            12), // Ensure the Material also has rounded corners
+                        child: TextField(
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10),
+                            hintText: 'Suchen...', // Placeholder text
+                            fillColor: Colors
+                                .white, // Background color of the text field
+                            filled: true,
+                            suffixIcon: const Icon(Icons.search,
+                                color: Colors.grey), // Search icon on the right
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.circular(12), // Rounded corners
+                              borderSide: BorderSide.none, // No visible border
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                  color: Colors.transparent,
+                                  width:
+                                      0), // Transparent border to maintain consistency
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                  color: Colors.white,
+                                  width:
+                                      2), // Highlight with an orange border when focused
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
+                  ),*/
                 const SizedBox(height: 44),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text('Material',
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold)),
-                    ),                    SizedBox(width: 22),
-
+                      child: Text('Material', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                    ),
+                    SizedBox(width: 22),
                     Expanded(
-                      child: Text('Menge',
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      child: Text('Menge', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 44),
                     Expanded(
-                      child: Text('Einheit',
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      child: Text('Einheit', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 30),
                     Expanded(
-                      child: Text('Preis/mengeneinheit',
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold)),
+                      child: Text('Preis/mengeneinheit', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 110)
                   ],
@@ -143,8 +127,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                       height: 35,
                       decoration: BoxDecoration(
                         color: Colors.orange,
-                        borderRadius:
-                            BorderRadius.circular(50), // Fully rounded corners
+                        borderRadius: BorderRadius.circular(50), // Fully rounded corners
                       ),
                       child: IconButton(
                         onPressed: () {
@@ -152,12 +135,9 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                             isCardVisible = !isCardVisible;
                           });
                         },
-                        iconSize:
-                            30, // Adjust the size of the icon if necessary
-                        padding: EdgeInsets
-                            .zero, // Remove any default padding to ensure centering
-                        alignment: Alignment
-                            .center, // Ensure the icon is centered in the button
+                        iconSize: 30, // Adjust the size of the icon if necessary
+                        padding: EdgeInsets.zero, // Remove any default padding to ensure centering
+                        alignment: Alignment.center, // Ensure the icon is centered in the button
                         icon: isCardVisible
                             ? const Icon(Icons.remove, color: Colors.white)
                             : const Icon(Icons.add, color: Colors.white),
@@ -178,15 +158,13 @@ class _ConsumableBodyState extends State<ConsumableBody> {
 
   void _addRow(String title, String menge, String measurement, String price) {
     setState(() {
-      rowDataList.add(RowData(
-          title: title, Menge: menge, Measurement: measurement, price: price));
+      rowDataList.add(RowData(title: title, Menge: menge, Measurement: measurement, price: price));
     });
   }
 }
 
 class CardWidget extends StatefulWidget {
-  final Function(String title, String menge, String measurement, String price)
-      onSave;
+  final Function(String title, String menge, String measurement, String price) onSave;
   final Function onHideCard;
 
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
@@ -245,29 +223,24 @@ class _CardWidgetState extends State<CardWidget> {
                                 controller: _leistungController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(
-                                      211, 245, 241, 241), // Background color
+                                  fillColor: const Color.fromARGB(211, 245, 241, 241), // Background color
                                   hintText: 'Material',
                                   contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // No border for normal state
+                                    borderSide: BorderSide.none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 0),
+                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // Optional, defines border when field is enabled
+                                    borderSide: BorderSide.none, // Optional, defines border when field is enabled
                                   ),
                                   disabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // Optional, defines border when field is disabled
+                                    borderSide: BorderSide.none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -282,38 +255,31 @@ class _CardWidgetState extends State<CardWidget> {
                             children: [
                               const Align(
                                 alignment: Alignment.topLeft,
-                                child: Text('Menge',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text('Menge', style: TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               const SizedBox(height: 15),
                               TextField(
                                 controller: _mengeController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(
-                                      211, 245, 241, 241), // Background color
+                                  fillColor: const Color.fromARGB(211, 245, 241, 241), // Background color
                                   hintText: 'Menge',
                                   contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // No border for normal state
+                                    borderSide: BorderSide.none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 0),
+                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // Optional, defines border when field is enabled
+                                    borderSide: BorderSide.none, // Optional, defines border when field is enabled
                                   ),
                                   disabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // Optional, defines border when field is disabled
+                                    borderSide: BorderSide.none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -328,38 +294,31 @@ class _CardWidgetState extends State<CardWidget> {
                             children: [
                               const Align(
                                 alignment: Alignment.topLeft,
-                                child: Text('Einheit',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text('Einheit', style: TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               const SizedBox(height: 15),
                               TextField(
                                 controller: _measurementController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(
-                                      211, 245, 241, 241), // Background color
+                                  fillColor: const Color.fromARGB(211, 245, 241, 241), // Background color
                                   hintText: 'Einheit',
                                   contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // No border for normal state
+                                    borderSide: BorderSide.none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 0),
+                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // Optional, defines border when field is enabled
+                                    borderSide: BorderSide.none, // Optional, defines border when field is enabled
                                   ),
                                   disabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // Optional, defines border when field is disabled
+                                    borderSide: BorderSide.none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -374,38 +333,35 @@ class _CardWidgetState extends State<CardWidget> {
                             children: [
                               const Align(
                                 alignment: Alignment.topLeft,
-                                child: Text('Preis/mengeneinheit',  overflow: TextOverflow.ellipsis,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold,)),
+                                child: Text('Preis/mengeneinheit',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    )),
                               ),
                               const SizedBox(height: 15),
                               TextField(
                                 controller: _preisController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(
-                                      211, 245, 241, 241), // Background color
+                                  fillColor: const Color.fromARGB(211, 245, 241, 241), // Background color
                                   hintText: 'Preis/mengeneinheit',
                                   contentPadding: const EdgeInsets.all(10),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // No border for normal state
+                                    borderSide: BorderSide.none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 0),
+                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // Optional, defines border when field is enabled
+                                    borderSide: BorderSide.none, // Optional, defines border when field is enabled
                                   ),
                                   disabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide
-                                        .none, // Optional, defines border when field is disabled
+                                    borderSide: BorderSide.none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -429,14 +385,11 @@ class _CardWidgetState extends State<CardWidget> {
                           widget.onHideCard();
                         },
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 26, vertical: 18),
+                          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: const BorderSide(
-                                color: Color.fromARGB(255, 231, 226, 226),
-                                width: 1.0),
+                            side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                           ),
                         ),
                         child: const Text(
@@ -451,10 +404,7 @@ class _CardWidgetState extends State<CardWidget> {
                           final menge = _mengeController.text;
                           final meausurement = _measurementController.text;
                           final preis = _preisController.text;
-                          if (leistung.isNotEmpty &&
-                              menge.isNotEmpty &&
-                              meausurement.isNotEmpty &&
-                              preis.isNotEmpty) {
+                          if (leistung.isNotEmpty && menge.isNotEmpty && meausurement.isNotEmpty && preis.isNotEmpty) {
                             widget.onSave(leistung, menge, meausurement, preis);
                             _leistungController.clear();
                             _measurementController.clear();
@@ -465,8 +415,7 @@ class _CardWidgetState extends State<CardWidget> {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: const Text('Error'),
-                                content: const Text(
-                                    'Bitte füllen Sie alle Felder aus'),
+                                content: const Text('Bitte füllen Sie alle Felder aus'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
@@ -478,14 +427,11 @@ class _CardWidgetState extends State<CardWidget> {
                           }
                         },
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 26, vertical: 18),
+                          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
                           backgroundColor: Colors.orange,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: const BorderSide(
-                                color: Color.fromARGB(255, 231, 226, 226),
-                                width: 1.0),
+                            side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                           ),
                         ),
                         child: const Text(
@@ -580,11 +526,42 @@ class _EditableRowState extends State<EditableRow> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: TextField(controller: _titleController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
-            Expanded(child: TextField(controller: _mengeController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
-            Expanded(child: TextField(controller: _measurementController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
-            Expanded(child: TextField(controller: _priceController, decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.zero,), readOnly: !isEditing,)),
-            
+            Expanded(
+                child: TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              readOnly: !isEditing,
+            )),
+            Expanded(
+                child: TextField(
+              controller: _mengeController,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              readOnly: !isEditing,
+            )),
+            Expanded(
+                child: TextField(
+              controller: _measurementController,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              readOnly: !isEditing,
+            )),
+            Expanded(
+                child: TextField(
+              controller: _priceController,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+              readOnly: !isEditing,
+            )),
             if (isEditing) // Only show the cancel icon if isEditing is true
               IconButton(
                 icon: const Icon(Icons.cancel),
@@ -598,7 +575,6 @@ class _EditableRowState extends State<EditableRow> {
                   });
                 },
               ),
-
             IconButton(
               icon: Icon(isEditing ? Icons.save : Icons.edit),
               onPressed: () {
