@@ -262,7 +262,9 @@ class NavButtonWidget extends ConsumerWidget {
         }
       },
       child: Container(
-        color: isSubCategory ? Colors.orange : (isSelected ? Colors.transparent : color),
+        color: isSubCategory
+            ? Colors.orange
+            : (isSelected ? Colors.transparent : color),
         width: width,
         height: height,
         margin: const EdgeInsets.all(4),

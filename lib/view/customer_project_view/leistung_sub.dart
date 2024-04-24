@@ -1,18 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+
 import 'package:flutter/widgets.dart';
 
 import '../shared_view_widgets/search_line_header.dart';
 
+
 class ConsumableLeistungBody extends StatefulWidget {
-  const ConsumableLeistungBody({super.key}); // Constructor with key initialization
+  const ConsumableLeistungBody(
+      {super.key}); // Constructor with key initialization
 
   @override
   // ignore: library_private_types_in_public_api
-  _ConsumableBodyState createState() => _ConsumableBodyState();
+  _ConsumableLeistungBodyState createState() => _ConsumableLeistungBodyState();
 }
 
+
 class _ConsumableBodyState extends State<ConsumableLeistungBody> {
+
   List<RowData> rowDataList = [
     const RowData(title: 'Montage Allgemein', price: '120€'),
     const RowData(title: 'Montage Fenster', price: '80€'),
@@ -43,18 +48,25 @@ class _ConsumableBodyState extends State<ConsumableLeistungBody> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 const SearchLineHeader(title: 'Leistungsverwaltung'),
                 /*              Row(
                   children: [
-                    const Expanded(
+                    Flexible(
+                      flex:
+                          1, // Adjust the flex factor to control space allocation
                       child: Text(
                         'Leistungsverwaltung',
                         style: TextStyle(color: Colors.orange, fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                     ),
-                    Expanded(
+                    SizedBox(width: 10), // Reduced space
+                    Flexible(
+                      flex:
+                          2, // Adjust the flex factor to control space allocation
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 40),
+                        padding:
+                            const EdgeInsets.only(left: 10), // Reduced padding
                         child: SizedBox(
                           width: 400,
                           child: Material(

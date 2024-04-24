@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/widgets.dart';
 
 import '../shared_view_widgets/search_line_header.dart';
@@ -54,6 +54,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 const SearchLineHeader(title: 'Material'),
                 /*                Padding(
                     padding: const EdgeInsets.only(left: 40),
@@ -111,7 +112,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                     Expanded(
                       child: Text('Einheit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
-                    SizedBox(width: 30),
+                    // SizedBox(width: 30),
                     Expanded(
                       child: Text('Preis/mengeneinheit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
@@ -340,7 +341,7 @@ class _CardWidgetState extends State<CardWidget> {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 30),
                         Flexible(
                           flex: 1,
                           child: Column(
@@ -501,6 +502,7 @@ class EditableRow extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditableRowState createState() => _EditableRowState();
 }
 
@@ -517,7 +519,8 @@ class _EditableRowState extends State<EditableRow> {
     super.initState();
     _titleController = TextEditingController(text: widget.originalTitle);
     _mengeController = TextEditingController(text: widget.originalMenge);
-    _measurementController = TextEditingController(text: widget.originalMeasurement);
+    _measurementController =
+        TextEditingController(text: widget.originalMeasurement);
     _priceController = TextEditingController(text: widget.originalPrice);
   }
 
@@ -546,6 +549,7 @@ class _EditableRowState extends State<EditableRow> {
           children: [
             Expanded(
                 child: TextField(
+              maxLines: null,
               controller: _titleController,
               decoration: const InputDecoration(
                 border: InputBorder.none,
@@ -563,33 +567,40 @@ class _EditableRowState extends State<EditableRow> {
               readOnly: !isEditing,
             )),
             Expanded(
-                child: TextField(
-              controller: _measurementController,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
+              child: TextField(
+                controller: _measurementController,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
               ),
-              readOnly: !isEditing,
-            )),
+            ),
             Expanded(
                 child: TextField(
               controller: _priceController,
+              maxLines: null,
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
               ),
               readOnly: !isEditing,
             )),
-            if (isEditing) // Only show the cancel icon if isEditing is true
-              IconButton(
+
+            // const Spacer(),
+            // if (isEditing) // Only show the cancel icon if isEditing is true
+            Visibility(
+              visible: isEditing,
+              maintainSize: true,
+              maintainState: true,
+              maintainAnimation: true,
+              child: IconButton(
+
                 icon: const Icon(Icons.cancel),
                 onPressed: () {
                   setState(() {
                     isEditing = false;
-                    _titleController.text = widget.originalTitle;
-                    _mengeController.text = widget.originalMenge;
-                    _measurementController.text = widget.originalMeasurement;
-                    _priceController.text = widget.originalPrice;
+                    // Reset fields, etc.
                   });
                 },
               ),
