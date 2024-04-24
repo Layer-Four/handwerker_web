@@ -103,144 +103,146 @@ class _AddNewProjectState extends State<AddNewProject> {
       );
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
-        child: Card(
-          elevation: 9,
-          child: Container(
-            color: const Color.fromARGB(255, 255, 255, 255),
-            height: 300,
-            width: double.infinity,
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget build(BuildContext context) => SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
+          child: Card(
+            elevation: 9,
+            child: Container(
+              color: const Color.fromARGB(255, 255, 255, 255),
+              height: 400,
+              width: double.infinity,
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        const SizedBox(height: 5),
+                        buildTextField(
+                          hintText: 'Project X',
+                          controller: _projectNameController,
+                          context: context,
+                        ),
+                        const SizedBox(height: 20),
+                        const Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text(
+                            'Kundenzuweisung',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        buildDropdown(
+                          options: ['Kunde X', 'Firma GmbH', 'Stammkunde Y'],
+                          selectedValue: kundenzuweisungOption,
+                          onChanged: (value) {
+                            setState(() {
+                              kundenzuweisungOption = value;
+                            });
+                          },
+                          context: context,
+                        ),
+                        const SizedBox(height: 20),
+                        const Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text(
+                            'Status',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        buildDropdown(
+                          options: ['Offen', 'Geschlossen', 'In Bearbeitung', 'On Hold'],
+                          selectedValue: statusOption,
+                          onChanged: (value) {
+                            setState(() {
+                              statusOption = value;
+                            });
+                          },
+                          context: context,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 40),
+                  Expanded(
+                      child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
                         padding: EdgeInsets.all(6),
-                        child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text('Beschreibung', style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
-                      const SizedBox(height: 5),
-                      buildTextField(
-                        hintText: 'Project X',
-                        controller: _projectNameController,
-                        context: context,
+                      TextField(
+                        controller: _descriptionController,
+                        maxLines: 2, // Allows the text field to expand to 7 lines.
+                        minLines: 2, // Ensures the text field always shows 7 lines.
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 220, 217, 217),
+                            ),
+                          ),
+                          //  labelText: 'Beschreibung',
+                          hintText: 'Beschreibung hier eingeben...',
+                          border: const OutlineInputBorder(),
+                          //   fillColor: Colors.grey[200],
+                          // Optional: for better visibility.
+                          //   filled: true,
+                        ),
                       ),
+                      const SizedBox(height: 10),
                       const SizedBox(height: 20),
                       const Padding(
                         padding: EdgeInsets.all(6),
                         child: Text(
-                          'Kundenzuweisung',
+                          'Zeitraum',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                       const SizedBox(height: 5),
-                      buildDropdown(
-                        options: ['Kunde X', 'Firma GmbH', 'Stammkunde Y'],
-                        selectedValue: kundenzuweisungOption,
-                        onChanged: (value) {
-                          setState(() {
-                            kundenzuweisungOption = value;
-                          });
-                        },
-                        context: context,
-                      ),
-                      const SizedBox(height: 20),
-                      const Padding(
-                        padding: EdgeInsets.all(6),
-                        child: Text(
-                          'Status',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                      buildDateField(controller: _dateStartController, hintText: 'Startdatum', context: context),
                       const SizedBox(height: 5),
-                      buildDropdown(
-                        options: ['Offen', 'Geschlossen', 'In Bearbeitung', 'On Hold'],
-                        selectedValue: statusOption,
-                        onChanged: (value) {
-                          setState(() {
-                            statusOption = value;
-                          });
-                        },
-                        context: context,
+                      buildDateField(controller: _dateEndController, hintText: 'Enddatum', context: context),
+                      const Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SymmetricButton(
+                              color: const Color.fromARGB(255, 241, 241, 241),
+                              text: 'Verwerfen',
+                              style: const TextStyle(color: Colors.orange),
+                              onPressed: () {
+                                widget.onCancel();
+                                //Dispose of controllers
+                                //     dispose();
+                              }, //onCancel
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SymmetricButton(
+                              color: Colors.orange,
+                              text: 'Speichern',
+                              onPressed: widget.onSave,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                ),
-                const SizedBox(width: 40),
-                Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(6),
-                      child: Text('Beschreibung', style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    TextField(
-                      controller: _descriptionController,
-                      maxLines: 2, // Allows the text field to expand to 7 lines.
-                      minLines: 2, // Ensures the text field always shows 7 lines.
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 220, 217, 217),
-                          ),
-                        ),
-                        //  labelText: 'Beschreibung',
-                        hintText: 'Beschreibung hier eingeben...',
-                        border: const OutlineInputBorder(),
-                        //   fillColor: Colors.grey[200],
-                        // Optional: for better visibility.
-                        //   filled: true,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const SizedBox(height: 20),
-                    const Padding(
-                      padding: EdgeInsets.all(6),
-                      child: Text(
-                        'Zeitraum',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    buildDateField(controller: _dateStartController, hintText: 'Startdatum', context: context),
-                    const SizedBox(height: 5),
-                    buildDateField(controller: _dateEndController, hintText: 'Enddatum', context: context),
-                    const Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: SymmetricButton(
-                            color: const Color.fromARGB(255, 241, 241, 241),
-                            text: 'Verwerfen',
-                            style: const TextStyle(color: Colors.orange),
-                            onPressed: () {
-                              widget.onCancel();
-                              //Dispose of controllers
-                              //     dispose();
-                            }, //onCancel
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: SymmetricButton(
-                            color: Colors.orange,
-                            text: 'Speichern',
-                            onPressed: widget.onSave,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ))
-              ],
+                  ))
+                ],
+              ),
             ),
           ),
         ),
