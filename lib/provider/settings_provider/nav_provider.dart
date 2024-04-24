@@ -5,11 +5,11 @@ enum MainView {
   timeEntry,
   projectCustomer,
   consumables,
+  material,
   customer,
   projectManagement,
   performance,
   users,
-  material,
 }
 
 extension MainViewExtennsion on MainView {
