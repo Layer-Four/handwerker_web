@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 class ConsumableLeistungBody extends StatefulWidget {
   const ConsumableLeistungBody({super.key}); // Constructor with key initialization
 
@@ -9,8 +10,7 @@ class ConsumableLeistungBody extends StatefulWidget {
   _ConsumableBodyState createState() => _ConsumableBodyState();
 }
 
-class _ConsumableBodyState extends State<ConsumableBody> 
-{
+class _ConsumableBodyState extends State<ConsumableLeistungBody> {
   List<RowData> rowDataList = [
     const RowData(title: 'Montage Allgemein', price: '120€'),
     const RowData(title: 'Montage Fenster', price: '80€'),
@@ -32,139 +32,119 @@ class _ConsumableBodyState extends State<ConsumableBody>
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text(''),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        'Leistungsverwaltung',
-                        style: TextStyle(
-                            color: Colors.orange,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Leistungsverwaltung',
+                      style: TextStyle(color: Colors.orange, fontSize: 16, fontWeight: FontWeight.w500),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 40),
-                        child: SizedBox(
-                          width: 400,
-                          child: Material(
-                            elevation: 4,
-                            borderRadius: BorderRadius.circular(
-                                12), // Ensure the Material also has rounded corners
-                            child: TextField(
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(10),
-                                hintText: 'Suchen...', // Placeholder text
-                                fillColor: Colors
-                                    .white, // Background color of the text field
-                                filled: true,
-                                suffixIcon: const Icon(Icons.search,
-                                    color: Colors
-                                        .grey), // Search icon on the right
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      12), // Rounded corners
-                                  borderSide:
-                                      BorderSide.none, // No visible border
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                      width:
-                                          0), // Transparent border to maintain consistency
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
-                                      color: Colors.white,
-                                      width:
-                                          2), // Highlight with an orange border when focused
-                                ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 40),
+                      child: SizedBox(
+                        width: 400,
+                        child: Material(
+                          elevation: 4,
+                          borderRadius: BorderRadius.circular(12), // Ensure the Material also has rounded corners
+                          child: TextField(
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(10),
+                              hintText: 'Suchen...',
+                              // Placeholder text
+                              fillColor: Colors.white,
+                              // Background color of the text field
+                              filled: true,
+                              suffixIcon: const Icon(Icons.search, color: Colors.grey),
+                              // Search icon on the right
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12), // Rounded corners
+                                borderSide: BorderSide.none, // No visible border
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: const BorderSide(
+                                    color: Colors.transparent, width: 0), // Transparent border to maintain consistency
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: const BorderSide(
+                                    color: Colors.white, width: 2), // Highlight with an orange border when focused
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 44),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text('Leistung',
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(width: 30),
-                    Expanded(
-                      child: Text('Preis/std',
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold)),
-                    ),
-                    Spacer(),
-                    SizedBox(width: 110)
-                  ],
-                ),
-                for (int i = 0; i < rowDataList.length; i++)
-                  EditableRow(
-                    originalTitle: rowDataList[i].title,
-                    originalPrice: rowDataList[i].price,
-                    onDelete: () => removeRow(rowDataList[i]),
                   ),
-                const SizedBox(height: 40),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius:
-                            BorderRadius.circular(50), // Fully rounded corners
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isCardVisible = !isCardVisible;
-                          });
-                        },
-                        iconSize:
-                            30, // Adjust the size of the icon if necessary
-                        padding: EdgeInsets
-                            .zero, // Remove any default padding to ensure centering
-                        alignment: Alignment
-                            .center, // Ensure the icon is centered in the button
-                        icon: isCardVisible
-                            ? const Icon(Icons.remove, color: Colors.white)
-                            : const Icon(Icons.add, color: Colors.white),
-                      ),
+                ],
+              ),
+              const SizedBox(height: 44),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text('Leistung', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                  ),
+                  SizedBox(width: 30),
+                  Expanded(
+                    child: Text('Preis/std', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                  ),
+                  Spacer(),
+                  SizedBox(width: 110)
+                ],
+              ),
+              for (int i = 0; i < rowDataList.length; i++)
+                EditableRow(
+                  originalTitle: rowDataList[i].title,
+                  originalPrice: rowDataList[i].price,
+                  onDelete: () => removeRow(rowDataList[i]),
+                ),
+              const SizedBox(height: 40),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(50), // Fully rounded corners
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isCardVisible = !isCardVisible;
+                        });
+                      },
+                      iconSize: 30,
+                      // Adjust the size of the icon if necessary
+                      padding: EdgeInsets.zero,
+                      // Remove any default padding to ensure centering
+                      alignment: Alignment.center,
+                      // Ensure the icon is centered in the button
+                      icon: isCardVisible
+                          ? const Icon(Icons.remove, color: Colors.white)
+                          : const Icon(Icons.add, color: Colors.white),
                     ),
                   ),
                 ),
-                if (isCardVisible)
-                  CardWidget(
-                    onSave: _addRow,
-                    onHideCard: hideCard,
-                  ),
-              ],
-            ),
+              ),
+              if (isCardVisible)
+                CardWidget(
+                  onSave: _addRow,
+                  onHideCard: hideCard,
+                ),
+            ],
           ),
         ),
       );
@@ -227,8 +207,7 @@ class _CardWidgetState extends State<CardWidget> {
                                   alignment: Alignment.topLeft,
                                   child: Text(
                                     'Leistung',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 const SizedBox(height: 15),
@@ -237,17 +216,13 @@ class _CardWidgetState extends State<CardWidget> {
                                     controller: _leistungController,
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          211, 245, 241, 241),
+                                      fillColor: const Color.fromARGB(211, 245, 241, 241),
                                       hintText: 'Leistung',
                                       contentPadding: const EdgeInsets.all(10),
                                       border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          borderSide: BorderSide.none),
+                                          borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.grey, width: 0),
+                                        borderSide: const BorderSide(color: Colors.grey, width: 0),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
@@ -266,9 +241,7 @@ class _CardWidgetState extends State<CardWidget> {
                               children: [
                                 const Align(
                                   alignment: Alignment.topLeft,
-                                  child: Text('Preis/std',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
+                                  child: Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 15),
                                 Expanded(
@@ -276,17 +249,13 @@ class _CardWidgetState extends State<CardWidget> {
                                     controller: _preisController,
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          211, 245, 241, 241),
+                                      fillColor: const Color.fromARGB(211, 245, 241, 241),
                                       hintText: 'Presi/std',
                                       contentPadding: const EdgeInsets.all(10),
                                       border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          borderSide: BorderSide.none),
+                                          borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.grey, width: 0),
+                                        borderSide: const BorderSide(color: Colors.grey, width: 0),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
@@ -314,14 +283,11 @@ class _CardWidgetState extends State<CardWidget> {
                             widget.onHideCard();
                           },
                           style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 26, vertical: 18),
+                            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
-                              side: const BorderSide(
-                                  color: Color.fromARGB(255, 231, 226, 226),
-                                  width: 1.0),
+                              side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                             ),
                           ),
                           child: const Text(
@@ -343,8 +309,7 @@ class _CardWidgetState extends State<CardWidget> {
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: const Text('Error'),
-                                  content: const Text(
-                                      'Bitte füllen Sie alle Felder aus'),
+                                  content: const Text('Bitte füllen Sie alle Felder aus'),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(context),
@@ -356,14 +321,11 @@ class _CardWidgetState extends State<CardWidget> {
                             }
                           },
                           style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 26, vertical: 18),
+                            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
                             backgroundColor: Colors.orange,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
-                              side: const BorderSide(
-                                  color: Color.fromARGB(255, 231, 226, 226),
-                                  width: 1.0),
+                              side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                             ),
                           ),
                           child: const Text(
@@ -384,6 +346,7 @@ class _CardWidgetState extends State<CardWidget> {
 
 class RowData {
   final String title;
+
   // ignore: non_constant_identifier_names
   final String price;
 
@@ -426,8 +389,7 @@ class _EditableRowState extends State<EditableRow> {
     _titleController = TextEditingController(text: widget.originalTitle);
 
     // Initialize currentPrice before using it to set up _priceController
-    currentPrice =
-        widget.originalPrice; // Set currentPrice from widget's originalPrice
+    currentPrice = widget.originalPrice; // Set currentPrice from widget's originalPrice
     _priceController = TextEditingController(text: widget.originalPrice);
     // Listener for _priceController to append '€' if it's not already there
     // _priceController.addListener(() {
@@ -519,8 +481,7 @@ class _EditableRowState extends State<EditableRow> {
                   if (isEditing) {
                     // Save the current text field contents
                     currentTitle = _titleController.text;
-                    currentPrice =
-                        _priceController.text; // Append currency symbol
+                    currentPrice = _priceController.text; // Append currency symbol
                     isEditing = false; // Exit editing mode
                   } else {
                     isEditing = true; // Enter editing mode
