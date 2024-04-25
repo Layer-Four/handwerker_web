@@ -1,31 +1,22 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:handwerker_web/view/users_view/role_row.dart';
-import '../customer_project_view/custom_project.dart';
-import 'edit_employee.dart';
-import '../shared_view_widgets/search_line_header.dart';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/constants/api/api.dart';
-import '/models/project_models/project_vm/project_vm.dart';
-import '/models/service_models/service_vm/service_vm.dart';
-import '/models/time_models/time_dm/time_dm.dart';
-import '/models/users_models/user_data_short/user_short.dart';
-import '/provider/data_provider/project_provders/project_vm_provider.dart';
-import '/provider/data_provider/service_provider/service_vm_provider.dart';
-import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
-import '/provider/user_provider/user_provider.dart';
+
+import '../customer_project_view/custom_project.dart';
+import '../shared_view_widgets/search_line_header.dart';
+import 'edit_employee.dart';
+import 'role_row.dart';
 
 class EmployeeAdministration extends ConsumerStatefulWidget {
   //StatelessWidget
   const EmployeeAdministration({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EmployeeAdministrationState createState() => _EmployeeAdministrationState();
 }
 
-class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
+class _EmployeeAdministrationState
+    extends ConsumerState<EmployeeAdministration> {
   //Call fetch infos here
 
   //  const Text('Berichte', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -73,16 +64,18 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                           Expanded(
                             child: Text(
                               'Name',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                           ),
-                          const SizedBox(
+                          SizedBox(
                             width: 50,
                           ),
                           Expanded(
                             child: Text(
                               'Rolle',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],
@@ -155,12 +148,13 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
               ),*/
               Visibility(
                 visible: isAddConsumableOpen,
-                child: Container(
+                child: SizedBox(
                   // alignment: Alignment.topLeft,
                   height: MediaQuery.of(context).size.height / 3,
                   width: screenWidth / 2,
                   child: AddNewEmployee(
                     onSave: () {
+                      // ignore: avoid_print
                       print('save');
                       //Todo: Call api for saving
                       //If Edit was clicked (therefore index != -1), also pass which customer is to be edited
@@ -170,6 +164,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                       });*/
                     },
                     onCancel: () {
+                      // ignore: avoid_print
                       print('cancel');
                       setState(() {
                         isAddConsumableOpen = !isAddConsumableOpen;

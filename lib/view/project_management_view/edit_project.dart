@@ -9,20 +9,22 @@ class AddNewProject extends StatefulWidget {
   final VoidCallback onCancel;
   final CustomeProject? project;
 
-  AddNewProject({super.key, required this.onSave, required this.onCancel, this.project});
+  const AddNewProject(
+      {super.key, required this.onSave, required this.onCancel, this.project});
 
   @override
   State<AddNewProject> createState() => _AddNewProjectState();
 }
 
 class _AddNewProjectState extends State<AddNewProject> {
-  TextEditingController _projectNameController = TextEditingController();
-  TextEditingController _secondNameController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _customerNumberController = TextEditingController();
-  TextEditingController _telephoneController = TextEditingController();
-  TextEditingController _contactController = TextEditingController();
+  final TextEditingController _projectNameController = TextEditingController();
+  final TextEditingController _secondNameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _customerNumberController =
+      TextEditingController();
+  final TextEditingController _telephoneController = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
   final TextEditingController _dateStartController = TextEditingController();
   final TextEditingController _dateEndController = TextEditingController();
   String? kundenzuweisungOption;
@@ -32,7 +34,8 @@ class _AddNewProjectState extends State<AddNewProject> {
   void initState() {
     super.initState();
     if (widget.project != null) {
-      _projectNameController.text = widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
+      _projectNameController.text = widget.project!
+          .customer; // Assuming 'customer' is a field in CustomeProject
     }
   }
 
@@ -51,7 +54,8 @@ class _AddNewProjectState extends State<AddNewProject> {
     super.dispose(); // Always call super.dispose() last
   }
 
-  Future<void> _selectDate(TextEditingController controller, BuildContext context) async {
+  Future<void> _selectDate(
+      TextEditingController controller, BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -91,14 +95,17 @@ class _AddNewProjectState extends State<AddNewProject> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+              borderSide:
+                  const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
             ),
             filled: true,
             fillColor: Colors.white,
-            suffixIcon: const Icon(Icons.calendar_today), // Icon to indicate it's a date field
+            suffixIcon: const Icon(
+                Icons.calendar_today), // Icon to indicate it's a date field
           ),
           readOnly: true, // Prevent keyboard from appearing
-          onTap: () => _selectDate(controller, context), // Open date picker when the field is tapped
+          onTap: () => _selectDate(
+              controller, context), // Open date picker when the field is tapped
         ),
       );
 
@@ -122,7 +129,8 @@ class _AddNewProjectState extends State<AddNewProject> {
                       children: [
                         const Padding(
                           padding: EdgeInsets.all(6),
-                          child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text('Name',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const SizedBox(height: 5),
                         buildTextField(
@@ -159,7 +167,12 @@ class _AddNewProjectState extends State<AddNewProject> {
                         ),
                         const SizedBox(height: 5),
                         buildDropdown(
-                          options: ['Offen', 'Geschlossen', 'In Bearbeitung', 'On Hold'],
+                          options: [
+                            'Offen',
+                            'Geschlossen',
+                            'In Bearbeitung',
+                            'On Hold'
+                          ],
                           selectedValue: statusOption,
                           onChanged: (value) {
                             setState(() {
@@ -178,12 +191,15 @@ class _AddNewProjectState extends State<AddNewProject> {
                     children: [
                       const Padding(
                         padding: EdgeInsets.all(6),
-                        child: Text('Beschreibung', style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text('Beschreibung',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                       TextField(
                         controller: _descriptionController,
-                        maxLines: 2, // Allows the text field to expand to 7 lines.
-                        minLines: 2, // Ensures the text field always shows 7 lines.
+                        maxLines:
+                            2, // Allows the text field to expand to 7 lines.
+                        minLines:
+                            2, // Ensures the text field always shows 7 lines.
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -209,9 +225,15 @@ class _AddNewProjectState extends State<AddNewProject> {
                         ),
                       ),
                       const SizedBox(height: 5),
-                      buildDateField(controller: _dateStartController, hintText: 'Startdatum', context: context),
+                      buildDateField(
+                          controller: _dateStartController,
+                          hintText: 'Startdatum',
+                          context: context),
                       const SizedBox(height: 5),
-                      buildDateField(controller: _dateEndController, hintText: 'Enddatum', context: context),
+                      buildDateField(
+                          controller: _dateEndController,
+                          hintText: 'Enddatum',
+                          context: context),
                       const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -278,7 +300,8 @@ Widget buildTextField({
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+              borderSide:
+                  const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
             ),
           ),
         ),
@@ -312,17 +335,19 @@ Widget buildDropdown({
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+            borderSide:
+                const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
           ),
           filled: true,
           fillColor: Colors.white,
         ),
         onChanged: onChanged,
         items: options
-            .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                ))
+            .map<DropdownMenuItem<String>>(
+                (String value) => DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    ))
             .toList(),
       ),
     );

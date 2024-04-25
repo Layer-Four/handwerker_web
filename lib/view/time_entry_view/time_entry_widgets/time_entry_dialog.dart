@@ -43,10 +43,14 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
       startTime: DateTime.now(),
       endTime: DateTime.now(),
     );
-    final minute = _entry.startTime.minute < 10 ? '0${_entry.startTime.minute}' : '${_entry.startTime.minute}';
+    final minute = _entry.startTime.minute < 10
+        ? '0${_entry.startTime.minute}'
+        : '${_entry.startTime.minute}';
     if (selectedTime == null || _dayPickerController.text.isEmpty) {
-      _dayPickerController.text = '${_entry.startTime.day}.${_entry.startTime.month}.${_entry.startTime.year}';
-      selectedTime = TimeOfDay(hour: _entry.startTime.hour, minute: _entry.startTime.minute);
+      _dayPickerController.text =
+          '${_entry.startTime.day}.${_entry.startTime.month}.${_entry.startTime.year}';
+      selectedTime = TimeOfDay(
+          hour: _entry.startTime.hour, minute: _entry.startTime.minute);
     }
     _startController.text = '${selectedTime!.hour}:$minute';
   }
@@ -67,13 +71,15 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             SizedBox(
               height: 70,
               child: Center(
-                child: Image.asset('assets/images/img_techtool.png', height: 20),
+                child:
+                    Image.asset('assets/images/img_techtool.png', height: 20),
               ),
             ),
           ],
         ),
       );
-  Future<List<UserDataShort>> loadUser() async => await ref.read(userProvider.notifier).getListUserService();
+  Future<List<UserDataShort>> loadUser() async =>
+      await ref.read(userProvider.notifier).getListUserService();
 
   Widget _buildSelectUser() => FutureBuilder(
       future: loadUser(),
@@ -81,7 +87,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           const CircularProgressIndicator();
         }
-        if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.data != null) {
           if (!_initUser) {
             _users = snapshot.data;
             _selectedUser = _users!.first;
@@ -146,7 +153,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                   height: 40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 220, 217, 217)),
                   ),
                   child: DropdownButton(
                     underline: const SizedBox(),
@@ -154,7 +162,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     value: _project,
                     items: projects
                         ?.map(
-                          (e) => DropdownMenuItem(value: e, child: Text(' ${e.title}')),
+                          (e) => DropdownMenuItem(
+                              value: e, child: Text(' ${e.title}')),
                         )
                         .toList(),
                     onChanged: (e) {
@@ -209,13 +218,15 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                    borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 220, 217, 217)),
                   ),
                 ),
                 onChanged: (value) {
                   setState(() {
                     _descriptionController.text = value;
-                    _entry = _entry.copyWith(description: _descriptionController.text);
+                    _entry = _entry.copyWith(
+                        description: _descriptionController.text);
                   });
                 },
               ),
@@ -258,7 +269,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                   height: 40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 220, 217, 217)),
                   ),
                   child: DropdownButton(
                     underline: const SizedBox(),
@@ -293,7 +305,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   /// than do  the same translation with _dayPickerController and _endController
   /// and return the different between this [DateTime] object in minutes.
   void _calculateDuration() {
-    final dateAsList = _dayPickerController.text.split('.').map((e) => int.parse(e)).toList();
+    final dateAsList =
+        _dayPickerController.text.split('.').map((e) => int.parse(e)).toList();
     final start = DateTime(
       dateAsList[2],
       dateAsList[1],
@@ -308,14 +321,17 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
       int.parse(_endController.text.split(':').first),
       int.parse(_endController.text.split(':').last),
     );
-    final sum = ((end.millisecondsSinceEpoch - start.millisecondsSinceEpoch) / 1000) ~/ 60;
+    final sum =
+        ((end.millisecondsSinceEpoch - start.millisecondsSinceEpoch) / 1000) ~/
+            60;
     setState(() {
       _entry = _entry.copyWith(duration: sum);
     });
     final hours = sum ~/ 60;
     final minutes = sum % 60;
     // TODO: exclude pause?
-    _durationController.text = '$hours:${minutes < 10 ? '0$minutes' : minutes} h.';
+    _durationController.text =
+        '$hours:${minutes < 10 ? '0$minutes' : minutes} h.';
   }
 
   _dayInputRow() => Padding(
@@ -353,12 +369,16 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         if (date != null) {
                           setState(() {
                             _entry = _entry.copyWith(date: date);
-                            _dayPickerController.text = '${date.day}.${date.month}.${date.year}';
+                            _dayPickerController.text =
+                                '${date.day}.${date.month}.${date.year}';
                           });
                         }
                       },
                       decoration: InputDecoration(
-                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(
                               color: const Color.fromARGB(255, 220, 217, 217),
                             ),
                         contentPadding: const EdgeInsets.symmetric(
@@ -373,7 +393,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                          borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 220, 217, 217)),
                         ),
                       ),
                     ),
@@ -404,12 +425,16 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         // TODO: implement a wheelspinner for pick Hours and minutes?
                         onChanged: (value) {
                           setState(() {
-                            _entry = _entry.copyWith(duration: int.tryParse(value));
+                            _entry =
+                                _entry.copyWith(duration: int.tryParse(value));
                           });
                         },
                         decoration: InputDecoration(
                           hintText: 'min.',
-                          hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          hintStyle: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
                                 color: const Color.fromARGB(255, 220, 217, 217),
                               ),
                           contentPadding: const EdgeInsets.symmetric(
@@ -424,7 +449,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 220, 217, 217)),
                           ),
                         )),
                   ),
@@ -460,9 +486,10 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     textInputAction: TextInputAction.next,
                     controller: _startController,
                     decoration: InputDecoration(
-                      hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: const Color.fromARGB(255, 220, 217, 217),
-                          ),
+                      hintStyle:
+                          Theme.of(context).textTheme.bodySmall!.copyWith(
+                                color: const Color.fromARGB(255, 220, 217, 217),
+                              ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 15,
                         vertical: 5,
@@ -475,13 +502,17 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 220, 217, 217)),
                       ),
                     ),
                     onTap: () async {
-                      final time = await showTimePicker(context: context, initialTime: selectedTime!);
+                      final time = await showTimePicker(
+                          context: context, initialTime: selectedTime!);
                       if (time != null) {
-                        final minute = time.minute < 10 ? '0${time.minute}' : '${time.minute}';
+                        final minute = time.minute < 10
+                            ? '0${time.minute}'
+                            : '${time.minute}';
                         _entry = _entry.copyWith(
                             startTime: DateTime(
                           _entry.date.year,
@@ -517,9 +548,10 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     textInputAction: TextInputAction.done,
                     controller: _endController,
                     decoration: InputDecoration(
-                      hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: const Color.fromARGB(255, 220, 217, 217),
-                          ),
+                      hintStyle:
+                          Theme.of(context).textTheme.bodySmall!.copyWith(
+                                color: const Color.fromARGB(255, 220, 217, 217),
+                              ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 15,
                         vertical: 5,
@@ -532,15 +564,20 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 220, 217, 217)),
                       ),
                     ),
                     onTap: () async {
                       final time = await showTimePicker(
                         context: context,
                         initialTime: TimeOfDay(
-                          hour: int.tryParse(_endController.text.split(':').first) ?? 16,
-                          minute: int.tryParse(_endController.text.split(':').last) ?? 30,
+                          hour: int.tryParse(
+                                  _endController.text.split(':').first) ??
+                              16,
+                          minute: int.tryParse(
+                                  _endController.text.split(':').last) ??
+                              30,
                         ),
                       );
                       if (time != null) {
@@ -553,7 +590,9 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                             time.hour,
                             time.minute,
                           ));
-                          final minute = time.minute < 10 ? '0${time.minute}' : '${time.minute}';
+                          final minute = time.minute < 10
+                              ? '0${time.minute}'
+                              : '${time.minute}';
                           _endController.text = '${time.hour}:$minute';
                         });
                         _calculateDuration();
@@ -567,8 +606,10 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
   Future getData(Api apo) async {
+    // ignore: avoid_print
     print('Attempt to call api');
     final response = await apo.getAllProjects;
+    // ignore: avoid_print
     print('Done calling api');
     log(response.statusMessage.toString());
     log(response.statusCode.toString());

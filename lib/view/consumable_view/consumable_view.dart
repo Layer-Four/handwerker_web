@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/widgets.dart';
-
 import '../shared_view_widgets/search_line_header.dart';
 
 // import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
@@ -20,14 +18,28 @@ class _ConsumableBodyState extends State<ConsumableBody> {
     //const RowData(title: 'Montage Allgemein', Menge: '2', Measurement: 'm', price: '120€'),
     //const RowData(title: 'Montage Fenster', Menge: '6', Measurement: 'cm', price: '80€'),
     //const RowData(title: 'Montage Allgemein Meister', Menge: '7', Measurement: 'm3', price: '540€'),
-    const RowData(title: 'Kupferrohr', Menge: '100', Measurement: 'Meter', price: '1000 €'),
-    const RowData(title: 'Wandfarbe', Menge: '10', Measurement: 'Liter', price: '60 €'),
-    const RowData(title: 'Eichenholz', Menge: '1', Measurement: 'm3', price: '800 €'),
-    const RowData(title: 'Dachziegel', Menge: '1', Measurement: 'm2', price: '30 €'),
-    const RowData(title: 'Keramikfliesen', Menge: '1', Measurement: 'm2', price: '27 €'),
-    const RowData(title: 'Rindenmulch', Menge: '100', Measurement: 'Liter', price: '30 €'),
-    const RowData(title: 'kl. Nägel', Menge: '1000', Measurement: 'Stück', price: '10 €'),
-    const RowData(title: 'gr. Nägel', Menge: '500', Measurement: 'Stück', price: '7 €'),
+    const RowData(
+        title: 'Kupferrohr',
+        Menge: '100',
+        Measurement: 'Meter',
+        price: '1000 €'),
+    const RowData(
+        title: 'Wandfarbe', Menge: '10', Measurement: 'Liter', price: '60 €'),
+    const RowData(
+        title: 'Eichenholz', Menge: '1', Measurement: 'm3', price: '800 €'),
+    const RowData(
+        title: 'Dachziegel', Menge: '1', Measurement: 'm2', price: '30 €'),
+    const RowData(
+        title: 'Keramikfliesen', Menge: '1', Measurement: 'm2', price: '27 €'),
+    const RowData(
+        title: 'Rindenmulch',
+        Menge: '100',
+        Measurement: 'Liter',
+        price: '30 €'),
+    const RowData(
+        title: 'kl. Nägel', Menge: '1000', Measurement: 'Stück', price: '10 €'),
+    const RowData(
+        title: 'gr. Nägel', Menge: '500', Measurement: 'Stück', price: '7 €'),
   ];
 
   bool isCardVisible = false;
@@ -101,21 +113,29 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text('Material', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      child: Text('Material',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 22),
                     Expanded(
-                      child: Text('Menge', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      child: Text('Menge',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 44),
                     Expanded(
-                      child: Text('Einheit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      child: Text('Einheit',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     // SizedBox(width: 30),
                     Expanded(
-                      child: Text('Preis/mengeneinheit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      child: Text('Preis/mengeneinheit',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
-                    SizedBox(width: 110)
+                    SizedBox(width: 160)
                   ],
                 ),
                 for (int i = 0; i < rowDataList.length; i++)
@@ -136,7 +156,8 @@ class _ConsumableBodyState extends State<ConsumableBody> {
                       height: 35,
                       decoration: BoxDecoration(
                         color: Colors.orange,
-                        borderRadius: BorderRadius.circular(50), // Fully rounded corners
+                        borderRadius:
+                            BorderRadius.circular(50), // Fully rounded corners
                       ),
                       child: IconButton(
                         onPressed: () {
@@ -170,13 +191,15 @@ class _ConsumableBodyState extends State<ConsumableBody> {
 
   void _addRow(String title, String menge, String measurement, String price) {
     setState(() {
-      rowDataList.add(RowData(title: title, Menge: menge, Measurement: measurement, price: price));
+      rowDataList.add(RowData(
+          title: title, Menge: menge, Measurement: measurement, price: price));
     });
   }
 }
 
 class CardWidget extends StatefulWidget {
-  final Function(String title, String menge, String measurement, String price) onSave;
+  final Function(String title, String menge, String measurement, String price)
+      onSave;
   final Function onHideCard;
 
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
@@ -235,25 +258,30 @@ class _CardWidgetState extends State<CardWidget> {
                                 controller: _leistungController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                  fillColor:
+                                      const Color.fromARGB(211, 245, 241, 241),
                                   // Background color
                                   hintText: 'Material',
                                   contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // No border for normal state
+                                    borderSide: BorderSide
+                                        .none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // Optional, defines border when field is enabled
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is enabled
                                   ),
                                   disabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // Optional, defines border when field is disabled
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -268,32 +296,39 @@ class _CardWidgetState extends State<CardWidget> {
                             children: [
                               const Align(
                                 alignment: Alignment.topLeft,
-                                child: Text('Menge', style: TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text('Menge',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               const SizedBox(height: 15),
                               TextField(
                                 controller: _mengeController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                  fillColor:
+                                      const Color.fromARGB(211, 245, 241, 241),
                                   // Background color
                                   hintText: 'Menge',
                                   contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // No border for normal state
+                                    borderSide: BorderSide
+                                        .none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // Optional, defines border when field is enabled
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is enabled
                                   ),
                                   disabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // Optional, defines border when field is disabled
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
@@ -308,39 +343,46 @@ class _CardWidgetState extends State<CardWidget> {
                             children: [
                               const Align(
                                 alignment: Alignment.topLeft,
-                                child: Text('Einheit', style: TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text('Einheit',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               const SizedBox(height: 15),
                               TextField(
                                 controller: _measurementController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                  fillColor:
+                                      const Color.fromARGB(211, 245, 241, 241),
                                   // Background color
                                   hintText: 'Einheit',
                                   contentPadding: const EdgeInsets.all(8),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // No border for normal state
+                                    borderSide: BorderSide
+                                        .none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // Optional, defines border when field is enabled
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is enabled
                                   ),
                                   disabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // Optional, defines border when field is disabled
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(width: 30),
+                        const SizedBox(width: 50),
                         Flexible(
                           flex: 1,
                           child: Column(
@@ -359,31 +401,37 @@ class _CardWidgetState extends State<CardWidget> {
                                 controller: _preisController,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                  fillColor:
+                                      const Color.fromARGB(211, 245, 241, 241),
                                   // Background color
                                   hintText: 'Preis/mengeneinheit',
                                   contentPadding: const EdgeInsets.all(10),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // No border for normal state
+                                    borderSide: BorderSide
+                                        .none, // No border for normal state
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // Optional, defines border when field is enabled
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is enabled
                                   ),
                                   disabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none, // Optional, defines border when field is disabled
+                                    borderSide: BorderSide
+                                        .none, // Optional, defines border when field is disabled
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        // Spacer(),
                       ],
                     ),
                   ),
@@ -401,11 +449,14 @@ class _CardWidgetState extends State<CardWidget> {
                           widget.onHideCard();
                         },
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 26, vertical: 18),
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                            side: const BorderSide(
+                                color: Color.fromARGB(255, 231, 226, 226),
+                                width: 1.0),
                           ),
                         ),
                         child: const Text(
@@ -420,7 +471,10 @@ class _CardWidgetState extends State<CardWidget> {
                           final menge = _mengeController.text;
                           final meausurement = _measurementController.text;
                           final preis = _preisController.text;
-                          if (leistung.isNotEmpty && menge.isNotEmpty && meausurement.isNotEmpty && preis.isNotEmpty) {
+                          if (leistung.isNotEmpty &&
+                              menge.isNotEmpty &&
+                              meausurement.isNotEmpty &&
+                              preis.isNotEmpty) {
                             widget.onSave(leistung, menge, meausurement, preis);
                             _leistungController.clear();
                             _measurementController.clear();
@@ -431,7 +485,8 @@ class _CardWidgetState extends State<CardWidget> {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: const Text('Error'),
-                                content: const Text('Bitte füllen Sie alle Felder aus'),
+                                content: const Text(
+                                    'Bitte füllen Sie alle Felder aus'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
@@ -443,11 +498,14 @@ class _CardWidgetState extends State<CardWidget> {
                           }
                         },
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 26, vertical: 18),
                           backgroundColor: Colors.orange,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                            side: const BorderSide(
+                                color: Color.fromARGB(255, 231, 226, 226),
+                                width: 1.0),
                           ),
                         ),
                         child: const Text(
@@ -492,13 +550,13 @@ class EditableRow extends StatefulWidget {
   final VoidCallback onDelete;
 
   const EditableRow({
-    Key? key,
+    super.key,
     required this.originalTitle,
     required this.originalMenge,
     required this.originalMeasurement,
     required this.originalPrice,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -518,7 +576,8 @@ class _EditableRowState extends State<EditableRow> {
     super.initState();
     _titleController = TextEditingController(text: widget.originalTitle);
     _mengeController = TextEditingController(text: widget.originalMenge);
-    _measurementController = TextEditingController(text: widget.originalMeasurement);
+    _measurementController =
+        TextEditingController(text: widget.originalMeasurement);
     _priceController = TextEditingController(text: widget.originalPrice);
   }
 
@@ -546,25 +605,28 @@ class _EditableRowState extends State<EditableRow> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
+                flex: 1,
                 child: TextField(
-              maxLines: null,
-              controller: _titleController,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
-              ),
-              readOnly: !isEditing,
-            )),
+                  maxLines: null,
+                  controller: _titleController,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  readOnly: !isEditing,
+                )),
             Expanded(
+                flex: 1,
                 child: TextField(
-              controller: _mengeController,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
-              ),
-              readOnly: !isEditing,
-            )),
+                  controller: _mengeController,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  readOnly: !isEditing,
+                )),
             Expanded(
+              flex: 1,
               child: TextField(
                 controller: _measurementController,
                 decoration: const InputDecoration(
@@ -575,38 +637,120 @@ class _EditableRowState extends State<EditableRow> {
               ),
             ),
             Expanded(
+                flex: 1,
                 child: TextField(
-              controller: _priceController,
-              maxLines: null,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
-              ),
-              readOnly: !isEditing,
-            )),
+                  controller: _priceController,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  readOnly: !isEditing,
+                )),
 
-            // const Spacer(),
-            // if (isEditing) // Only show the cancel icon if isEditing is true
-            Visibility(
-              visible: isEditing,
-              maintainSize: true,
-              maintainState: true,
-              maintainAnimation: true,
-              child: IconButton(
-                icon: Icon(isEditing ? Icons.save : Icons.edit),
-                onPressed: () {
-                  setState(() {
-                    if (isEditing) {
-                      // Save the current text field contents
-                      isEditing = false;
-                    } else {
-                      isEditing = true; // Enter editing mode
-                    }
-                  });
-                },
+            // SizedBox(
+            //   width: 50,
+            // ), // Container for icons, adjusted to keep icons to the right
+            Container(
+              width:
+                  80, // Ensure there's enough space for both icons without shifting layout
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Visibility(
+                    visible: isEditing,
+                    child: IconButton(
+                      icon: const Icon(Icons.save),
+                      onPressed: () {
+                        setState(() {
+                          isEditing = false;
+                          // Save changes here if necessary
+                        });
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: isEditing,
+                    child: IconButton(
+                      icon: const Icon(Icons.cancel),
+                      onPressed: () {
+                        setState(() {
+                          isEditing = false;
+                          // Reset values to original if needed
+                          _titleController.text = widget.originalTitle;
+                          _mengeController.text = widget.originalMenge;
+                          _measurementController.text =
+                              widget.originalMeasurement;
+                          _priceController.text = widget.originalPrice;
+                        });
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: !isEditing,
+                    child: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        setState(() {
+                          isEditing = true; // Enter editing mode
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       );
+
+  // const Spacer(),
+
+  // if (isEditing)
+  //   IconButton(
+  //     icon: const Icon(Icons.cancel),
+  //     onPressed: () {
+  //       setState(() {
+  //         isEditing = false;
+  //         // Reset values to original if needed
+  //         _titleController.text = widget.originalTitle;
+  //         _mengeController.text = widget.originalMenge;
+  //         _measurementController.text = widget.originalMeasurement;
+  //         _priceController.text = widget.originalPrice;
+  //       });
+  //     },
+  //   ),
+  // IconButton(
+  //   icon: Icon(isEditing ? Icons.save : Icons.edit),
+  //   onPressed: () {
+  //     setState(() {
+  //       if (isEditing) {
+  //         // Save the changes here or do some validation
+  //       }
+  //       isEditing = !isEditing; // Toggle the editing state
+  //     });
+  //   },
+  // )
+
+  // if (isEditing) // Only show the cancel icon if isEditing is true
+
+  // Visibility(
+  //   visible: isEditing,
+  //   maintainSize: true,
+  //   maintainState: true,
+  //   maintainAnimation: true,
+  //   child: IconButton(
+  //     icon: Icon(isEditing ? Icons.save : Icons.edit),
+  //     onPressed: () {
+  //       setState(() {
+  //         if (isEditing) {
+  //           // Save the current text field contents
+  //           isEditing = false;
+  //         } else {
+  //           isEditing = true; // Enter editing mode
+  //         }
+  //       });
+  //     },
+  //   ),
+  // ),
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../customer_project_view/custom_project.dart';
-import 'project_overview.dart';
 
 // ignore: must_be_immutable
 class CustomerCard extends StatefulWidget {
@@ -50,7 +49,8 @@ class _CustomerCardState extends State<CustomerCard> {
                     height: 40,
                   ),
                   SizedBox(
-                    width: screenWidthInPercent * 80, //If we remove this, it crashes. Sloppy fix
+                    width: screenWidthInPercent *
+                        80, //If we remove this, it crashes. Sloppy fix
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,14 +58,16 @@ class _CustomerCardState extends State<CustomerCard> {
                         Text(
                           widget.project.customer,
                           textAlign: TextAlign.left,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(width: 10),
                         Tooltip(
                           message:
                               'Kunde: ${widget.project.customer}\nKontaktname: Max Mustermann\nTelefonnummer: +49 123 456789\nE-Mail: max@example.com\nAdresse: Musterstraße 1, 12345 Musterstadt',
-                          textStyle: TextStyle(fontSize: 20, color: Colors.white),
-                          child: Icon(
+                          textStyle: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                          child: const Icon(
                             Icons.info_outline,
                             size: 20,
                           ),

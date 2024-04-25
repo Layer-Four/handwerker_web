@@ -7,7 +7,8 @@ import '../../models/users_models/user_data_short/user_short.dart';
 import '/constants/api/api.dart';
 import '/models/users_models/user_vm/user_vm.dart';
 
-final customerProjectProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
+final customerProjectProvider =
+    NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
 
 // final authProvider = ChangeNotifierProvider<User>((ref) => User());
 
@@ -30,12 +31,15 @@ class UserNotifier extends Notifier<UserVM> {
   void fetchInfos() async {
     //https://r-wa-happ-be.azurewebsites.net/api/project/read/all
     final response = await api.getAllProjects;
+    // ignore: avoid_print
     print('Response: ${response.data}');
     if (response.statusCode == 200) {
       final data = response.data;
       final x = data.map((e) => UserVM.fromJson(data));
       state = x;
+      // ignore: avoid_print
       print(data);
+      // ignore: avoid_print
       print(x);
       return;
     }
@@ -94,7 +98,8 @@ class UserNotifier extends Notifier<UserVM> {
     return false;
   }
 
-  void setToken({required String token}) async => await _storage.then((value) => value.setString('TOKEN', token));
+  void setToken({required String token}) async =>
+      await _storage.then((value) => value.setString('TOKEN', token));
 
   void deleteToken() async {
     final storage = await _storage;

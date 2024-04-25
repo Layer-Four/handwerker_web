@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/settings_provider/nav_provider.dart';
-import '../../routes/app_routes.dart';
 import '../consumable_view/consumable_view.dart';
 import '../customer_project_view/doc_screen.dart';
 import '../customer_project_view/leistung_sub.dart';
@@ -50,7 +49,8 @@ class MainViewNavigator extends ConsumerWidget {
               barrierColor: Colors.transparent,
               context: context,
               builder: (context) => Container(
-                margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width / 100) * 80),
+                margin: EdgeInsets.only(
+                    right: (MediaQuery.of(context).size.width / 100) * 80),
                 height: double.infinity,
                 width: MediaQuery.of(context).size.width / 7,
                 color: const Color.fromARGB(255, 208, 207, 207),
@@ -92,7 +92,12 @@ class MainViewNavigator extends ConsumerWidget {
                       nextView: MainView.consumables,
                       width: 200,
                       height: 150,
-                      subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
+                      subcategories: [
+                        'Material',
+                        'Kunden',
+                        'Projekte',
+                        'Leistungen'
+                      ],
                       subcategoryMainViews: [
                         MainView.consumables,
                         MainView.customer,
@@ -177,7 +182,12 @@ class MainViewNavigator extends ConsumerWidget {
                   title: 'Verwaltung',
                   nextView: MainView.consumables,
                   icon: Icons.folder_open,
-                  subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
+                  subcategories: [
+                    'Material',
+                    'Kunden',
+                    'Projekte',
+                    'Leistungen'
+                  ],
                   width: 200,
                   height: 200,
                   subcategoryMainViews: [
@@ -233,7 +243,7 @@ class NavButtonWidget extends ConsumerWidget {
   final double height;
   final bool isMainCategory; // Indicates whether it's a main category or not
   const NavButtonWidget({
-    Key? key,
+    super.key,
     required this.title,
     this.nextView,
     this.icon,
@@ -243,27 +253,33 @@ class NavButtonWidget extends ConsumerWidget {
     required this.width,
     required this.height,
     this.isMainCategory = true, // Default is true
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentView = ref.watch(mainNavProvider);
     final isSelected = nextView != null
         ? currentView == nextView
-        : subcategoryMainViews != null && subcategoryMainViews!.contains(currentView);
-    final isSubCategory = !isMainCategory && isSelected; // Check if it's a subcategory
+        : subcategoryMainViews != null &&
+            subcategoryMainViews!.contains(currentView);
+    final isSubCategory =
+        !isMainCategory && isSelected; // Check if it's a subcategory
     return GestureDetector(
       onTap: () {
         if (nextView != null) {
           ref.read(mainNavProvider.notifier).state = nextView!;
         } else if (isMainCategory) {
           // Update the state only if it's a main category
-          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first!;
+          ref.read(mainNavProvider.notifier).state =
+              subcategoryMainViews!.first;
         } else if (!isMainCategory) {
-          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first!;
+          ref.read(mainNavProvider.notifier).state =
+              subcategoryMainViews!.first;
         }
       },
       child: Container(
-        color: isSubCategory ? Colors.orange : (isSelected ? Colors.transparent : color),
+        color: isSubCategory
+            ? Colors.orange
+            : (isSelected ? Colors.transparent : color),
         width: width,
         height: height,
         margin: const EdgeInsets.all(4),
@@ -275,14 +291,18 @@ class NavButtonWidget extends ConsumerWidget {
               children: [
                 Icon(
                   icon ?? Icons.home,
-                  color: isSubCategory ? Colors.orange : Colors.black, //|| isSelected
+                  color: isSubCategory
+                      ? Colors.orange
+                      : Colors.black, //|| isSelected
                   size: 24,
                 ),
                 const SizedBox(width: 8),
                 Text(
                   title,
                   style: TextStyle(
-                    color: isSubCategory ? Colors.orange : Colors.black, //|| isSelected
+                    color: isSubCategory
+                        ? Colors.orange
+                        : Colors.black, //|| isSelected
                     fontWeight: FontWeight.w500,
                     fontSize: 22,
                   ),
@@ -292,7 +312,7 @@ class NavButtonWidget extends ConsumerWidget {
             if (subcategories != null)
               Row(
                 children: [
-                  SizedBox(width: 50),
+                  const SizedBox(width: 50),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,16 +326,19 @@ class NavButtonWidget extends ConsumerWidget {
                               if (isMainCategory &&
                                   subcategoryMainViews != null &&
                                   index < subcategoryMainViews!.length) {
-                                ref.read(mainNavProvider.notifier).state = subcategoryMainViews![index];
+                                ref.read(mainNavProvider.notifier).state =
+                                    subcategoryMainViews![index];
                               }
                             },
                             child: Text(
                               subcategories![index],
                               //     textAlign: TextAlign.start,
                               style: TextStyle(
-                                color: subcategoryMainViews?[index] == currentView
+                                color: subcategoryMainViews?[index] ==
+                                        currentView
                                     ? Colors.orange
-                                    : Colors.black, //isSubCategory || isSelected
+                                    : Colors
+                                        .black, //isSubCategory || isSelected
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18,
                               ),

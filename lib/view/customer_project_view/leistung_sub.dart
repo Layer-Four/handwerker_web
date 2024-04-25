@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/widgets.dart';
-
 import '../shared_view_widgets/search_line_header.dart';
 
 class ConsumableLeistungBody extends StatefulWidget {
-  const ConsumableLeistungBody({super.key}); // Constructor with key initialization
+  const ConsumableLeistungBody(
+      {super.key}); // Constructor with key initialization
 
   @override
   // ignore: library_private_types_in_public_api
@@ -109,11 +108,15 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      child: Text('Leistung',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(width: 30),
                     Expanded(
-                      child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      child: Text('Preis/std',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ),
                     Spacer(),
                     SizedBox(width: 110)
@@ -135,7 +138,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
                       height: 35,
                       decoration: BoxDecoration(
                         color: Colors.orange,
-                        borderRadius: BorderRadius.circular(50), // Fully rounded corners
+                        borderRadius:
+                            BorderRadius.circular(50), // Fully rounded corners
                       ),
                       child: IconButton(
                         onPressed: () {
@@ -225,7 +229,8 @@ class _CardWidgetState extends State<CardWidget> {
                                   alignment: Alignment.topLeft,
                                   child: Text(
                                     'Leistung',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 const SizedBox(height: 15),
@@ -234,13 +239,17 @@ class _CardWidgetState extends State<CardWidget> {
                                     controller: _leistungController,
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                      fillColor: const Color.fromARGB(
+                                          211, 245, 241, 241),
                                       hintText: 'Leistung',
                                       contentPadding: const EdgeInsets.all(10),
                                       border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide.none),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                        borderSide: const BorderSide(
+                                            color: Colors.grey, width: 0),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
@@ -259,7 +268,9 @@ class _CardWidgetState extends State<CardWidget> {
                               children: [
                                 const Align(
                                   alignment: Alignment.topLeft,
-                                  child: Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Text('Preis/std',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 15),
                                 Expanded(
@@ -267,13 +278,17 @@ class _CardWidgetState extends State<CardWidget> {
                                     controller: _preisController,
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                      fillColor: const Color.fromARGB(
+                                          211, 245, 241, 241),
                                       hintText: 'Preis/std',
                                       contentPadding: const EdgeInsets.all(10),
                                       border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide.none),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                        borderSide: const BorderSide(
+                                            color: Colors.grey, width: 0),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
@@ -301,11 +316,14 @@ class _CardWidgetState extends State<CardWidget> {
                             widget.onHideCard();
                           },
                           style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 26, vertical: 18),
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
-                              side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                              side: const BorderSide(
+                                  color: Color.fromARGB(255, 231, 226, 226),
+                                  width: 1.0),
                             ),
                           ),
                           child: const Text(
@@ -327,7 +345,8 @@ class _CardWidgetState extends State<CardWidget> {
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: const Text('Error'),
-                                  content: const Text('Bitte füllen Sie alle Felder aus'),
+                                  content: const Text(
+                                      'Bitte füllen Sie alle Felder aus'),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(context),
@@ -339,11 +358,14 @@ class _CardWidgetState extends State<CardWidget> {
                             }
                           },
                           style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 26, vertical: 18),
                             backgroundColor: Colors.orange,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
-                              side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                              side: const BorderSide(
+                                  color: Color.fromARGB(255, 231, 226, 226),
+                                  width: 1.0),
                             ),
                           ),
                           child: const Text(
@@ -407,7 +429,8 @@ class _EditableRowState extends State<EditableRow> {
     _titleController = TextEditingController(text: widget.originalTitle);
 
     // Initialize currentPrice before using it to set up _priceController
-    currentPrice = widget.originalPrice; // Set currentPrice from widget's originalPrice
+    currentPrice =
+        widget.originalPrice; // Set currentPrice from widget's originalPrice
     _priceController = TextEditingController(text: widget.originalPrice);
     // Listener for _priceController to append '€' if it's not already there
     // _priceController.addListener(() {
@@ -452,7 +475,7 @@ class _EditableRowState extends State<EditableRow> {
               child: TextField(
                 maxLines: null,
                 controller: _titleController,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
@@ -465,7 +488,7 @@ class _EditableRowState extends State<EditableRow> {
             Expanded(
               child: TextField(
                 controller: _priceController,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
@@ -501,7 +524,8 @@ class _EditableRowState extends State<EditableRow> {
                   if (isEditing) {
                     // Save the current text field contents
                     currentTitle = _titleController.text;
-                    currentPrice = _priceController.text; // Append currency symbol
+                    currentPrice =
+                        _priceController.text; // Append currency symbol
                     isEditing = false; // Exit editing mode
                   } else {
                     isEditing = true; // Enter editing mode
