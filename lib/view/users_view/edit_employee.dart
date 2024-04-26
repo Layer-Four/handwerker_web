@@ -61,7 +61,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
             elevation: 9,
             child: Container(
               color: const Color.fromARGB(255, 255, 255, 255),
-              height: 300,
+              height: 400,
               width: double.infinity,
               padding: const EdgeInsets.all(30.0),
               child: !createdUser
@@ -95,7 +95,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                                   children: [
                                     const Padding(
                                       padding: EdgeInsets.fromLTRB(8, 4, 4, 20),
-                                      child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                                      child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                                     ),
                                     buildTextField(
                                       hintText: 'Jonathan Müller',
@@ -113,7 +113,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                                   children: [
                                     const Padding(
                                       padding: EdgeInsets.fromLTRB(8, 4, 4, 20),
-                                      child: Text('Rolle', style: TextStyle(fontWeight: FontWeight.bold)),
+                                      child: Text('Rolle', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                                     ),
                                     SizedBox(
                                       //    height: 100,
@@ -144,12 +144,13 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                                     ),
                                     SizedBox(
                                       //    height: 100,
-                                      width: 140,
+                                      width: 160,
                                       child: Padding(
                                         padding: const EdgeInsets.all(0.0),
                                         child: SymmetricButton(
                                           color: Colors.orange,
                                           text: 'Speichern',
+                                          style: const TextStyle(color: Colors.white, fontSize: 18),
                                           onPressed: () {
                                             setState(() {
                                               createdUser = !createdUser;
@@ -203,6 +204,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                             children: [
                               const Text('Neuer Nutzer wurde angelegt',
                                   style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange, fontSize: 22)),
+                              const SizedBox(height: 30),
                               Row(
                                 children: [
                                   const Text('Nutzername: ',
@@ -212,18 +214,20 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
                                 ],
                               ),
+                              const SizedBox(height: 30),
                               const Row(
                                 children: [
                                   Text('Einmal Passwort: ',
                                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
                                   Spacer(),
-                                  Text('Xcy24KjIq0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+                                  Text('Xcy24KjIq0abkAd', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(height: 30),
+                              const SizedBox(
                                 height: 100,
                                 width: 300,
-                                child: const Padding(
+                                child: Padding(
                                   padding: EdgeInsets.fromLTRB(0, 16, 16, 16),
                                   child: SymmetricButton(
                                     color: Colors.orange,
@@ -240,7 +244,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                         Expanded(
                           flex: 1,
                           child: QrImageView(
-                            data: 'Nutzername: ${_NameController.text}\nEinmal Passwort: Xcy24KjIq',
+                            data: 'Nutzername: ${_NameController.text}\nEinmal Passwort: Xcy24KjIq0abkAd',
                             version: QrVersions.auto,
                             //  size: 200.0,
                             gapless: false,
