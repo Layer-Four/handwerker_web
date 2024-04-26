@@ -27,19 +27,19 @@ class _ConsumableBodyState extends State<ConsumableBody> {
         title: 'Wandfarbe', Menge: '10', Measurement: 'Liter', price: '60 €'),
     const RowData(
         title: 'Eichenholz', Menge: '1', Measurement: 'm3', price: '800 €'),
-    const RowData(
-        title: 'Dachziegel', Menge: '1', Measurement: 'm2', price: '30 €'),
-    const RowData(
-        title: 'Keramikfliesen', Menge: '1', Measurement: 'm2', price: '27 €'),
-    const RowData(
-        title: 'Rindenmulch',
-        Menge: '100',
-        Measurement: 'Liter',
-        price: '30 €'),
-    const RowData(
-        title: 'kl. Nägel', Menge: '1000', Measurement: 'Stück', price: '10 €'),
-    const RowData(
-        title: 'gr. Nägel', Menge: '500', Measurement: 'Stück', price: '7 €'),
+    // const RowData(
+    //     title: 'Dachziegel', Menge: '1', Measurement: 'm2', price: '30 €'),
+    // const RowData(
+    //     title: 'Keramikfliesen', Menge: '1', Measurement: 'm2', price: '27 €'),
+    // const RowData(
+    //     title: 'Rindenmulch',
+    //     Menge: '100',
+    //     Measurement: 'Liter',
+    //     price: '30 €'),
+    // const RowData(
+    //     title: 'kl. Nägel', Menge: '1000', Measurement: 'Stück', price: '10 €'),
+    // const RowData(
+    //     title: 'gr. Nägel', Menge: '500', Measurement: 'Stück', price: '7 €'),
   ];
 
   bool isCardVisible = false;
