@@ -125,7 +125,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                   //       ),
                 ),
               ),
-/*              Container(
+              Container(
                 alignment: Alignment.topLeft,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
@@ -152,7 +152,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                     ),
                   ),
                 ),
-              ),*/
+              ),
               Visibility(
                 visible: isAddConsumableOpen,
                 child: Container(
