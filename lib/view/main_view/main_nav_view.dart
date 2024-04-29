@@ -89,7 +89,7 @@ class MainViewNavigator extends ConsumerWidget {
                 width: 200,
                 height: 150,
                 subcategories: ['Projekte', 'Kunden', 'Material', 'Leistungen'],
-                subcategoryMainViews: [MainView.projectManagement, MainView.customer, MainView.consumables],
+                subcategoryMainViews: [MainView.projectManagement, MainView.customer],
               ),
               /*const NavButtonWidget(
                 title: 'Kunden',
@@ -167,7 +167,7 @@ class MainViewNavigator extends ConsumerWidget {
             subcategories: ['Projekte', 'Kunden', 'Material', 'Leistungen'],
             width: 200,
             height: 200,
-            subcategoryMainViews: [MainView.projectManagement, MainView.customer, MainView.consumables],
+            subcategoryMainViews: [MainView.projectManagement, MainView.customer],
           ),
           /*const NavButtonWidget(
             title: 'Kunden',
