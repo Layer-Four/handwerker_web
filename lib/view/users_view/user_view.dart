@@ -125,7 +125,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                   //       ),
                 ),
               ),
-/*              Container(
+              Container(
                 alignment: Alignment.topLeft,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
@@ -152,7 +152,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                     ),
                   ),
                 ),
-              ),*/
+              ),
               Visibility(
                 visible: isAddConsumableOpen,
                 child: Container(
@@ -191,50 +191,50 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
 
 final List<CustomeProject> project = [
   const CustomeProject(
-    'Kunde X',
-    'Austausch der\nHeizungsanlage',
+    'Oliver P.',
+    'Reperatur Schaltung',
     false,
-    60000,
+    50,
     11,
     '01.01.2024 - 01.06.2025',
     1009,
     1009,
   ),
   const CustomeProject(
-    'Kunde Y',
-    'Tisch gebaut',
+    'Michael M.',
+    'Installation Beleuchtung',
     true,
-    20000,
+    60,
     11,
     '01.01.2024 - 01.06.2025',
     2099,
     9000,
   ),
   const CustomeProject(
-    'Kunde XY',
-    'Fenster eingesetzt',
+    'Tina S.',
+    'Reperatur Wasserleitung',
     true,
-    20000,
+    70,
     11,
     '01.01.2024 - 01.06.2025',
     2,
     900000,
   ),
   const CustomeProject(
-    'Fio Bestmann',
-    'Steinloch 43\n22880, Hamburg',
+    'Matthias R.',
+    'Behebung Leckage',
     true,
-    20000,
+    60,
     2,
     '01.01.2024 - 01.06.2025',
     2,
     1009,
   ),
   const CustomeProject(
-    'Florian hensel',
-    'große Straße 54\n22449, Kassel',
+    'Praktikant 1',
+    'Anstrich Innenwand',
     true,
-    20.000,
+    70,
     2,
     '01.01.2024 - 01.06.2025',
     2,
