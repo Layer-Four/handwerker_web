@@ -15,6 +15,12 @@ class _LoginViewState extends State<LoginView> {
   bool isOTP = false;
   bool _isPasswordVisible = false; // Tracks password visibility
 
+  bool validateFields() {
+    return formstate.currentState!.validate() &&
+        emailCon.text.isNotEmpty &&
+        passCon.text.isNotEmpty;
+  }
+
   TextEditingController emailCon = TextEditingController();
   TextEditingController passCon = TextEditingController();
   GlobalKey<FormState> formstate = GlobalKey();
@@ -290,17 +296,20 @@ class _LoginViewState extends State<LoginView> {
                           height: 44,
                           child: ElevatedButton(
                             onPressed: () {
-                              if (formstate.currentState!.validate()) {
-                                log('valid');
+                              if (validateFields()) {
+                                // Both fields are filled and valid
+                                log('Fields are valid');
+                                if (isOTP) {
+                                  Navigator.of(context)
+                                      .pushNamed(AppRoutes.setPasswordScreen);
+                                } else {
+                                  Navigator.of(context).pushReplacementNamed(
+                                      AppRoutes.viewScreen);
+                                }
                               } else {
-                                log('Not Valid');
-                              }
-                              if (isOTP) {
-                                Navigator.of(context)
-                                    .pushNamed(AppRoutes.setPasswordScreen);
-                              } else {
-                                Navigator.of(context)
-                                    .pushReplacementNamed(AppRoutes.viewScreen);
+                                // Fields are not valid
+                                log('Fields are not valid');
+                                // You can display an error message or prevent the login action here
                               }
                             },
                             style: ElevatedButton.styleFrom(
