@@ -17,7 +17,7 @@ extension MainViewExtennsion on MainView {
         'Home' => MainView.home,
         'Zeiteintrag' => MainView.timeEntry,
         'Berichte' => MainView.projectCustomer,
-        'Verwaltung' => MainView.consumables,
+        //'Verwaltung' => MainView.consumables,
         'Material' => MainView.consumables,
         'Kunden' => MainView.customer,
         'Projekte' => MainView.projectManagement,
