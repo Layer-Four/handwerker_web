@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../provider/customer_project_provider/customer_project_provider.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
 import '/constants/api/api.dart';
 import '/models/project_models/project_vm/project_vm.dart';
@@ -25,6 +26,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   final TextEditingController _endController = TextEditingController();
   final TextEditingController _startController = TextEditingController();
   bool initServices = false;
+  bool isUserSet = false;
   bool isProjectSet = false;
   TimeOfDay? selectedTime;
   List<UserDataShort>? _users;
@@ -32,8 +34,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   UserDataShort? _selectedUser;
   bool _initUser = false;
 
+  //UserVM? _user;
   ProjectVM? _project;
   late TimeEntry _entry;
+
+  Future<List<UserDataShort>> getListUserService() async {
+    return ref.read(customerProjectProvider.notifier).getListUserService();
+  }
 
   @override
   void initState() {
@@ -58,7 +65,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           children: [
             _dayInputRow(),
             _timeInputRow(),
-            _buildCustomerProjectField(),
+            _buildCustomerField(),
+            _buildProjectField(),
             _buildServiceDropdown(),
             _buildDescription(),
             _buildSelectUser(),
@@ -115,20 +123,22 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         );
       });
 
-  Widget _buildCustomerProjectField() => ref.read(projectVMProvider).when(
-        error: (error, stackTrace) => const SizedBox(
-          child: Text('something went wrong'),
-        ),
-        loading: () => const CircularProgressIndicator(),
-        data: (data) {
-          if (data == null) {
-            ref.read(projectVMProvider.notifier).loadpProject();
-          }
-          final projects = data;
-          if (projects != null && !isProjectSet) {
-            _project = projects.first;
-            _entry = _entry.copyWith(projectID: projects.first.id);
-            isProjectSet = true;
+  Widget _buildCustomerField() {
+    return FutureBuilder<List<UserDataShort>>(
+      future: getListUserService(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return const SizedBox(
+            child: Text('Something went wrong'),
+          );
+        } else {
+          final List<UserDataShort>? customer = snapshot.data;
+          if (customer != null && !isUserSet) {
+            _selectedUser = customer.first;
+            _entry = _entry.copyWith(userID: customer.first.id);
+            isUserSet = true;
           }
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -138,7 +148,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
-                    'KUNDE/PROJEKT',
+                    'KUNDE',
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
@@ -148,19 +158,22 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
                   ),
-                  child: DropdownButton(
+                  child: DropdownButton<UserDataShort>(
                     underline: const SizedBox(),
                     isExpanded: true,
-                    value: _project,
-                    items: projects
+                    value: _selectedUser,
+                    items: customer
                         ?.map(
-                          (e) => DropdownMenuItem(value: e, child: Text(' ${e.title}')),
-                        )
+                          (e) => DropdownMenuItem<UserDataShort>(
+                        value: e,
+                        child: Text(' ${e.userName}'),
+                      ),
+                    )
                         .toList(),
                     onChanged: (e) {
                       setState(() {
-                        _project = e!;
-                        _entry = _entry.copyWith(projectID: e.id);
+                        _selectedUser = e!;
+                        _entry = _entry.copyWith(userID: e.id);
                       });
                     },
                   ),
@@ -168,8 +181,67 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               ],
             ),
           );
-        },
+        }
+      },
+    );
+  }
+
+
+  Widget _buildProjectField() => ref.read(projectVMProvider).when(
+    error: (error, stackTrace) => const SizedBox(
+      child: Text('something went wrong'),
+    ),
+    loading: () => const CircularProgressIndicator(),
+    data: (data) {
+      if (data == null) {
+        ref.read(projectVMProvider.notifier).loadpProject();
+      }
+      final projects = data;
+      if (projects != null && !isProjectSet) {
+        _project = projects.first;
+        _entry = _entry.copyWith(projectID: projects.first.id);
+        isProjectSet = true;
+      }
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                'PROJEKT',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+            Container(
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+              ),
+              child: DropdownButton(
+                underline: const SizedBox(),
+                isExpanded: true,
+                value: _project,
+                items: projects
+                    ?.map(
+                      (e) => DropdownMenuItem(value: e, child: Text(' ${e.title}')),
+                )
+                    .toList(),
+                onChanged: (e) {
+                  setState(() {
+                    _project = e!;
+                    _entry = _entry.copyWith(projectID: e.id);
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
       );
+    },
+  );
 
   Padding _buildDescription() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
