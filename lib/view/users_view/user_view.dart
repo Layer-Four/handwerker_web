@@ -118,7 +118,7 @@ class _EmployeeAdministrationState
                   //       ),
                 ),
               ),
-/*              Container(
+              Container(
                 alignment: Alignment.topLeft,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
@@ -145,7 +145,7 @@ class _EmployeeAdministrationState
                     ),
                   ),
                 ),
-              ),*/
+              ),
               Visibility(
                 visible: isAddConsumableOpen,
                 child: SizedBox(
