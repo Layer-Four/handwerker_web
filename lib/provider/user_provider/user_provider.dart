@@ -1,45 +1,51 @@
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
+// Importing necessary packages
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../constants/api/api.dart';
 import '../../models/users_models/user_data_short/user_short.dart';
-import '/constants/api/api.dart';
-import '/models/users_models/user_vm/user_vm.dart';
+import '../../models/users_models/user_vm/user_vm.dart';
 
-final userProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
+// Provider definition using StateNotifierProvider
+final userProvider =
+    StateNotifierProvider<UserNotifier, UserVM>((ref) => UserNotifier());
 
-// final authProvider = ChangeNotifierProvider<User>((ref) => User());
-
-class UserNotifier extends Notifier<UserVM> {
+class UserNotifier extends StateNotifier<UserVM> {
   final Api api = Api();
-  final _storage = SharedPreferences.getInstance();
-  @override
-  UserVM build() {
-    String token = '';
-    _storage.then((value) {
-      final token = value.getString('TOKEN') ?? '';
-      if (token.isNotEmpty) {
-        state = state.copyWith(userToken: token);
-      }
-    });
-    return UserVM(userToken: token);
+  late SharedPreferences _storage;
+
+  // Constructor initializing the StateNotifier with an initial state
+  UserNotifier() : super(const UserVM(userToken: '')) {
+    _initialize();
   }
 
+  // Initialize SharedPreferences and load the token if available
+  Future<void> _initialize() async {
+    _storage = await SharedPreferences.getInstance();
+    String? token = _storage.getString('TOKEN');
+    if (token != null && token.isNotEmpty) {
+      state = UserVM(userToken: token);
+    }
+  }
+
+  // Method to log out the user, clearing the token
   void userLogOut() {
     state = state.copyWith(userToken: '');
     deleteToken();
   }
 
+  // Method to retrieve the user token from SharedPreferences
   Future<String?> getUserToken() async {
-    final token = await _storage.then((value) => value.getString('TOKEN'));
+    String? token = _storage.getString('TOKEN');
     if (token != null && token.isNotEmpty) {
       state = state.copyWith(userToken: token);
     }
     return token;
   }
 
-// TODO: delete default option for mandant
+  // Method to login user with username and password
   Future<bool> loginUser({
     required String passwort,
     required String userName,
@@ -48,85 +54,57 @@ class UserNotifier extends Notifier<UserVM> {
     final Map<String, dynamic> json = {
       'username': userName,
       'password': passwort,
-      'mandant': mandatID ?? '1',
+      'mandant':
+          mandatID ?? '1', // Providing a default value if mandatID is null
     };
     try {
       final response = await api.postloginUser(json);
-      if (response.statusCode == 401) {
-        log('user not authorized');
-        return false;
-      }
       if (response.statusCode == 200) {
-        log(response.data.toString());
-        final data = (response.data as Map);
-        final userToken = data.values.first as String;
-        // TODO: when token Exist load user with Token
-        final newUser = state.copyWith(userToken: userToken);
-        setToken(token: userToken);
-        // final userDate = http.get('www.abc/getUerdata', data: userToken);
-
-        if (newUser != state) {
-          state = newUser;
-          return true;
-        }
+        final data = response.data as Map<String, dynamic>;
+        final userToken = data['token'];
+        await setToken(token: userToken);
+        state = state.copyWith(userToken: userToken);
+        return true;
+      } else if (response.statusCode == 401) {
+        log('User not authorized');
+        return false;
       } else {
-        log('Request not completed: ${response.statusCode} Backend returned : ${response.data}  \n as Message');
+        log('Request not completed: ${response.statusCode} Backend returned: ${response.data}');
         return false;
       }
     } catch (e) {
-      throw Exception(e);
-    }
-    return false;
-  }
-
-  void setToken({required String token}) async =>
-      await _storage.then((value) => value.setString('TOKEN', token));
-  void deleteToken() async {
-    final storage = await _storage;
-    if (storage.containsKey('TOKEN')) storage.clear();
-    return;
-  }
-
-  void loadUsers() async {
-    final response = await api.getProjectsDM;
-    if (response.statusCode == 200) {
-      final data = response.data;
-      final x = data.map((e) => UserVM.fromJson(data));
-      state = x;
-      return;
-    }
-    if (response.statusCode != 200) {
-      log('something went wrong by loadingUser ${response.data}');
-      return;
-    }
-    try {} catch (e) {
-      throw Exception(e);
+      log('Login error: $e');
+      return false;
     }
   }
 
+  // Method to save user token to SharedPreferences
+  Future<void> setToken({required String token}) async {
+    await _storage.setString('TOKEN', token);
+  }
+
+  // Method to delete the user token from SharedPreferences
+  Future<void> deleteToken() async {
+    await _storage.remove('TOKEN');
+  }
+
+  // Method to fetch a list of user data as UserDataShort models
   Future<List<UserDataShort>> getListUserService() async {
-    final result = <UserDataShort>[];
+    List<UserDataShort> result = [];
     try {
-      // final response = await dio.get(url);
       final response = await api.getUserDataShort;
-      if (response.statusCode != 200) {
-        if (response.statusCode == 401) {
-          // TODO: implement userprovider logout
-          // ref.read(userProvider.notifier).userLogOut();
-          return result;
-        }
-        return result;
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        result = data
+            .map((e) => UserDataShort.fromJson(e as Map<String, dynamic>))
+            .toList();
+      } else if (response.statusCode == 401) {
+        userLogOut();
       }
-      final jsonResponse = response.data;
-      final List data = (jsonResponse).map((e) => e).toList();
-      data.map((e) => result.add(UserDataShort.fromJson(e))).toList();
-      return result;
-    } on DioException catch (e) {
-      log('this error occurent-> $e');
       return result;
     } catch (e) {
-      log('this error occurent-> $e');
-      throw Exception(e);
+      log('Error fetching user data: $e');
+      return result;
     }
   }
 }
