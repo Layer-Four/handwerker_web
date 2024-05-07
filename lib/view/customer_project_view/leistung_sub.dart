@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert'; // For JSON operations
 
 import '../shared_view_widgets/search_line_header.dart';
 
@@ -14,16 +16,61 @@ class ConsumableLeistungBody extends StatefulWidget {
 
 class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   List<RowData> rowDataList = [
-    const RowData(title: 'Reparatur Schaltung', price: '50 EUR'),
-    const RowData(title: 'Installation Beleuchtung', price: '60 EUR'),
-    const RowData(title: 'Reparatur Wasserleitung', price: '70 EUR'),
-    const RowData(title: 'Behebung Leckage', price: '60 EUR'),
-    const RowData(title: 'Anstrich Innenwand', price: '70 EUR'),
-    const RowData(title: 'Tapezierarbeiten', price: '50 EUR'),
-    const RowData(title: 'Kücheneinbau', price: '70 EUR'),
-    const RowData(title: 'Fensterherstellung', price: '60 EUR'),
-    const RowData(title: 'Dachisolierung', price: '40 EUR')
+    RowData(title: 'Reparatur Schaltung', price: '50 EUR', id: 0),
+    RowData(title: 'Installation Beleuchtung', price: '60 EUR', id: 1),
+    RowData(title: 'Reparatur Wasserleitung', price: '70 EUR', id: 2),
+    RowData(title: 'Behebung Leckage', price: '60 EUR', id: 3),
+    // const RowData(title: 'Anstrich Innenwand', price: '70 EUR'),
+    // const RowData(title: 'Tapezierarbeiten', price: '50 EUR'),
+    // const RowData(title: 'Kücheneinbau', price: '70 EUR'),
+    // const RowData(title: 'Fensterherstellung', price: '60 EUR'),
+    // const RowData(title: 'Dachisolierung', price: '40 EUR')
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  bool isLoading = true;
+
+  Future<void> fetchData() async {
+    try {
+      print("Making API call to the server...");
+
+      var response = await http
+          .get(Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/create'))
+          .timeout(const Duration(seconds: 10), onTimeout: () {
+        // This function will be called if the request times out
+        throw Exception('The connection has timed out, please try again!');
+      });
+
+      if (response.statusCode == 200) {
+        print("Response data: ${response.body}");
+        List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          rowDataList = data.map((item) => RowData.fromJson(item)).toList();
+          isLoading = false; // Set loading to false on success
+        });
+      } else {
+        // If the server returns a non-200 HTTP response
+        print("Failed to fetch data: ${response.statusCode}");
+        throw Exception('Failed to load data: HTTP status ${response.statusCode}');
+      }
+    } catch (e) {
+      // This catches errors related to the request itself, such as network issues or the timeout exception
+      _showSnackBar('Error: $e');
+      setState(() {
+        isLoading = false; // Set loading to false on error
+      });
+    }
+  }
+
+  void _showSnackBar(String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   bool isCardVisible = false;
 
@@ -40,136 +87,76 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   }
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SearchLineHeader(title: 'Leistungsverwaltung'),
-                /*              Row(
-                  children: [
-                    Flexible(
-                      flex:
-                          1, // Adjust the flex factor to control space allocation
-                      child: Text(
-                        'Leistungsverwaltung',
-                        style: TextStyle(color: Colors.orange, fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    SizedBox(width: 10), // Reduced space
-                    Flexible(
-                      flex:
-                          2, // Adjust the flex factor to control space allocation
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 10), // Reduced padding
-                        child: SizedBox(
-                          width: 400,
-                          child: Material(
-                            elevation: 4,
-                            borderRadius: BorderRadius.circular(12), // Ensure the Material also has rounded corners
-                            child: TextField(
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(10),
-                                hintText: 'Suchen...',
-                                // Placeholder text
-                                fillColor: Colors.white,
-                                // Background color of the text field
-                                filled: true,
-                                suffixIcon: const Icon(Icons.search, color: Colors.grey),
-                                // Search icon on the right
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12), // Rounded corners
-                                  borderSide: BorderSide.none, // No visible border
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent, width: 0), // Transparent border to maintain consistency
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
-                                      color: Colors.white, width: 2), // Highlight with an orange border when focused
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),*/
-                const SizedBox(height: 44),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(width: 30),
-                    Expanded(
-                      child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    ),
-                    Spacer(),
-                    SizedBox(width: 110)
-                  ],
-                ),
-                for (int i = 0; i < rowDataList.length; i++)
-                  EditableRow(
-                    originalTitle: rowDataList[i].title,
-                    originalPrice: rowDataList[i].price,
-                    onDelete: () => removeRow(rowDataList[i]),
+  Widget build(BuildContext context) {
+    // Show loading indicator while data is being fetched
+    if (isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    // Main content of your widget
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SearchLineHeader(title: 'Leistungsverwaltung'),
+              const SizedBox(height: 44),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   ),
-                const SizedBox(height: 40),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(50), // Fully rounded corners
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isCardVisible = !isCardVisible;
-                          });
-                        },
-                        iconSize: 30,
-                        // Adjust the size of the icon if necessary
-                        padding: EdgeInsets.zero,
-                        // Remove any default padding to ensure centering
-                        alignment: Alignment.center,
-                        // Ensure the icon is centered in the button
-                        icon: isCardVisible
-                            ? const Icon(Icons.remove, color: Colors.white)
-                            : const Icon(Icons.add, color: Colors.white),
-                      ),
-                    ),
+                  SizedBox(width: 30),
+                  Expanded(
+                    child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  ),
+                  Spacer(),
+                  SizedBox(width: 110) // Adjust spacing as needed
+                ],
+              ),
+              ...rowDataList
+                  .map((rowData) => EditableRow(
+                        originalTitle: rowData.title,
+                        originalPrice: rowData.price,
+                        onDelete: () => removeRow(rowData),
+                      ))
+                  .toList(),
+              const SizedBox(height: 40),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      setState(() {
+                        isCardVisible = !isCardVisible;
+                      });
+                    },
+                    child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
+                    backgroundColor: Colors.orange,
                   ),
                 ),
-                if (isCardVisible)
-                  CardWidget(
-                    onSave: _addRow,
-                    onHideCard: hideCard,
-                  ),
-              ],
-            ),
+              ),
+              if (isCardVisible)
+                CardWidget(
+                  onSave: _addRow,
+                  onHideCard: hideCard,
+                ),
+            ],
           ),
         ),
-      );
+      ),
+    );
+  }
 
   void _addRow(String title, String price) {
     setState(() {
-      rowDataList.add(RowData(title: title, price: price));
+      rowDataList.add(RowData(title: title, price: price, id: 1));
     });
   }
 }
@@ -363,15 +350,23 @@ class _CardWidgetState extends State<CardWidget> {
 }
 
 class RowData {
-  final String title;
+  int id;
+  String title;
+  String price;
 
-  // ignore: non_constant_identifier_names
-  final String price;
+  RowData({required this.id, required this.title, required this.price});
 
-  const RowData(
-      {required this.title,
-      // ignore: non_constant_identifier_names
-      required this.price});
+  factory RowData.fromJson(Map<String, dynamic> json) => RowData(
+        id: json['id'],
+        title: json['name'],
+        price: '${json['hourlyRate']} EUR',
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': title,
+        'hourlyRate': int.tryParse(price.split(' ')[0]) ?? 0,
+      };
 }
 
 class EditableRow extends StatefulWidget {
