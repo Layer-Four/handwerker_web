@@ -8,8 +8,8 @@ part of 'project_vm.dart';
 
 _$ProjectVMImpl _$$ProjectVMImplFromJson(Map<String, dynamic> json) =>
     _$ProjectVMImpl(
-      id: json['id'] as int,
-      title: json['title'] as String,
+      id: (json['id'] as num).toInt(),
+      title: json['title'] as String?,
     );
 
 Map<String, dynamic> _$$ProjectVMImplToJson(_$ProjectVMImpl instance) =>
