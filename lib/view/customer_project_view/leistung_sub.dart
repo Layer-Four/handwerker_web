@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/widgets.dart';
@@ -37,17 +40,15 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
 
   Future<void> fetchData() async {
     try {
+      var url = 'https://r-wa-happ-be.azurewebsites.net/api/service/list'; // Correct API endpoint
       print("Making API call to the server...");
 
-      var response = await http
-          .get(Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/create'))
-          .timeout(const Duration(seconds: 10), onTimeout: () {
-        // This function will be called if the request times out
+      var response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10), onTimeout: () {
         throw Exception('The connection has timed out, please try again!');
       });
 
       if (response.statusCode == 200) {
-        print("Response data: ${response.body}");
+        print('Response data: ${response.body}');
         List<dynamic> data = jsonDecode(response.body);
         setState(() {
           rowDataList = data.map((item) => RowData.fromJson(item)).toList();
@@ -90,10 +91,13 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   Widget build(BuildContext context) {
     // Show loading indicator while data is being fetched
     if (isLoading) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
+    return buildCardContent();
+  }
 
-    // Main content of your widget
+  // Main content of your widget
+  Widget buildCardContent() {
     return Container(
       color: Colors.white,
       child: Padding(
@@ -176,6 +180,7 @@ class _CardWidgetState extends State<CardWidget> {
   final TextEditingController _leistungController = TextEditingController();
 
   final TextEditingController _preisController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -185,168 +190,247 @@ class _CardWidgetState extends State<CardWidget> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) => SizedBox(
-        width: double.maxFinite,
-        height: 350,
-        child: Card(
-          surfaceTintColor: Colors.white,
-          elevation: 6,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 36),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            width: 250,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    'Leistung',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                Expanded(
-                                  child: TextField(
-                                    controller: _leistungController,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(211, 245, 241, 241),
-                                      hintText: 'Leistung',
-                                      contentPadding: const EdgeInsets.all(10),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: SizedBox(
-                            width: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
-                                ),
-                                const SizedBox(height: 15),
-                                Expanded(
-                                  child: TextField(
-                                    controller: _preisController,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(211, 245, 241, 241),
-                                      hintText: 'Preis/std',
-                                      contentPadding: const EdgeInsets.all(10),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(22.0),
-                    child: Row(
-                      // This row will always be at the bottom
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            _leistungController.clear();
-                            _preisController.clear();
-                            widget.onHideCard();
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
-                            ),
-                          ),
-                          child: const Text(
-                            'Verwerfen',
-                            style: TextStyle(color: Colors.orange),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        TextButton(
-                          onPressed: () {
-                            final leistung = _leistungController.text;
-                            final preis = _preisController.text;
-                            if (leistung.isNotEmpty && preis.isNotEmpty) {
-                              widget.onSave(leistung, preis);
-                              _leistungController.clear();
-                              _preisController.clear();
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text('Error'),
-                                  content: const Text('Bitte füllen Sie alle Felder aus'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text('OK'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
-                            backgroundColor: Colors.orange,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
-                            ),
-                          ),
-                          child: const Text(
-                            'Speichern',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+  void createService() async {
+    final String leistung = _leistungController.text.trim();
+    final String preis = _preisController.text.trim();
+
+    if (leistung.isEmpty || preis.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Fehler'),
+          content: const Text('Alle Felder müssen ausgefüllt sein!'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
             ),
-          ),
+          ],
         ),
       );
+      return;
+    }
+
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      final response = await http.post(
+        Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/create'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          'name': leistung,
+          'hourlyRate': preis,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        widget.onSave(leistung, preis);
+
+        if (Navigator.canPop(context)) {
+          Navigator.of(context).pop(); // Only pop if there's a stack to pop from.
+        }
+      } else {
+        throw Exception('Failed to create service.');
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Fehler beim Speichern'),
+          content: Text('Ein Fehler ist aufgetreten: $e'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading after the API call completes
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => _isLoading
+      ? const Center(child: CircularProgressIndicator()) // Show loading indicator
+      : SizedBox(
+          width: double.maxFinite,
+          height: 350,
+          child: Card(
+            surfaceTintColor: Colors.white,
+            elevation: 6,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 36),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: 250,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      'Leistung',
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _leistungController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                        hintText: 'Leistung',
+                                        contentPadding: const EdgeInsets.all(10),
+                                        border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SizedBox(
+                              width: 150,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _preisController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(211, 245, 241, 241),
+                                        hintText: 'Preis/std',
+                                        contentPadding: const EdgeInsets.all(10),
+                                        border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(22.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              _leistungController.clear();
+                              _preisController.clear();
+                              widget.onHideCard();
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                              ),
+                            ),
+                            child: const Text(
+                              'Verwerfen',
+                              style: TextStyle(color: Colors.orange),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          TextButton(
+                            onPressed: () {
+                              final leistung = _leistungController.text;
+                              final preis = _preisController.text;
+                              if (leistung.isNotEmpty && preis.isNotEmpty) {
+                                if (!_isLoading) {
+                                  createService();
+                                } else {
+                                  // Show a snackbar when the app is still processing a previous request
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Bitte warten Sie, während der Service gespeichert wird.'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Fehlende Informationen'),
+                                    content: const Text('Bitte füllen Sie alle Felder aus.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
+                              backgroundColor: Colors.orange,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                              ),
+                            ),
+                            child: const Text(
+                              'Speichern',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
 }
 
 class RowData {
@@ -447,7 +531,7 @@ class _EditableRowState extends State<EditableRow> {
               child: TextField(
                 maxLines: null,
                 controller: _titleController,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
@@ -460,7 +544,7 @@ class _EditableRowState extends State<EditableRow> {
             Expanded(
               child: TextField(
                 controller: _priceController,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
