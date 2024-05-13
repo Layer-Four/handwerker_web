@@ -2,30 +2,32 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Customer {
-  final String companyName;
+  final String? companyName;
   final int id;
 
-  Customer({required this.companyName, required this.id});
+  Customer({this.companyName, required this.id});
 
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
-      companyName: json['companyName'],
-      id: json['id'],
+      companyName: json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
+      id: json['id'] != null ? json['id'] as int : -1,
     );
   }
 }
 
-// project.dart
+// Project class
 class Project {
   final String? title;
   final int id;
+  final int customerId; // Add customerId property
 
-  Project({this.title, required this.id});
+  Project({this.title, required this.id, required this.customerId}); // Update constructor
 
   factory Project.fromJson(Map<String, dynamic> json) {
     return Project(
-      title: json['title'],
-      id: json['id'],
+      title: json['title'] != null ? json['title'] as String : 'Default Title',
+      id: json['id'] != null ? json['id'] as int : -1,
+      customerId: json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
     );
   }
 }

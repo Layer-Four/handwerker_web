@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/users_models/user_data_short/user_short.dart';
 import '/constants/api/api.dart';
 import '/models/users_models/user_vm/user_vm.dart';
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 
 final customerProjectProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
 
@@ -144,68 +144,6 @@ class UserNotifier extends Notifier<UserVM> {
     } catch (e) {
       log('this error occurent-> $e');
       throw Exception(e);
-    }
-  }
-
-  Future<List<Customer>> getListCustomer() async {
-    try {
-      // Make an HTTP GET request to fetch the list of customers
-      final response = await http.get(Uri.parse('your_api_endpoint_here'));
-
-      // Check if the request was successful (status code 200)
-      if (response.statusCode == 200) {
-        // Parse the response JSON into a list of customers
-        final List<dynamic> jsonList = json.decode(response.body);
-        final List<Customer> customers = jsonList.map((json) => Customer.fromJson(json)).toList();
-
-        // Notify listeners with the fetched customers
-        return customers;
-      } else {
-        // If the request was not successful, throw an error
-        throw Exception('Failed to load customers');
-      }
-    } catch (e) {
-      // Catch any errors that occur during the request
-      throw Exception('Failed to load customers: $e');
-    }
-  }
-
-  Future<List<Project>> getProjectsForCustomer(int customerId) async {
-    try {
-      // Make an HTTP GET request to fetch the projects for the specified customer
-      final response = await http.get(Uri.parse('your_api_endpoint_here/customer/$customerId/projects'));
-
-      // Check if the request was successful (status code 200)
-      if (response.statusCode == 200) {
-        // Parse the response JSON into a list of projects
-        final List<dynamic> jsonList = json.decode(response.body);
-        final List<Project> projects = jsonList.map((json) => Project.fromJson(json)).toList();
-
-        // Notify listeners with the fetched projects
-        return projects;
-      } else {
-        // If the request was not successful, throw an error
-        throw Exception('Failed to load projects for customer $customerId');
-      }
-    } catch (e) {
-      // Catch any errors that occur during the request
-      throw Exception('Failed to load projects for customer $customerId: $e');
-    }
-  }
-
-  Future<List<Project>> fetchProjectsForCustomer(String customerId) async {
-    try {
-      final response = await http.get(Uri.parse('your_api_endpoint_here?customerId=$customerId'));
-
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonList = json.decode(response.body);
-        final List<Project> projects = jsonList.map((json) => Project.fromJson(json)).toList();
-        return projects;
-      } else {
-        throw Exception('Failed to load projects for customer');
-      }
-    } catch (e) {
-      throw Exception('Failed to load projects for customer: $e');
     }
   }
 }
