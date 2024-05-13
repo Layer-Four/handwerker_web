@@ -1,7 +1,10 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '/constants/api/api.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -18,17 +21,7 @@ class ConsumableLeistungBody extends StatefulWidget {
 }
 
 class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
-  List<RowData> rowDataList = [
-    RowData(title: 'Reparatur Schaltung', price: '50 EUR', id: 0),
-    RowData(title: 'Installation Beleuchtung', price: '60 EUR', id: 1),
-    RowData(title: 'Reparatur Wasserleitung', price: '70 EUR', id: 2),
-    RowData(title: 'Behebung Leckage', price: '60 EUR', id: 3),
-    // const RowData(title: 'Anstrich Innenwand', price: '70 EUR'),
-    // const RowData(title: 'Tapezierarbeiten', price: '50 EUR'),
-    // const RowData(title: 'Kücheneinbau', price: '70 EUR'),
-    // const RowData(title: 'Fensterherstellung', price: '60 EUR'),
-    // const RowData(title: 'Dachisolierung', price: '40 EUR')
-  ];
+  List<Service> rowDataList = [];
 
   @override
   void initState() {
@@ -40,8 +33,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
 
   Future<void> fetchData() async {
     try {
-      var url = 'https://r-wa-happ-be.azurewebsites.net/api/service/list'; // Correct API endpoint
-      print("Making API call to the server...");
+      var url = 'https://r-wa-happ-be.azurewebsites.net/api/service/list';
+      print('Making API call to the server...');
 
       var response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10), onTimeout: () {
         throw Exception('The connection has timed out, please try again!');
@@ -51,12 +44,12 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
         print('Response data: ${response.body}');
         List<dynamic> data = jsonDecode(response.body);
         setState(() {
-          rowDataList = data.map((item) => RowData.fromJson(item)).toList();
+          rowDataList = data.map((item) => Service.fromJson(item)).toList();
           isLoading = false; // Set loading to false on success
         });
       } else {
         // If the server returns a non-200 HTTP response
-        print("Failed to fetch data: ${response.statusCode}");
+        print('Failed to fetch data: ${response.statusCode}');
         throw Exception('Failed to load data: HTTP status ${response.statusCode}');
       }
     } catch (e) {
@@ -81,11 +74,66 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
     });
   }
 
-  void removeRow(RowData row) {
-    setState(() {
-      rowDataList.remove(row);
-    });
+  void deleteService(Service row) async {
+    final Api api = Api();
+
+    try {
+      final response = await api.deleteService(row.id);
+      print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        print('Successfully deleted row with ID: ${row.id} from the backend.');
+        setState(() {
+          // TODO: new loading from Database
+          rowDataList.removeWhere((item) => item.id == row.id);
+        });
+      } else {
+        print(
+            'Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.data}');
+        _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Exception when trying to delete row with ID: ${row.id}: $e');
+      _showSnackBar('Error when attempting to delete the item: $e');
+    }
   }
+
+  Future<void> updateRow(Service row) async {
+    final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/update');
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer your_access_token',
+        },
+        body: jsonEncode(row.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        _showSnackBar('Update successful');
+      } else {
+        var errMsg = 'Failed to update item: ${response.statusCode}';
+        if (response.statusCode == 400) {
+          errMsg += ' - Bad Request, check data';
+        } else if (response.statusCode == 404) {
+          errMsg += ' - Item not found';
+        } else if (response.statusCode == 500) {
+          errMsg += ' - Server error';
+        }
+        _showSnackBar(errMsg);
+      }
+    } catch (e) {
+      _showSnackBar('Network error: $e');
+    }
+  }
+
+// void removeRow(RowData row) {
+//     print("Deleting row with ID: ${row.id}"); // Debugging output
+//     setState(() {
+//       rowDataList.removeWhere((item) => item.id == row.id);
+//     });
+// }
 
   @override
   Widget build(BuildContext context) {
@@ -97,62 +145,71 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   }
 
   // Main content of your widget
-  Widget buildCardContent() {
-    return Container(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SearchLineHeader(title: 'Leistungsverwaltung'),
-              const SizedBox(height: 44),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+  Widget buildCardContent() => Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SearchLineHeader(title: 'Leistungsverwaltung'),
+                const SizedBox(height: 44),
+                buildHeaderRow(),
+                ...rowDataList
+                    .map((rowData) => EditableRow(
+                          key: ValueKey(rowData.id),
+                          originalTitle: rowData.title,
+                          originalPrice: rowData.price,
+                          onDelete: () => deleteService(rowData),
+                          onUpdate: (updatedRow) => updateRow(updatedRow), // Now passing onUpdate
+                          row: rowData,
+                        ))
+                    .toList(),
+                const SizedBox(height: 40),
+                buildAddButton(),
+                if (isCardVisible)
+                  CardWidget(
+                    onSave: _addRow,
+                    onHideCard: hideCard,
                   ),
-                  SizedBox(width: 30),
-                  Expanded(
-                    child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  ),
-                  Spacer(),
-                  SizedBox(width: 110) // Adjust spacing as needed
-                ],
-              ),
-              ...rowDataList
-                  .map((rowData) => EditableRow(
-                        originalTitle: rowData.title,
-                        originalPrice: rowData.price,
-                        onDelete: () => removeRow(rowData),
-                      ))
-                  .toList(),
-              const SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        isCardVisible = !isCardVisible;
-                      });
-                    },
-                    child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
-                    backgroundColor: Colors.orange,
-                  ),
-                ),
-              ),
-              if (isCardVisible)
-                CardWidget(
-                  onSave: _addRow,
-                  onHideCard: hideCard,
-                ),
-            ],
+              ],
+            ),
           ),
+        ),
+      );
+
+  Widget buildHeaderRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(width: 30),
+        Expanded(
+          child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        ),
+        Spacer(),
+        SizedBox(width: 110) // Adjust spacing as needed
+      ],
+    );
+  }
+
+  Widget buildAddButton() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              isCardVisible = !isCardVisible;
+            });
+          },
+          child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
+          backgroundColor: Colors.orange,
         ),
       ),
     );
@@ -160,9 +217,216 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
 
   void _addRow(String title, String price) {
     setState(() {
-      rowDataList.add(RowData(title: title, price: price, id: 1));
+      rowDataList.add(Service(title: title, price: price, id: 1));
     });
   }
+}
+
+class Service {
+  int id;
+  String title;
+  String price;
+
+  Service({required this.id, required this.title, required this.price});
+
+  factory Service.fromJson(Map<String, dynamic> json) => Service(
+        id: json['id'],
+        title: json['name'],
+        price: '${json['hourlyRate']} EUR',
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': title,
+        'hourlyRate': int.tryParse(price.split(' ')[0]) ?? 0,
+      };
+}
+
+class EditableRow extends StatefulWidget {
+  final String originalTitle;
+
+  final String originalPrice;
+  final VoidCallback onDelete;
+  final Function(Service) onUpdate;
+  final Service row;
+
+  const EditableRow({
+    super.key,
+    required this.originalTitle,
+    required this.originalPrice,
+    required this.onDelete,
+    required this.onUpdate,
+    required this.row,
+  });
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _EditableRowState createState() => _EditableRowState();
+}
+
+class _EditableRowState extends State<EditableRow> {
+  late TextEditingController _titleController;
+
+  late TextEditingController _priceController;
+  late String currentTitle;
+  late String currentPrice;
+  bool isEditing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize all controllers here
+    _titleController = TextEditingController(text: widget.originalTitle);
+
+    // Initialize currentPrice before using it to set up _priceController
+    currentPrice = widget.originalPrice; // Set currentPrice from widget's originalPrice
+    _priceController = TextEditingController(text: widget.originalPrice);
+
+    currentTitle = widget.originalTitle;
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+
+    _priceController.dispose();
+
+    super.dispose();
+  }
+
+  void _showDeleteConfirmation() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.4, // 80% of screen width
+            height: MediaQuery.of(context).size.height * 0.3, // 40% of screen height
+            child: AlertDialog(
+              title: Text('Sind Sie sicher, dass Sie dieses Objekt löschen wollen?'),
+              // content: Text("Sind Sie sicher, dass Sie dieses Objekt löschen wollen?"),
+              actionsAlignment: MainAxisAlignment.spaceEvenly,
+              actions: <Widget>[
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                    widget.onDelete(); // Proceed with deleting the row
+                  },
+                  child: Text('Ja'),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text('Nein'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.only(bottom: 12, top: 15),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.black,
+              width: 1.0,
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: TextField(
+                maxLines: null,
+                controller: _titleController,
+                style: const TextStyle(fontSize: 16),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
+              ),
+            ),
+
+            const SizedBox(width: 20),
+            Expanded(
+              child: TextField(
+                controller: _priceController,
+                style: const TextStyle(fontSize: 16),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
+              ),
+            ),
+            const Spacer(),
+            // IconButton to handle cancel action
+            IconButton(
+              icon: Visibility(
+                visible: isEditing, // Show cancel icon only when editing
+                child: const Icon(Icons.cancel),
+              ),
+              onPressed: () {
+                setState(() {
+                  // Check if currently editing
+                  if (isEditing) {
+                    isEditing = false; // Disable editing mode
+                    // Revert text fields to their original values
+                    _titleController.text = currentTitle;
+                    _priceController.text = currentPrice;
+                  }
+                });
+              },
+            ),
+
+// IconButton to toggle between save and edit modes
+
+            IconButton(
+              icon: Icon(isEditing ? Icons.save : Icons.edit),
+              onPressed: () {
+                if (isEditing) {
+                  Service updatedRow =
+                      Service(id: widget.row.id, title: _titleController.text, price: _priceController.text);
+
+                  widget.onUpdate(updatedRow);
+
+                  setState(() {
+                    currentTitle = _titleController.text;
+                    currentPrice = _priceController.text;
+                    isEditing = false;
+                  });
+                } else {
+                  setState(() {
+                    isEditing = true;
+                  });
+                }
+              },
+            ),
+
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: _showDeleteConfirmation,
+            ),
+          ],
+        ),
+      );
 }
 
 class CardWidget extends StatefulWidget {
@@ -431,190 +695,4 @@ class _CardWidgetState extends State<CardWidget> {
             ),
           ),
         );
-}
-
-class RowData {
-  int id;
-  String title;
-  String price;
-
-  RowData({required this.id, required this.title, required this.price});
-
-  factory RowData.fromJson(Map<String, dynamic> json) => RowData(
-        id: json['id'],
-        title: json['name'],
-        price: '${json['hourlyRate']} EUR',
-      );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': title,
-        'hourlyRate': int.tryParse(price.split(' ')[0]) ?? 0,
-      };
-}
-
-class EditableRow extends StatefulWidget {
-  final String originalTitle;
-
-  final String originalPrice;
-  final VoidCallback onDelete;
-
-  const EditableRow({
-    super.key,
-    required this.originalTitle,
-    required this.originalPrice,
-    required this.onDelete,
-  });
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _EditableRowState createState() => _EditableRowState();
-}
-
-class _EditableRowState extends State<EditableRow> {
-  late TextEditingController _titleController;
-
-  late TextEditingController _priceController;
-  late String currentTitle;
-  late String currentPrice;
-  bool isEditing = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialize all controllers here
-    _titleController = TextEditingController(text: widget.originalTitle);
-
-    // Initialize currentPrice before using it to set up _priceController
-    currentPrice = widget.originalPrice; // Set currentPrice from widget's originalPrice
-    _priceController = TextEditingController(text: widget.originalPrice);
-    // Listener for _priceController to append '€' if it's not already there
-    // _priceController.addListener(() {
-    //   String text = _priceController.text;
-    //   if (!text.endsWith('€') && text.isNotEmpty) {
-    //     String newText = '$text';
-    //     _priceController.value = _priceController.value.copyWith(
-    //       text: newText,
-    //       selection: TextSelection.collapsed(offset: newText.length - 1),
-    //     );
-    //   }
-    // });
-
-    // Initialize currentTitle similar to how currentPrice was handled
-    currentTitle = widget.originalTitle;
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-
-    _priceController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.only(bottom: 12, top: 15),
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.black,
-              width: 1.0,
-            ),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: TextField(
-                maxLines: null,
-                controller: _titleController,
-                style: const TextStyle(fontSize: 16),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
-              ),
-            ),
-
-            const SizedBox(width: 20),
-            Expanded(
-              child: TextField(
-                controller: _priceController,
-                style: const TextStyle(fontSize: 16),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
-              ),
-            ),
-            const Spacer(),
-            // IconButton to handle cancel action
-            IconButton(
-              icon: Visibility(
-                visible: isEditing, // Show cancel icon only when editing
-                child: const Icon(Icons.cancel),
-              ),
-              onPressed: () {
-                setState(() {
-                  // Check if currently editing
-                  if (isEditing) {
-                    isEditing = false; // Disable editing mode
-                    // Revert text fields to their original values
-                    _titleController.text = currentTitle;
-                    _priceController.text = currentPrice;
-                  }
-                });
-              },
-            ),
-
-// IconButton to toggle between save and edit modes
-            IconButton(
-              icon: Icon(isEditing ? Icons.save : Icons.edit),
-              onPressed: () {
-                setState(() {
-                  if (isEditing) {
-                    // Save the current text field contents
-                    currentTitle = _titleController.text;
-                    currentPrice = _priceController.text; // Append currency symbol
-                    isEditing = false; // Exit editing mode
-                  } else {
-                    isEditing = true; // Enter editing mode
-                  }
-                });
-              },
-            ),
-
-            // IconButton(
-            //   icon: Icon(Icons.delete),
-            //   onPressed: () {
-            //     setState(() {
-            //       // Perform delete action
-            //       widget.onDelete();
-            //     });
-            //   },
-            // ),
-
-            // IconButton(
-            //   icon: Icon(isEditing ? Icons.settings : Icons.delete),
-            //   onPressed: () {
-            //     setState(() {
-            //       if (!isEditing) {
-            //         widget.onDelete();
-            //       }
-            //       isEditing = !isEditing;
-            //       if (!isEditing) {
-            //         _titleController.text = currentTitle;
-            //         _priceController.text = currentPrice;
-            //       }
-            //     });
-            //   },
-            // ),
-          ],
-        ),
-      );
 }

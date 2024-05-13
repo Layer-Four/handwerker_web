@@ -25,22 +25,9 @@ class Api {
   final String _getUserServiceListByID = 'i/userservice/list?userid=';
   final String _getUserServiceList = '/userservice/list';
   final String _getListUsersShort = '/user/list';
-  // Getter
-  // String get getAllProjects => _baseUrl + _getAllProjects;
-  // String get getAllTimeEntrys => _baseUrl + _getAllTimeTacks;
-  // String get getProjectsDM => _baseUrl + _getProjectsAdress;
-  // String get getCustomerProjects => _baseUrl + _getCustomerProject;
-  // String get getExecuteableServices => _baseUrl + _getServiceAdress;
-  // String get getProjectConsumableEntry => _baseUrl + _getProjectsConsumable;
-  // String get getProjectsTimeEntrys => _baseUrl+getProjectsTimeEntrys;
-  // String get getUserDocumentationEntry => _baseUrl + _getUserProjectDocumentation;
-  // String get postloginUser => _baseUrl + _loginUserAdress;
-  // String get postProjectConsumable(data) => _baseUrl + _postProjectConsumabele;
-  // String get postDocumentationEntry => _baseUrl + _postDocumentationDay;
-  // String get postTimeEnty => _baseUrl + _postTimeEntryAdress;
-  // String get updateDocumentationEntry => _baseUrl + _putDocumentationDay;
-  // String get updateProjectConsumableEntry => _baseUrl + _putProjectMaterial;
-  // String getDokuforProjectURL(int projectID) => '$_baseUrl/project/$projectID/documentations';
+
+  final String _deleteService = '/service/delete';
+
   Future get getAllProjects => api.get(_getAllProjects);
   Future get getAllTimeEntrys => api.get(_getAllTimeTacks);
   Future get getAllUnits => api.get(_getAllUnitsList);
@@ -53,7 +40,10 @@ class Api {
   Future get getProjectConsumableEntry => api.get(_getProjectsConsumable);
   Future get getProjectsTimeEntrys => api.get(_getTimeTacks);
   Future get getUserDocumentationEntry => api.get(_getUserProjectDocumentation);
-  Future get getUserServiceList => api.get(_getUserServiceList);
+  Future<Response> get getUserServiceList => api.get(_getUserServiceList);
+
+  Future<Response> deleteService(int serviceID) => api.delete('$_deleteService/$serviceID');
+
   Future postloginUser(loginData) => api.post(_loginUserAdress, data: loginData);
   Future postProjectConsumable(data) => api.post(_postProjectConsumabele, data: data);
   Future postDocumentationEntry(data) => api.post(_postDocumentationDay, data: data);
@@ -62,8 +52,7 @@ class Api {
   Future updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
   Future getUserServiceByID(id) => api.get(_getUserServiceListByID, data: id);
 
-  void storeToken(String token) async =>
-      await _storage.then((value) => value.setString('TOKEN', token));
+  void storeToken(String token) async => await _storage.then((value) => value.setString('TOKEN', token));
   // final pref = await SharedPreferences.getInstance();
 
   Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
