@@ -39,8 +39,10 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   late TimeEntry _entry;
   Customer? _selectedCustomer;
   List<Project>? _projectsForCustomer;
+  int? _selectedCustomerId;
+  Customer? _selectedCustomerUnique;
 
-
+  final Project? _defaultProject = Project(id: 0, title: "", customerId: 0);
 
   @override
   void initState() {
@@ -66,7 +68,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         _dayInputRow(),
         _timeInputRow(),
         _buildCustomerField(),
-        _buildProjectField(),
+        _buildProjectField(_projectsForCustomer ?? []), // Pass projects here
         _buildServiceDropdown(),
         _buildDescription(),
         _buildSelectUser(),
@@ -141,8 +143,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
     },
   );
 
-  Widget _buildCustomerField() => FutureBuilder(
-    future: ref.read(customerProjectProvider.notifier).getListCustomer(),
+  Widget _buildCustomerField() => FutureBuilder<List<Customer>>(
+    future: fetchCustomers(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return const CircularProgressIndicator.adaptive();
@@ -150,62 +152,151 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
       if (snapshot.hasError) {
         return const Text('Error fetching customers');
       }
-      final customers = snapshot.data as List<Customer>;
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(
-                'Kunde',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            Container(
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
-              ),
-              child: DropdownButton<Customer>(
-                underline: const SizedBox(),
-                isExpanded: true,
-                value: _selectedCustomer,
-                items: customers
-                    ?.map(
-                      (customer) => DropdownMenuItem(
-                    value: customer,
-                    child: Text(customer.companyName),
-                  ),
-                )
-                    .toList(),
-                onChanged: (customer) {
-                  setState(() {
-                    _selectedCustomer = customer;
-                    fetchProjectsForCustomer(customer!.id); // Use the selected customer's id
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-      );
+      final customers = snapshot.data!;
+      return _buildCustomerDropdown(customers);
     },
   );
 
-  Future<List<ProjectVM>> fetchProjectsForCustomer(int customerId) async {
-    try {
-      final response = await http.get(Uri.parse('your_api_endpoint_here?customerId=$customerId'));
+  Widget _buildCustomerDropdown(List<Customer> customers) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              'Kunde',
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+          ),
+          Container(
+            height: 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+            ),
+            child: DropdownButton<int>(
+              underline: const SizedBox(),
+              isExpanded: true,
+              value: _selectedCustomerId,
+              items: customers
+                  .map(
+                    (customer) => DropdownMenuItem<int>(
+                  value: customer.id,
+                  child: Text(customer.companyName ?? 'Unknown Company'),
+                ),
+              )
+                  .toList(),
+              onChanged: (customerId) {
+                setState(() {
+                  _selectedCustomerId = customerId;
+                  final selectedCustomer = customers.firstWhere(
+                        (customer) => customer.id == customerId,
+                    orElse: () => Customer(companyName: null, id: -1),
+                  );
+                  if (selectedCustomer != null) {
+                    // Call _fetchProjectsForCustomer with the selected customer ID
+                    _fetchProjectsForCustomer(selectedCustomer.id);
+                  }
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
+  Widget _buildProjectField(List<Project> projects) {
+    if (projects.isEmpty) {
+      // No projects available, use default project
+      setState(() {
+        _project = _defaultProject;
+      });
+    } else {
+      // Projects available, use the first project
+      setState(() {
+        _project = projects.first;
+      });
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              'Projekt',
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+          ),
+          Container(
+            height: 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+            ),
+            child: DropdownButton<Project>(
+              underline: const SizedBox(),
+              isExpanded: true,
+              value: _project,
+              items: projects
+                  .map(
+                    (project) => DropdownMenuItem<Project>(
+                  value: project,
+                  child: Text(project.title ?? 'Default Title'),
+                ),
+              )
+                  .toList(),
+              onChanged: (project) {
+                setState(() {
+                  _project = project;
+                  _entry = _entry.copyWith(projectID: project!.id);
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+
+
+
+
+  Future<List<Customer>> fetchCustomers() async {
+    try {
+      final response = await http.get(Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/customer/list'));
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
+        return jsonList.map((json) => Customer.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load customers');
+      }
+    } catch (e) {
+      throw Exception('Failed to load customers: $e');
+    }
+  }
 
-        // Transform List<Project> to List<ProjectVM>
-        final List<ProjectVM> projects = jsonList.map((json) => ProjectVM.fromJson(json)).toList();
+  Future<void> _fetchProjectsForCustomer(int customerId) async {
+    try {
+      final response = await http.get(Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/project/list?customerId=$customerId'));
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = json.decode(response.body);
+        final projects = jsonList.map((json) => Project.fromJson(json)).toList();
 
-        return projects;
+        // Ensure uniqueness using a Set
+        final uniqueProjects = projects.toSet().toList();
+
+        setState(() {
+          _projectsForCustomer = uniqueProjects;
+        });
       } else {
         throw Exception('Failed to load projects for customer');
       }
@@ -214,53 +305,12 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
     }
   }
 
-  Widget _buildProjectField() {
-    if (_projectsForCustomer == null) {
-      return const CircularProgressIndicator.adaptive();
-    } else {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(
-                'Projekt',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            Container(
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
-              ),
-              child: DropdownButton<Project>(
-                underline: const SizedBox(),
-                isExpanded: true,
-                value: _project,
-                items: _projectsForCustomer
-                    ?.map(
-                      (project) => DropdownMenuItem<Project>(
-                    value: project,
-                    child: Text(project.title ?? 'Default Title'),
-                  ),
-                )
-                    .toList(),
-                onChanged: (project) {
-                  setState(() {
-                    _project = project; // Update the selected project
-                    _entry = _entry.copyWith(projectID: project!.id); // Update the projectID in the TimeEntry object
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-  }
+
+
+
+
+
+
 
 
 
