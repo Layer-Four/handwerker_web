@@ -8,11 +8,11 @@ part of 'time_vm.dart';
 
 _$TimeVMAdapterImpl _$$TimeVMAdapterImplFromJson(Map<String, dynamic> json) =>
     _$TimeVMAdapterImpl(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       userId: json['userId'] as String,
-      projectId: json['projectId'] as int?,
-      serviceId: json['serviceId'] as int?,
-      duration: json['duration'] as int?,
+      projectId: (json['projectId'] as num?)?.toInt(),
+      serviceId: (json['serviceId'] as num?)?.toInt(),
+      duration: (json['duration'] as num?)?.toInt(),
       serviceTitle: json['serviceTitle'] as String?,
       date: DateTime.parse(json['date'] as String),
       startTime: DateTime.parse(json['startTime'] as String),
