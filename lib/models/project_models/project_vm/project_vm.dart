@@ -6,7 +6,7 @@ part 'project_vm.g.dart';
 class ProjectVM with _$ProjectVM {
   const factory ProjectVM({
     required int id,
-    required String title,
+    String? title,
   }) = _ProjectVM;
 
   factory ProjectVM.fromJson(Map<String, dynamic> json) => _$ProjectVMFromJson(json);

@@ -1,4 +1,5 @@
 import 'dart:developer';
+//import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/users_models/user_data_short/user_short.dart';
 import '/constants/api/api.dart';
 import '/models/users_models/user_vm/user_vm.dart';
+//import 'package:http/http.dart' as http;
 
 final customerProjectProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
 

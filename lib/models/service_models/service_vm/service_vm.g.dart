@@ -9,7 +9,7 @@ part of 'service_vm.dart';
 _$ServiceImpl _$$ServiceImplFromJson(Map<String, dynamic> json) =>
     _$ServiceImpl(
       name: json['name'] as String,
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$ServiceImplToJson(_$ServiceImpl instance) =>

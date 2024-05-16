@@ -1,6 +1,37 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class Customer {
+  final String? companyName;
+  final int id;
+
+  Customer({this.companyName, required this.id});
+
+  factory Customer.fromJson(Map<String, dynamic> json) {
+    return Customer(
+      companyName: json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
+      id: json['id'] != null ? json['id'] as int : -1,
+    );
+  }
+}
+
+// Project class
+class Project {
+  final String? title;
+  final int id;
+  final int customerId; // Add customerId property
+
+  Project({this.title, required this.id, required this.customerId}); // Update constructor
+
+  factory Project.fromJson(Map<String, dynamic> json) {
+    return Project(
+      title: json['title'] != null ? json['title'] as String : 'Default Title',
+      id: json['id'] != null ? json['id'] as int : -1,
+      customerId: json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
+    );
+  }
+}
+
 class Api {
 // Routes
 // TODO: Check Api in Postman
@@ -25,6 +56,8 @@ class Api {
   final String _getUserServiceListByID = 'i/userservice/list?userid=';
   final String _getUserServiceList = '/userservice/list';
   final String _getListUsersShort = '/user/list';
+  final String _getListCustomer = '/customer/list';
+  final String _getListProject = '/project/list';
 
   final String _deleteService = '/service/delete';
 
@@ -52,6 +85,18 @@ class Api {
   Future updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
   Future getUserServiceByID(id) => api.get(_getUserServiceListByID, data: id);
 
+  // Getter for customer list
+  Future get getListCustomer => api.get(_getListCustomer);
+
+  // Getter for project list
+  Future get getListProject => api.get(_getListProject);
+
+  // Getter for customer list
+  Future get getListCustomer => api.get(_getListCustomer);
+
+  // Getter for project list
+  Future get getListProject => api.get(_getListProject);
+
   void storeToken(String token) async => await _storage.then((value) => value.setString('TOKEN', token));
   // final pref = await SharedPreferences.getInstance();
 
@@ -69,6 +114,7 @@ class Api {
   );
   Api() {
     api.options = baseOption;
+    api.interceptors.add(DioInterceptor());
     // api.interceptors.add(DioInterceptor());
     // api.interceptors.add(InterceptorsWrapper(
     //     onRequest: (options, handler) async {
@@ -98,18 +144,18 @@ class Api {
     // )
     // );
   }
-  // Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
-  //   final options = Options(
-  //     method: requestOptions.method,
-  //     headers: requestOptions.headers,
-  //   );
-  //   return api.request<dynamic>(
-  //     requestOptions.path,
-  //     data: requestOptions.data,
-  //     queryParameters: requestOptions.queryParameters,
-  //     options: options,
-  //   );
-  // }
+// Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
+//   final options = Options(
+//     method: requestOptions.method,
+//     headers: requestOptions.headers,
+//   );
+//   return api.request<dynamic>(
+//     requestOptions.path,
+//     data: requestOptions.data,
+//     queryParameters: requestOptions.queryParameters,
+//     options: options,
+//   );
+// }
 
 // // TODO: when need login data than maybe hash the value in Storage?
 //   Future<void> refreshToken() async {
