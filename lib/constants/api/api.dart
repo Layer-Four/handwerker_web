@@ -91,12 +91,6 @@ class Api {
   // Getter for project list
   Future get getListProject => api.get(_getListProject);
 
-  // Getter for customer list
-  Future get getListCustomer => api.get(_getListCustomer);
-
-  // Getter for project list
-  Future get getListProject => api.get(_getListProject);
-
   void storeToken(String token) async => await _storage.then((value) => value.setString('TOKEN', token));
   // final pref = await SharedPreferences.getInstance();
 
