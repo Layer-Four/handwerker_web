@@ -34,7 +34,7 @@ class Api {
   Future get getCustomerProjects => api.get(_getCustomerProject);
   Future get getUserDataShort => api.get(_getListUsersShort);
   Future getDokuforProjectURL(int projectID) => api.get('/project/$projectID/documentations');
-  Future get getExecuteableServices => api.get(_getServiceAdress);
+  Future<Response> get getExecuteableServices => api.get(_getServiceAdress);
   Future get getMaterialsList => api.get(_getMaterialsList);
   Future get getProjectsDM => api.get(_getProjectsAdress);
   Future get getProjectConsumableEntry => api.get(_getProjectsConsumable);

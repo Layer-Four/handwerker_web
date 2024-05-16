@@ -32,31 +32,31 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   bool isLoading = true;
 
   Future<void> fetchData() async {
+    final Api api = Api();
     try {
-      var url = 'https://r-wa-happ-be.azurewebsites.net/api/service/list';
       print('Making API call to the server...');
-
-      var response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10), onTimeout: () {
-        throw Exception('The connection has timed out, please try again!');
-      });
+      final response = await api.getExecuteableServices.timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw Exception('The connection has timed out, please try again!');
+        },
+      );
 
       if (response.statusCode == 200) {
-        print('Response data: ${response.body}');
-        List<dynamic> data = jsonDecode(response.body);
+        print('Response data: ${response.data}');
+        List<dynamic> data = response.data;
         setState(() {
           rowDataList = data.map((item) => Service.fromJson(item)).toList();
-          isLoading = false; // Set loading to false on success
+          isLoading = false;
         });
       } else {
-        // If the server returns a non-200 HTTP response
         print('Failed to fetch data: ${response.statusCode}');
         throw Exception('Failed to load data: HTTP status ${response.statusCode}');
       }
     } catch (e) {
-      // This catches errors related to the request itself, such as network issues or the timeout exception
       _showSnackBar('Error: $e');
       setState(() {
-        isLoading = false; // Set loading to false on error
+        isLoading = false;
       });
     }
   }
@@ -83,10 +83,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
 
       if (response.statusCode == 200 || response.statusCode == 204) {
         print('Successfully deleted row with ID: ${row.id} from the backend.');
-        setState(() {
-          // TODO: new loading from Database
-          rowDataList.removeWhere((item) => item.id == row.id);
-        });
+        await fetchData(); // Fetch the updated list of services after deletion
+        _showSnackBar('Row deleted successfully.');
       } else {
         print(
             'Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.data}');
@@ -97,6 +95,55 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
       _showSnackBar('Error when attempting to delete the item: $e');
     }
   }
+
+  // void deleteService(Service row) async {
+  //   final Api api = Api();
+
+  //   try {
+  //     final response = await api.deleteService(row.id);
+  //     print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
+
+  //     if (response.statusCode == 200 || response.statusCode == 204) {
+  //       print('Successfully deleted row with ID: ${row.id} from the backend.');
+  //       api.getExecuteableServices(),
+  //       setState(() {
+  //         // TODO: new loading from Database
+  //         rowDataList.removeWhere((item) => item.id == row.id);
+  //       });
+  //     } else {
+  //       print(
+  //           'Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.data}');
+  //       _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print('Exception when trying to delete row with ID: ${row.id}: $e');
+  //     _showSnackBar('Error when attempting to delete the item: $e');
+  //   }
+  // }
+
+  // void deleteService(Service row) async {
+  //   final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/delete/${row.id}');
+  //   try {
+  //     final response = await http.delete(url);
+
+  //     print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
+
+  //     if (response.statusCode == 200 || response.statusCode == 204) {
+  //       print('Successfully deleted row with ID: ${row.id} from the backend.');
+  //       setState(() {
+  //         // TODO: new loading from Database
+  //         rowDataList.removeWhere((item) => item.id == row.id);
+  //       });
+  //     } else {
+  //       print(
+  //           'Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.body}');
+  //       _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print('Exception when trying to delete row with ID: ${row.id}: $e');
+  //     _showSnackBar('Error when attempting to delete the item: $e');
+  //   }
+  // }
 
   Future<void> updateRow(Service row) async {
     final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/update');
@@ -157,16 +204,14 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
                 const SearchLineHeader(title: 'Leistungsverwaltung'),
                 const SizedBox(height: 44),
                 buildHeaderRow(),
-                ...rowDataList
-                    .map((rowData) => EditableRow(
-                          key: ValueKey(rowData.id),
-                          originalTitle: rowData.title,
-                          originalPrice: rowData.price,
-                          onDelete: () => deleteService(rowData),
-                          onUpdate: (updatedRow) => updateRow(updatedRow), // Now passing onUpdate
-                          row: rowData,
-                        ))
-                    .toList(),
+                ...rowDataList.map((rowData) => EditableRow(
+                      key: ValueKey(rowData.id),
+                      originalTitle: rowData.title,
+                      originalPrice: rowData.price,
+                      onDelete: () => deleteService(rowData),
+                      onUpdate: (updatedRow) => updateRow(updatedRow), // Now passing onUpdate
+                      row: rowData,
+                    )),
                 const SizedBox(height: 40),
                 buildAddButton(),
                 if (isCardVisible)
@@ -180,40 +225,36 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
         ),
       );
 
-  Widget buildHeaderRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ),
-        SizedBox(width: 30),
-        Expanded(
-          child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ),
-        Spacer(),
-        SizedBox(width: 110) // Adjust spacing as needed
-      ],
-    );
-  }
+  Widget buildHeaderRow() => const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(width: 30),
+          Expanded(
+            child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          Spacer(),
+          SizedBox(width: 110) // Adjust spacing as needed
+        ],
+      );
 
-  Widget buildAddButton() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              isCardVisible = !isCardVisible;
-            });
-          },
-          child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
-          backgroundColor: Colors.orange,
+  Widget buildAddButton() => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                isCardVisible = !isCardVisible;
+              });
+            },
+            child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
+            backgroundColor: Colors.orange,
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   void _addRow(String title, String price) {
     setState(() {
