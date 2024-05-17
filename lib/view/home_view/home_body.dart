@@ -6,7 +6,7 @@ class HomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         width: double.infinity,
-        height: double.infinity,
+        height: MediaQuery.of(context).size.height,
         child: Center(
           child: Stack(
             alignment: Alignment.center, // Align the text in the center of the image
@@ -15,7 +15,7 @@ class HomeBody extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 color: Colors.black54, // Semi-transparent background for the text
-                child: Text(
+                child: const Text(
                   'PREVIEW',
                   style: TextStyle(
                     fontSize: 32,

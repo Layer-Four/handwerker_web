@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchLineHeader extends StatefulWidget {
   final String _currentViewTitle;
   final bool searchbarEnabled;
 
-  const SearchLineHeader({super.key, required String title, this.searchbarEnabled = true}) : _currentViewTitle = title;
+  const SearchLineHeader({super.key, required String title, this.searchbarEnabled = true})
+      : _currentViewTitle = title;
 
   @override
   State<SearchLineHeader> createState() => _SearchLineHeaderState();
@@ -37,7 +37,8 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
                     elevation: 5,
                     child: Container(
                       width: MediaQuery.of(context).size.width / 2,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12), color: Colors.white),
                       child: TextField(
                         controller: _searchController,
                         onChanged: (value) {
