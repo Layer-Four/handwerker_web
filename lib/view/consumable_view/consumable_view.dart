@@ -636,8 +636,10 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
 
   Future<void> fetchData() async {
     try {
-      var materialUrl = 'https://r-wa-happ-be.azurewebsites.net/api/material/list';
-      var unitUrl = 'https://r-wa-happ-be.azurewebsites.net/api/material/unit/list';
+      var materialUrl =
+          'https://r-wa-happ-be.azurewebsites.net/api/material/list';
+      var unitUrl =
+          'https://r-wa-happ-be.azurewebsites.net/api/material/unit/list';
 
       print("Fetching material data...");
       var materialResponse = await http.get(Uri.parse(materialUrl));
@@ -647,7 +649,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
       var unitResponse = await http.get(Uri.parse(unitUrl));
       print("Unit data response status: ${unitResponse.statusCode}");
 
-      if (materialResponse.statusCode == 200 && unitResponse.statusCode == 200) {
+      if (materialResponse.statusCode == 200 &&
+          unitResponse.statusCode == 200) {
         List<dynamic> materialData = jsonDecode(materialResponse.body);
         List<dynamic> unitData = jsonDecode(unitResponse.body);
 
@@ -656,7 +659,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
 
         List<RowData> loadedData = [];
         for (var item in materialData) {
-          var unit = unitData.firstWhere((u) => u['id'] == item['unitId'], orElse: () => null);
+          var unit = unitData.firstWhere((u) => u['id'] == item['unitId'],
+              orElse: () => null);
           if (unit != null) {
             loadedData.add(RowData(
               id: item['id'],
@@ -697,7 +701,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
   }
 
   void removeRow(RowData row) async {
-    final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/delete/${row.id}');
+    final url = Uri.parse(
+        'https://r-wa-happ-be.azurewebsites.net/api/material/delete/${row.id}');
 
     try {
       final response = await http.delete(url);
@@ -707,7 +712,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
           rowDataList.removeWhere((item) => item.id == row.id);
         });
       } else {
-        _showSnackBar("Failed to delete the item from the server: ${response.statusCode}");
+        _showSnackBar(
+            "Failed to delete the item from the server: ${response.statusCode}");
       }
     } catch (e) {
       _showSnackBar("Error when attempting to delete the item: $e");
@@ -715,7 +721,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
   }
 
   Future<void> updateRow(RowData row) async {
-    final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/update');
+    final url =
+        Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/update');
 
     try {
       final response = await http.put(
@@ -743,65 +750,71 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
       appBar: AppBar(
         title: Text('Material Management'),
       ),
-      body: isLoading ? const Center(child: CircularProgressIndicator()) : buildCardContent(),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : buildCardContent(),
     );
   }
 
   Widget buildCardContent() => Container(
-    color: Colors.white,
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SearchLineHeader(title: 'Material Management'),
-            const SizedBox(height: 44),
-            buildHeaderRow(),
-            for (int i = 0; i < rowDataList.length; i++)
-              EditableRow(
-                key: ValueKey(rowDataList[i].id),
-                rowData: rowDataList[i],
-                originalTitle: rowDataList[i].title,
-                originalPrice: rowDataList[i].price,
-                onDelete: () => removeRow(rowDataList[i]),
-                onUpdate: (updatedRow) => updateRow(updatedRow),
-              ),
-            const SizedBox(height: 40),
-            buildAddButton(),
-            if (isCardVisible)
-              CardWidget(
-                onSave: _addRow,
-                onHideCard: hideCard,
-              ),
-          ],
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SearchLineHeader(title: 'Material Management'),
+                const SizedBox(height: 44),
+                buildHeaderRow(),
+                for (int i = 0; i < rowDataList.length; i++)
+                  EditableRow(
+                    key: ValueKey(rowDataList[i].id),
+                    rowData: rowDataList[i],
+                    originalTitle: rowDataList[i].title,
+                    originalPrice: rowDataList[i].price,
+                    onDelete: () => removeRow(rowDataList[i]),
+                    onUpdate: (updatedRow) => updateRow(updatedRow),
+                  ),
+                const SizedBox(height: 40),
+                buildAddButton(),
+                if (isCardVisible)
+                  CardWidget(
+                    onSave: _addRow,
+                    onHideCard: hideCard,
+                  ),
+              ],
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   Widget buildHeaderRow() => const Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Expanded(
-        child: Text('Material', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      ),
-      SizedBox(width: 30),
-      Expanded(
-        child: Text('Amount', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      ),
-      SizedBox(width: 30),
-      Expanded(
-        child: Text('Unit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      ),
-      Expanded(
-        child: Text('Price/Unit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      ),
-      Spacer(),
-      SizedBox(width: 110)
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text('Material',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(width: 30),
+          Expanded(
+            child: Text('Amount',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(width: 30),
+          Expanded(
+            child: Text('Unit',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          Expanded(
+            child: Text('Price/Unit',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          Spacer(),
+          SizedBox(width: 110)
+        ],
+      );
 
   Widget buildAddButton() {
     return Padding(
@@ -814,7 +827,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
               isCardVisible = !isCardVisible;
             });
           },
-          child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
+          child: Icon(isCardVisible ? Icons.remove : Icons.add,
+              color: Colors.white),
           backgroundColor: Colors.orange,
         ),
       ),
@@ -902,7 +916,8 @@ class _EditableRowState extends State<EditableRow> {
     super.initState();
     _titleController = TextEditingController(text: widget.originalTitle);
     _mengeController = TextEditingController(text: widget.rowData.Menge);
-    _measurementController = TextEditingController(text: widget.rowData.Measurement);
+    _measurementController =
+        TextEditingController(text: widget.rowData.Measurement);
     _priceController = TextEditingController(text: widget.originalPrice);
   }
 
@@ -917,107 +932,107 @@ class _EditableRowState extends State<EditableRow> {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.only(bottom: 12, top: 15),
-    decoration: const BoxDecoration(
-      border: Border(
-        bottom: BorderSide(
-          color: Colors.black,
-          width: 1.0,
-        ),
-      ),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: TextField(
-            maxLines: null,
-            controller: _titleController,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
+        padding: const EdgeInsets.only(bottom: 12, top: 15),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.black,
+              width: 1.0,
             ),
-            readOnly: !isEditing,
           ),
         ),
-        Expanded(
-          child: TextField(
-            controller: _mengeController,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: TextField(
+                maxLines: null,
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
+              ),
             ),
-            readOnly: !isEditing,
-          ),
-        ),
-        Expanded(
-          child: TextField(
-            controller: _measurementController,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
+            Expanded(
+              child: TextField(
+                controller: _mengeController,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
+              ),
             ),
-            readOnly: !isEditing,
-          ),
-        ),
-        Expanded(
-          child: TextField(
-            controller: _priceController,
-            maxLines: null,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
+            Expanded(
+              child: TextField(
+                controller: _measurementController,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
+              ),
             ),
-            readOnly: !isEditing,
-          ),
+            Expanded(
+              child: TextField(
+                controller: _priceController,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
+              ),
+            ),
+            Visibility(
+              visible: isEditing,
+              maintainSize: true,
+              maintainState: true,
+              maintainAnimation: true,
+              child: IconButton(
+                icon: const Icon(Icons.cancel),
+                onPressed: () {
+                  setState(() {
+                    isEditing = false;
+                    _titleController.text = widget.originalTitle;
+                    _mengeController.text = widget.rowData.Menge;
+                    _measurementController.text = widget.rowData.Measurement;
+                    _priceController.text = widget.originalPrice;
+                  });
+                },
+              ),
+            ),
+            IconButton(
+              icon: Icon(isEditing ? Icons.save : Icons.edit),
+              onPressed: () {
+                if (isEditing) {
+                  RowData updatedRow = RowData(
+                    id: widget.rowData.id,
+                    title: _titleController.text,
+                    Menge: _mengeController.text,
+                    Measurement: _measurementController.text,
+                    price: _priceController.text,
+                  );
+                  widget.onUpdate(updatedRow);
+                  setState(() {
+                    isEditing = false;
+                  });
+                } else {
+                  setState(() {
+                    isEditing = true;
+                  });
+                }
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: widget.onDelete,
+            ),
+          ],
         ),
-        Visibility(
-          visible: isEditing,
-          maintainSize: true,
-          maintainState: true,
-          maintainAnimation: true,
-          child: IconButton(
-            icon: const Icon(Icons.cancel),
-            onPressed: () {
-              setState(() {
-                isEditing = false;
-                _titleController.text = widget.originalTitle;
-                _mengeController.text = widget.rowData.Menge;
-                _measurementController.text = widget.rowData.Measurement;
-                _priceController.text = widget.originalPrice;
-              });
-            },
-          ),
-        ),
-        IconButton(
-          icon: Icon(isEditing ? Icons.save : Icons.edit),
-          onPressed: () {
-            if (isEditing) {
-              RowData updatedRow = RowData(
-                id: widget.rowData.id,
-                title: _titleController.text,
-                Menge: _mengeController.text,
-                Measurement: _measurementController.text,
-                price: _priceController.text,
-              );
-              widget.onUpdate(updatedRow);
-              setState(() {
-                isEditing = false;
-              });
-            } else {
-              setState(() {
-                isEditing = true;
-              });
-            }
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.delete),
-          onPressed: widget.onDelete,
-        ),
-      ],
-    ),
-  );
+      );
 }
 
 class CardWidget extends StatefulWidget {
@@ -1116,164 +1131,189 @@ class _CardWidgetState extends State<CardWidget> {
   Widget build(BuildContext context) => _isLoading
       ? const Center(child: CircularProgressIndicator())
       : SizedBox(
-    width: double.maxFinite,
-    height: 350,
-    child: Card(
-      surfaceTintColor: Colors.white,
-      elevation: 6,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 36),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        width: 250,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Leistung',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            const SizedBox(height: 15),
-                            Expanded(
-                              child: TextField(
-                                controller: _leistungController,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
-                                  hintText: 'Leistung',
-                                  contentPadding: const EdgeInsets.all(10),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                    borderRadius: BorderRadius.circular(12),
+          width: double.maxFinite,
+          height: 350,
+          child: Card(
+            surfaceTintColor: Colors.white,
+            elevation: 6,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 36),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: 250,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      'Leistung',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                ),
+                                  const SizedBox(height: 15),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _leistungController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(
+                                            211, 245, 241, 241),
+                                        hintText: 'Leistung',
+                                        contentPadding:
+                                            const EdgeInsets.all(10),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            borderSide: BorderSide.none),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Colors.grey, width: 0),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SizedBox(
+                              width: 150,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text('Preis/std',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _preisController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(
+                                            211, 245, 241, 241),
+                                        hintText: 'Preis/std',
+                                        contentPadding:
+                                            const EdgeInsets.all(10),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            borderSide: BorderSide.none),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Colors.grey, width: 0),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: SizedBox(
-                        width: 150,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            const SizedBox(height: 15),
-                            Expanded(
-                              child: TextField(
-                                controller: _preisController,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
-                                  hintText: 'Preis/std',
-                                  contentPadding: const EdgeInsets.all(10),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(22.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              _leistungController.clear();
+                              _preisController.clear();
+                              widget.onHideCard();
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 26, vertical: 18),
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: const BorderSide(
+                                    color: Color.fromARGB(255, 231, 226, 226),
+                                    width: 1.0),
                               ),
                             ),
-                          ],
-                        ),
+                            child: const Text('Verwerfen',
+                                style: TextStyle(color: Colors.orange)),
+                          ),
+                          const SizedBox(width: 10),
+                          TextButton(
+                            onPressed: () {
+                              final leistung = _leistungController.text;
+                              final preis = _preisController.text;
+                              if (leistung.isNotEmpty && preis.isNotEmpty) {
+                                if (!_isLoading) {
+                                  createService();
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Bitte warten Sie, während der Service gespeichert wird.'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Fehlende Informationen'),
+                                    content: const Text(
+                                        'Bitte füllen Sie alle Felder aus.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 26, vertical: 18),
+                              backgroundColor: Colors.orange,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: const BorderSide(
+                                    color: Color.fromARGB(255, 231, 226, 226),
+                                    width: 1.0),
+                              ),
+                            ),
+                            child: const Text('Speichern',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(22.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        _leistungController.clear();
-                        _preisController.clear();
-                        widget.onHideCard();
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
-                        ),
-                      ),
-                      child: const Text('Verwerfen', style: TextStyle(color: Colors.orange)),
-                    ),
-                    const SizedBox(width: 10),
-                    TextButton(
-                      onPressed: () {
-                        final leistung = _leistungController.text;
-                        final preis = _preisController.text;
-                        if (leistung.isNotEmpty && preis.isNotEmpty) {
-                          if (!_isLoading) {
-                            createService();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Bitte warten Sie, während der Service gespeichert wird.'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          }
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Fehlende Informationen'),
-                              content: const Text('Bitte füllen Sie alle Felder aus.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
-                        ),
-                      ),
-                      child: const Text('Speichern', style: TextStyle(color: Colors.white)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
+          ),
+        );
 }

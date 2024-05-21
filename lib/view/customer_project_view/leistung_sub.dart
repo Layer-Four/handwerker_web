@@ -13,7 +13,8 @@ import 'dart:convert'; // For JSON operations
 import '../shared_view_widgets/search_line_header.dart';
 
 class ConsumableLeistungBody extends StatefulWidget {
-  const ConsumableLeistungBody({super.key}); // Constructor with key initialization
+  const ConsumableLeistungBody(
+      {super.key}); // Constructor with key initialization
 
   @override
   // ignore: library_private_types_in_public_api
@@ -51,7 +52,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
         });
       } else {
         print('Failed to fetch data: ${response.statusCode}');
-        throw Exception('Failed to load data: HTTP status ${response.statusCode}');
+        throw Exception(
+            'Failed to load data: HTTP status ${response.statusCode}');
       }
     } catch (e) {
       _showSnackBar('Error: $e');
@@ -79,7 +81,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
 
     try {
       final response = await api.deleteService(row.id);
-      print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
+      print(
+          'Received response status code: ${response.statusCode} for row ID: ${row.id}');
 
       if (response.statusCode == 200 || response.statusCode == 204) {
         print('Successfully deleted row with ID: ${row.id} from the backend.');
@@ -88,7 +91,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
       } else {
         print(
             'Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.data}');
-        _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
+        _showSnackBar(
+            'Failed to delete the item from the server: ${response.statusCode}');
       }
     } catch (e) {
       print('Exception when trying to delete row with ID: ${row.id}: $e');
@@ -146,7 +150,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   // }
 
   Future<void> updateRow(Service row) async {
-    final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/update');
+    final url =
+        Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/update');
     try {
       final response = await http.put(
         url,
@@ -193,68 +198,72 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
 
   // Main content of your widget
   Widget buildCardContent() => Container(
-    color: Colors.white,
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SearchLineHeader(title: 'Leistungsverwaltung'),
-            const SizedBox(height: 44),
-            buildHeaderRow(),
-            ...rowDataList.map((rowData) => EditableRow(
-              key: ValueKey(rowData.id),
-              originalTitle: rowData.title,
-              originalPrice: rowData.price,
-              onDelete: () => deleteService(rowData),
-              onUpdate: (updatedRow) => updateRow(updatedRow), // Now passing onUpdate
-              row: rowData,
-            )),
-            const SizedBox(height: 40),
-            buildAddButton(),
-            if (isCardVisible)
-              CardWidget(
-                onSave: _addRow,
-                onHideCard: hideCard,
-              ),
-          ],
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SearchLineHeader(title: 'Leistungsverwaltung'),
+                const SizedBox(height: 44),
+                buildHeaderRow(),
+                ...rowDataList.map((rowData) => EditableRow(
+                      key: ValueKey(rowData.id),
+                      originalTitle: rowData.title,
+                      originalPrice: rowData.price,
+                      onDelete: () => deleteService(rowData),
+                      onUpdate: (updatedRow) =>
+                          updateRow(updatedRow), // Now passing onUpdate
+                      row: rowData,
+                    )),
+                const SizedBox(height: 40),
+                buildAddButton(),
+                if (isCardVisible)
+                  CardWidget(
+                    onSave: _addRow,
+                    onHideCard: hideCard,
+                  ),
+              ],
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   Widget buildHeaderRow() => const Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Expanded(
-        child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      ),
-      SizedBox(width: 30),
-      Expanded(
-        child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      ),
-      Spacer(),
-      SizedBox(width: 110) // Adjust spacing as needed
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text('Leistung',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(width: 30),
+          Expanded(
+            child: Text('Preis/std',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          Spacer(),
+          SizedBox(width: 110) // Adjust spacing as needed
+        ],
+      );
 
   Widget buildAddButton() => Padding(
-    padding: const EdgeInsets.only(bottom: 8),
-    child: Align(
-      alignment: Alignment.topLeft,
-      child: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            isCardVisible = !isCardVisible;
-          });
-        },
-        child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
-        backgroundColor: Colors.orange,
-      ),
-    ),
-  );
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                isCardVisible = !isCardVisible;
+              });
+            },
+            child: Icon(isCardVisible ? Icons.remove : Icons.add,
+                color: Colors.white),
+            backgroundColor: Colors.orange,
+          ),
+        ),
+      );
 
   void _addRow(String title, String price) {
     setState(() {
@@ -271,16 +280,16 @@ class Service {
   Service({required this.id, required this.title, required this.price});
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
-    id: json['id'],
-    title: json['name'],
-    price: '${json['hourlyRate']} EUR',
-  );
+        id: json['id'],
+        title: json['name'],
+        price: '${json['hourlyRate']} EUR',
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': title,
-    'hourlyRate': int.tryParse(price.split(' ')[0]) ?? 0,
-  };
+        'id': id,
+        'name': title,
+        'hourlyRate': int.tryParse(price.split(' ')[0]) ?? 0,
+      };
 }
 
 class EditableRow extends StatefulWidget {
@@ -320,7 +329,8 @@ class _EditableRowState extends State<EditableRow> {
     _titleController = TextEditingController(text: widget.originalTitle);
 
     // Initialize currentPrice before using it to set up _priceController
-    currentPrice = widget.originalPrice; // Set currentPrice from widget's originalPrice
+    currentPrice =
+        widget.originalPrice; // Set currentPrice from widget's originalPrice
     _priceController = TextEditingController(text: widget.originalPrice);
 
     currentTitle = widget.originalTitle;
@@ -338,14 +348,18 @@ class _EditableRowState extends State<EditableRow> {
   void _showDeleteConfirmation() {
     showDialog(
       context: context,
-      barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
+      barrierDismissible:
+          false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return Dialog(
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.4, // 80% of screen width
-            height: MediaQuery.of(context).size.height * 0.3, // 40% of screen height
+            width:
+                MediaQuery.of(context).size.width * 0.4, // 80% of screen width
+            height: MediaQuery.of(context).size.height *
+                0.3, // 40% of screen height
             child: AlertDialog(
-              title: Text('Sind Sie sicher, dass Sie dieses Objekt löschen wollen?'),
+              title: Text(
+                  'Sind Sie sicher, dass Sie dieses Objekt löschen wollen?'),
               // content: Text("Sind Sie sicher, dass Sie dieses Objekt löschen wollen?"),
               actionsAlignment: MainAxisAlignment.spaceEvenly,
               actions: <Widget>[
@@ -380,94 +394,96 @@ class _EditableRowState extends State<EditableRow> {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.only(bottom: 12, top: 15),
-    decoration: const BoxDecoration(
-      border: Border(
-        bottom: BorderSide(
-          color: Colors.black,
-          width: 1.0,
-        ),
-      ),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: TextField(
-            maxLines: null,
-            controller: _titleController,
-            style: const TextStyle(fontSize: 16),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
+        padding: const EdgeInsets.only(bottom: 12, top: 15),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.black,
+              width: 1.0,
             ),
-            readOnly: !isEditing,
           ),
         ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: TextField(
+                maxLines: null,
+                controller: _titleController,
+                style: const TextStyle(fontSize: 16),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
+              ),
+            ),
 
-        const SizedBox(width: 20),
-        Expanded(
-          child: TextField(
-            controller: _priceController,
-            style: const TextStyle(fontSize: 16),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
+            const SizedBox(width: 20),
+            Expanded(
+              child: TextField(
+                controller: _priceController,
+                style: const TextStyle(fontSize: 16),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                readOnly: !isEditing,
+              ),
             ),
-            readOnly: !isEditing,
-          ),
-        ),
-        const Spacer(),
-        // IconButton to handle cancel action
-        IconButton(
-          icon: Visibility(
-            visible: isEditing, // Show cancel icon only when editing
-            child: const Icon(Icons.cancel),
-          ),
-          onPressed: () {
-            setState(() {
-              // Check if currently editing
-              if (isEditing) {
-                isEditing = false; // Disable editing mode
-                // Revert text fields to their original values
-                _titleController.text = currentTitle;
-                _priceController.text = currentPrice;
-              }
-            });
-          },
-        ),
+            const Spacer(),
+            // IconButton to handle cancel action
+            IconButton(
+              icon: Visibility(
+                visible: isEditing, // Show cancel icon only when editing
+                child: const Icon(Icons.cancel),
+              ),
+              onPressed: () {
+                setState(() {
+                  // Check if currently editing
+                  if (isEditing) {
+                    isEditing = false; // Disable editing mode
+                    // Revert text fields to their original values
+                    _titleController.text = currentTitle;
+                    _priceController.text = currentPrice;
+                  }
+                });
+              },
+            ),
 
 // IconButton to toggle between save and edit modes
 
-        IconButton(
-          icon: Icon(isEditing ? Icons.save : Icons.edit),
-          onPressed: () {
-            if (isEditing) {
-              Service updatedRow =
-              Service(id: widget.row.id, title: _titleController.text, price: _priceController.text);
+            IconButton(
+              icon: Icon(isEditing ? Icons.save : Icons.edit),
+              onPressed: () {
+                if (isEditing) {
+                  Service updatedRow = Service(
+                      id: widget.row.id,
+                      title: _titleController.text,
+                      price: _priceController.text);
 
-              widget.onUpdate(updatedRow);
+                  widget.onUpdate(updatedRow);
 
-              setState(() {
-                currentTitle = _titleController.text;
-                currentPrice = _priceController.text;
-                isEditing = false;
-              });
-            } else {
-              setState(() {
-                isEditing = true;
-              });
-            }
-          },
+                  setState(() {
+                    currentTitle = _titleController.text;
+                    currentPrice = _priceController.text;
+                    isEditing = false;
+                  });
+                } else {
+                  setState(() {
+                    isEditing = true;
+                  });
+                }
+              },
+            ),
+
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: _showDeleteConfirmation,
+            ),
+          ],
         ),
-
-        IconButton(
-          icon: const Icon(Icons.delete),
-          onPressed: _showDeleteConfirmation,
-        ),
-      ],
-    ),
-  );
+      );
 }
 
 class CardWidget extends StatefulWidget {
@@ -537,7 +553,8 @@ class _CardWidgetState extends State<CardWidget> {
         widget.onSave(leistung, preis);
 
         if (Navigator.canPop(context)) {
-          Navigator.of(context).pop(); // Only pop if there's a stack to pop from.
+          Navigator.of(context)
+              .pop(); // Only pop if there's a stack to pop from.
         }
       } else {
         throw Exception('Failed to create service.');
@@ -567,173 +584,197 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) => _isLoading
-      ? const Center(child: CircularProgressIndicator()) // Show loading indicator
+      ? const Center(
+          child: CircularProgressIndicator()) // Show loading indicator
       : SizedBox(
-    width: double.maxFinite,
-    height: 350,
-    child: Card(
-      surfaceTintColor: Colors.white,
-      elevation: 6,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 36),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        width: 250,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Leistung',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            const SizedBox(height: 15),
-                            Expanded(
-                              child: TextField(
-                                controller: _leistungController,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
-                                  hintText: 'Leistung',
-                                  contentPadding: const EdgeInsets.all(10),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                    borderRadius: BorderRadius.circular(12),
+          width: double.maxFinite,
+          height: 350,
+          child: Card(
+            surfaceTintColor: Colors.white,
+            elevation: 6,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 36),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: 250,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      'Leistung',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                ),
+                                  const SizedBox(height: 15),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _leistungController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(
+                                            211, 245, 241, 241),
+                                        hintText: 'Leistung',
+                                        contentPadding:
+                                            const EdgeInsets.all(10),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            borderSide: BorderSide.none),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Colors.grey, width: 0),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SizedBox(
+                              width: 150,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text('Preis/std',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _preisController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(
+                                            211, 245, 241, 241),
+                                        hintText: 'Preis/std',
+                                        contentPadding:
+                                            const EdgeInsets.all(10),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            borderSide: BorderSide.none),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Colors.grey, width: 0),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: SizedBox(
-                        width: 150,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            const SizedBox(height: 15),
-                            Expanded(
-                              child: TextField(
-                                controller: _preisController,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color.fromARGB(211, 245, 241, 241),
-                                  hintText: 'Preis/std',
-                                  contentPadding: const EdgeInsets.all(10),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(22.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              _leistungController.clear();
+                              _preisController.clear();
+                              widget.onHideCard();
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 26, vertical: 18),
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: const BorderSide(
+                                    color: Color.fromARGB(255, 231, 226, 226),
+                                    width: 1.0),
                               ),
                             ),
-                          ],
-                        ),
+                            child: const Text(
+                              'Verwerfen',
+                              style: TextStyle(color: Colors.orange),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          TextButton(
+                            onPressed: () {
+                              final leistung = _leistungController.text;
+                              final preis = _preisController.text;
+                              if (leistung.isNotEmpty && preis.isNotEmpty) {
+                                if (!_isLoading) {
+                                  createService();
+                                } else {
+                                  // Show a snackbar when the app is still processing a previous request
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Bitte warten Sie, während der Service gespeichert wird.'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Fehlende Informationen'),
+                                    content: const Text(
+                                        'Bitte füllen Sie alle Felder aus.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 26, vertical: 18),
+                              backgroundColor: Colors.orange,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                side: const BorderSide(
+                                    color: Color.fromARGB(255, 231, 226, 226),
+                                    width: 1.0),
+                              ),
+                            ),
+                            child: const Text(
+                              'Speichern',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(22.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        _leistungController.clear();
-                        _preisController.clear();
-                        widget.onHideCard();
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
-                        ),
-                      ),
-                      child: const Text(
-                        'Verwerfen',
-                        style: TextStyle(color: Colors.orange),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    TextButton(
-                      onPressed: () {
-                        final leistung = _leistungController.text;
-                        final preis = _preisController.text;
-                        if (leistung.isNotEmpty && preis.isNotEmpty) {
-                          if (!_isLoading) {
-                            createService();
-                          } else {
-                            // Show a snackbar when the app is still processing a previous request
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Bitte warten Sie, während der Service gespeichert wird.'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          }
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Fehlende Informationen'),
-                              content: const Text('Bitte füllen Sie alle Felder aus.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
-                        ),
-                      ),
-                      child: const Text(
-                        'Speichern',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
+          ),
+        );
 }

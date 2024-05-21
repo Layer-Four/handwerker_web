@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CardWidget extends StatefulWidget {
-  final Function onSave; // Function to be called after the data is successfully posted
+  final Function
+      onSave; // Function to be called after the data is successfully posted
   final Function onHideCard;
 
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
@@ -79,24 +80,24 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) => Card(
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          TextField(
-            controller: _leistungController,
-            decoration: const InputDecoration(labelText: 'Leistung'),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _leistungController,
+                decoration: const InputDecoration(labelText: 'Leistung'),
+              ),
+              TextField(
+                controller: _preisController,
+                decoration: const InputDecoration(labelText: 'Preis/std'),
+              ),
+              TextButton(
+                onPressed: createService,
+                child: const Text('Speichern'),
+              ),
+            ],
           ),
-          TextField(
-            controller: _preisController,
-            decoration: const InputDecoration(labelText: 'Preis/std'),
-          ),
-          TextButton(
-            onPressed: createService,
-            child: const Text('Speichern'),
-          ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }
