@@ -29,7 +29,8 @@ class EventSourceNotifier extends Notifier<EventSource?> {
       }
       final List jsonresponse = response.data;
       final List data = jsonresponse.map((e) => e).toList();
-      final entrys = data.map((e) => TimeVMAdapter.fromJson(e)).toSet().toList();
+      final entrys =
+          data.map((e) => TimeVMAdapter.fromTimeEntriesVM(TimeEntry.fromJson(e))).toSet().toList();
       final events = EventSource(appointments: entrys);
       return events;
     } on DioException catch (e) {

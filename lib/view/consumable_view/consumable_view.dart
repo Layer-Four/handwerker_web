@@ -738,14 +738,12 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Material Management'),
-      ),
-      body: isLoading ? const Center(child: CircularProgressIndicator()) : buildCardContent(),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        // appBar: AppBar(
+        //   title: Text('Material Management'),
+        // ),
+        body: isLoading ? const Center(child: CircularProgressIndicator()) : buildCardContent(),
+      );
 
   Widget buildCardContent() => Container(
         color: Colors.white,
@@ -803,23 +801,21 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
         ],
       );
 
-  Widget buildAddButton() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              isCardVisible = !isCardVisible;
-            });
-          },
-          child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
-          backgroundColor: Colors.orange,
+  Widget buildAddButton() => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                isCardVisible = !isCardVisible;
+              });
+            },
+            child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
+            backgroundColor: Colors.orange,
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   void _addRow(String title, String price) {
     setState(() {
@@ -849,25 +845,21 @@ class RowData {
     required this.price,
   });
 
-  factory RowData.fromJson(Map<String, dynamic> json) {
-    return RowData(
-      id: json['id'],
-      title: json['title'],
-      Menge: json['amount'].toString(),
-      Measurement: json['unitName'],
-      price: json['price'].toString() + ' €',
-    );
-  }
+  factory RowData.fromJson(Map<String, dynamic> json) => RowData(
+        id: json['id'],
+        title: json['title'],
+        Menge: json['amount'].toString(),
+        Measurement: json['unitName'],
+        price: json['price'].toString() + ' €',
+      );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'amount': Menge,
-      'unitName': Measurement,
-      'price': price.split(' ')[0],
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'amount': Menge,
+        'unitName': Measurement,
+        'price': price.split(' ')[0],
+      };
 }
 
 class EditableRow extends StatefulWidget {
@@ -1154,9 +1146,11 @@ class _CardWidgetState extends State<CardWidget> {
                                         hintText: 'Leistung',
                                         contentPadding: const EdgeInsets.all(10),
                                         border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: BorderSide.none),
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                          borderSide:
+                                              const BorderSide(color: Colors.grey, width: 0),
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                       ),
@@ -1175,7 +1169,8 @@ class _CardWidgetState extends State<CardWidget> {
                                 children: [
                                   const Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    child: Text('Preis/std',
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
                                   ),
                                   const SizedBox(height: 15),
                                   Expanded(
@@ -1187,9 +1182,11 @@ class _CardWidgetState extends State<CardWidget> {
                                         hintText: 'Preis/std',
                                         contentPadding: const EdgeInsets.all(10),
                                         border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: BorderSide.none),
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                          borderSide:
+                                              const BorderSide(color: Colors.grey, width: 0),
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                       ),
@@ -1220,7 +1217,8 @@ class _CardWidgetState extends State<CardWidget> {
                               backgroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                                side: const BorderSide(
+                                    color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                               ),
                             ),
                             child: const Text('Verwerfen', style: TextStyle(color: Colors.orange)),
@@ -1236,7 +1234,8 @@ class _CardWidgetState extends State<CardWidget> {
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content: Text('Bitte warten Sie, während der Service gespeichert wird.'),
+                                      content: Text(
+                                          'Bitte warten Sie, während der Service gespeichert wird.'),
                                       duration: Duration(seconds: 2),
                                     ),
                                   );
@@ -1262,7 +1261,8 @@ class _CardWidgetState extends State<CardWidget> {
                               backgroundColor: Colors.orange,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                                side: const BorderSide(
+                                    color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                               ),
                             ),
                             child: const Text('Speichern', style: TextStyle(color: Colors.white)),

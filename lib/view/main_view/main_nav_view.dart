@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/settings_provider/nav_provider.dart';
 import '../consumable_view/consumable_view.dart';
@@ -8,7 +7,8 @@ import '../customer_project_view/leistung_sub.dart';
 import '../customers_view/doc_screen.dart';
 import '../home_view/home_body.dart';
 import '../project_management_view/doc_screen.dart';
-import '../time_entry_view/time_entry_view.dart';
+import '../time_entry_view/old_time_entry_view.dart';
+import '../time_entry_view/time_entry_widgets/work_assignment.view.dart';
 import '../users_view/user_view.dart';
 
 class MainViewNavigator extends ConsumerStatefulWidget {
@@ -28,13 +28,19 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
           builder: (context, constrains) => Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _navToolbar(context, constrains),
+                  SizedBox(
+                    height: constrains.maxHeight,
+                    child: constrains.maxWidth <= 1000
+                        ? _buildpopUpNav(context, constrains)
+                        : _buildStandartNavBar(context, constrains),
+                  ),
                   SizedBox(
                     height: constrains.maxHeight,
                     width: width <= 1000 ? width - 50 : ((width / 10) * 8),
                     child: switch (view) {
                       MainView.home => const HomeBody(),
-                      MainView.timeEntry => const TimeEntryBody(),
+                      MainView.timeEntryOld => const TimeEntryBody(),
+                      MainView.timeEntry => const WorkAssignmenView(),
                       MainView.projectCustomer => const CustomerProjectMain(),
                       MainView.consumables => const ConsumableBody(),
                       MainView.material => const ConsumableBody(),
@@ -50,111 +56,100 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
     );
   }
 
-  Widget _navToolbar(BuildContext context, BoxConstraints constrains) => SingleChildScrollView(
-        child: SizedBox(
-          height: constrains.maxHeight,
-          child: constrains.maxWidth <= 1000
-              ? _buildpopUpNav(context, constrains)
-              : Container(
-                  width: (MediaQuery.of(context).size.width / 10) * 2,
-                  color: const Color.fromARGB(255, 208, 207, 207),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 18, top: 35, bottom: 35),
-                              child: SizedBox(
-                                height: 40,
-                                child: Image.asset(
-                                  'assets/images/img_techtool.png',
-                                ),
-                              ),
-                            ),
-                            const NavButtonWidget(
-                              title: 'Home',
-                              nextView: MainView.home,
-                              icon: Icons.home_outlined,
-                              width: 200,
-                              height: 100,
-                            ),
-                            const NavButtonWidget(
-                              title: 'Zeiteintrag',
-                              nextView: MainView.timeEntry,
-                              icon: Icons.access_time,
-                              width: 200,
-                              height: 100,
-                            ),
-                            const NavButtonWidget(
-                              title: 'Berichte',
-                              nextView: MainView.projectCustomer,
-                              icon: Icons.signal_cellular_alt_sharp,
-                              subcategories: ['Kunden/Projekte'],
-                              subcategoryMainViews: [MainView.projectCustomer],
-                              width: 200,
-                              height: 100,
-                            ),
-                            const NavButtonWidget(
-                              title: 'Verwaltung',
-                              nextView: MainView.consumables,
-                              icon: Icons.folder_open,
-                              subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
-                              width: 200,
-                              height: 200,
-                              subcategoryMainViews: [
-                                MainView.consumables,
-                                MainView.customer,
-                                MainView.projectManagement,
-                                MainView.performance,
-                              ],
-                            ),
-                            /*const NavButtonWidget(
-                            title: 'Kunden',
-                            nextView: MainView.customer,
-                            width: 200,
-                            height: 100,
-                        ),
-                        const NavButtonWidget(
-                            title: 'Projekte',
-                            nextView: MainView.projectManagement,
-                            width: 200,
-                            height: 100,
-                        ),*/
-                            const NavButtonWidget(
-                              title: 'Mitarbeiter',
-                              nextView: MainView.users,
-                              icon: Icons.people_outline,
-                              subcategories: ['Rechte'],
-                              subcategoryMainViews: [MainView.users],
-                              width: 200,
-                              height: 100,
-                            ),
-                          ],
-                        ),
-                        const Padding(padding: EdgeInsets.symmetric(vertical: 50)),
-                        // const SizedBox.expand(),
-                        const NavButtonWidget(
-                          title: 'Log Out',
-                          // nextView: MainView.docs,
-                          // color: Colors.teal,
-                          width: 200,
-                          height: 100,
-                        ),
-                      ],
-                    ),
+  Container _buildStandartNavBar(BuildContext context, BoxConstraints constrains) => Container(
+        width: (MediaQuery.of(context).size.width / 10) * 2,
+        color: const Color.fromARGB(255, 208, 207, 207),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 18, top: 35, bottom: 35),
+                child: SizedBox(
+                  height: 40,
+                  child: Image.asset(
+                    'assets/images/img_techtool.png',
                   ),
                 ),
+              ),
+              const NavButtonWidget(
+                title: 'Home',
+                nextView: MainView.home,
+                icon: Icons.home_outlined,
+                height: 100,
+              ),
+              const NavButtonWidget(
+                icon: Icons.access_time,
+                title: 'Zeiteintrag',
+                nextView: MainView.timeEntry,
+                height: 150,
+                subcategories: [
+                  'Zeiteintrag alt',
+                  'Zeiteintrag ',
+                ],
+                subcategoryMainViews: [
+                  MainView.timeEntryOld,
+                  MainView.timeEntry,
+                ],
+              ),
+              const NavButtonWidget(
+                title: 'Berichte',
+                nextView: MainView.projectCustomer,
+                icon: Icons.signal_cellular_alt_sharp,
+                subcategories: ['Kunden/Projekte'],
+                subcategoryMainViews: [MainView.projectCustomer],
+                height: 100,
+              ),
+              const NavButtonWidget(
+                title: 'Verwaltung',
+                nextView: MainView.consumables,
+                icon: Icons.folder_open,
+                subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
+                height: 200,
+                subcategoryMainViews: [
+                  MainView.consumables,
+                  MainView.customer,
+                  MainView.projectManagement,
+                  MainView.performance,
+                ],
+              ),
+              /*const NavButtonWidget(
+                      title: 'Kunden',
+                      nextView: MainView.customer,
+                      width: 200,
+                      height: 100,
+                                              ),
+                                              const NavButtonWidget(
+                      title: 'Projekte',
+                      nextView: MainView.projectManagement,
+                      width: 200,
+                      height: 100,
+                                              ),*/
+              const NavButtonWidget(
+                title: 'Mitarbeiter',
+                nextView: MainView.users,
+                icon: Icons.people_outline,
+                subcategories: ['Rechte'],
+                subcategoryMainViews: [MainView.users],
+                height: 100,
+              ),
+              // const Padding(padding: EdgeInsets.symmetric(vertical: 50)),
+              SizedBox(
+                height: (constrains.maxHeight / 10) * 1.5,
+              ),
+              const NavButtonWidget(
+                title: 'Log Out',
+                // icon: Icons.power_settings_new_outlined,
+                icon: Icons.logout_outlined,
+                // color: Colors.teal,
+              ),
+            ],
+          ),
         ),
       );
 
-  Widget _buildpopUpNav(
-    BuildContext context,
-    BoxConstraints constrains,
-  ) =>
-      Align(
+  Widget _buildpopUpNav(BuildContext context, BoxConstraints constrains) => Align(
         alignment: Alignment.topLeft,
         child: IconButton(
           // * Navigationbar close
@@ -171,81 +166,80 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, top: 35, bottom: 35),
-                          child: SizedBox(
-                            height: 40,
-                            child: Image.asset(
-                              'assets/images/img_techtool.png',
-                            ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18, top: 35, bottom: 35),
+                        child: SizedBox(
+                          height: 40,
+                          child: Image.asset(
+                            'assets/images/img_techtool.png',
                           ),
                         ),
-                        const NavButtonWidget(
-                          icon: Icons.home_outlined,
-                          title: 'Home',
-                          nextView: MainView.home,
-                          width: 200,
-                          height: 100,
-                        ),
-                        const NavButtonWidget(
-                          icon: Icons.access_time,
-                          title: 'Zeiteintrag',
-                          nextView: MainView.timeEntry,
-                          width: 200,
-                          height: 100,
-                        ),
-                        const NavButtonWidget(
-                          title: 'Berichte',
-                          nextView: MainView.projectCustomer,
-                          icon: Icons.signal_cellular_alt_sharp,
-                          subcategories: ['Kunden/Projekte'],
-                          subcategoryMainViews: [MainView.projectCustomer],
-                          width: 200,
-                          height: 100,
-                        ),
-                        const NavButtonWidget(
-                          icon: Icons.folder_open,
-                          title: 'Verwaltung',
-                          nextView: MainView.consumables,
-                          width: 200,
-                          height: 200,
-                          subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
-                          subcategoryMainViews: [
-                            MainView.consumables,
-                            MainView.customer,
-                            MainView.projectManagement,
-                            MainView.performance,
-                          ],
-                        ),
-                        /*const NavButtonWidget(
-                                            title: 'Kunden',
-                                            nextView: MainView.customer,
-                                            width: 200,
-                                            height: 60,
-                                  ),
-                                  const NavButtonWidget(
-                                            title: 'Projekte',
-                                            nextView: MainView.projectManagement,
-                                            width: 200,
-                                            height: 60,
-                                  ),*/
-                        const NavButtonWidget(
-                          title: 'Mitarbeiter',
-                          nextView: MainView.users,
-                          icon: Icons.people_outline,
-                          subcategories: ['Rechte'],
-                          subcategoryMainViews: [MainView.users],
-                          width: 200,
-                          height: 100,
-                        ),
-                      ]),
-                      const Padding(padding: EdgeInsets.symmetric(vertical: 50)),
+                      ),
+                      const NavButtonWidget(
+                        icon: Icons.home_outlined,
+                        title: 'Home',
+                        nextView: MainView.home,
+                        height: 100,
+                      ),
+                      const NavButtonWidget(
+                        icon: Icons.access_time,
+                        title: 'Zeiteintrag',
+                        nextView: MainView.timeEntry,
+                        height: 150,
+                        subcategories: [
+                          'Zeiteintrag alt',
+                          'Zeiteintrag neu',
+                        ],
+                        subcategoryMainViews: [MainView.timeEntryOld, MainView.timeEntry],
+                      ),
+                      const NavButtonWidget(
+                        title: 'Berichte',
+                        nextView: MainView.projectCustomer,
+                        icon: Icons.signal_cellular_alt_sharp,
+                        subcategories: ['Kunden/Projekte'],
+                        subcategoryMainViews: [MainView.projectCustomer],
+                        height: 100,
+                      ),
+                      const NavButtonWidget(
+                        icon: Icons.folder_open,
+                        title: 'Verwaltung',
+                        nextView: MainView.consumables,
+                        height: 200,
+                        subcategories: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
+                        subcategoryMainViews: [
+                          MainView.consumables,
+                          MainView.customer,
+                          MainView.projectManagement,
+                          MainView.performance,
+                        ],
+                      ),
+                      /*const NavButtonWidget(
+                                          title: 'Kunden',
+                                          nextView: MainView.customer,
+                                          width: 200,
+                                          height: 60,
+                                ),
+                                const NavButtonWidget(
+                                          title: 'Projekte',
+                                          nextView: MainView.projectManagement,
+                                          width: 200,
+                                          height: 60,
+                                ),*/
+                      const NavButtonWidget(
+                        title: 'Mitarbeiter',
+                        nextView: MainView.users,
+                        icon: Icons.people_outline,
+                        subcategories: ['Rechte'],
+                        subcategoryMainViews: [MainView.users],
+                        height: 100,
+                      ),
+                      SizedBox(
+                        height: (constrains.maxHeight / 10) * 1.5,
+                      ),
                       const NavButtonWidget(
                         title: 'Log Out',
                         nextView: MainView.projectCustomer,
-                        width: 200,
-                        height: 100,
+                        icon: Icons.logout_outlined,
                       ),
                     ],
                   ),
@@ -266,7 +260,7 @@ class NavButtonWidget extends ConsumerWidget {
   final List<MainView>? subcategoryMainViews; // List of subcategory main views
   final Color? color;
   final double width;
-  final double height;
+  final double? height;
   final bool isMainCategory; // Indicates whether it's a main category or not
   const NavButtonWidget({
     super.key,
@@ -276,8 +270,8 @@ class NavButtonWidget extends ConsumerWidget {
     this.subcategories,
     this.subcategoryMainViews,
     this.color,
-    required this.width,
-    required this.height,
+    this.width = 250,
+    this.height,
     this.isMainCategory = true, // Default is true
   });
   @override
@@ -323,6 +317,7 @@ class NavButtonWidget extends ConsumerWidget {
                     fontWeight: FontWeight.w500,
                     fontSize: 22,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

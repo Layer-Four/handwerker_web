@@ -22,6 +22,7 @@ dependencies:
   json_annotation: ^4.8.1
   shared_preferences: ^2.2.2
   syncfusion_flutter_calendar: ^25.2.4
+  calendar_view: ^1.2.0
 
 dev_dependencies:
   flutter_test:
