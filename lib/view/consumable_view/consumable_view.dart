@@ -636,10 +636,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
 
   Future<void> fetchData() async {
     try {
-      var materialUrl =
-          'https://r-wa-happ-be.azurewebsites.net/api/material/list';
-      var unitUrl =
-          'https://r-wa-happ-be.azurewebsites.net/api/material/unit/list';
+      var materialUrl = 'https://r-wa-happ-be.azurewebsites.net/api/material/list';
+      var unitUrl = 'https://r-wa-happ-be.azurewebsites.net/api/material/unit/list';
 
       print("Fetching material data...");
       var materialResponse = await http.get(Uri.parse(materialUrl));
@@ -649,8 +647,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
       var unitResponse = await http.get(Uri.parse(unitUrl));
       print("Unit data response status: ${unitResponse.statusCode}");
 
-      if (materialResponse.statusCode == 200 &&
-          unitResponse.statusCode == 200) {
+      if (materialResponse.statusCode == 200 && unitResponse.statusCode == 200) {
         List<dynamic> materialData = jsonDecode(materialResponse.body);
         List<dynamic> unitData = jsonDecode(unitResponse.body);
 
@@ -659,8 +656,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
 
         List<RowData> loadedData = [];
         for (var item in materialData) {
-          var unit = unitData.firstWhere((u) => u['id'] == item['unitId'],
-              orElse: () => null);
+          var unit = unitData.firstWhere((u) => u['id'] == item['unitId'], orElse: () => null);
           if (unit != null) {
             loadedData.add(RowData(
               id: item['id'],
@@ -701,8 +697,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
   }
 
   void removeRow(RowData row) async {
-    final url = Uri.parse(
-        'https://r-wa-happ-be.azurewebsites.net/api/material/delete/${row.id}');
+    final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/delete/${row.id}');
 
     try {
       final response = await http.delete(url);
@@ -712,8 +707,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
           rowDataList.removeWhere((item) => item.id == row.id);
         });
       } else {
-        _showSnackBar(
-            "Failed to delete the item from the server: ${response.statusCode}");
+        _showSnackBar("Failed to delete the item from the server: ${response.statusCode}");
       }
     } catch (e) {
       _showSnackBar("Error when attempting to delete the item: $e");
@@ -721,8 +715,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
   }
 
   Future<void> updateRow(RowData row) async {
-    final url =
-        Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/update');
+    final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/update');
 
     try {
       final response = await http.put(
@@ -750,9 +743,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
       appBar: AppBar(
         title: Text('Material Management'),
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : buildCardContent(),
+      body: isLoading ? const Center(child: CircularProgressIndicator()) : buildCardContent(),
     );
   }
 
@@ -794,22 +785,18 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Text('Material',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            child: Text('Material', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
           SizedBox(width: 30),
           Expanded(
-            child: Text('Amount',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            child: Text('Amount', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
           SizedBox(width: 30),
           Expanded(
-            child: Text('Unit',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            child: Text('Unit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
           Expanded(
-            child: Text('Price/Unit',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            child: Text('Price/Unit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
           Spacer(),
           SizedBox(width: 110)
@@ -827,8 +814,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
               isCardVisible = !isCardVisible;
             });
           },
-          child: Icon(isCardVisible ? Icons.remove : Icons.add,
-              color: Colors.white),
+          child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
           backgroundColor: Colors.orange,
         ),
       ),
@@ -916,8 +902,7 @@ class _EditableRowState extends State<EditableRow> {
     super.initState();
     _titleController = TextEditingController(text: widget.originalTitle);
     _mengeController = TextEditingController(text: widget.rowData.Menge);
-    _measurementController =
-        TextEditingController(text: widget.rowData.Measurement);
+    _measurementController = TextEditingController(text: widget.rowData.Measurement);
     _priceController = TextEditingController(text: widget.originalPrice);
   }
 
@@ -1156,8 +1141,7 @@ class _CardWidgetState extends State<CardWidget> {
                                     alignment: Alignment.topLeft,
                                     child: Text(
                                       'Leistung',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: TextStyle(fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   const SizedBox(height: 15),
@@ -1166,20 +1150,14 @@ class _CardWidgetState extends State<CardWidget> {
                                       controller: _leistungController,
                                       decoration: InputDecoration(
                                         filled: true,
-                                        fillColor: const Color.fromARGB(
-                                            211, 245, 241, 241),
+                                        fillColor: const Color.fromARGB(211, 245, 241, 241),
                                         hintText: 'Leistung',
-                                        contentPadding:
-                                            const EdgeInsets.all(10),
+                                        contentPadding: const EdgeInsets.all(10),
                                         border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            borderSide: BorderSide.none),
+                                            borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(
-                                              color: Colors.grey, width: 0),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
+                                          borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
                                       ),
                                     ),
@@ -1197,9 +1175,7 @@ class _CardWidgetState extends State<CardWidget> {
                                 children: [
                                   const Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Preis/std',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
+                                    child: Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
                                   ),
                                   const SizedBox(height: 15),
                                   Expanded(
@@ -1207,20 +1183,14 @@ class _CardWidgetState extends State<CardWidget> {
                                       controller: _preisController,
                                       decoration: InputDecoration(
                                         filled: true,
-                                        fillColor: const Color.fromARGB(
-                                            211, 245, 241, 241),
+                                        fillColor: const Color.fromARGB(211, 245, 241, 241),
                                         hintText: 'Preis/std',
-                                        contentPadding:
-                                            const EdgeInsets.all(10),
+                                        contentPadding: const EdgeInsets.all(10),
                                         border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            borderSide: BorderSide.none),
+                                            borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(
-                                              color: Colors.grey, width: 0),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
+                                          borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
                                       ),
                                     ),
@@ -1246,18 +1216,14 @@ class _CardWidgetState extends State<CardWidget> {
                               widget.onHideCard();
                             },
                             style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 26, vertical: 18),
+                              padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
                               backgroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(
-                                    color: Color.fromARGB(255, 231, 226, 226),
-                                    width: 1.0),
+                                side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                               ),
                             ),
-                            child: const Text('Verwerfen',
-                                style: TextStyle(color: Colors.orange)),
+                            child: const Text('Verwerfen', style: TextStyle(color: Colors.orange)),
                           ),
                           const SizedBox(width: 10),
                           TextButton(
@@ -1270,8 +1236,7 @@ class _CardWidgetState extends State<CardWidget> {
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content: Text(
-                                          'Bitte warten Sie, während der Service gespeichert wird.'),
+                                      content: Text('Bitte warten Sie, während der Service gespeichert wird.'),
                                       duration: Duration(seconds: 2),
                                     ),
                                   );
@@ -1281,8 +1246,7 @@ class _CardWidgetState extends State<CardWidget> {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     title: const Text('Fehlende Informationen'),
-                                    content: const Text(
-                                        'Bitte füllen Sie alle Felder aus.'),
+                                    content: const Text('Bitte füllen Sie alle Felder aus.'),
                                     actions: [
                                       TextButton(
                                         onPressed: () => Navigator.pop(context),
@@ -1294,18 +1258,14 @@ class _CardWidgetState extends State<CardWidget> {
                               }
                             },
                             style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 26, vertical: 18),
+                              padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
                               backgroundColor: Colors.orange,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(
-                                    color: Color.fromARGB(255, 231, 226, 226),
-                                    width: 1.0),
+                                side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                               ),
                             ),
-                            child: const Text('Speichern',
-                                style: TextStyle(color: Colors.white)),
+                            child: const Text('Speichern', style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),

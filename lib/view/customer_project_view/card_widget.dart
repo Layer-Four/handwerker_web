@@ -3,8 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CardWidget extends StatefulWidget {
-  final Function
-      onSave; // Function to be called after the data is successfully posted
+  final Function onSave; // Function to be called after the data is successfully posted
   final Function onHideCard;
 
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
