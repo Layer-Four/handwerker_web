@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/settings_provider/nav_provider.dart';
-import '../../routes/app_routes.dart';
 import '../consumable_view/consumable_view.dart';
 import '../customer_project_view/doc_screen.dart';
 import '../customer_project_view/leistung_sub.dart';
@@ -233,7 +232,7 @@ class NavButtonWidget extends ConsumerWidget {
   final double height;
   final bool isMainCategory; // Indicates whether it's a main category or not
   const NavButtonWidget({
-    Key? key,
+    super.key,
     required this.title,
     this.nextView,
     this.icon,
@@ -243,7 +242,7 @@ class NavButtonWidget extends ConsumerWidget {
     required this.width,
     required this.height,
     this.isMainCategory = true, // Default is true
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentView = ref.watch(mainNavProvider);
@@ -257,9 +256,9 @@ class NavButtonWidget extends ConsumerWidget {
           ref.read(mainNavProvider.notifier).state = nextView!;
         } else if (isMainCategory) {
           // Update the state only if it's a main category
-          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first!;
+          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first;
         } else if (!isMainCategory) {
-          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first!;
+          ref.read(mainNavProvider.notifier).state = subcategoryMainViews!.first;
         }
       },
       child: Container(
@@ -292,7 +291,7 @@ class NavButtonWidget extends ConsumerWidget {
             if (subcategories != null)
               Row(
                 children: [
-                  SizedBox(width: 50),
+                  const SizedBox(width: 50),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

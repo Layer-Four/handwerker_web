@@ -7,12 +7,10 @@ class Customer {
 
   Customer({this.companyName, required this.id});
 
-  factory Customer.fromJson(Map<String, dynamic> json) {
-    return Customer(
+  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
       companyName: json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
       id: json['id'] != null ? json['id'] as int : -1,
     );
-  }
 }
 
 // Project class
@@ -23,13 +21,11 @@ class Project {
 
   Project({this.title, required this.id, required this.customerId}); // Update constructor
 
-  factory Project.fromJson(Map<String, dynamic> json) {
-    return Project(
+  factory Project.fromJson(Map<String, dynamic> json) => Project(
       title: json['title'] != null ? json['title'] as String : 'Default Title',
       id: json['id'] != null ? json['id'] as int : -1,
       customerId: json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
     );
-  }
 }
 
 

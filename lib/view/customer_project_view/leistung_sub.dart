@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-
-import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert'; // For JSON operations
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../shared_view_widgets/search_line_header.dart';
 
@@ -37,7 +36,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
 
   Future<void> fetchData() async {
     try {
-      print("Making API call to the server...");
+      print('Making API call to the server...');
 
       var response = await http
           .get(Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/create'))
@@ -47,7 +46,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
       });
 
       if (response.statusCode == 200) {
-        print("Response data: ${response.body}");
+        print('Response data: ${response.body}');
         List<dynamic> data = jsonDecode(response.body);
         setState(() {
           rowDataList = data.map((item) => RowData.fromJson(item)).toList();
@@ -55,7 +54,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
         });
       } else {
         // If the server returns a non-200 HTTP response
-        print("Failed to fetch data: ${response.statusCode}");
+        print('Failed to fetch data: ${response.statusCode}');
         throw Exception('Failed to load data: HTTP status ${response.statusCode}');
       }
     } catch (e) {
@@ -90,7 +89,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   Widget build(BuildContext context) {
     // Show loading indicator while data is being fetched
     if (isLoading) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     // Main content of your widget
@@ -125,7 +124,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
                         originalPrice: rowData.price,
                         onDelete: () => removeRow(rowData),
                       ))
-                  .toList(),
+                  ,
               const SizedBox(height: 40),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
@@ -137,8 +136,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
                         isCardVisible = !isCardVisible;
                       });
                     },
-                    child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
                     backgroundColor: Colors.orange,
+                    child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
                   ),
                 ),
               ),
@@ -447,7 +446,7 @@ class _EditableRowState extends State<EditableRow> {
               child: TextField(
                 maxLines: null,
                 controller: _titleController,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
@@ -460,7 +459,7 @@ class _EditableRowState extends State<EditableRow> {
             Expanded(
               child: TextField(
                 controller: _priceController,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,

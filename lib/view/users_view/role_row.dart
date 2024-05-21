@@ -94,7 +94,7 @@ class _RoleRowCardState extends State<RoleRowCard> {
                   ],
                 ),
               ),
-              Expanded(flex: 3, child: SizedBox()),
+              const Expanded(flex: 3, child: SizedBox()),
               // Reset password button
               Expanded(
                 flex: 1,
@@ -108,7 +108,7 @@ class _RoleRowCardState extends State<RoleRowCard> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
