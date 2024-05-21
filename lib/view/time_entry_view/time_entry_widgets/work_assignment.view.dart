@@ -1,13 +1,9 @@
-import 'dart:math';
-
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../constants/themes/app_color.dart';
 import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
-import '../../../models/time_models/time_vm/work_events.dart';
 import '../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '../../shared_view_widgets/search_line_header.dart';
 import 'time_entry_dialog.dart';
@@ -289,16 +285,14 @@ class InfoTable extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text('Am ${entry.date.day}.${entry.date.month}.${entry.date.year}'),
-        Text('von ${entry.startTime?.hour ?? ''}:${entry.startTime?.minute ?? ''}'),
-        Text('bis ${entry.endTime?.hour ?? ''}:${entry.endTime?.minute ?? ''}'),
-        Text('Dauer ${entry.duration} min'),
-        Text('Beschreibung ${entry.description}'),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Am ${entry.date.day}.${entry.date.month}.${entry.date.year}'),
+          Text('von ${entry.startTime.hour}:${entry.startTime.minute}'),
+          Text('bis ${entry.endTime.hour}:${entry.endTime.minute}'),
+          Text('Dauer ${entry.duration} min'),
+          Text('Beschreibung ${entry.description}'),
+        ],
+      );
 }
