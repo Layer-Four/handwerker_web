@@ -16,7 +16,10 @@ class TimeEntryBody extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          const SearchLineHeader(title: 'Stundenübersicht', searchbarEnabled: false),
+          const SearchLineHeader(
+            title: 'Stundenübersicht',
+            searchbarEnabled: false,
+          ),
           Stack(
             children: [
               const CustomCalendar(),
@@ -46,7 +49,8 @@ class TimeEntryBody extends ConsumerWidget {
                       // shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                        decoration: BoxDecoration(
+                            color: Colors.white, borderRadius: BorderRadius.circular(8)),
                         height: MediaQuery.of(context).size.height - 200,
                         width: 500,
                         child: const TimeEntryDialog(),

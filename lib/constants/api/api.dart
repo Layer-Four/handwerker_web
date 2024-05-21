@@ -27,7 +27,8 @@ class Project {
     return Project(
       title: json['title'] != null ? json['title'] as String : 'Default Title',
       id: json['id'] != null ? json['id'] as int : -1,
-      customerId: json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
+      customerId:
+          json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
     );
   }
 }
@@ -61,37 +62,39 @@ class Api {
 
   final String _deleteService = '/service/delete';
 
-  Future get getAllProjects => api.get(_getAllProjects);
-  Future get getAllTimeEntrys => api.get(_getAllTimeTacks);
-  Future get getAllUnits => api.get(_getAllUnitsList);
-  Future get getCustomerProjects => api.get(_getCustomerProject);
-  Future get getUserDataShort => api.get(_getListUsersShort);
-  Future getDokuforProjectURL(int projectID) => api.get('/project/$projectID/documentations');
+  Future<Response> get getAllProjects => api.get(_getAllProjects);
+  Future<Response> get getAllTimeEntrys => api.get(_getAllTimeTacks);
+  Future<Response> get getAllUnits => api.get(_getAllUnitsList);
+  Future<Response> get getCustomerProjects => api.get(_getCustomerProject);
+  Future<Response> get getUserDataShort => api.get(_getListUsersShort);
+  Future<Response> getDokuforProjectURL(int projectID) =>
+      api.get('/project/$projectID/documentations');
   Future<Response> get getExecuteableServices => api.get(_getServiceAdress);
-  Future get getMaterialsList => api.get(_getMaterialsList);
-  Future get getProjectsDM => api.get(_getProjectsAdress);
-  Future get getProjectConsumableEntry => api.get(_getProjectsConsumable);
-  Future get getProjectsTimeEntrys => api.get(_getTimeTacks);
-  Future get getUserDocumentationEntry => api.get(_getUserProjectDocumentation);
+  Future<Response> get getMaterialsList => api.get(_getMaterialsList);
+  Future<Response> get getProjectsDM => api.get(_getProjectsAdress);
+  Future<Response> get getProjectConsumableEntry => api.get(_getProjectsConsumable);
+  Future<Response> get getProjectsTimeEntrys => api.get(_getTimeTacks);
+  Future<Response> get getUserDocumentationEntry => api.get(_getUserProjectDocumentation);
   Future<Response> get getUserServiceList => api.get(_getUserServiceList);
 
   Future<Response> deleteService(int serviceID) => api.delete('$_deleteService/$serviceID');
 
-  Future postloginUser(loginData) => api.post(_loginUserAdress, data: loginData);
-  Future postProjectConsumable(data) => api.post(_postProjectConsumabele, data: data);
-  Future postDocumentationEntry(data) => api.post(_postDocumentationDay, data: data);
-  Future postTimeEnty(data) => api.post(_postTimeEntryAdress, data: data);
-  Future updateProjectConsumableEntry(data) => api.post(_putProjectMaterial, data: data);
-  Future updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
-  Future getUserServiceByID(id) => api.get(_getUserServiceListByID, data: id);
+  Future<Response> postloginUser(loginData) => api.post(_loginUserAdress, data: loginData);
+  Future<Response> postProjectConsumable(data) => api.post(_postProjectConsumabele, data: data);
+  Future<Response> postDocumentationEntry(data) => api.post(_postDocumentationDay, data: data);
+  Future<Response> postTimeEnty(data) => api.post(_postTimeEntryAdress, data: data);
+  Future<Response> updateProjectConsumableEntry(data) => api.post(_putProjectMaterial, data: data);
+  Future<Response> updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
+  Future<Response> getUserServiceByID(id) => api.get(_getUserServiceListByID, data: id);
 
   // Getter for customer list
-  Future get getListCustomer => api.get(_getListCustomer);
+  Future<Response> get getListCustomer => api.get(_getListCustomer);
 
   // Getter for project list
-  Future get getListProject => api.get(_getListProject);
+  Future<Response> get getListProject => api.get(_getListProject);
 
-  void storeToken(String token) async => await _storage.then((value) => value.setString('TOKEN', token));
+  void storeToken(String token) async =>
+      await _storage.then((value) => value.setString('TOKEN', token));
   // final pref = await SharedPreferences.getInstance();
 
   Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));

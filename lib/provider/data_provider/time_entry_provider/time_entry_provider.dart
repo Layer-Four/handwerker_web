@@ -1,23 +1,24 @@
 import 'dart:developer';
+import 'package:calendar_view/calendar_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/constants/api/api.dart';
-import '/models/time_models/time_dm/time_dm.dart';
-import '/models/time_models/time_vm/event_source.dart';
-import '/models/time_models/time_vm/time_vm.dart';
+import '../../../constants/api/api.dart';
+import '../../../models/time_models/time_dm/time_dm.dart';
+import '../../../models/time_models/time_vm/event_source.dart';
+import '../../../models/time_models/time_vm/time_vm.dart';
 
 final eventSourceProvider = NotifierProvider<EventSourceNotifier, EventSource?>(
   () => EventSourceNotifier(),
 );
 
 class EventSourceNotifier extends Notifier<EventSource?> {
-  final Api api = Api();
+  final Api _api = Api();
   @override
   EventSource? build() => EventSource();
 
   Future<EventSource?> loadTimeEntrys() async {
     try {
-      final response = await api.getAllTimeEntrys;
+      final response = await _api.getAllTimeEntrys;
       if (response.statusCode != 200) {
         if (response.statusCode == 401) {
           // TODO: implement singout logic
@@ -40,11 +41,40 @@ class EventSourceNotifier extends Notifier<EventSource?> {
     }
   }
 
+  Future<List<CalendarEventData>> loadEvents() async {
+    try {
+      final res = await _api.getAllTimeEntrys;
+      if (res.statusCode != 200) {
+        return [];
+      }
+      final List data = res.data.map((e) => e).toList();
+      final List<CalendarEventData> result = data.map(
+        (e) {
+          final x = TimeVMAdapter.fromTimeEntriesVM(TimeEntry.fromJson(e));
+          return CalendarEventData(
+            title: x.customerName ?? '${x.projectTitle}/${x.serviceTitle}',
+            date: x.date,
+            event: x,
+          );
+        },
+      ).toList();
+      return result;
+    } on DioException catch (e) {
+      if (e.message != null && e.message!.contains('500')) {
+        log('Catch on Dio Exception with code 500');
+      }
+      log('Catch Dio Exception');
+    } catch (e) {
+      log('Catch on Exception');
+    }
+    return [];
+  }
+
   void saveTimeEntry(TimeEntry data) async {
     final dataJson = data.toJson();
     try {
       // print(json.encode(dataJson));
-      final response = await api.postTimeEnty(dataJson);
+      final response = await _api.postTimeEnty(dataJson);
       if (response.statusCode != 200) {
         if (response.statusCode == 401) {
           // TODO:logout user!
