@@ -40,7 +40,6 @@ class UserNotifier extends Notifier<UserVM> {
     return token;
   }
 
-// TODO: delete default option for mandant
   Future<bool> loginUser({
     required String passwort,
     required String userName,

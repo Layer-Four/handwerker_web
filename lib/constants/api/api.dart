@@ -43,7 +43,7 @@ class Api {
   final String _getUserProjectDocumentation = '/userProjectDay/read/2';
   final String _loginUserAdress = '/user/login';
   final String _postDocumentationDay = '/userProjectDay/create';
-  final String _postTimeEntryAdress = '  /timetracking/create';
+  final String _postTimeEntryAdress = '/timetracking/create';
   final String _getUserRoleAdress = '/role/list';
   final String _postNewUserAdress = '/user/create';
 
@@ -53,7 +53,7 @@ class Api {
   final String _getCustomerProject = '/customer/project/read/all';
   final String _getMaterialsList = '/material/list';
   final String _getAllUnitsList = '/material/unit/list';
-  final String _getUserServiceListByID = 'i/userservice/list?userid=';
+  final String _getUserServiceListByID = '/userservice/list?userid=';
   final String _getUserServiceList = '/userservice/list';
   final String _getListUsersShort = '/user/list';
   final String _getListCustomer = '/customer/list';
@@ -105,17 +105,17 @@ class Api {
   final _storage = SharedPreferences.getInstance();
   final baseOption = BaseOptions(
     baseUrl: _baseUrl,
-    contentType: ResponseType.json.name,
+    // contentType: ResponseType.json.name,
   );
   Api() {
     _api.options = baseOption;
     _api.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
-        final token = await getToken;
+        getToken.then((e) {
+          final accesMap = {'Authorization': 'Bearer $e'};
 
-        final accesMap = {'Authorization': 'Bearer $token'};
-
-        // options.headers.addEntries(accesMap.entries);
+          return options.headers.addEntries(accesMap.entries);
+        });
 
         if (!options.path.contains('http')) {
           options.path = _baseUrl + options.path;
