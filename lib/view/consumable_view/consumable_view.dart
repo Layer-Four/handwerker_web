@@ -610,9 +610,11 @@
 //         ),
 //       );
 // }
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import '../shared_view_widgets/search_line_header.dart';
 
@@ -620,7 +622,7 @@ class ConsumableBody extends StatefulWidget {
   const ConsumableBody({super.key});
 
   @override
-  _ConsumableLeistungBodyState createState() => _ConsumableLeistungBodyState();
+  State<ConsumableBody> createState() => _ConsumableLeistungBodyState();
 }
 
 class _ConsumableLeistungBodyState extends State<ConsumableBody> {
@@ -639,20 +641,20 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
       var materialUrl = 'https://r-wa-happ-be.azurewebsites.net/api/material/list';
       var unitUrl = 'https://r-wa-happ-be.azurewebsites.net/api/material/unit/list';
 
-      print("Fetching material data...");
+      log('Fetching material data...');
       var materialResponse = await http.get(Uri.parse(materialUrl));
-      print("Material data response status: ${materialResponse.statusCode}");
+      log('Material data response status: ${materialResponse.statusCode}');
 
-      print("Fetching unit data...");
+      log('Fetching unit data...');
       var unitResponse = await http.get(Uri.parse(unitUrl));
-      print("Unit data response status: ${unitResponse.statusCode}");
+      log('Unit data response status: ${unitResponse.statusCode}');
 
       if (materialResponse.statusCode == 200 && unitResponse.statusCode == 200) {
         List<dynamic> materialData = jsonDecode(materialResponse.body);
         List<dynamic> unitData = jsonDecode(unitResponse.body);
 
-        print("Material data: $materialData");
-        print("Unit data: $unitData");
+        log('Material data: $materialData');
+        log('Unit data: $unitData');
 
         List<RowData> loadedData = [];
         for (var item in materialData) {
@@ -661,9 +663,9 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
             loadedData.add(RowData(
               id: item['id'],
               title: item['title'],
-              Menge: item['amount'].toString(),
-              Measurement: unit['name'],
-              price: item['price'].toString() + ' €',
+              menge: item['amount'].toString(),
+              measurement: unit['name'],
+              price: '${item['price']} €',
             ));
           }
         }
@@ -673,7 +675,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
           isLoading = false;
         });
 
-        print("Loaded data: $loadedData");
+        log('Loaded data: $loadedData');
       } else {
         throw Exception('Failed to load data');
       }
@@ -707,10 +709,10 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
           rowDataList.removeWhere((item) => item.id == row.id);
         });
       } else {
-        _showSnackBar("Failed to delete the item from the server: ${response.statusCode}");
+        _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
       }
     } catch (e) {
-      _showSnackBar("Error when attempting to delete the item: $e");
+      _showSnackBar('Error when attempting to delete the item: $e');
     }
   }
 
@@ -721,19 +723,19 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
       final response = await http.put(
         url,
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer your_access_token",
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer your_access_token',
         },
         body: jsonEncode(row.toJson()),
       );
 
       if (response.statusCode == 200) {
-        _showSnackBar("Update successful");
+        _showSnackBar('Update successful');
       } else {
-        _showSnackBar("Failed to update item: ${response.statusCode}");
+        _showSnackBar('Failed to update item: ${response.statusCode}');
       }
     } catch (e) {
-      _showSnackBar("Network error: $e");
+      _showSnackBar('Network error: $e');
     }
   }
 
@@ -811,8 +813,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
                 isCardVisible = !isCardVisible;
               });
             },
-            child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
             backgroundColor: Colors.orange,
+            child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
           ),
         ),
       );
@@ -823,8 +825,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
         id: rowDataList.length + 1,
         title: title,
         price: price,
-        Menge: '0', // Default value for amount
-        Measurement: '', // Default value for measurement
+        menge: '0', // Default value for amount
+        measurement: '', // Default value for measurement
       ));
     });
   }
@@ -833,31 +835,31 @@ class _ConsumableLeistungBodyState extends State<ConsumableBody> {
 class RowData {
   final int id;
   final String title;
-  final String Menge;
-  final String Measurement;
+  final String menge;
+  final String measurement;
   final String price;
 
   RowData({
     required this.id,
     required this.title,
-    required this.Menge,
-    required this.Measurement,
+    required this.menge,
+    required this.measurement,
     required this.price,
   });
 
   factory RowData.fromJson(Map<String, dynamic> json) => RowData(
         id: json['id'],
         title: json['title'],
-        Menge: json['amount'].toString(),
-        Measurement: json['unitName'],
-        price: json['price'].toString() + ' €',
+        menge: json['amount'].toString(),
+        measurement: json['unitName'],
+        price: '${json['price']} €',
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
-        'amount': Menge,
-        'unitName': Measurement,
+        'amount': menge,
+        'unitName': measurement,
         'price': price.split(' ')[0],
       };
 }
@@ -879,7 +881,7 @@ class EditableRow extends StatefulWidget {
   });
 
   @override
-  _EditableRowState createState() => _EditableRowState();
+  State<EditableRow> createState() => _EditableRowState();
 }
 
 class _EditableRowState extends State<EditableRow> {
@@ -893,8 +895,8 @@ class _EditableRowState extends State<EditableRow> {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.originalTitle);
-    _mengeController = TextEditingController(text: widget.rowData.Menge);
-    _measurementController = TextEditingController(text: widget.rowData.Measurement);
+    _mengeController = TextEditingController(text: widget.rowData.menge);
+    _measurementController = TextEditingController(text: widget.rowData.measurement);
     _priceController = TextEditingController(text: widget.originalPrice);
   }
 
@@ -974,8 +976,8 @@ class _EditableRowState extends State<EditableRow> {
                   setState(() {
                     isEditing = false;
                     _titleController.text = widget.originalTitle;
-                    _mengeController.text = widget.rowData.Menge;
-                    _measurementController.text = widget.rowData.Measurement;
+                    _mengeController.text = widget.rowData.menge;
+                    _measurementController.text = widget.rowData.measurement;
                     _priceController.text = widget.originalPrice;
                   });
                 },
@@ -988,8 +990,8 @@ class _EditableRowState extends State<EditableRow> {
                   RowData updatedRow = RowData(
                     id: widget.rowData.id,
                     title: _titleController.text,
-                    Menge: _mengeController.text,
-                    Measurement: _measurementController.text,
+                    menge: _mengeController.text,
+                    measurement: _measurementController.text,
                     price: _priceController.text,
                   );
                   widget.onUpdate(updatedRow);
@@ -1019,7 +1021,7 @@ class CardWidget extends StatefulWidget {
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
 
   @override
-  _CardWidgetState createState() => _CardWidgetState();
+  State<CardWidget> createState() => _CardWidgetState();
 }
 
 class _CardWidgetState extends State<CardWidget> {

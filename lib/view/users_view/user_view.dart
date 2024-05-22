@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -145,13 +147,13 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
               ),
               Visibility(
                 visible: isAddConsumableOpen,
-                child: Container(
+                child: SizedBox(
                   // alignment: Alignment.topLeft,
                   height: MediaQuery.of(context).size.height / 3,
                   width: screenWidth / 2,
                   child: AddNewEmployee(
                     onSave: () {
-                      print('save');
+                      log('save');
                       //Todo: Call api for saving
                       //If Edit was clicked (therefore index != -1), also pass which customer is to be edited
                       //Might be a different apie then
@@ -160,7 +162,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                       });*/
                     },
                     onCancel: () {
-                      print('cancel');
+                      log('cancel');
                       setState(() {
                         isAddConsumableOpen = !isAddConsumableOpen;
                       });

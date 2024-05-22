@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../customer_project_view/custom_project.dart';
-import 'project_overview.dart';
 
 // ignore: must_be_immutable
 class CustomerCard extends StatefulWidget {
@@ -64,8 +63,8 @@ class _CustomerCardState extends State<CustomerCard> {
                         Tooltip(
                           message:
                               'Kunde: ${widget.project.customer}\nKontaktname: Max Mustermann\nTelefonnummer: +49 123 456789\nE-Mail: max@example.com\nAdresse: Musterstraße 1, 12345 Musterstadt',
-                          textStyle: TextStyle(fontSize: 20, color: Colors.white),
-                          child: Icon(
+                          textStyle: const TextStyle(fontSize: 20, color: Colors.white),
+                          child: const Icon(
                             Icons.info_outline,
                             size: 20,
                           ),

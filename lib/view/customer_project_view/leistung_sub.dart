@@ -245,8 +245,8 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
                 isCardVisible = !isCardVisible;
               });
             },
-            child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
             backgroundColor: Colors.orange,
+            child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
           ),
         ),
       );
@@ -334,42 +334,40 @@ class _EditableRowState extends State<EditableRow> {
     showDialog(
       context: context,
       barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
-      builder: (BuildContext context) {
-        return Dialog(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.4, // 80% of screen width
-            height: MediaQuery.of(context).size.height * 0.3, // 40% of screen height
-            child: AlertDialog(
-              title: Text('Sind Sie sicher, dass Sie dieses Objekt löschen wollen?'),
-              // content: Text("Sind Sie sicher, dass Sie dieses Objekt löschen wollen?"),
-              actionsAlignment: MainAxisAlignment.spaceEvenly,
-              actions: <Widget>[
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                    widget.onDelete(); // Proceed with deleting the row
-                  },
-                  child: Text('Ja'),
+      builder: (BuildContext context) => Dialog(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.4, // 80% of screen width
+          height: MediaQuery.of(context).size.height * 0.3, // 40% of screen height
+          child: AlertDialog(
+            title: const Text('Sind Sie sicher, dass Sie dieses Objekt löschen wollen?'),
+            // content: Text("Sind Sie sicher, dass Sie dieses Objekt löschen wollen?"),
+            actionsAlignment: MainAxisAlignment.spaceEvenly,
+            actions: <Widget>[
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                  child: Text('Nein'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                  widget.onDelete(); // Proceed with deleting the row
+                },
+                child: const Text('Ja'),
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
                 ),
-              ],
-            ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: const Text('Nein'),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 

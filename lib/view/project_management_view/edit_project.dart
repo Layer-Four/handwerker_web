@@ -9,20 +9,20 @@ class AddNewProject extends StatefulWidget {
   final VoidCallback onCancel;
   final CustomeProject? project;
 
-  AddNewProject({super.key, required this.onSave, required this.onCancel, this.project});
+  const AddNewProject({super.key, required this.onSave, required this.onCancel, this.project});
 
   @override
   State<AddNewProject> createState() => _AddNewProjectState();
 }
 
 class _AddNewProjectState extends State<AddNewProject> {
-  TextEditingController _projectNameController = TextEditingController();
-  TextEditingController _secondNameController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _customerNumberController = TextEditingController();
-  TextEditingController _telephoneController = TextEditingController();
-  TextEditingController _contactController = TextEditingController();
+  final TextEditingController _projectNameController = TextEditingController();
+  final TextEditingController _secondNameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _customerNumberController = TextEditingController();
+  final TextEditingController _telephoneController = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
   final TextEditingController _dateStartController = TextEditingController();
   final TextEditingController _dateEndController = TextEditingController();
   String? kundenzuweisungOption;
@@ -32,7 +32,8 @@ class _AddNewProjectState extends State<AddNewProject> {
   void initState() {
     super.initState();
     if (widget.project != null) {
-      _projectNameController.text = widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
+      _projectNameController.text =
+          widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
     }
   }
 
@@ -98,7 +99,8 @@ class _AddNewProjectState extends State<AddNewProject> {
             suffixIcon: const Icon(Icons.calendar_today), // Icon to indicate it's a date field
           ),
           readOnly: true, // Prevent keyboard from appearing
-          onTap: () => _selectDate(controller, context), // Open date picker when the field is tapped
+          onTap: () =>
+              _selectDate(controller, context), // Open date picker when the field is tapped
         ),
       );
 
@@ -209,9 +211,13 @@ class _AddNewProjectState extends State<AddNewProject> {
                         ),
                       ),
                       const SizedBox(height: 5),
-                      buildDateField(controller: _dateStartController, hintText: 'Startdatum', context: context),
+                      buildDateField(
+                          controller: _dateStartController,
+                          hintText: 'Startdatum',
+                          context: context),
                       const SizedBox(height: 5),
-                      buildDateField(controller: _dateEndController, hintText: 'Enddatum', context: context),
+                      buildDateField(
+                          controller: _dateEndController, hintText: 'Enddatum', context: context),
                       const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

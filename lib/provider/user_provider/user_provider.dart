@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../models/users_models/user_data_short/user_short.dart';
 import '/constants/api/api.dart';
 import '/models/users_models/user_vm/user_vm.dart';
+import '../../models/users_models/user_data_short/user_short.dart';
 
 final userProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
 

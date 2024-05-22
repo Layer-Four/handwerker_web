@@ -8,29 +8,30 @@ class AddNewConsumable extends StatefulWidget {
   final VoidCallback onCancel;
   final CustomeProject? project;
 
-  AddNewConsumable({super.key, required this.onSave, required this.onCancel, this.project});
+  const AddNewConsumable({super.key, required this.onSave, required this.onCancel, this.project});
 
   @override
   State<AddNewConsumable> createState() => _AddNewConsumableState();
 }
 
 class _AddNewConsumableState extends State<AddNewConsumable> {
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _secondNameController = TextEditingController();
-  TextEditingController _streetController = TextEditingController();
-  TextEditingController _housenumberController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController _postNumberController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _customerNumberController = TextEditingController();
-  TextEditingController _telephoneController = TextEditingController();
-  TextEditingController _contactController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _secondNameController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _housenumberController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _postNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _customerNumberController = TextEditingController();
+  final TextEditingController _telephoneController = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     if (widget.project != null) {
-      _firstNameController.text = widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
+      _firstNameController.text =
+          widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
     }
   }
 
@@ -81,7 +82,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                               controller: _firstNameController,
                               context: context,
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             buildTextField(
                               hintText: 'Mustermann',
                               controller: _secondNameController,
@@ -97,7 +98,8 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                           children: [
                             const Padding(
                               padding: EdgeInsets.all(4),
-                              child: Text('Addresse', style: TextStyle(fontWeight: FontWeight.bold)),
+                              child:
+                                  Text('Addresse', style: TextStyle(fontWeight: FontWeight.bold)),
                             ),
                             Row(
                               children: [
@@ -110,7 +112,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                     context: context,
                                   ),
                                 ),
-                                SizedBox(width: 2),
+                                const SizedBox(width: 2),
                                 SizedBox(
                                   //      height: 100,
                                   width: 100,
@@ -122,7 +124,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Row(
                               children: [
                                 SizedBox(
@@ -134,7 +136,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                     context: context,
                                   ),
                                 ),
-                                SizedBox(width: 2),
+                                const SizedBox(width: 2),
                                 SizedBox(
                                   //    height: 100,
                                   width: 100,
@@ -170,7 +172,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                               controller: _emailController,
                               context: context,
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             buildTextField(
                               hintText: 'Telefon',
                               controller: _customerNumberController,
@@ -193,7 +195,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                               controller: _telephoneController,
                               context: context,
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             buildTextField(
                               hintText: 'Kontaktperson',
                               controller: _contactController,

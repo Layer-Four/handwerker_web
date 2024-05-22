@@ -4,7 +4,7 @@ class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         child: Center(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../customer_project_view/custom_project.dart';
@@ -94,7 +96,7 @@ class _RoleRowCardState extends State<RoleRowCard> {
                   ],
                 ),
               ),
-              Expanded(flex: 3, child: SizedBox()),
+              const Expanded(flex: 3, child: SizedBox()),
               // Reset password button
               Expanded(
                 flex: 1,
@@ -104,16 +106,17 @@ class _RoleRowCardState extends State<RoleRowCard> {
                   child: ElevatedButton(
                     onPressed: () {
                       // Implement password reset functionality
-                      print('Password reset for ${widget.project.customer}');
+                      log('Password reset for ${widget.project.customer}');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Passwort zurücksetzen', style: TextStyle(fontSize: 16, color: Colors.white)),
+                    child: const Text('Passwort zurücksetzen',
+                        style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                 ),
               ),
@@ -129,41 +132,38 @@ Widget buildDropdown({
   required ValueChanged<String?> onChanged,
   required BuildContext context,
 }) =>
-    Container(
-      //  width: 300,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8),
-        child: DropdownButtonFormField<String>(
-          value: selectedValue,
-          decoration: InputDecoration(
-            hintText: 'Select option',
-            hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: const Color.fromARGB(255, 220, 217, 217),
-                ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 5,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Color.fromARGB(255, 220, 217, 217),
+    Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8),
+      child: DropdownButtonFormField<String>(
+        value: selectedValue,
+        decoration: InputDecoration(
+          hintText: 'Select option',
+          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: const Color.fromARGB(255, 220, 217, 217),
               ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
-            ),
-            filled: true,
-            fillColor: Colors.grey[100],
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 15,
+            vertical: 5,
           ),
-          onChanged: onChanged,
-          items: options
-              .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  ))
-              .toList(),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color.fromARGB(255, 220, 217, 217),
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+          ),
+          filled: true,
+          fillColor: Colors.grey[100],
         ),
+        onChanged: onChanged,
+        items: options
+            .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                ))
+            .toList(),
       ),
     );

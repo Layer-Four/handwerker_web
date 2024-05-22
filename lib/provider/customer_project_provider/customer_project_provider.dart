@@ -4,9 +4,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../models/users_models/user_data_short/user_short.dart';
-import '/constants/api/api.dart';
 import '/models/users_models/user_vm/user_vm.dart';
+import '../../constants/api/api.dart';
+import '../../models/users_models/user_data_short/user_short.dart';
 //import 'package:http/http.dart' as http;
 
 final customerProjectProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
@@ -32,13 +32,13 @@ class UserNotifier extends Notifier<UserVM> {
   void fetchInfos() async {
     //https://r-wa-happ-be.azurewebsites.net/api/project/read/all
     final response = await api.getAllProjects;
-    print('Response: ${response.data}');
+    log('Response: ${response.data}');
     if (response.statusCode == 200) {
       final data = response.data;
       final x = data.map((e) => UserVM.fromJson(data));
       state = x;
-      print(data);
-      print(x);
+      log(data);
+      log(x);
       return;
     }
   }
@@ -96,7 +96,8 @@ class UserNotifier extends Notifier<UserVM> {
     return false;
   }
 
-  void setToken({required String token}) async => await _storage.then((value) => value.setString('TOKEN', token));
+  void setToken({required String token}) async =>
+      await _storage.then((value) => value.setString('TOKEN', token));
 
   void deleteToken() async {
     final storage = await _storage;

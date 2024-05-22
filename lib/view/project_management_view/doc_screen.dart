@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../customer_project_view/custom_project.dart';
@@ -116,13 +118,13 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
               ),
               Visibility(
                 visible: isAddNewProject,
-                child: Container(
+                child: SizedBox(
                   // alignment: Alignment.topLeft,
                   height: MediaQuery.of(context).size.height / 3,
                   width: screenWidth / 2,
                   child: AddNewProject(
                     onSave: () {
-                      print('save');
+                      log('save');
                       //Todo: Call api for saving
                       //If Edit was clicked (therefore index != -1), also pass which customer is to be edited
                       //Might be a different apie then
@@ -131,7 +133,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                       });*/
                     },
                     onCancel: () {
-                      print('cancel');
+                      log('cancel');
                       setState(() {
                         isAddNewProject = !isAddNewProject;
                       });

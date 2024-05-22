@@ -7,7 +7,6 @@ import '../customer_project_view/leistung_sub.dart';
 import '../customers_view/doc_screen.dart';
 import '../home_view/home_body.dart';
 import '../project_management_view/doc_screen.dart';
-import '../time_entry_view/old_time_entry_view.dart';
 import '../time_entry_view/time_entry_widgets/work_assignment.view.dart';
 import '../users_view/user_view.dart';
 

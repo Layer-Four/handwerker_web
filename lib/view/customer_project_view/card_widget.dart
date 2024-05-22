@@ -1,6 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class CardWidget extends StatefulWidget {
   final Function onSave; // Function to be called after the data is successfully posted
@@ -9,7 +11,7 @@ class CardWidget extends StatefulWidget {
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
 
   @override
-  _CardWidgetState createState() => _CardWidgetState();
+  State<CardWidget> createState() => _CardWidgetState();
 }
 
 class _CardWidgetState extends State<CardWidget> {
@@ -44,7 +46,7 @@ class _CardWidgetState extends State<CardWidget> {
     }
 
     try {
-      final url = 'https://r-wa-happ-be.azurewebsites.net/api/service/create';
+      const url = 'https://r-wa-happ-be.azurewebsites.net/api/service/create';
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},

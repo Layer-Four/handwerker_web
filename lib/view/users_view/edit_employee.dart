@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 
+import 'package:qr_flutter/qr_flutter.dart';
 import '../customer_project_view/custom_project.dart';
 import '../shared_view_widgets/symetric_button_widget.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class AddNewEmployee extends StatefulWidget {
   final VoidCallback onSave;
   final VoidCallback onCancel;
   final CustomeProject? project;
 
-  AddNewEmployee({super.key, required this.onSave, required this.onCancel, this.project});
+  const AddNewEmployee({super.key, required this.onSave, required this.onCancel, this.project});
 
   @override
   State<AddNewEmployee> createState() => _AddNewEmployeeState();
 }
 
 class _AddNewEmployeeState extends State<AddNewEmployee> {
-  TextEditingController _NameController = TextEditingController();
-  TextEditingController _secondNameController = TextEditingController();
-  TextEditingController _streetController = TextEditingController();
-  TextEditingController _housenumberController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController _postNumberController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _customerNumberController = TextEditingController();
-  TextEditingController _telephoneController = TextEditingController();
-  TextEditingController _contactController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _secondNameController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _housenumberController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _postNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _customerNumberController = TextEditingController();
+  final TextEditingController _telephoneController = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
   String? roleOption;
   bool createdUser = false;
 
@@ -33,14 +33,15 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
   void initState() {
     super.initState();
     if (widget.project != null) {
-      _NameController.text = widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
+      _nameController.text =
+          widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
     }
   }
 
   //dispose of controllers
   @override
   void dispose() {
-    _NameController.dispose();
+    _nameController.dispose();
     _secondNameController.dispose();
     _streetController.dispose();
     _housenumberController.dispose();
@@ -77,7 +78,8 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                               padding: EdgeInsets.fromLTRB(20, 4, 4, 4),
                               child: Text(
                                 'Neuer Nutzer',
-                                style: TextStyle(color: Colors.grey, fontSize: 24, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    color: Colors.grey, fontSize: 24, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
@@ -95,11 +97,13 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                                   children: [
                                     const Padding(
                                       padding: EdgeInsets.fromLTRB(8, 4, 4, 20),
-                                      child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                                      child: Text('Name',
+                                          style:
+                                              TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                                     ),
                                     buildTextField(
                                       hintText: 'Jonathan Müller',
-                                      controller: _NameController,
+                                      controller: _nameController,
                                       context: context,
                                     ),
                                   ],
@@ -113,7 +117,9 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                                   children: [
                                     const Padding(
                                       padding: EdgeInsets.fromLTRB(8, 4, 4, 20),
-                                      child: Text('Rolle', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                                      child: Text('Rolle',
+                                          style:
+                                              TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                                     ),
                                     SizedBox(
                                       //    height: 100,
@@ -140,7 +146,8 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                                   children: [
                                     const Padding(
                                       padding: EdgeInsets.fromLTRB(8, 4, 4, 20),
-                                      child: Text('', style: TextStyle(fontWeight: FontWeight.bold)),
+                                      child:
+                                          Text('', style: TextStyle(fontWeight: FontWeight.bold)),
                                     ),
                                     SizedBox(
                                       //    height: 100,
@@ -203,15 +210,19 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text('Neuer Nutzer wurde angelegt',
-                                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange, fontSize: 22)),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.orange,
+                                      fontSize: 22)),
                               const SizedBox(height: 30),
                               Row(
                                 children: [
                                   const Text('Nutzername: ',
                                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
                                   const Spacer(),
-                                  Text(_NameController.text,
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+                                  Text(_nameController.text,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 22)),
                                 ],
                               ),
                               const SizedBox(height: 30),
@@ -220,7 +231,8 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                                   Text('Einmal Passwort: ',
                                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
                                   Spacer(),
-                                  Text('Xcy24KjIq0abkAd', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+                                  Text('Xcy24KjIq0abkAd',
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
                                 ],
                               ),
                               const SizedBox(height: 30),
@@ -232,7 +244,10 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                                   child: SymmetricButton(
                                     color: Colors.orange,
                                     text: 'Drucken',
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        color: Colors.white),
                                     onPressed: null,
                                   ),
                                 ),
@@ -244,19 +259,18 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                         Expanded(
                           flex: 1,
                           child: QrImageView(
-                            data: 'Nutzername: ${_NameController.text}\nEinmal Passwort: Xcy24KjIq0abkAd',
+                            data:
+                                'Nutzername: ${_nameController.text}\nEinmal Passwort: Xcy24KjIq0abkAd',
                             version: QrVersions.auto,
                             //  size: 200.0,
                             gapless: false,
                             embeddedImageStyle: const QrEmbeddedImageStyle(
                               size: Size(80, 80),
                             ),
-                            errorStateBuilder: (cxt, err) => Container(
-                              child: const Center(
-                                child: Text(
-                                  "Uh oh! Something went wrong...",
-                                  textAlign: TextAlign.center,
-                                ),
+                            errorStateBuilder: (cxt, err) => const Center(
+                              child: Text(
+                                'Uh oh! Something went wrong...',
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
@@ -311,41 +325,38 @@ Widget buildDropdown({
   required ValueChanged<String?> onChanged,
   required BuildContext context,
 }) =>
-    Container(
-      //  width: 300,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8),
-        child: DropdownButtonFormField<String>(
-          value: selectedValue,
-          decoration: InputDecoration(
-            hintText: 'Select option',
-            hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: const Color.fromARGB(255, 220, 217, 217),
-                ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 5,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Color.fromARGB(255, 220, 217, 217),
+    Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8),
+      child: DropdownButtonFormField<String>(
+        value: selectedValue,
+        decoration: InputDecoration(
+          hintText: 'Select option',
+          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: const Color.fromARGB(255, 220, 217, 217),
               ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
-            ),
-            filled: true,
-            fillColor: Colors.grey[100],
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 15,
+            vertical: 5,
           ),
-          onChanged: onChanged,
-          items: options
-              .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  ))
-              .toList(),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color.fromARGB(255, 220, 217, 217),
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+          ),
+          filled: true,
+          fillColor: Colors.grey[100],
         ),
+        onChanged: onChanged,
+        items: options
+            .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                ))
+            .toList(),
       ),
     );
