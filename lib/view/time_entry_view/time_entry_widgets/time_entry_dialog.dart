@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../constants/api/api.dart';
+import '../../../models/service_models/service_vm/service_vm.dart';
+import '../../../models/time_models/time_dm/time_dm.dart';
+import '../../../models/users_models/user_data_short/user_short.dart';
+import '../../../provider/data_provider/service_provider/service_vm_provider.dart';
+import '../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
+import '../../../provider/user_provider/user_provider.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
-import '/constants/api/api.dart';
-import '/models/service_models/service_vm/service_vm.dart';
-import '/models/time_models/time_dm/time_dm.dart';
-import '/models/users_models/user_data_short/user_short.dart';
-import '/provider/data_provider/service_provider/service_vm_provider.dart';
-import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
-import '/provider/user_provider/user_provider.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
   const TimeEntryDialog({super.key});
