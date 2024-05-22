@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum MainView {
   home,
-  timeEntryOld,
   timeEntry,
   projectCustomer,
   consumables,
@@ -31,4 +30,4 @@ extension MainViewExtennsion on MainView {
 }
 
 // TODO: set to home view
-final mainNavProvider = StateProvider((ref) => MainView.home);
+final mainNavProvider = StateProvider((ref) => MainView.timeEntry);

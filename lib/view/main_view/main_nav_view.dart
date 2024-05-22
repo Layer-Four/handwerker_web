@@ -39,7 +39,6 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                     width: width <= 1000 ? width - 50 : ((width / 10) * 8),
                     child: switch (view) {
                       MainView.home => const HomeBody(),
-                      MainView.timeEntryOld => const TimeEntryBody(),
                       MainView.timeEntry => const WorkAssignmenView(),
                       MainView.projectCustomer => const CustomerProjectMain(),
                       MainView.consumables => const ConsumableBody(),
@@ -85,11 +84,9 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                 nextView: MainView.timeEntry,
                 height: 150,
                 subcategories: [
-                  'Zeiteintrag alt',
                   'Zeiteintrag ',
                 ],
                 subcategoryMainViews: [
-                  MainView.timeEntryOld,
                   MainView.timeEntry,
                 ],
               ),
@@ -185,12 +182,11 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                         icon: Icons.access_time,
                         title: 'Zeiteintrag',
                         nextView: MainView.timeEntry,
-                        height: 150,
+                        height: 100,
                         subcategories: [
-                          'Zeiteintrag alt',
                           'Zeiteintrag neu',
                         ],
-                        subcategoryMainViews: [MainView.timeEntryOld, MainView.timeEntry],
+                        subcategoryMainViews: [MainView.timeEntry],
                       ),
                       const NavButtonWidget(
                         title: 'Berichte',

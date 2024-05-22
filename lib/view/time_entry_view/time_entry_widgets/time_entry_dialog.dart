@@ -60,24 +60,26 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          children: [
-            _dayInputRow(),
-            _timeInputRow(),
-            _buildCustomerField(),
-            _buildProjectField(_projectsForCustomer ?? []), // Pass projects here
-            _buildServiceDropdown(),
-            _buildDescription(),
-            _buildSelectUser(),
-            const SizedBox(height: 46),
-            _submitInput(),
-            SizedBox(
-              height: 70,
-              child: Center(
-                child: Image.asset('assets/images/img_techtool.png', height: 20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _dayInputRow(),
+              _timeInputRow(),
+              _buildCustomerField(),
+              _buildProjectField(_projectsForCustomer ?? []), // Pass projects here
+              _buildServiceDropdown(),
+              _buildDescription(),
+              _buildSelectUser(),
+              const SizedBox(height: 46),
+              _submitInput(),
+              SizedBox(
+                height: 70,
+                child: Center(
+                  child: Image.asset('assets/images/img_techtool.png', height: 20),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
   Future<List<UserDataShort>> loadUser() async =>

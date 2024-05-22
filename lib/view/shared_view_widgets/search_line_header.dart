@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/themes/app_color.dart';
+
 class SearchLineHeader extends StatefulWidget {
   final String _currentViewTitle;
   final bool searchbarEnabled;
@@ -32,10 +34,10 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
                       : constrains.maxWidth - 100,
                   child: Text(
                     widget._currentViewTitle,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.w600, color: Colors.orange, fontSize: 22),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColor.kPrimaryButtonColor,
+                        fontSize: 22),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

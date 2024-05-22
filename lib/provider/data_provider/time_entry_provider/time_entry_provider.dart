@@ -50,11 +50,15 @@ class EventSourceNotifier extends Notifier<EventSource?> {
       final List data = res.data.map((e) => e).toList();
       final List<CalendarEventData> result = data.map(
         (e) {
-          final x = TimeVMAdapter.fromTimeEntriesVM(TimeEntry.fromJson(e));
+          final object = TimeVMAdapter.fromTimeEntriesVM(TimeEntry.fromJson(e));
+          String title = object.customerName ?? 'Kein Kunde';
           return CalendarEventData(
-            title: x.customerName ?? '${x.projectTitle}/${x.serviceTitle}',
-            date: x.date,
-            event: x,
+            title: title,
+            date: object.date,
+            description: object.description,
+            startTime: object.startTime,
+            endTime: object.endTime,
+            event: object,
           );
         },
       ).toList();
