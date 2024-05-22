@@ -145,7 +145,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
               ),
               Visibility(
                 visible: isAddConsumableOpen,
-                child: Container(
+                child: SizedBox(
                   // alignment: Alignment.topLeft,
                   height: MediaQuery.of(context).size.height / 3,
                   width: screenWidth / 2,

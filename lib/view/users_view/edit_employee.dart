@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../customer_project_view/custom_project.dart';
 import '../shared_view_widgets/symetric_button_widget.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class AddNewEmployee extends StatefulWidget {
   final VoidCallback onSave;
   final VoidCallback onCancel;
   final CustomeProject? project;
 
-  AddNewEmployee({super.key, required this.onSave, required this.onCancel, this.project});
+  const AddNewEmployee({super.key, required this.onSave, required this.onCancel, this.project});
 
   @override
   State<AddNewEmployee> createState() => _AddNewEmployeeState();
 }
 
 class _AddNewEmployeeState extends State<AddNewEmployee> {
-  TextEditingController _NameController = TextEditingController();
-  TextEditingController _secondNameController = TextEditingController();
-  TextEditingController _streetController = TextEditingController();
-  TextEditingController _housenumberController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController _postNumberController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _customerNumberController = TextEditingController();
-  TextEditingController _telephoneController = TextEditingController();
-  TextEditingController _contactController = TextEditingController();
+  final TextEditingController _NameController = TextEditingController();
+  final TextEditingController _secondNameController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _housenumberController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _postNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _customerNumberController = TextEditingController();
+  final TextEditingController _telephoneController = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
   String? roleOption;
   bool createdUser = false;
 
@@ -254,7 +254,7 @@ class _AddNewEmployeeState extends State<AddNewEmployee> {
                             errorStateBuilder: (cxt, err) => Container(
                               child: const Center(
                                 child: Text(
-                                  "Uh oh! Something went wrong...",
+                                  'Uh oh! Something went wrong...',
                                   textAlign: TextAlign.center,
                                 ),
                               ),

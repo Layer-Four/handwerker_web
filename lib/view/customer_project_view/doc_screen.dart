@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../shared_view_widgets/search_line_header.dart';
 import 'character_card.dart';
 import 'custom_project.dart';
-import '../../provider/customer_project_provider/customer_project_provider.dart';
-import 'dart:developer';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/constants/api/api.dart';
-import '/models/project_models/project_vm/project_vm.dart';
-import '/models/service_models/service_vm/service_vm.dart';
-import '/models/time_models/time_dm/time_dm.dart';
-import '/models/users_models/user_data_short/user_short.dart';
-import '/provider/data_provider/project_provders/project_vm_provider.dart';
-import '/provider/data_provider/service_provider/service_vm_provider.dart';
-import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
-import '/provider/user_provider/user_provider.dart';
 
 class CustomerProjectMain extends ConsumerWidget {
   //StatelessWidget
