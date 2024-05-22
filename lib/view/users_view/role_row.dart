@@ -53,7 +53,7 @@ class _RoleRowCardState extends State<RoleRowCard> {
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    const SizedBox(width: 20),
+                    // const SizedBox(width: 20),
 /*                    Container(
                       width: 300,
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -96,7 +96,7 @@ class _RoleRowCardState extends State<RoleRowCard> {
                   ],
                 ),
               ),
-              const Expanded(flex: 3, child: SizedBox()),
+              const Expanded(flex: 3, child: SizedBox.shrink()),
               // Reset password button
               Expanded(
                 flex: 1,

@@ -3,16 +3,17 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '/constants/api/api.dart';
-import '/models/users_models/user_vm/user_vm.dart';
+import '../../constants/api/api.dart';
 import '../../models/users_models/user_data_short/user_short.dart';
+import '../../models/users_models/user_role/user_role.dart';
+import '../../models/users_models/user_vm/user_vm.dart';
 
 final userProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
 
 // final authProvider = ChangeNotifierProvider<User>((ref) => User());
 
 class UserNotifier extends Notifier<UserVM> {
-  final Api api = Api();
+  final Api _api = Api();
   final _storage = SharedPreferences.getInstance();
   @override
   UserVM build() {
@@ -51,7 +52,7 @@ class UserNotifier extends Notifier<UserVM> {
       'mandant': mandatID ?? '1',
     };
     try {
-      final response = await api.postloginUser(json);
+      final response = await _api.postloginUser(json);
       if (response.statusCode == 401) {
         log('user not authorized');
         return false;
@@ -88,7 +89,7 @@ class UserNotifier extends Notifier<UserVM> {
   }
 
   void loadUsers() async {
-    final response = await api.getProjectsDM;
+    final response = await _api.getProjectsDM;
     if (response.statusCode == 200) {
       final data = response.data;
       final x = data.map((e) => UserVM.fromJson(data));
@@ -107,12 +108,9 @@ class UserNotifier extends Notifier<UserVM> {
   Future<List<UserDataShort>> getListUserService() async {
     final result = <UserDataShort>[];
     try {
-      // final response = await dio.get(url);
-      final response = await api.getUserDataShort;
+      final response = await _api.getUserDataShort;
       if (response.statusCode != 200) {
         if (response.statusCode == 401) {
-          // TODO: implement userprovider logout
-          // ref.read(userProvider.notifier).userLogOut();
           return result;
         }
         return result;
@@ -126,6 +124,38 @@ class UserNotifier extends Notifier<UserVM> {
       return result;
     } catch (e) {
       log('this error occurent-> $e');
+      throw Exception(e);
+    }
+  }
+
+  Future<List<UserRole>> loadUserRoles() async {
+    try {
+      final response = await _api.getUserRoles;
+      if (response.statusCode != 200) {
+        throw Exception('${response.statusCode} Invalid statusCode check Api call');
+      }
+      final List data = response.data.map((e) => e).toList();
+      return data.map((data) => UserRole.fromJson(data)).toList();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  void createUser({required UserRole role, required String name}) async {
+    final newUser = {
+      'userName': name,
+      'roles': [role.name]
+    };
+    try {
+      log('Usertoken ${state.userToken}');
+      log(newUser.toString());
+      final response = await _api.createNewUser(newUser);
+      if (response.statusCode != 200) {
+        throw Exception('${response.statusCode} Invalid Api call ${response.data}');
+      }
+      final data = response.data.map((e) => e).toList();
+      log(data.toString());
+    } catch (e) {
       throw Exception(e);
     }
   }

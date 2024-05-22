@@ -11,7 +11,7 @@ class SymmetricButton extends StatelessWidget {
     this.onPressed,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     this.style = const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
-    required this.color,
+    this.color = const Color.fromARGB(255, 224, 142, 60),
     required this.text,
   });
 

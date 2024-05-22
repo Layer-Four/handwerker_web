@@ -33,7 +33,6 @@ class Project {
 
 class Api {
 // Routes
-// TODO: Check Api in Postman
   static const String _baseUrl = 'https://r-wa-happ-be.azurewebsites.net/api';
   final String _getAllProjects = '/project/read/all';
   final String _getAllTimeTacks = '/timetracking/read/all';
@@ -45,6 +44,8 @@ class Api {
   final String _loginUserAdress = '/user/login';
   final String _postDocumentationDay = '/userProjectDay/create';
   final String _postTimeEntryAdress = '  /timetracking/create';
+  final String _getUserRoleAdress = '/role/list';
+  final String _postNewUserAdress = '/user/create';
 
   final String _postProjectConsumabele = '/userProjectMaterial/create';
   final String _putDocumentationDay = '/userProjectDay/update';
@@ -60,36 +61,38 @@ class Api {
 
   final String _deleteService = '/service/delete';
 
-  Future<Response> get getAllProjects => api.get(_getAllProjects);
-  Future<Response> get getAllTimeEntrys => api.get(_getAllTimeTacks);
-  Future<Response> get getAllUnits => api.get(_getAllUnitsList);
-  Future<Response> get getCustomerProjects => api.get(_getCustomerProject);
-  Future<Response> get getUserDataShort => api.get(_getListUsersShort);
+  Future<Response> get getAllProjects => _api.get(_getAllProjects);
+  Future<Response> get getAllTimeEntrys => _api.get(_getAllTimeTacks);
+  Future<Response> get getAllUnits => _api.get(_getAllUnitsList);
+  Future<Response> get getCustomerProjects => _api.get(_getCustomerProject);
+  Future<Response> get getUserDataShort => _api.get(_getListUsersShort);
+  Future<Response> get getUserRoles => _api.get(_getUserRoleAdress);
   Future<Response> getDokuforProjectURL(int projectID) =>
-      api.get('/project/$projectID/documentations');
-  Future<Response> get getExecuteableServices => api.get(_getServiceAdress);
-  Future<Response> get getMaterialsList => api.get(_getMaterialsList);
-  Future<Response> get getProjectsDM => api.get(_getProjectsAdress);
-  Future<Response> get getProjectConsumableEntry => api.get(_getProjectsConsumable);
-  Future<Response> get getProjectsTimeEntrys => api.get(_getTimeTacks);
-  Future<Response> get getUserDocumentationEntry => api.get(_getUserProjectDocumentation);
-  Future<Response> get getUserServiceList => api.get(_getUserServiceList);
+      _api.get('/project/$projectID/documentations');
+  Future<Response> get getExecuteableServices => _api.get(_getServiceAdress);
+  Future<Response> get getMaterialsList => _api.get(_getMaterialsList);
+  Future<Response> get getProjectsDM => _api.get(_getProjectsAdress);
+  Future<Response> get getProjectConsumableEntry => _api.get(_getProjectsConsumable);
+  Future<Response> get getProjectsTimeEntrys => _api.get(_getTimeTacks);
+  Future<Response> get getUserDocumentationEntry => _api.get(_getUserProjectDocumentation);
+  Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
 
-  Future<Response> deleteService(int serviceID) => api.delete('$_deleteService/$serviceID');
-
-  Future<Response> postloginUser(loginData) => api.post(_loginUserAdress, data: loginData);
-  Future<Response> postProjectConsumable(data) => api.post(_postProjectConsumabele, data: data);
-  Future<Response> postDocumentationEntry(data) => api.post(_postDocumentationDay, data: data);
-  Future<Response> postTimeEnty(data) => api.post(_postTimeEntryAdress, data: data);
-  Future<Response> updateProjectConsumableEntry(data) => api.post(_putProjectMaterial, data: data);
-  Future<Response> updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
-  Future<Response> getUserServiceByID(id) => api.get(_getUserServiceListByID, data: id);
+  Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
+  Future<Response> createNewUser(Map<String, dynamic> user) =>
+      _api.post(_postNewUserAdress, data: user);
+  Future<Response> postloginUser(loginData) => _api.post(_loginUserAdress, data: loginData);
+  Future<Response> postProjectConsumable(data) => _api.post(_postProjectConsumabele, data: data);
+  Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
+  Future<Response> postTimeEnty(data) => _api.post(_postTimeEntryAdress, data: data);
+  Future<Response> updateProjectConsumableEntry(data) => _api.post(_putProjectMaterial, data: data);
+  Future<Response> updateDocumentationEntry(data) => _api.post(_putDocumentationDay, data: data);
+  Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
 
   // Getter for customer list
-  Future<Response> get getListCustomer => api.get(_getListCustomer);
+  Future<Response> get getListCustomer => _api.get(_getListCustomer);
 
   // Getter for project list
-  Future<Response> get getListProject => api.get(_getListProject);
+  Future<Response> get getListProject => _api.get(_getListProject);
 
   void storeToken(String token) async =>
       await _storage.then((value) => value.setString('TOKEN', token));
@@ -97,83 +100,37 @@ class Api {
 
   Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
 
-  final Dio api = Dio();
+  final Dio _api = Dio();
 
   final _storage = SharedPreferences.getInstance();
-  String? accessToken;
-  // TODO: wait for information what choose, shared prefences or secure storage
-  // final _storage = const FlutterSecureStorage();
   final baseOption = BaseOptions(
     baseUrl: _baseUrl,
-    // contentType: ResponseType.json.name,
+    contentType: ResponseType.json.name,
   );
   Api() {
-    api.options = baseOption;
-    api.interceptors.add(DioInterceptor());
-    // api.interceptors.add(DioInterceptor());
-    // api.interceptors.add(InterceptorsWrapper(
-    //     onRequest: (options, handler) async {
-    //       if (!options.path.contains('http')) {
-    //         options.path = _baseUrl + options.path;
-    //       }
-    //       options.headers['Authorization'] = 'Bearer $accessToken';
-    //       return handler.next(options);
-    //     },
-    // TODO: when its a way to centralise the logout logic than use it in the 401 statemend.
-    // onError: (DioException error, handler) async => handler.next(error)
-    // {
-    // final storage = await _storage;
-    // if (error.response?.statusCode == 401
-    // && error.response?.data['message'] == 'Invalid JWT'
-    // ) {
-    // return;
-    // if (storage.containsKey('bearerToken')) {
-    // await refreshToken();
-    // }
-    // error.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
-    // return handler.resolve(await api.fetch(error.requestOptions));
-    // return handler.resolve(await _retry(error.requestOptions));
-    // }
-    // return handler.next(error);
-    // },
-    // )
-    // );
-  }
-// Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
-//   final options = Options(
-//     method: requestOptions.method,
-//     headers: requestOptions.headers,
-//   );
-//   return api.request<dynamic>(
-//     requestOptions.path,
-//     data: requestOptions.data,
-//     queryParameters: requestOptions.queryParameters,
-//     options: options,
-//   );
-// }
+    _api.options = baseOption;
+    _api.interceptors.add(InterceptorsWrapper(
+      onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
+        final token = await getToken;
 
-// // TODO: when need login data than maybe hash the value in Storage?
-//   Future<void> refreshToken() async {
-//     final pref = await SharedPreferences.getInstance();
-//     final token = pref.getString('TOKEN');
-//     final response = await api.post(_baseUrl + _loginUserAdress, data: token);
-//     if (response.statusCode == 201) {
-//       pref.setString('bearerToken', response.data);
-//       accessToken = response.data;
-//     } else {
-//       pref.clear();
-//     }
-//   }
-}
+        final accesMap = {'Authorization': 'Bearer $token'};
 
-class DioInterceptor extends Interceptor {
-  @override
-  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final token = await Api().getToken;
-    if (token != null && token.isNotEmpty) {
-      options.headers['Authorization'] = 'Bearer $token';
-    }
-    options.headers['content-Type'] = 'application/json';
-    super.onRequest(options, handler);
+        // options.headers.addEntries(accesMap.entries);
+
+        if (!options.path.contains('http')) {
+          options.path = _baseUrl + options.path;
+        }
+        return handler.next(options);
+      },
+      onError: (DioException error, handler) async {
+        if (error.message != null && error.message!.contains('500')) {
+          _storage.then((e) => e.clear());
+        }
+        handler.next(error);
+      },
+      onResponse: (response, handler) {
+        handler.next(response);
+      },
+    ));
   }
 }

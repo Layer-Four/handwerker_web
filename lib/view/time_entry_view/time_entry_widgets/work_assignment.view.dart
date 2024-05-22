@@ -13,8 +13,6 @@ class WorkAssignmenView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) => const Padding(
-        // height: MediaQuery.of(context).size.height - 100,
-        // width: MediaQuery.of(context).size.width - 100,
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         child: Column(
           mainAxisSize: MainAxisSize.min,

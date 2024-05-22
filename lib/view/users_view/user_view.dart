@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constants/themes/app_color.dart';
 import '../customer_project_view/custom_project.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import 'edit_employee.dart';
@@ -18,167 +19,113 @@ class EmployeeAdministration extends ConsumerStatefulWidget {
 }
 
 class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
-  //Call fetch infos here
-
-  //  const Text('Berichte', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-  bool isAddConsumableOpen = false;
+  bool _isAddConsumableOpen = true;
   int editingProjectIndex = -1;
 
+  // final screenWidth = MediaQuery.of(context).size.width;
+  // ref.read(customerProjectProvider.notifier).fetchInfos(); //todo: implement api
   @override
-  Widget build(BuildContext context) {
-    //, WidgetRef ref
-    final screenWidth = MediaQuery.of(context).size.width;
-    //ref.read(customerProjectProvider.notifier).fetchInfos(); //todo: implement api
-
-/*    late List<TextEditingController> _controllers;
-    late List<bool> _isEditing;
-
-    void _addNewConsumable() {
-      setState(() {
-        final newController = TextEditingController();
-        _controllers.add(newController);
-        _isEditing.add(true);
-      });
-    }*/
-
-    return Container(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(75, 30, 65, 30),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
-              const SizedBox(
-                height: 60,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      //Expandeds here to make sure the headers are aligned with the context below
-                      flex: 3,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Name',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 50,
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Rolle',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(flex: 3, child: SizedBox()),
-                    Expanded(
-                        flex: 1,
-                        child: Text(
-                          '',
-                        )),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
+              _userHeadline(),
               SizedBox(
-                width: screenWidth > 600 ? double.infinity : null,
-                height: MediaQuery.of(context).size.height / 2 - 100,
-                /*isAddConsumableOpen
-                    ? MediaQuery.of(context).size.height / 3
-                    : MediaQuery.of(context).size.height - 300,*/
+                height: 2 * 75,
                 child: ListView.builder(
                   itemCount: project.length,
-                  itemBuilder:
-                      (_, index) => /*GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isAddConsumableOpen = !isAddConsumableOpen;
-                        editingProjectIndex = index;
-                      });
-                    },
-                    child:*/
-                          RoleRowCard(
+                  itemBuilder: (_, index) => RoleRowCard(
                     project[index],
                     isFirst: index == 0,
                     isLast: index == project.length,
                   ),
-                  //       ),
                 ),
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: Material(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(50),
-                      child: Center(
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          icon: Icon(
-                            isAddConsumableOpen ? Icons.remove : Icons.add,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              isAddConsumableOpen = !isAddConsumableOpen;
-                            });
-                          },
-                        ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  height: 40,
+                  width: 40,
+                  child: Material(
+                    clipBehavior: Clip.antiAlias,
+                    color: AppColor.kPrimaryButtonColor,
+                    borderRadius: BorderRadius.circular(30),
+                    child: InkWell(
+                      child: Icon(
+                        _isAddConsumableOpen ? Icons.remove : Icons.add,
+                        color: Colors.white,
                       ),
+                      onTap: () {
+                        setState(() {
+                          _isAddConsumableOpen = !_isAddConsumableOpen;
+                        });
+                      },
                     ),
                   ),
                 ),
               ),
               Visibility(
-                visible: isAddConsumableOpen,
-                child: SizedBox(
-                  // alignment: Alignment.topLeft,
-                  height: MediaQuery.of(context).size.height / 3,
-                  width: screenWidth / 2,
-                  child: AddNewEmployee(
-                    onSave: () {
-                      log('save');
-                      //Todo: Call api for saving
-                      //If Edit was clicked (therefore index != -1), also pass which customer is to be edited
-                      //Might be a different apie then
-                      /*                  setState(() {
-                        _addNewConsumable();
-                      });*/
-                    },
-                    onCancel: () {
-                      log('cancel');
-                      setState(() {
-                        isAddConsumableOpen = !isAddConsumableOpen;
-                      });
-                    },
-                    project: editingProjectIndex != -1
-                        ? project[editingProjectIndex]
-                        : null, //If a project was clicked instead of the + icon, we pass the project and prefill the data
-                  ),
+                visible: _isAddConsumableOpen,
+                child: AddNewEmployee(
+                  onSave: () {
+                    log('save');
+                  },
+                  onCancel: () {
+                    log('cancel');
+                    setState(() {
+                      _isAddConsumableOpen = !_isAddConsumableOpen;
+                    });
+                  },
+                  project: editingProjectIndex != -1
+                      ? project[editingProjectIndex]
+                      : null, //If a project was clicked instead of the + icon, we pass the project and prefill the data
                 ),
               )
             ],
           ),
         ),
-      ),
-    );
-  }
+      );
+
+  Widget _userHeadline() => const Padding(
+        padding: EdgeInsets.symmetric(vertical: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Name',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 50,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Rolle',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(flex: 3, child: SizedBox()),
+            Expanded(
+                flex: 1,
+                child: Text(
+                  '',
+                )),
+          ],
+        ),
+      );
 }
 
 final List<CustomeProject> project = [

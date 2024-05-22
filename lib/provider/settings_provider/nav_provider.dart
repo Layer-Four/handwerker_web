@@ -29,5 +29,5 @@ extension MainViewExtennsion on MainView {
       };
 }
 
-// TODO: set to home view
-final mainNavProvider = StateProvider((ref) => MainView.timeEntry);
+// TODO: !!!!! set to home view
+final mainNavProvider = StateProvider((ref) => MainView.users);
