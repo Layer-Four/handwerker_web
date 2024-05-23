@@ -140,10 +140,10 @@ class UserNotifier extends Notifier<UserVM> {
     }
   }
 
-  void createUser({required UserRole role, required String name}) async {
+  Future<Map<String, dynamic>> createUser({required UserRole role, required String name}) async {
     final newUser = {
       'userName': name,
-      'roles': [role.name]
+      'roles': [role.name],
     };
     try {
       log('Usertoken ${state.userToken}');
@@ -152,8 +152,10 @@ class UserNotifier extends Notifier<UserVM> {
       if (response.statusCode != 200) {
         throw Exception('${response.statusCode} Invalid Api call ${response.data}');
       }
-      final data = response.data.map((e) => e).toList();
+
+      final data = response.data;
       log(data.toString());
+      return data;
     } catch (e) {
       throw Exception(e);
     }

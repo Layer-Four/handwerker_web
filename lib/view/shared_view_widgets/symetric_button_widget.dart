@@ -5,7 +5,7 @@ class SymmetricButton extends StatelessWidget {
   final Function()? onPressed;
   final Color color;
   final EdgeInsets padding;
-  final TextStyle style;
+  final TextStyle? style;
   const SymmetricButton({
     super.key,
     this.onPressed,

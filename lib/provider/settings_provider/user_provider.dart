@@ -9,7 +9,7 @@ import '../../models/users_models/user_vm/user_vm.dart';
 final userProvider = StateNotifierProvider<UserNotifier, UserVM>((ref) => UserNotifier());
 
 class UserNotifier extends StateNotifier<UserVM> {
-  final Api api = Api();
+  final Api _api = Api();
   SharedPreferences? _storage;
 
   UserNotifier() : super(const UserVM(userToken: '')) {
@@ -42,7 +42,7 @@ class UserNotifier extends StateNotifier<UserVM> {
       'mandant': mandatID ?? '1', // Providing a default value if mandatID is null
     };
     try {
-      final response = await api.postloginUser(json);
+      final response = await _api.postloginUser(json);
       if (response.statusCode == 200) {
         final data = response.data as Map<String, dynamic>;
         final userToken = data['token'];

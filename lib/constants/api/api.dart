@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,7 +48,6 @@ class Api {
   final String _postTimeEntryAdress = '/timetracking/create';
   final String _getUserRoleAdress = '/role/list';
   final String _postNewUserAdress = '/user/create';
-
   final String _postProjectConsumabele = '/userProjectMaterial/create';
   final String _putDocumentationDay = '/userProjectDay/update';
   final String _putProjectMaterial = '/userProjectMaterial/update';
@@ -58,7 +59,6 @@ class Api {
   final String _getListUsersShort = '/user/list';
   final String _getListCustomer = '/customer/list';
   final String _getListProject = '/project/list';
-
   final String _deleteService = '/service/delete';
 
   Future<Response> get getAllProjects => _api.get(_getAllProjects);
@@ -103,17 +103,16 @@ class Api {
   final Dio _api = Dio();
 
   final _storage = SharedPreferences.getInstance();
-  final baseOption = BaseOptions(
-    baseUrl: _baseUrl,
-    // contentType: ResponseType.json.name,
-  );
+  final _baseOption = BaseOptions(baseUrl: _baseUrl);
   Api() {
-    _api.options = baseOption;
+    _api.options = _baseOption;
     _api.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
+        log(DateTime.now().toIso8601String());
         getToken.then((e) {
           final accesMap = {'Authorization': 'Bearer $e'};
 
+          log(DateTime.now().toIso8601String());
           return options.headers.addEntries(accesMap.entries);
         });
 
@@ -122,13 +121,16 @@ class Api {
         }
         return handler.next(options);
       },
-      onError: (DioException error, handler) async {
+      onError: (DioException error, ErrorInterceptorHandler handler) async {
         if (error.message != null && error.message!.contains('500')) {
           _storage.then((e) => e.clear());
         }
         handler.next(error);
       },
-      onResponse: (response, handler) {
+      onResponse: (Response<dynamic> response, ResponseInterceptorHandler handler) {
+        if (response.statusCode == 401) {
+          throw Exception('nicht Autorisiert');
+        }
         handler.next(response);
       },
     ));

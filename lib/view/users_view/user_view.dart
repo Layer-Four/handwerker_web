@@ -40,7 +40,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                   itemBuilder: (_, index) => RoleRowCard(
                     project[index],
                     isFirst: index == 0,
-                    isLast: index == project.length,
+                    isLast: index == project.length - 1,
                   ),
                 ),
               ),
