@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../shared_view_widgets/search_line_header.dart';
 import 'character_card.dart';
 import 'custom_project.dart';

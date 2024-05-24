@@ -1,22 +1,21 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../provider/customer_project_provider/customer_project_provider.dart';
+import 'package:http/http.dart' as http;
+
 import '../../shared_view_widgets/symetric_button_widget.dart';
 import '/constants/api/api.dart';
-import '/models/project_models/project_vm/project_vm.dart';
 import '/models/service_models/service_vm/service_vm.dart';
 import '/models/time_models/time_dm/time_dm.dart';
 import '/models/users_models/user_data_short/user_short.dart';
-import '/provider/data_provider/project_provders/project_vm_provider.dart';
 import '/provider/data_provider/service_provider/service_vm_provider.dart';
 import '/provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '/provider/user_provider/user_provider.dart';
-import 'package:http/http.dart' as http;
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
-  const TimeEntryDialog({Key? key}) : super(key: key);
+  const TimeEntryDialog({super.key});
   @override
   ConsumerState<TimeEntryDialog> createState() => _ExecutionState();
 }
@@ -42,7 +41,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   int? _selectedCustomerId;
   Customer? _selectedCustomerUnique;
 
-  final Project? _defaultProject = Project(id: 0, title: "", customerId: 0);
+  final Project _defaultProject = Project(id: 0, title: '', customerId: 0);
 
   @override
   void initState() {
@@ -157,8 +156,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
     },
   );
 
-  Widget _buildCustomerDropdown(List<Customer> customers) {
-    return Padding(
+  Widget _buildCustomerDropdown(List<Customer> customers) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,30 +193,19 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         (customer) => customer.id == customerId,
                     orElse: () => Customer(companyName: null, id: -1),
                   );
-                  if (selectedCustomer != null) {
-                    // Call _fetchProjectsForCustomer with the selected customer ID
-                    _fetchProjectsForCustomer(selectedCustomer.id);
-                  }
-                });
+                  // Call _fetchProjectsForCustomer with the selected customer ID
+                  _fetchProjectsForCustomer(selectedCustomer.id);
+                                });
               },
             ),
           ),
         ],
       ),
     );
-  }
 
   Widget _buildProjectField(List<Project> projects) {
-    if (projects.isEmpty) {
-      // No projects available, use default project
-      setState(() {
-        _project = _defaultProject;
-      });
-    } else {
-      // Projects available, use the first project
-      setState(() {
-        _project = projects.first;
-      });
+    if (_project == null && projects.isNotEmpty) {
+      _project = projects.first;
     }
 
     return Padding(
@@ -296,6 +283,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
 
         setState(() {
           _projectsForCustomer = uniqueProjects;
+          _project = projects.isNotEmpty ? projects.first : null;
         });
       } else {
         throw Exception('Failed to load projects for customer');

@@ -4,7 +4,7 @@ class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Center(
@@ -15,7 +15,7 @@ class HomeBody extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 color: Colors.black54, // Semi-transparent background for the text
-                child: Text(
+                child: const Text(
                   'PREVIEW',
                   style: TextStyle(
                     fontSize: 32,
