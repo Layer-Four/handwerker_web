@@ -31,12 +31,12 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                   child: SizedBox(
                     height: 5 * 74,
                     child: ListView.builder(
-                      itemCount: project.length,
+                      itemCount: users.length,
                       itemBuilder: (_, index) => UserRowCard(
                         constraints,
-                        project[index],
+                        users[index],
                         isFirst: index == 0,
-                        isLast: index == project.length - 1,
+                        isLast: index == users.length - 1,
                       ),
                     ),
                   ),
@@ -54,7 +54,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                       _isAddConsumableOpen = !_isAddConsumableOpen;
                     }),
                     project: editingProjectIndex != -1
-                        ? project[editingProjectIndex]
+                        ? users[editingProjectIndex]
                         : null, //If a project was clicked instead of the + icon, we pass the project and prefill the data
                   ),
                 )
@@ -95,21 +95,24 @@ class UserEntry {
     this.name, [
     this.role = const [UserRole(name: 'Mobil')],
   ]);
+  UserEntry copyWith({
+    String? name,
+    List<UserRole>? role,
+  }) =>
+      UserEntry(
+        name ?? this.name,
+        role ?? this.role,
+      );
+  toList() => [this];
 }
 
-final List<UserEntry> project = [
+final List<UserEntry> users = [
   const UserEntry('Oliver P.'),
   const UserEntry('Michale M.', [
     UserRole(name: 'Web'),
     UserRole(name: 'Mobile'),
-    UserRole(name: 'Offline'),
-    UserRole(name: 'Online'),
   ]),
   const UserEntry('Tina S.'),
   const UserEntry('Matthias R.'),
   const UserEntry('Praktikant 1.'),
-  const UserEntry('Tina S.', [
-    UserRole(name: 'Mobile'),
-    UserRole(name: 'Web'),
-  ]),
 ];

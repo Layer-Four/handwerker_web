@@ -78,7 +78,8 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
                       ? 200
                       : currentSize.maxWidth / 10 * 3,
                   child: buildDropdown(
-                      userRoles: widget.user.role,
+                      roleFromUser: widget.user.role.first,
+                      userRoles: _possibleRoles,
                       onChanged: (_) {
                         // setState(() {
                         //   _selectedRole = value;
@@ -120,6 +121,7 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
   }
 
   Widget buildDropdown({
+    required UserRole roleFromUser,
     required List<UserRole> userRoles,
     required ValueChanged onChanged,
     required BuildContext context,
@@ -128,7 +130,7 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: DropdownButtonFormField(
           isExpanded: true,
-          value: userRoles.first,
+          value: userRoles.firstWhere((e) => e.name == roleFromUser.name),
           decoration: InputDecoration(
             hintText: 'Select option',
             hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -154,7 +156,10 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
           onChanged: onChanged,
           items: userRoles
               .map<DropdownMenuItem>((value) => DropdownMenuItem(
-                    enabled: false,
+                    onTap: () {
+                      // TODO: Update Function to provider Method and update Database
+                      widget.user.copyWith(role: [value]);
+                    },
                     value: value,
                     child: Text(value.name),
                   ))
