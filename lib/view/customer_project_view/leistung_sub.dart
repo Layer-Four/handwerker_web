@@ -1,12 +1,11 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
-
 import 'dart:convert'; // For JSON operations
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../shared_view_widgets/search_line_header.dart';
 import '/constants/api/api.dart';
+import '../shared_view_widgets/search_line_header.dart';
 
 class ConsumableLeistungBody extends StatefulWidget {
   const ConsumableLeistungBody({super.key}); // Constructor with key initialization
@@ -30,7 +29,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
   Future<void> fetchData() async {
     final Api api = Api();
     try {
-      print('Making API call to the server...');
+      log('Making API call to the server...');
       final response = await api.getExecuteableServices.timeout(
         const Duration(seconds: 10),
         onTimeout: () {
@@ -39,14 +38,14 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
       );
 
       if (response.statusCode == 200) {
-        print('Response data: ${response.data}');
+        log('Response data: ${response.data}');
         List<dynamic> data = response.data;
         setState(() {
           rowDataList = data.map((item) => Service.fromJson(item)).toList();
           isLoading = false;
         });
       } else {
-        print('Failed to fetch data: ${response.statusCode}');
+        log('Failed to fetch data: ${response.statusCode}');
         throw Exception('Failed to load data: HTTP status ${response.statusCode}');
       }
     } catch (e) {
@@ -75,20 +74,20 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
 
     try {
       final response = await api.deleteService(row.id);
-      print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
+      log('Received response status code: ${response.statusCode} for row ID: ${row.id}');
 
       if (response.statusCode == 200 || response.statusCode == 204) {
-        print('Successfully deleted row with ID: ${row.id} from the backend.');
+        log('Successfully deleted row with ID: ${row.id} from the backend.');
         await fetchData(); // Fetch the updated list of services after deletion
         _showSnackBar('Row deleted successfully.');
       } else {
-        print(
-            'Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.data}');
+        log('Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.data}');
         _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
       }
     } catch (e) {
-      print('Exception when trying to delete row with ID: ${row.id}: $e');
+      log('Exception when trying to delete row with ID: ${row.id}: $e');
       _showSnackBar('Error when attempting to delete the item: $e');
+      throw Exception('Exception when trying to delete row with ID: ${row.id}: $e');
     }
   }
 
@@ -240,7 +239,7 @@ class EditableRow extends StatefulWidget {
   });
 
   @override
-  _EditableRowState createState() => _EditableRowState();
+  State<EditableRow> createState() => _EditableRowState();
 }
 
 class _EditableRowState extends State<EditableRow> {

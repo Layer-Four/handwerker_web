@@ -63,42 +63,42 @@ class Api {
   final String _deleteService = '/service/delete';
   final String _deleteServiceMaterial = '/service/delete';
 
-  Future<Response> get getAllProjects => api.get(_getAllProjects);
-  Future<Response> get getAllTimeEntrys => api.get(_getAllTimeTacks);
-  Future<Response> get getAllUnits => api.get(_getAllUnitsList);
-  Future<Response> get getCustomerProjects => api.get(_getCustomerProject);
-  Future<Response> get getUserDataShort => api.get(_getListUsersShort);
+  Future<Response> get getAllProjects => _api.get(_getAllProjects);
+  Future<Response> get getAllTimeEntrys => _api.get(_getAllTimeTacks);
+  Future<Response> get getAllUnits => _api.get(_getAllUnitsList);
+  Future<Response> get getCustomerProjects => _api.get(_getCustomerProject);
+  Future<Response> get getUserDataShort => _api.get(_getListUsersShort);
   Future<Response> getDokuforProjectURL(int projectID) =>
-      api.get('/project/$projectID/documentations');
-  Future<Response> get getExecuteableServices => api.get(_getServiceAdress);
-  Future<Response> get getMaterialsList => api.get(_getMaterialsList);
-  Future<Response> get getProjectsDM => api.get(_getProjectsAdress);
-  Future<Response> get getProjectConsumableEntry => api.get(_getProjectsConsumable);
-  Future<Response> get getProjectsTimeEntrys => api.get(_getTimeTacks);
-  Future<Response> get getUserDocumentationEntry => api.get(_getUserProjectDocumentation);
-  Future<Response> get getUserServiceList => api.get(_getUserServiceList);
+      _api.get('/project/$projectID/documentations');
+  Future<Response> get getExecuteableServices => _api.get(_getServiceAdress);
+  Future<Response> get getMaterialsList => _api.get(_getMaterialsList);
+  Future<Response> get getProjectsDM => _api.get(_getProjectsAdress);
+  Future<Response> get getProjectConsumableEntry => _api.get(_getProjectsConsumable);
+  Future<Response> get getProjectsTimeEntrys => _api.get(_getTimeTacks);
+  Future<Response> get getUserDocumentationEntry => _api.get(_getUserProjectDocumentation);
+  Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
 
-  Future<Response> deleteService(int serviceID) => api.delete('$_deleteService/$serviceID');
+  Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
   Future<Response> deleteServiceMaterial(int serviceID) =>
-      api.delete('$_deleteServiceMaterial/$serviceID');
+      _api.delete('$_deleteServiceMaterial/$serviceID');
 
-  Future<Response> postloginUser(loginData) => api.post(_loginUserAdress, data: loginData);
-  Future<Response> postProjectConsumable(data) => api.post(_postProjectConsumabele, data: data);
-  Future<Response> postDocumentationEntry(data) => api.post(_postDocumentationDay, data: data);
-  Future<Response> postTimeEnty(data) => api.post(_postTimeEntryAdress, data: data);
-  Future<Response> updateProjectConsumableEntry(data) => api.post(_putProjectMaterial, data: data);
+  Future<Response> postloginUser(loginData) => _api.post(_loginUserAdress, data: loginData);
+  Future<Response> postProjectConsumable(data) => _api.post(_postProjectConsumabele, data: data);
+  Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
+  Future<Response> postTimeEnty(data) => _api.post(_postTimeEntryAdress, data: data);
+  Future<Response> updateProjectConsumableEntry(data) => _api.post(_putProjectMaterial, data: data);
 
   Future<Response> updateConsumableEntry(Map<String, dynamic> json) =>
-      api.post(_putProjectWebMaterialAdress, data: json);
+      _api.post(_putProjectWebMaterialAdress, data: json);
 
-  Future<Response> updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
-  Future<Response> getUserServiceByID(id) => api.get(_getUserServiceListByID, data: id);
+  Future<Response> updateDocumentationEntry(data) => _api.post(_putDocumentationDay, data: data);
+  Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
 
   // Getter for customer list
-  Future<Response> get getListCustomer => api.get(_getListCustomer);
+  Future<Response> get getListCustomer => _api.get(_getListCustomer);
 
   // Getter for project list
-  Future<Response> get getListProject => api.get(_getListProject);
+  Future<Response> get getListProject => _api.get(_getListProject);
 
   void storeToken(String token) async =>
       await _storage.then((value) => value.setString('TOKEN', token));
@@ -106,7 +106,7 @@ class Api {
 
   Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
 
-  final Dio api = Dio();
+  final Dio _api = Dio();
 
   final _storage = SharedPreferences.getInstance();
   String? accessToken;
@@ -117,8 +117,8 @@ class Api {
     // contentType: ResponseType.json.name,
   );
   Api() {
-    api.options = baseOption;
-    api.interceptors.add(DioInterceptor());
+    _api.options = baseOption;
+    _api.interceptors.add(DioInterceptor());
     // api.interceptors.add(DioInterceptor());
     // api.interceptors.add(InterceptorsWrapper(
     //     onRequest: (options, handler) async {
