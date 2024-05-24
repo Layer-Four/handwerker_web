@@ -1,4 +1,5 @@
 import 'package:calendar_view/calendar_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,7 +42,7 @@ class _CustomWeekViewState extends ConsumerState<CustonWeekView> {
         clipBehavior: Clip.antiAlias,
         elevation: 9,
         child: SizedBox(
-          height: MediaQuery.of(context).size.height - 75,
+          height: MediaQuery.of(context).size.height - 130,
           child: _buildCustomWeekView(context),
         ),
       ),
@@ -90,14 +91,25 @@ class _CustomWeekViewState extends ConsumerState<CustonWeekView> {
 
   /// Selbst desinger Header
   HeaderStyle _customHeaderStyle(BuildContext context) => HeaderStyle(
-        leftIcon: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
-          child: LeftButtonRow(),
+        leftIcon: Container(
+          // width: MediaQuery.of(context).size.width * 0.31,
+          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // LeftButtonRow(),
+              Icon(
+                Icons.arrow_left_outlined,
+                size: 45,
+                color: AppColor.kPrimaryButtonColor,
+              ),
+            ],
+          ),
         ),
         rightIcon: Container(
           padding: const EdgeInsets.symmetric(vertical: 6),
           alignment: Alignment.centerLeft,
-          width: MediaQuery.of(context).size.width / 3.18,
+          // width: MediaQuery.of(context).size.width * 0.31,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -121,7 +133,7 @@ class _CustomWeekViewState extends ConsumerState<CustonWeekView> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              height: MediaQuery.of(context).size.height - 200,
+                              height: MediaQuery.of(context).size.height - 400,
                               width: 500,
                               child: const TimeEntryDialog(),
                             ),

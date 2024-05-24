@@ -1,49 +1,61 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/themes/app_color.dart';
+import '../../../constants/themes/app_color.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
 
-class LeftButtonRow extends StatefulWidget {
+class LeftButtonRow extends StatelessWidget {
   const LeftButtonRow({super.key});
 
   @override
-  State<LeftButtonRow> createState() => _LeftButtonRowState();
-}
-
-class _LeftButtonRowState extends State<LeftButtonRow> {
-  final List<String> buttonText = ['Planung', 'Zeiteinträge', 'Tag', 'Woche'];
-  @override
-  Widget build(BuildContext context) => Container(
-        color: Colors.amber,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: (MediaQuery.of(context).size.width / 3.8) - 50,
-              height: 35,
-              child: ListView.builder(
-                  // controller: ScrollController(),
-                  // physics: const FixedExtentScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: buttonText.length,
-                  itemBuilder: (_, i) => Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        width: 100,
-                        height: 30,
-                        child: SymmetricButton(
-                          text: buttonText[i],
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                          onPressed: () {},
-                        ),
-                      )),
-              // firstVersion(),
-            ),
-            Icon(
-              Icons.arrow_left_outlined,
-              size: 45,
-              color: AppColor.kPrimaryButtonColor,
-            ),
-          ],
+  Widget build(BuildContext context) => SizedBox(
+        height: 50,
+        // firstVersion()
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                width: 100,
+                height: 30,
+                child: SymmetricButton(
+                  text: 'Planung',
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  onPressed: () {},
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                width: 100,
+                height: 30,
+                child: SymmetricButton(
+                  text: 'Zeiteintrag',
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  onPressed: () {},
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                width: 100,
+                height: 30,
+                child: SymmetricButton(
+                  text: 'Tag',
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  onPressed: () {},
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                width: 100,
+                height: 30,
+                child: SymmetricButton(
+                  text: 'Woche',
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
         ),
       );
 
@@ -91,6 +103,11 @@ class _LeftButtonRowState extends State<LeftButtonRow> {
                   text: 'Woche',
                   onPressed: () {},
                 ),
+              ),
+              Icon(
+                Icons.arrow_left_outlined,
+                size: 45,
+                color: AppColor.kPrimaryButtonColor,
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import 'widgets/custom_week_view.dart';
+import 'widgets/left_button_widget.dart';
 
 class WorkAssignmenView extends StatelessWidget {
   const WorkAssignmenView({super.key});
@@ -11,6 +12,7 @@ class WorkAssignmenView extends StatelessWidget {
         child: Column(
           children: [
             SearchLineHeader(title: 'Stundenübersicht', searchbarEnabled: false),
+            LeftButtonRow(),
             CustonWeekView(),
           ],
         ),
