@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../customer_project_view/custom_project.dart';
+import '../../models/users_models/user_role/user_role.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import 'widgets/add_button.dart';
 import 'widgets/edit_employee.dart';
@@ -11,8 +11,7 @@ class EmployeeAdministration extends ConsumerStatefulWidget {
   const EmployeeAdministration({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _EmployeeAdministrationState createState() => _EmployeeAdministrationState();
+  ConsumerState<EmployeeAdministration> createState() => _EmployeeAdministrationState();
 }
 
 class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
@@ -89,55 +88,28 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
       );
 }
 
-final List<CustomeProject> project = [
-  const CustomeProject(
-    'Oliver P.',
-    'Reperatur Schaltung',
-    false,
-    50,
-    11,
-    '01.01.2024 - 01.06.2025',
-    1009,
-    1009,
-  ),
-  const CustomeProject(
-    'Michael M.',
-    'Installation Beleuchtung',
-    true,
-    60,
-    11,
-    '01.01.2024 - 01.06.2025',
-    2099,
-    9000,
-  ),
-  const CustomeProject(
-    'Tina S.',
-    'Reperatur Wasserleitung',
-    true,
-    70,
-    11,
-    '01.01.2024 - 01.06.2025',
-    2,
-    900000,
-  ),
-  const CustomeProject(
-    'Matthias R.',
-    'Behebung Leckage',
-    true,
-    60,
-    2,
-    '01.01.2024 - 01.06.2025',
-    2,
-    1009,
-  ),
-  const CustomeProject(
-    'Praktikant 1',
-    'Anstrich Innenwand',
-    true,
-    70,
-    2,
-    '01.01.2024 - 01.06.2025',
-    2,
-    122000,
-  ),
+class UserEntry {
+  final String name;
+  final List<UserRole> role;
+  const UserEntry(
+    this.name, [
+    this.role = const [UserRole(name: 'Mobil')],
+  ]);
+}
+
+final List<UserEntry> project = [
+  const UserEntry('Oliver P.'),
+  const UserEntry('Michale M.', [
+    UserRole(name: 'Web'),
+    UserRole(name: 'Mobile'),
+    UserRole(name: 'Offline'),
+    UserRole(name: 'Online'),
+  ]),
+  const UserEntry('Tina S.'),
+  const UserEntry('Matthias R.'),
+  const UserEntry('Praktikant 1.'),
+  const UserEntry('Tina S.', [
+    UserRole(name: 'Mobile'),
+    UserRole(name: 'Web'),
+  ]),
 ];

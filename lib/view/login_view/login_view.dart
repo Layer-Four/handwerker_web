@@ -232,7 +232,8 @@ class _LoginViewState extends State<LoginView> {
                         width: 350,
                         child: Align(
                           alignment: Alignment.bottomLeft,
-                          child: Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                          child:
+                              Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ),
                       const SizedBox(height: 3),
@@ -426,7 +427,8 @@ class _LoginViewState extends State<LoginView> {
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('leider hats nicht geklappt')));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('leider hats nicht geklappt')));
   }
 
   Widget buildLoginButton(BuildContext context) => Center(
@@ -443,10 +445,12 @@ class _LoginViewState extends State<LoginView> {
                               password: passCon.text,
                               userName: emailCon.text,
                             )
-                            .then((value) => reactionOfLogin(value));
-                        SharedPreferences.getInstance().then((value) {
-                          final token = value.getString('TOKEN');
-                          log(token.toString());
+                            .then((value) {
+                          reactionOfLogin(value);
+                          SharedPreferences.getInstance().then((value) {
+                            final token = value.getString('TOKEN');
+                            log(token.toString());
+                          });
                         });
                       }
                       if (isOTP) {
@@ -500,7 +504,8 @@ class _LoginViewState extends State<LoginView> {
       return false;
     }
 
-    bool isValid = formstate.currentState!.validate() && emailCon.text.isNotEmpty && passCon.text.isNotEmpty;
+    bool isValid =
+        formstate.currentState!.validate() && emailCon.text.isNotEmpty && passCon.text.isNotEmpty;
     if (!isValid) {
       showSnackBar('Bitte füllen Sie alle Felder korrekt aus.');
     }

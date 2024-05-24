@@ -6,13 +6,13 @@ import '../../../constants/themes/app_color.dart';
 import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_provider.dart';
-import '../../customer_project_view/custom_project.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
+import '../user_view.dart';
 
 class AddNewEmployee extends ConsumerStatefulWidget {
   final VoidCallback? onSave;
   final VoidCallback? onCancel;
-  final CustomeProject? project;
+  final UserEntry? project;
   final double overflowWidth;
 
   const AddNewEmployee({
@@ -48,7 +48,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
     super.initState();
     if (widget.project != null) {
       _nameController.text =
-          widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
+          widget.project!.name; // Assuming 'customer' is a field in CustomeProject
     }
     initUserRoles();
   }

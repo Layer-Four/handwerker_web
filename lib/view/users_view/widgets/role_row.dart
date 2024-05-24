@@ -3,20 +3,21 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../constants/themes/app_color.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_provider.dart';
-import '../../customer_project_view/custom_project.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
+import '../user_view.dart';
 
 class UserRowCard extends ConsumerStatefulWidget {
   final BoxConstraints constraints;
-  final CustomeProject project;
+  final UserEntry user;
   final bool isFirst;
   final bool isLast;
 
   const UserRowCard(
     this.constraints,
-    this.project, {
+    this.user, {
     super.key,
     this.isFirst = false,
     this.isLast = false,
@@ -27,15 +28,12 @@ class UserRowCard extends ConsumerStatefulWidget {
 }
 
 class _RoleRowCardState extends ConsumerState<UserRowCard> {
-  //List<String> roles = ['Admin', 'User', 'Guest']; // Example roles
-  //String? currentRole = 'User'; // Default or fetched role
-
-  UserRole? _selectedRole;
-  final List<UserRole> _roles = [];
+  // UserRole? _selectedRole;
+  final List<UserRole> _possibleRoles = [];
   void initUserRoles() {
     ref.read(userProvider.notifier).loadUserRoles().then((e) => setState(() {
-          _roles.addAll(e);
-          _selectedRole = _roles.first;
+          _possibleRoles.addAll(e);
+          // _selectedRole = _roles.first;
         }));
   }
 
@@ -65,85 +63,55 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 width: currentSize.maxWidth / 10 * 3,
                 child: Text(
-                  widget.project.customer,
+                  widget.user.name,
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              // const SizedBox(width: 20),
-              /*                    Container(
-                  width: 300,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Colors.grey[100],
-                  ),
-                  child: DropdownButton<String>(
-                    value: currentRole,
-                    icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
-                    elevation: 16,
-                    dropdownColor: Colors.grey[300],
-                    style: TextStyle(color: Colors.black),
-                    underline: Container(height: 0),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        currentRole = newValue!;
-                      });
-                    },
-                    items: ['Admin', 'User', 'Guest']
-                        .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            ))
-                        .toList(),
-                  ),
-                ),*/
-              // buildDropdown(
-              //   options: ['Admin', 'Mitarbeiter'],
-              //   // selectedValue: roleOption,
-              //   onChanged: (value) {
-              //     setState(() {
-              //       roleOption = value;
-              //     });
-              //   },
-              //   context: context,
-              // ),
               SizedBox(
+                height: 40,
                 width: currentSize.maxWidth / 10 * 3,
-                child: buildDropdown(
-                    options: _roles,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedRole = value;
-                      });
-                    },
-                    context: context),
-                // child: buildDropdown(options: _roles),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width > 1000
+                      ? 200
+                      : currentSize.maxWidth / 10 * 3,
+                  child: buildDropdown(
+                      userRoles: widget.user.role,
+                      onChanged: (_) {
+                        // setState(() {
+                        //   _selectedRole = value;
+                        // });
+                      },
+                      context: context),
+                ),
               ),
             ],
           ),
           SizedBox(
             width:
-                MediaQuery.of(context).size.width >= 1100 ? 300 : currentSize.maxWidth / 10 * 2.5,
+                MediaQuery.of(context).size.width >= 1100 ? 300 : currentSize.maxWidth / 10 * 2.8,
             child: SymmetricButton(
               onPressed: () {
-                log('Password reset for ${widget.project.customer}');
+                ref.read(userProvider.notifier).resetPassword(widget.user.name).then((e) {
+                  showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                            child: Center(
+                              child: Text(e.toString()),
+                            ),
+                          ));
+                });
+                log('Password reset for ${widget.user.name}');
               },
               text: 'Passwort zurücksetzen',
               overflow: TextOverflow.clip,
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              // style: const TextStyle(color: Colors.white, fontSize: 1),
-              // style: ElevatedButton.styleFrom(
-              //   backgroundColor: Colors.orange,
-              //   padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              //   shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.circular(8),
-              //   ),
-              // ),
-              // child: const Text('Passwort zurücksetzen',
-              //     style: TextStyle(fontSize: 16, color: Colors.white)),
+              style: TextStyle(
+                fontSize: 16,
+                color: AppColor.kWhite,
+              ),
             ),
           ),
         ],
@@ -151,44 +119,8 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
     );
   }
 
-  // Widget buildDropdown({
-  //   required List<UserRole> options,
-  //   Function(UserRole?)? onChanged,
-  // }) =>
-  //     DropdownButtonFormField(
-  //       isExpanded: true,
-  //       value: options.first,
-  //       decoration: InputDecoration(
-  //         hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-  //               color: const Color.fromARGB(255, 220, 217, 217),
-  //             ),
-  //         contentPadding: const EdgeInsets.symmetric(
-  //           horizontal: 15,
-  //           vertical: 5,
-  //         ),
-  //         enabledBorder: OutlineInputBorder(
-  //           borderRadius: BorderRadius.circular(12),
-  //           borderSide: const BorderSide(
-  //             color: Color.fromARGB(255, 220, 217, 217),
-  //           ),
-  //         ),
-  //         focusedBorder: OutlineInputBorder(
-  //           borderRadius: BorderRadius.circular(12),
-  //           borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
-  //         ),
-  //         filled: true,
-  //         fillColor: Colors.grey[100],
-  //       ),
-  //       onChanged: onChanged,
-  //       items: options
-  //           .map((value) => DropdownMenuItem(
-  //                 value: value,
-  //                 child: Text(value.name),
-  //               ))
-  //           .toList(),
-  //     );
   Widget buildDropdown({
-    required List<UserRole> options,
+    required List<UserRole> userRoles,
     required ValueChanged onChanged,
     required BuildContext context,
   }) =>
@@ -196,7 +128,7 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: DropdownButtonFormField(
           isExpanded: true,
-          value: _selectedRole,
+          value: userRoles.first,
           decoration: InputDecoration(
             hintText: 'Select option',
             hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -220,8 +152,9 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
             fillColor: Colors.grey[100],
           ),
           onChanged: onChanged,
-          items: options
+          items: userRoles
               .map<DropdownMenuItem>((value) => DropdownMenuItem(
+                    enabled: false,
                     value: value,
                     child: Text(value.name),
                   ))

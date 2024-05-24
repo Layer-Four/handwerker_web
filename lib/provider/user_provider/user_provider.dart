@@ -160,4 +160,17 @@ class UserNotifier extends Notifier<UserVM> {
       throw Exception(e);
     }
   }
+
+  Future<Map> resetPassword(String name) async {
+    try {
+      final response = await _api.putResetPassword({'userName': name});
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Something went wrong on Request:\n ${response.statusCode} \n${response.data}');
+      }
+      return response.data;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

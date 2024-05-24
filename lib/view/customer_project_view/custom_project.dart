@@ -11,9 +11,17 @@ class CustomeProject {
   final double revenue;
   final List<ProjectReport> projectReports;
 
-  const CustomeProject(this.customer, this.description, this.status, this.revenue, this.projectNumber,
-      this.projectTimeWindow, this.totalTime, this.costItems,
-      [this.projectReports = const []]);
+  const CustomeProject(
+    this.customer,
+    this.description,
+    this.status,
+    this.revenue,
+    this.projectNumber,
+    this.projectTimeWindow,
+    this.totalTime,
+    this.costItems, [
+    this.projectReports = const [],
+  ]);
 }
 
 class ProjectReport {
