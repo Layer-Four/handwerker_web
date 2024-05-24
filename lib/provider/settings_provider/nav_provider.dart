@@ -30,4 +30,4 @@ extension MainViewExtennsion on MainView {
 }
 
 // TODO: !!!!! set to home view
-final mainNavProvider = StateProvider((ref) => MainView.users);
+final mainNavProvider = StateProvider((ref) => MainView.home);
