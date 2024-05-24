@@ -15,6 +15,7 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) => MaterialApp(
+        scrollBehavior: const MaterialScrollBehavior(),
         theme: AppTheme.lightTheme,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: const [

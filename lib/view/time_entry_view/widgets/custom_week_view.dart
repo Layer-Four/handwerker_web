@@ -41,62 +41,61 @@ class _CustomWeekViewState extends ConsumerState<CustonWeekView> {
         clipBehavior: Clip.antiAlias,
         elevation: 9,
         child: SizedBox(
-          height: MediaQuery.of(context).size.height - 100,
-          child: WeekView(
-            weekTitleHeight: 90,
-            weekDayBuilder: (DateTime day) => _buildWeekDayIcon(context, day),
-            timeLineWidth: 60,
-            headerStringBuilder: (date, {secondaryDate}) =>
-                '${date.day}.${date.month} - ${secondaryDate?.day}.${secondaryDate?.month}.${secondaryDate?.year}',
-            headerStyle: _customHeaderStyle(context),
-            minDay: DateTime.now().add(const Duration(days: -(365 * 4))),
-            maxDay: DateTime.now().add(const Duration(days: 365 * 10)),
-            // eventArranger: const SideEventArranger(),
-            eventTileBuilder: (
-              date,
-              events,
-              boundary,
-              startDuration,
-              endDuration,
-            ) =>
-                ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: events.length,
-                    itemBuilder: (context, i) => Container(
-                          margin: const EdgeInsets.all(2),
-                          color: events[i].color,
-                          height: boundary.size.height,
-                          width: boundary.width / events.length + 2,
-                          child: Text(
-                            events[i].title,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )),
-
-            onEventTap: (events, date) => showDialog(
-                context: context,
-                builder: (context) {
-                  final e = events.map((e) => e.event as TimeVMAdapter).toList();
-                  return Dialog(
-                    child: Flexible(
-                      child: Material(
-                        child: ListView.builder(
-                          itemCount: e.length,
-                          itemBuilder: (context, i) => InfoTableWidget(entry: e[i]),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          ),
+          height: MediaQuery.of(context).size.height - 75,
+          child: _buildCustomWeekView(context),
         ),
       ),
     );
   }
 
+  WeekView<Object?> _buildCustomWeekView(BuildContext context) => WeekView(
+        weekTitleHeight: 70,
+        weekDayBuilder: (DateTime day) => _buildWeekDayIcon(context, day),
+        timeLineWidth: 60,
+        headerStringBuilder: (date, {secondaryDate}) =>
+            '${date.day}.${date.month} - ${secondaryDate?.day}.${secondaryDate?.month}.${secondaryDate?.year}',
+        headerStyle: _customHeaderStyle(context),
+        minDay: DateTime.now().add(const Duration(days: -(365 * 4))),
+        maxDay: DateTime.now().add(const Duration(days: 365 * 10)),
+        // eventArranger: const SideEventArranger(),
+        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: events.length,
+            itemBuilder: (context, i) => Container(
+                  margin: const EdgeInsets.all(2),
+                  color: events[i].color,
+                  height: boundary.size.height,
+                  width: boundary.width / events.length + 2,
+                  child: Text(
+                    events[i].title,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )),
+        onEventTap: (events, date) => showDialog(
+            context: context,
+            builder: (context) {
+              final e = events.map((e) => e.event as TimeVMAdapter).toList();
+              return Dialog(
+                child: Flexible(
+                  child: Material(
+                    child: ListView.builder(
+                      itemCount: e.length,
+                      itemBuilder: (context, i) => InfoTableWidget(entry: e[i]),
+                    ),
+                  ),
+                ),
+              );
+            }),
+      );
+
+  /// Selbst desinger Header
   HeaderStyle _customHeaderStyle(BuildContext context) => HeaderStyle(
-        leftIcon: const LeftButtonRow(),
+        leftIcon: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
+          child: LeftButtonRow(),
+        ),
         rightIcon: Container(
+          padding: const EdgeInsets.symmetric(vertical: 6),
           alignment: Alignment.centerLeft,
           width: MediaQuery.of(context).size.width / 3.18,
           child: Row(
@@ -119,7 +118,9 @@ class _CustomWeekViewState extends ConsumerState<CustonWeekView> {
                             elevation: 5,
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               height: MediaQuery.of(context).size.height - 200,
                               width: 500,
                               child: const TimeEntryDialog(),
@@ -141,7 +142,7 @@ Widget _buildWeekDayIcon(BuildContext context, DateTime day) {
       (DateTime.now().month == day.month) &&
       (DateTime.now().day == day.day);
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: width < 1000 ? 12.0 : 33.0, vertical: 8),
+    padding: EdgeInsets.symmetric(horizontal: width < 1000 ? 12.0 : 30.0, vertical: 6),
     child: Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(

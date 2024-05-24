@@ -9,7 +9,6 @@ class WorkAssignmenView extends StatelessWidget {
   Widget build(BuildContext context) => const Padding(
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             SearchLineHeader(title: 'Stundenübersicht', searchbarEnabled: false),
             CustonWeekView(),
