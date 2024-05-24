@@ -737,12 +737,12 @@ class _CardWidgetState extends State<CardWidget> {
                                         isExpanded: true,
                                         value: _selectedUnit,
                                         hint: const Text('Einheit'),
-                                        items: _units.map((Unit unit) {
-                                          return DropdownMenuItem<Unit>(
-                                            value: unit,
-                                            child: Text(unit.name),
-                                          );
-                                        }).toList(),
+                                        items: _units
+                                            .map((Unit unit) => DropdownMenuItem<Unit>(
+                                                  value: unit,
+                                                  child: Text(unit.name),
+                                                ))
+                                            .toList(),
                                         onChanged: (Unit? newValue) {
                                           setState(() {
                                             _selectedUnit = newValue;
@@ -858,10 +858,8 @@ class Unit {
 
   Unit({required this.id, required this.name});
 
-  factory Unit.fromJson(Map<String, dynamic> json) {
-    return Unit(
-      id: json['id'],
-      name: json['name'],
-    );
-  }
+  factory Unit.fromJson(Map<String, dynamic> json) => Unit(
+        id: json['id'],
+        name: json['name'],
+      );
 }

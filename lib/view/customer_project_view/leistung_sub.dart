@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'dart:convert'; // For JSON operations
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -39,7 +40,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
       );
 
       if (response.statusCode == 200) {
-        print('Response data: ${response.data}');
+        log('Response data: ${response.data}');
         List<dynamic> data = response.data;
         setState(() {
           rowDataList = data.map((item) => Service.fromJson(item)).toList();
@@ -240,7 +241,7 @@ class EditableRow extends StatefulWidget {
   });
 
   @override
-  _EditableRowState createState() => _EditableRowState();
+  State<EditableRow> createState() => _EditableRowState();
 }
 
 class _EditableRowState extends State<EditableRow> {
