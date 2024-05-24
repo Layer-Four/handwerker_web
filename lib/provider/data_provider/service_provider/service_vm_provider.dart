@@ -6,8 +6,7 @@ import '../../../constants/api/api.dart';
 import '../../../models/service_models/service_vm/service_vm.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
 
-final serviceVMProvider =
-    AsyncNotifierProvider<ServiceNotifer, List<ServiceVM>?>(() => ServiceNotifer());
+final serviceVMProvider = AsyncNotifierProvider<ServiceNotifer, List<ServiceVM>?>(() => ServiceNotifer());
 
 class ServiceNotifer extends AsyncNotifier<List<ServiceVM>?> {
   final Api _api = Api();
@@ -19,7 +18,7 @@ class ServiceNotifer extends AsyncNotifier<List<ServiceVM>?> {
       final response = await _api.getExecuteableServices;
       if (response.statusCode != 200) {
         if (response.statusCode == 401) {
-          // TODO: implement logout logic
+          log('something went wrong-> ${response.data}');
           return;
         }
         log('something went wrong-> ${response.data}');
@@ -39,8 +38,8 @@ class ServiceNotifer extends AsyncNotifier<List<ServiceVM>?> {
       final response = await _api.getUserDataShort;
       if (response.statusCode != 200) {
         if (response.statusCode == 401) {
-          // TODO: implement userprovider logout
           // ref.read(userProvider.notifier).userLogOut();
+          log('something went wrong-> ${response.data}');
           return result;
         }
         return result;
