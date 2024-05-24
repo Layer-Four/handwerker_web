@@ -5,9 +5,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
-import '../customer_project_view/card_widget.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import '/constants/api/api.dart';
+import 'widgets/card_widget.dart';
 
 class ConsumableBody extends StatefulWidget {
   const ConsumableBody({super.key}); // Constructor with key initialization
@@ -28,36 +28,6 @@ class _ConsumableBodyState extends State<ConsumableBody> {
 
   bool isLoading = true;
 
-  // Future<void> fetchData() async {
-  //   // final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/list');
-  //   try {
-  //     print('Making API call to the server...');
-  //     // final e = await _api.updateConsumableEntry({'hallo': 15});
-  //     final response = await _api.getMaterialsList.timeout(
-  //       const Duration(seconds: 10),
-  //       onTimeout: () {
-  //         throw Exception('The connection has timed out, please try again!');
-  //       },
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       print('Response data: ${response.data}');
-  //       List<dynamic> data = json.decode(response.data);
-  //       setState(() {
-  //         rowDataList = data.map((item) => Service.fromJson(item)).toList();
-  //         isLoading = false;
-  //       });
-  //     } else {
-  //       print('Failed to fetch data: ${response.statusCode}');
-  //       throw Exception('Failed to load data: HTTP status ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     _showSnackBar('Error: $e');
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //   }
-  // }
   Future<void> fetchData() async {
     try {
       log('Making API call to the server...');
@@ -133,6 +103,13 @@ class _ConsumableBodyState extends State<ConsumableBody> {
 
       if (response.statusCode == 200) {
         _showSnackBar('Update successful');
+        // Update the rowDataList with the new data
+        setState(() {
+          int index = rowDataList.indexWhere((element) => element.id == row.id);
+          if (index != -1) {
+            rowDataList[index] = row;
+          }
+        });
       } else {
         var errMsg = 'Failed to update item: ${response.statusCode}';
         if (response.statusCode == 400) {
@@ -223,13 +200,13 @@ class _ConsumableBodyState extends State<ConsumableBody> {
         ),
       );
 
-  void _addRow(String materialName, String amount, String unitName, String price) {
+  void _addRow(String materialName, String amount, Unit unitName, String price) {
     setState(() {
       rowDataList.add(Service(
         id: rowDataList.isNotEmpty ? rowDataList.last.id + 1 : 1,
         materialName: materialName,
         amount: amount,
-        unitName: unitName,
+        unitName: unitName.name,
         price: price,
       ));
     });
