@@ -7,12 +7,10 @@ class Customer {
 
   Customer({this.companyName, required this.id});
 
-  factory Customer.fromJson(Map<String, dynamic> json) {
-    return Customer(
-      companyName: json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
-      id: json['id'] != null ? json['id'] as int : -1,
-    );
-  }
+  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+        companyName: json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
+        id: json['id'] != null ? json['id'] as int : -1,
+      );
 }
 
 // Project class
@@ -23,13 +21,11 @@ class Project {
 
   Project({this.title, required this.id, required this.customerId}); // Update constructor
 
-  factory Project.fromJson(Map<String, dynamic> json) {
-    return Project(
-      title: json['title'] != null ? json['title'] as String : 'Default Title',
-      id: json['id'] != null ? json['id'] as int : -1,
-      customerId: json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
-    );
-  }
+  factory Project.fromJson(Map<String, dynamic> json) => Project(
+        title: json['title'] != null ? json['title'] as String : 'Default Title',
+        id: json['id'] != null ? json['id'] as int : -1,
+        customerId: json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
+      );
 }
 
 class Api {
@@ -59,7 +55,10 @@ class Api {
   final String _getListCustomer = '/customer/list';
   final String _getListProject = '/project/list';
 
+  final String _putProjectWebMaterialAdress = 'material/update';
+
   final String _deleteService = '/service/delete';
+  final String _deleteServiceMaterial = '/service/delete';
 
   Future get getAllProjects => api.get(_getAllProjects);
   Future get getAllTimeEntrys => api.get(_getAllTimeTacks);
@@ -76,12 +75,17 @@ class Api {
   Future<Response> get getUserServiceList => api.get(_getUserServiceList);
 
   Future<Response> deleteService(int serviceID) => api.delete('$_deleteService/$serviceID');
+  Future<Response> deleteServiceMaterial(int serviceID) => api.delete('$_deleteServiceMaterial/$serviceID');
 
   Future postloginUser(loginData) => api.post(_loginUserAdress, data: loginData);
   Future postProjectConsumable(data) => api.post(_postProjectConsumabele, data: data);
   Future postDocumentationEntry(data) => api.post(_postDocumentationDay, data: data);
   Future postTimeEnty(data) => api.post(_postTimeEntryAdress, data: data);
   Future updateProjectConsumableEntry(data) => api.post(_putProjectMaterial, data: data);
+
+  Future<Response> updateConsumableEntry(Map<String, dynamic> json) =>
+      api.post(_putProjectWebMaterialAdress, data: json);
+
   Future updateDocumentationEntry(data) => api.post(_putDocumentationDay, data: data);
   Future getUserServiceByID(id) => api.get(_getUserServiceListByID, data: id);
 
