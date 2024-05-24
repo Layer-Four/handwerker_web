@@ -1,16 +1,17 @@
 import 'dart:convert'; // For JSON operations
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../shared_view_widgets/search_line_header.dart';
 import '/constants/api/api.dart';
-import 'package:http/http.dart' as http;
+import '../shared_view_widgets/search_line_header.dart';
 
 class ConsumableBody extends StatefulWidget {
   const ConsumableBody({super.key}); // Constructor with key initialization
 
   @override
-  State<ConsumableBody> createState() => _ConsumableLeistungBodyState();
+  State<ConsumableBody> createState() => _ConsumableBodyState();
 }
 
 class _ConsumableBodyState extends State<ConsumableBody> {
@@ -57,7 +58,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
   // }
   Future<void> fetchData() async {
     try {
-      print('Making API call to the server...');
+      log('Making API call to the server...');
       final response = await _api.getMaterialsList.timeout(
         const Duration(seconds: 10),
         onTimeout: () {
@@ -66,7 +67,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
       );
 
       if (response.statusCode == 200) {
-        print('Response data: ${response.data}');
+        log('Response data: ${response.data}');
 
         // Check if response.data is a string, if not, convert it
         final responseData = response.data is String ? response.data : json.encode(response.data);
@@ -77,7 +78,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
           isLoading = false;
         });
       } else {
-        print('Failed to fetch data: ${response.statusCode}');
+        log('Failed to fetch data: ${response.statusCode}');
         throw Exception('Failed to load data: HTTP status ${response.statusCode}');
       }
     } catch (e) {
@@ -105,18 +106,18 @@ class _ConsumableBodyState extends State<ConsumableBody> {
     try {
       final response = await _api.deleteServiceMaterial(row.id);
 
-      print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
+      log('Received response status code: ${response.statusCode} for row ID: ${row.id}');
 
       if (response.statusCode == 200 || response.statusCode == 204) {
-        print('Successfully deleted row with ID: ${row.id} from the backend.');
+        log('Successfully deleted row with ID: ${row.id} from the backend.');
         await fetchData(); // Fetch the updated list of services after deletion
         _showSnackBar('Row deleted successfully.');
       } else {
-        print('Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}');
+        log('Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}');
         _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
       }
     } catch (e) {
-      print('Exception when trying to delete row with ID: ${row.id}: $e');
+      log('Exception when trying to delete row with ID: ${row.id}: $e');
       _showSnackBar('Error when attempting to delete the item: $e');
     }
   }
@@ -124,7 +125,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
   Future<void> updateRow(Service row) async {
     try {
       final data = row.toJson();
-      print('Sending update request with data: $data');
+      log('Sending update request with data: $data');
 
       final response = await _api.updateConsumableEntry(data);
 
