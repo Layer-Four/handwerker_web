@@ -5,13 +5,15 @@ class SymmetricButton extends StatelessWidget {
   final Function()? onPressed;
   final Color color;
   final EdgeInsets padding;
-  final TextStyle style;
+  final TextStyle? style;
+  final TextOverflow? overflow;
   const SymmetricButton({
     super.key,
     this.onPressed,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     this.style = const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
-    required this.color,
+    this.color = const Color.fromARGB(255, 224, 142, 60),
+    this.overflow,
     required this.text,
   });
 
@@ -30,6 +32,7 @@ class SymmetricButton extends StatelessWidget {
               padding: padding,
               child: Text(
                 text,
+                overflow: overflow,
                 textAlign: TextAlign.center,
                 style: style,
               ),

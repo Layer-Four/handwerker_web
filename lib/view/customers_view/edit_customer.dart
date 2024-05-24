@@ -30,7 +30,8 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
   void initState() {
     super.initState();
     if (widget.project != null) {
-      _firstNameController.text = widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
+      _firstNameController.text =
+          widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
     }
   }
 
@@ -97,7 +98,8 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                           children: [
                             const Padding(
                               padding: EdgeInsets.all(4),
-                              child: Text('Addresse', style: TextStyle(fontWeight: FontWeight.bold)),
+                              child:
+                                  Text('Addresse', style: TextStyle(fontWeight: FontWeight.bold)),
                             ),
                             Row(
                               children: [

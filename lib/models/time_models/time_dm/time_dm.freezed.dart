@@ -28,11 +28,12 @@ mixin _$TimeEntry {
   DateTime? get pauseEnd => throw _privateConstructorUsedError;
   DateTime? get pauseStart => throw _privateConstructorUsedError;
   int? get projectID => throw _privateConstructorUsedError;
-  int? get serviceID =>
-      throw _privateConstructorUsedError; // String? serviceTitle,
-  DateTime get startTime =>
+  int? get serviceID => throw _privateConstructorUsedError;
+  String? get serviceTitle => throw _privateConstructorUsedError;
+  DateTime get startTime => throw _privateConstructorUsedError;
+  int get type =>
       throw _privateConstructorUsedError; // @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
-  String get userID => throw _privateConstructorUsedError;
+  String? get userID => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,8 +56,10 @@ abstract class $TimeEntryCopyWith<$Res> {
       DateTime? pauseStart,
       int? projectID,
       int? serviceID,
+      String? serviceTitle,
       DateTime startTime,
-      String userID});
+      int type,
+      String? userID});
 }
 
 /// @nodoc
@@ -81,8 +84,10 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
     Object? pauseStart = freezed,
     Object? projectID = freezed,
     Object? serviceID = freezed,
+    Object? serviceTitle = freezed,
     Object? startTime = null,
-    Object? userID = null,
+    Object? type = null,
+    Object? userID = freezed,
   }) {
     return _then(_value.copyWith(
       date: null == date
@@ -121,14 +126,22 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
           ? _value.serviceID
           : serviceID // ignore: cast_nullable_to_non_nullable
               as int?,
+      serviceTitle: freezed == serviceTitle
+          ? _value.serviceTitle
+          : serviceTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      userID: null == userID
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as int,
+      userID: freezed == userID
           ? _value.userID
           : userID // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -151,8 +164,10 @@ abstract class _$$TimeEntryImplCopyWith<$Res>
       DateTime? pauseStart,
       int? projectID,
       int? serviceID,
+      String? serviceTitle,
       DateTime startTime,
-      String userID});
+      int type,
+      String? userID});
 }
 
 /// @nodoc
@@ -175,8 +190,10 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
     Object? pauseStart = freezed,
     Object? projectID = freezed,
     Object? serviceID = freezed,
+    Object? serviceTitle = freezed,
     Object? startTime = null,
-    Object? userID = null,
+    Object? type = null,
+    Object? userID = freezed,
   }) {
     return _then(_$TimeEntryImpl(
       date: null == date
@@ -215,21 +232,29 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
           ? _value.serviceID
           : serviceID // ignore: cast_nullable_to_non_nullable
               as int?,
+      serviceTitle: freezed == serviceTitle
+          ? _value.serviceTitle
+          : serviceTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      userID: null == userID
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as int,
+      userID: freezed == userID
           ? _value.userID
           : userID // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$TimeEntryImpl implements _TimeEntry {
+class _$TimeEntryImpl extends _TimeEntry {
   const _$TimeEntryImpl(
       {required this.date,
       this.description,
@@ -240,8 +265,11 @@ class _$TimeEntryImpl implements _TimeEntry {
       this.pauseStart,
       this.projectID,
       this.serviceID,
+      this.serviceTitle,
       required this.startTime,
-      this.userID = ''});
+      this.type = 1,
+      this.userID})
+      : super._();
 
   factory _$TimeEntryImpl.fromJson(Map<String, dynamic> json) =>
       _$$TimeEntryImplFromJson(json);
@@ -264,17 +292,20 @@ class _$TimeEntryImpl implements _TimeEntry {
   final int? projectID;
   @override
   final int? serviceID;
-// String? serviceTitle,
+  @override
+  final String? serviceTitle;
   @override
   final DateTime startTime;
-// @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
   @override
   @JsonKey()
-  final String userID;
+  final int type;
+// @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
+  @override
+  final String? userID;
 
   @override
   String toString() {
-    return 'TimeEntry(date: $date, description: $description, duration: $duration, endTime: $endTime, id: $id, pauseEnd: $pauseEnd, pauseStart: $pauseStart, projectID: $projectID, serviceID: $serviceID, startTime: $startTime, userID: $userID)';
+    return 'TimeEntry(date: $date, description: $description, duration: $duration, endTime: $endTime, id: $id, pauseEnd: $pauseEnd, pauseStart: $pauseStart, projectID: $projectID, serviceID: $serviceID, serviceTitle: $serviceTitle, startTime: $startTime, type: $type, userID: $userID)';
   }
 
   @override
@@ -297,8 +328,11 @@ class _$TimeEntryImpl implements _TimeEntry {
                 other.projectID == projectID) &&
             (identical(other.serviceID, serviceID) ||
                 other.serviceID == serviceID) &&
+            (identical(other.serviceTitle, serviceTitle) ||
+                other.serviceTitle == serviceTitle) &&
             (identical(other.startTime, startTime) ||
                 other.startTime == startTime) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.userID, userID) || other.userID == userID));
   }
 
@@ -315,7 +349,9 @@ class _$TimeEntryImpl implements _TimeEntry {
       pauseStart,
       projectID,
       serviceID,
+      serviceTitle,
       startTime,
+      type,
       userID);
 
   @JsonKey(ignore: true)
@@ -332,7 +368,7 @@ class _$TimeEntryImpl implements _TimeEntry {
   }
 }
 
-abstract class _TimeEntry implements TimeEntry {
+abstract class _TimeEntry extends TimeEntry {
   const factory _TimeEntry(
       {required final DateTime date,
       final String? description,
@@ -343,8 +379,11 @@ abstract class _TimeEntry implements TimeEntry {
       final DateTime? pauseStart,
       final int? projectID,
       final int? serviceID,
+      final String? serviceTitle,
       required final DateTime startTime,
-      final String userID}) = _$TimeEntryImpl;
+      final int type,
+      final String? userID}) = _$TimeEntryImpl;
+  const _TimeEntry._() : super._();
 
   factory _TimeEntry.fromJson(Map<String, dynamic> json) =
       _$TimeEntryImpl.fromJson;
@@ -367,10 +406,14 @@ abstract class _TimeEntry implements TimeEntry {
   int? get projectID;
   @override
   int? get serviceID;
-  @override // String? serviceTitle,
+  @override
+  String? get serviceTitle;
+  @override
   DateTime get startTime;
+  @override
+  int get type;
   @override // @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
-  String get userID;
+  String? get userID;
   @override
   @JsonKey(ignore: true)
   _$$TimeEntryImplCopyWith<_$TimeEntryImpl> get copyWith =>

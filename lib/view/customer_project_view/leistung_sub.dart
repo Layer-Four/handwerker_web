@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'dart:convert'; // For JSON operations
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -39,7 +40,7 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
       );
 
       if (response.statusCode == 200) {
-        print('Response data: ${response.data}');
+        log('Response data: ${response.data}');
         List<dynamic> data = response.data;
         setState(() {
           rowDataList = data.map((item) => Service.fromJson(item)).toList();
@@ -240,7 +241,7 @@ class EditableRow extends StatefulWidget {
   });
 
   @override
-  _EditableRowState createState() => _EditableRowState();
+  State<EditableRow> createState() => _EditableRowState();
 }
 
 class _EditableRowState extends State<EditableRow> {
@@ -523,9 +524,11 @@ class _CardWidgetState extends State<CardWidget> {
                                         hintText: 'Leistung',
                                         contentPadding: const EdgeInsets.all(10),
                                         border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: BorderSide.none),
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                          borderSide:
+                                              const BorderSide(color: Colors.grey, width: 0),
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                       ),
@@ -544,7 +547,8 @@ class _CardWidgetState extends State<CardWidget> {
                                 children: [
                                   const Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    child: Text('Preis/std',
+                                        style: TextStyle(fontWeight: FontWeight.bold)),
                                   ),
                                   const SizedBox(height: 15),
                                   Expanded(
@@ -556,9 +560,11 @@ class _CardWidgetState extends State<CardWidget> {
                                         hintText: 'Preis/std',
                                         contentPadding: const EdgeInsets.all(10),
                                         border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: BorderSide.none),
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                          borderSide:
+                                              const BorderSide(color: Colors.grey, width: 0),
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                       ),
@@ -589,7 +595,8 @@ class _CardWidgetState extends State<CardWidget> {
                               backgroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                                side: const BorderSide(
+                                    color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                               ),
                             ),
                             child: const Text(
@@ -609,7 +616,8 @@ class _CardWidgetState extends State<CardWidget> {
                                   // Show a snackbar when the app is still processing a previous request
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content: Text('Bitte warten Sie, während der Service gespeichert wird.'),
+                                      content: Text(
+                                          'Bitte warten Sie, während der Service gespeichert wird.'),
                                       duration: Duration(seconds: 2),
                                     ),
                                   );
@@ -635,7 +643,8 @@ class _CardWidgetState extends State<CardWidget> {
                               backgroundColor: Colors.orange,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                                side: const BorderSide(
+                                    color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                               ),
                             ),
                             child: const Text(

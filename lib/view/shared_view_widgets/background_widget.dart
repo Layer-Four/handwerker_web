@@ -19,7 +19,7 @@ class BackgroundWidget extends StatelessWidget {
             ),
           ),
           Container(
-            height: double.infinity,
+            height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
               color: Color.fromARGB(75, 126, 122, 122),
             ),

@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../customer_project_view/custom_project.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import 'customer_card.dart';
@@ -11,7 +12,7 @@ class CustomerBody extends ConsumerStatefulWidget {
   const CustomerBody({super.key});
 
   @override
-  _CustomerBodyState createState() => _CustomerBodyState();
+  ConsumerState<CustomerBody> createState() => _CustomerBodyState();
 }
 
 class _CustomerBodyState extends ConsumerState<CustomerBody> {
@@ -123,7 +124,7 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                   width: screenWidth / 2,
                   child: AddNewConsumable(
                     onSave: () {
-                      print('save');
+                      log('save');
                       //Todo: Call api for saving
                       //If Edit was clicked (therefore index != -1), also pass which customer is to be edited
                       //Might be a different apie then
@@ -132,7 +133,7 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                       });*/
                     },
                     onCancel: () {
-                      print('cancel');
+                      log('cancel');
                       setState(() {
                         isAddConsumableOpen = !isAddConsumableOpen;
                       });

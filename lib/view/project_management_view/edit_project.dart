@@ -32,7 +32,8 @@ class _AddNewProjectState extends State<AddNewProject> {
   void initState() {
     super.initState();
     if (widget.project != null) {
-      _projectNameController.text = widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
+      _projectNameController.text =
+          widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
     }
   }
 
@@ -98,7 +99,8 @@ class _AddNewProjectState extends State<AddNewProject> {
             suffixIcon: const Icon(Icons.calendar_today), // Icon to indicate it's a date field
           ),
           readOnly: true, // Prevent keyboard from appearing
-          onTap: () => _selectDate(controller, context), // Open date picker when the field is tapped
+          onTap: () =>
+              _selectDate(controller, context), // Open date picker when the field is tapped
         ),
       );
 
@@ -209,9 +211,13 @@ class _AddNewProjectState extends State<AddNewProject> {
                         ),
                       ),
                       const SizedBox(height: 5),
-                      buildDateField(controller: _dateStartController, hintText: 'Startdatum', context: context),
+                      buildDateField(
+                          controller: _dateStartController,
+                          hintText: 'Startdatum',
+                          context: context),
                       const SizedBox(height: 5),
-                      buildDateField(controller: _dateEndController, hintText: 'Enddatum', context: context),
+                      buildDateField(
+                          controller: _dateEndController, hintText: 'Enddatum', context: context),
                       const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

@@ -9,6 +9,7 @@ class AppColor {
   static Color kWhiteWOpacity = const Color.fromARGB(192, 255, 255, 255);
   static Color kBlue = Colors.blue;
   static Color kRed = Colors.red;
+  static Color kGrey = Colors.grey;
   Color get white => Colors.white;
   Color get black => Colors.black;
   static const appbarGreen = Color.fromARGB(255, 76, 141, 95);
@@ -27,7 +28,8 @@ class AppColor {
   });
   static const int _materialprimary = 0xFF626262;
 
-  static const MaterialColor materialprimaryAccent = MaterialColor(_materialprimaryAccentValue, <int, Color>{
+  static const MaterialColor materialprimaryAccent =
+      MaterialColor(_materialprimaryAccentValue, <int, Color>{
     100: Color(0xFFF39797),
     200: Color(_materialprimaryAccentValue),
     400: Color(0xFFFF2525),

@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../customer_project_view/custom_project.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import 'customer_card.dart';
@@ -11,7 +12,7 @@ class ProjectManagementBody extends ConsumerStatefulWidget {
   const ProjectManagementBody({super.key});
 
   @override
-  _ProjectManagementBodyState createState() => _ProjectManagementBodyState();
+  ConsumerState<ProjectManagementBody> createState() => _ProjectManagementBodyState();
 }
 
 class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
@@ -123,7 +124,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                   width: screenWidth / 2,
                   child: AddNewProject(
                     onSave: () {
-                      print('save');
+                      log('save');
                       //Todo: Call api for saving
                       //If Edit was clicked (therefore index != -1), also pass which customer is to be edited
                       //Might be a different apie then
@@ -132,7 +133,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                       });*/
                     },
                     onCancel: () {
-                      print('cancel');
+                      log('cancel');
                       setState(() {
                         isAddNewProject = !isAddNewProject;
                       });

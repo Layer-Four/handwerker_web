@@ -1,16 +1,17 @@
 import 'dart:convert'; // For JSON operations
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../shared_view_widgets/search_line_header.dart';
 import '/constants/api/api.dart';
-import 'package:http/http.dart' as http;
+import '../shared_view_widgets/search_line_header.dart';
 
 class ConsumableBody extends StatefulWidget {
   const ConsumableBody({super.key}); // Constructor with key initialization
 
   @override
-  _ConsumableBodyState createState() => _ConsumableBodyState();
+  State<ConsumableBody> createState() => _ConsumableBodyState();
 }
 
 class _ConsumableBodyState extends State<ConsumableBody> {
@@ -57,7 +58,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
   // }
   Future<void> fetchData() async {
     try {
-      print('Making API call to the server...');
+      log('Making API call to the server...');
       final response = await _api.getMaterialsList.timeout(
         const Duration(seconds: 10),
         onTimeout: () {
@@ -66,7 +67,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
       );
 
       if (response.statusCode == 200) {
-        print('Response data: ${response.data}');
+        log('Response data: ${response.data}');
 
         // Check if response.data is a string, if not, convert it
         final responseData = response.data is String ? response.data : json.encode(response.data);
@@ -77,7 +78,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
           isLoading = false;
         });
       } else {
-        print('Failed to fetch data: ${response.statusCode}');
+        log('Failed to fetch data: ${response.statusCode}');
         throw Exception('Failed to load data: HTTP status ${response.statusCode}');
       }
     } catch (e) {
@@ -105,18 +106,18 @@ class _ConsumableBodyState extends State<ConsumableBody> {
     try {
       final response = await _api.deleteServiceMaterial(row.id);
 
-      print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
+      log('Received response status code: ${response.statusCode} for row ID: ${row.id}');
 
       if (response.statusCode == 200 || response.statusCode == 204) {
-        print('Successfully deleted row with ID: ${row.id} from the backend.');
+        log('Successfully deleted row with ID: ${row.id} from the backend.');
         await fetchData(); // Fetch the updated list of services after deletion
         _showSnackBar('Row deleted successfully.');
       } else {
-        print('Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}');
+        log('Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}');
         _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
       }
     } catch (e) {
-      print('Exception when trying to delete row with ID: ${row.id}: $e');
+      log('Exception when trying to delete row with ID: ${row.id}: $e');
       _showSnackBar('Error when attempting to delete the item: $e');
     }
   }
@@ -124,7 +125,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
   Future<void> updateRow(Service row) async {
     try {
       final data = row.toJson();
-      print('Sending update request with data: $data');
+      log('Sending update request with data: $data');
 
       final response = await _api.updateConsumableEntry(data);
 
@@ -278,7 +279,7 @@ class EditableRow extends StatefulWidget {
   });
 
   @override
-  _EditableRowState createState() => _EditableRowState();
+  State<EditableRow> createState() => _EditableRowState();
 }
 
 class _EditableRowState extends State<EditableRow> {
@@ -466,7 +467,7 @@ class CardWidget extends StatefulWidget {
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
 
   @override
-  _CardWidgetState createState() => _CardWidgetState();
+  State<CardWidget> createState() => _CardWidgetState();
 }
 
 class _CardWidgetState extends State<CardWidget> {
@@ -673,7 +674,8 @@ class _CardWidgetState extends State<CardWidget> {
                                             borderSide: BorderSide.none,
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                            borderSide:
+                                                const BorderSide(color: Colors.grey, width: 0),
                                             borderRadius: BorderRadius.circular(12),
                                           ),
                                         ),
@@ -691,7 +693,8 @@ class _CardWidgetState extends State<CardWidget> {
                                     children: [
                                       const Align(
                                         alignment: Alignment.topLeft,
-                                        child: Text('Amount', style: TextStyle(fontWeight: FontWeight.bold)),
+                                        child: Text('Amount',
+                                            style: TextStyle(fontWeight: FontWeight.bold)),
                                       ),
                                       const SizedBox(height: 15),
                                       TextField(
@@ -706,7 +709,8 @@ class _CardWidgetState extends State<CardWidget> {
                                             borderSide: BorderSide.none,
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                            borderSide:
+                                                const BorderSide(color: Colors.grey, width: 0),
                                             borderRadius: BorderRadius.circular(12),
                                           ),
                                           errorText: _amountError.isEmpty ? null : _amountError,
@@ -725,19 +729,20 @@ class _CardWidgetState extends State<CardWidget> {
                                     children: [
                                       const Align(
                                         alignment: Alignment.topLeft,
-                                        child: Text('Einheit', style: TextStyle(fontWeight: FontWeight.bold)),
+                                        child: Text('Einheit',
+                                            style: TextStyle(fontWeight: FontWeight.bold)),
                                       ),
                                       const SizedBox(height: 15),
                                       DropdownButton<Unit>(
                                         isExpanded: true,
                                         value: _selectedUnit,
                                         hint: const Text('Einheit'),
-                                        items: _units.map((Unit unit) {
-                                          return DropdownMenuItem<Unit>(
-                                            value: unit,
-                                            child: Text(unit.name),
-                                          );
-                                        }).toList(),
+                                        items: _units
+                                            .map((Unit unit) => DropdownMenuItem<Unit>(
+                                                  value: unit,
+                                                  child: Text(unit.name),
+                                                ))
+                                            .toList(),
                                         onChanged: (Unit? newValue) {
                                           setState(() {
                                             _selectedUnit = newValue;
@@ -757,7 +762,8 @@ class _CardWidgetState extends State<CardWidget> {
                                     children: [
                                       const Align(
                                         alignment: Alignment.topLeft,
-                                        child: Text('Price', style: TextStyle(fontWeight: FontWeight.bold)),
+                                        child: Text('Price',
+                                            style: TextStyle(fontWeight: FontWeight.bold)),
                                       ),
                                       const SizedBox(height: 15),
                                       TextField(
@@ -772,7 +778,8 @@ class _CardWidgetState extends State<CardWidget> {
                                             borderSide: BorderSide.none,
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                            borderSide:
+                                                const BorderSide(color: Colors.grey, width: 0),
                                             borderRadius: BorderRadius.circular(12),
                                           ),
                                           errorText: _priceError.isEmpty ? null : _priceError,
@@ -804,7 +811,8 @@ class _CardWidgetState extends State<CardWidget> {
                                   backgroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                                    side: const BorderSide(
+                                        color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                                   ),
                                 ),
                                 child: const Text(
@@ -824,7 +832,8 @@ class _CardWidgetState extends State<CardWidget> {
                                   backgroundColor: Colors.orange,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    side: const BorderSide(color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
+                                    side: const BorderSide(
+                                        color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                                   ),
                                 ),
                                 child: const Text(
@@ -849,10 +858,8 @@ class Unit {
 
   Unit({required this.id, required this.name});
 
-  factory Unit.fromJson(Map<String, dynamic> json) {
-    return Unit(
-      id: json['id'],
-      name: json['name'],
-    );
-  }
+  factory Unit.fromJson(Map<String, dynamic> json) => Unit(
+        id: json['id'],
+        name: json['name'],
+      );
 }

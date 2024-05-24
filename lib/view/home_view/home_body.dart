@@ -6,7 +6,7 @@ class HomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
-        height: double.infinity,
+        height: MediaQuery.of(context).size.height,
         child: Center(
           child: Stack(
             alignment: Alignment.center, // Align the text in the center of the image
