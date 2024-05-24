@@ -22,7 +22,7 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constrains) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 6),
           child: SizedBox(
             height: 50,
             width: constrains.maxWidth,

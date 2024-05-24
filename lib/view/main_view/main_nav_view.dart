@@ -7,7 +7,7 @@ import '../customer_project_view/leistung_sub.dart';
 import '../customers_view/doc_screen.dart';
 import '../home_view/home_body.dart';
 import '../project_management_view/doc_screen.dart';
-import '../time_entry_view/time_entry_widgets/work_assignment.view.dart';
+import '../time_entry_view/work_assignment.view.dart';
 import '../users_view/user_view.dart';
 
 class MainViewNavigator extends ConsumerStatefulWidget {
@@ -148,7 +148,6 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
   Widget _buildpopUpNav(BuildContext context, BoxConstraints constrains) => Align(
         alignment: Alignment.topLeft,
         child: IconButton(
-          // * Navigationbar close
           onPressed: () => showDialog(
             barrierColor: Colors.transparent,
             context: context,
@@ -183,7 +182,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                         nextView: MainView.timeEntry,
                         height: 100,
                         subcategories: [
-                          'Zeiteintrag neu',
+                          'Zeiteintrag',
                         ],
                         subcategoryMainViews: [MainView.timeEntry],
                       ),
