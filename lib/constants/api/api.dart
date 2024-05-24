@@ -59,7 +59,10 @@ class Api {
   final String _getListUsersShort = '/user/list';
   final String _getListCustomer = '/customer/list';
   final String _getListProject = '/project/list';
+
+  final String _putProjectWebMaterialAdress = 'material/update';
   final String _deleteService = '/service/delete';
+  final String _deleteServiceMaterial = '/service/delete';
   final String _putResetPasswordAdress = '/user/password/reset';
 
   Future<Response> get getAllProjects => _api.get(_getAllProjects);
@@ -79,6 +82,8 @@ class Api {
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
 
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
+  Future<Response> deleteServiceMaterial(int serviceID) =>
+      api.delete('$_deleteServiceMaterial/$serviceID');
   Future<Response> createNewUser(Map<String, dynamic> user) =>
       _api.post(_postNewUserAdress, data: user);
   Future<Response> postloginUser(loginData) => _api.post(_loginUserAdress, data: loginData);
@@ -86,6 +91,10 @@ class Api {
   Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
   Future<Response> postTimeEnty(data) => _api.post(_postTimeEntryAdress, data: data);
   Future<Response> updateProjectConsumableEntry(data) => _api.post(_putProjectMaterial, data: data);
+
+  Future<Response> updateConsumableEntry(Map<String, dynamic> json) =>
+      api.post(_putProjectWebMaterialAdress, data: json);
+
   Future<Response> updateDocumentationEntry(data) => _api.post(_putDocumentationDay, data: data);
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
   Future<Response> putResetPassword(Map<String, dynamic> json) =>

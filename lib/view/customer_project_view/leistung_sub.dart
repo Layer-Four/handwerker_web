@@ -1,11 +1,12 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'dart:convert'; // For JSON operations
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '/constants/api/api.dart';
 
 import '../shared_view_widgets/search_line_header.dart';
+import '/constants/api/api.dart';
 
 class ConsumableLeistungBody extends StatefulWidget {
   const ConsumableLeistungBody({super.key}); // Constructor with key initialization
@@ -91,55 +92,6 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
     }
   }
 
-  // void deleteService(Service row) async {
-  //   final Api api = Api();
-
-  //   try {
-  //     final response = await api.deleteService(row.id);
-  //     print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
-
-  //     if (response.statusCode == 200 || response.statusCode == 204) {
-  //       print('Successfully deleted row with ID: ${row.id} from the backend.');
-  //       api.getExecuteableServices(),
-  //       setState(() {
-  //         // TODO: new loading from Database
-  //         rowDataList.removeWhere((item) => item.id == row.id);
-  //       });
-  //     } else {
-  //       print(
-  //           'Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.data}');
-  //       _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     print('Exception when trying to delete row with ID: ${row.id}: $e');
-  //     _showSnackBar('Error when attempting to delete the item: $e');
-  //   }
-  // }
-
-  // void deleteService(Service row) async {
-  //   final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/delete/${row.id}');
-  //   try {
-  //     final response = await http.delete(url);
-
-  //     print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
-
-  //     if (response.statusCode == 200 || response.statusCode == 204) {
-  //       print('Successfully deleted row with ID: ${row.id} from the backend.');
-  //       setState(() {
-  //         // TODO: new loading from Database
-  //         rowDataList.removeWhere((item) => item.id == row.id);
-  //       });
-  //     } else {
-  //       print(
-  //           'Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.body}');
-  //       _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     print('Exception when trying to delete row with ID: ${row.id}: $e');
-  //     _showSnackBar('Error when attempting to delete the item: $e');
-  //   }
-  // }
-
   Future<void> updateRow(Service row) async {
     final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/update');
     try {
@@ -169,13 +121,6 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
       _showSnackBar('Network error: $e');
     }
   }
-
-// void removeRow(RowData row) {
-//     print("Deleting row with ID: ${row.id}"); // Debugging output
-//     setState(() {
-//       rowDataList.removeWhere((item) => item.id == row.id);
-//     });
-// }
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +225,6 @@ class Service {
 
 class EditableRow extends StatefulWidget {
   final String originalTitle;
-
   final String originalPrice;
   final VoidCallback onDelete;
   final Function(Service) onUpdate;
@@ -296,13 +240,11 @@ class EditableRow extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _EditableRowState createState() => _EditableRowState();
 }
 
 class _EditableRowState extends State<EditableRow> {
   late TextEditingController _titleController;
-
   late TextEditingController _priceController;
   late String currentTitle;
   late String currentPrice;
@@ -311,36 +253,29 @@ class _EditableRowState extends State<EditableRow> {
   @override
   void initState() {
     super.initState();
-    // Initialize all controllers here
     _titleController = TextEditingController(text: widget.originalTitle);
-
-    // Initialize currentPrice before using it to set up _priceController
-    currentPrice = widget.originalPrice; // Set currentPrice from widget's originalPrice
+    currentPrice = widget.originalPrice;
     _priceController = TextEditingController(text: widget.originalPrice);
-
     currentTitle = widget.originalTitle;
   }
 
   @override
   void dispose() {
     _titleController.dispose();
-
     _priceController.dispose();
-
     super.dispose();
   }
 
   void _showDeleteConfirmation() {
     showDialog(
       context: context,
-      barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
+      barrierDismissible: false,
       builder: (BuildContext context) => Dialog(
         child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.4, // 80% of screen width
-          height: MediaQuery.of(context).size.height * 0.3, // 40% of screen height
+          width: MediaQuery.of(context).size.width * 0.4,
+          height: MediaQuery.of(context).size.height * 0.3,
           child: AlertDialog(
             title: const Text('Sind Sie sicher, dass Sie dieses Objekt löschen wollen?'),
-            // content: Text("Sind Sie sicher, dass Sie dieses Objekt löschen wollen?"),
             actionsAlignment: MainAxisAlignment.spaceEvenly,
             actions: <Widget>[
               TextButton(
@@ -349,8 +284,8 @@ class _EditableRowState extends State<EditableRow> {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                  widget.onDelete(); // Proceed with deleting the row
+                  Navigator.of(context).pop();
+                  widget.onDelete();
                 },
                 child: const Text('Ja'),
               ),
@@ -360,7 +295,7 @@ class _EditableRowState extends State<EditableRow> {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
                 },
                 child: const Text('Nein'),
               ),
@@ -397,7 +332,6 @@ class _EditableRowState extends State<EditableRow> {
                 readOnly: !isEditing,
               ),
             ),
-
             const SizedBox(width: 20),
             Expanded(
               child: TextField(
@@ -411,35 +345,27 @@ class _EditableRowState extends State<EditableRow> {
               ),
             ),
             const Spacer(),
-            // IconButton to handle cancel action
             IconButton(
-              icon: Visibility(
-                visible: isEditing, // Show cancel icon only when editing
-                child: const Icon(Icons.cancel),
-              ),
-              onPressed: () {
-                setState(() {
-                  // Check if currently editing
-                  if (isEditing) {
-                    isEditing = false; // Disable editing mode
-                    // Revert text fields to their original values
-                    _titleController.text = currentTitle;
-                    _priceController.text = currentPrice;
-                  }
-                });
-              },
+              icon: Icon(isEditing ? Icons.cancel : Icons.delete),
+              onPressed: isEditing
+                  ? () {
+                      setState(() {
+                        isEditing = false;
+                        _titleController.text = currentTitle;
+                        _priceController.text = currentPrice;
+                      });
+                    }
+                  : _showDeleteConfirmation,
             ),
-
-// IconButton to toggle between save and edit modes
-
             IconButton(
               icon: Icon(isEditing ? Icons.save : Icons.edit),
               onPressed: () {
                 if (isEditing) {
                   Service updatedRow = Service(
-                      id: widget.row.id,
-                      title: _titleController.text,
-                      price: _priceController.text);
+                    id: widget.row.id,
+                    title: _titleController.text,
+                    price: _priceController.text,
+                  );
 
                   widget.onUpdate(updatedRow);
 
@@ -454,11 +380,6 @@ class _EditableRowState extends State<EditableRow> {
                   });
                 }
               },
-            ),
-
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: _showDeleteConfirmation,
             ),
           ],
         ),
