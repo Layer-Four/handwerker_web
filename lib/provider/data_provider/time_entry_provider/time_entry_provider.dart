@@ -41,14 +41,14 @@ class EventSourceNotifier extends Notifier<EventSource?> {
     }
   }
 
-  Future<List<CalendarEventData>> loadEvents() async {
+  Future<List<CalendarEventData<TimeVMAdapter>>> loadEvents() async {
     try {
       final res = await _api.getAllTimeEntrys;
       if (res.statusCode != 200) {
         return [];
       }
       final List data = res.data.map((e) => e).toList();
-      final List<CalendarEventData> result = data.map(
+      final List<CalendarEventData<TimeVMAdapter>> result = data.map(
         (e) {
           final object = TimeVMAdapter.fromTimeEntriesVM(TimeEntry.fromJson(e));
           String title = object.customerName ?? 'Kein Kunde';
