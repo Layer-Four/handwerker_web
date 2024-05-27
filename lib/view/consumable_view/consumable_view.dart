@@ -514,7 +514,7 @@ class _CardWidgetState extends State<CardWidget> {
         throw Exception('Failed to load units');
       }
     } catch (e) {
-      print('Error fetching units: $e');
+      log('Error fetching units: $e');
       setState(() {
         _isFetchingUnits = false;
       });
