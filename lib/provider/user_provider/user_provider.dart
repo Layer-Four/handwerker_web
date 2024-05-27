@@ -148,7 +148,7 @@ class UserNotifier extends Notifier<UserVM> {
     try {
       log('Usertoken ${state.userToken}');
       log(newUser.toString());
-      final response = await _api.createNewUser(newUser);
+      final response = await _api.postCreateNewUser(newUser);
       if (response.statusCode != 200) {
         throw Exception('${response.statusCode} Invalid Api call ${response.data}');
       }

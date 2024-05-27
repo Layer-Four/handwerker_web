@@ -9,13 +9,13 @@ final projectVMProvider =
     AsyncNotifierProvider<ProjectVMNotifer, List<ProjectVM>?>(() => ProjectVMNotifer());
 
 class ProjectVMNotifer extends AsyncNotifier<List<ProjectVM>?> {
-  final Api api = Api();
+  final Api _api = Api();
   @override
   List<ProjectVM>? build() => null;
 
   void loadpProject() async {
     try {
-      final response = await api.getProjectsDM;
+      final response = await _api.getProjectsDM;
       if (response.statusCode != 200) {
         if (response.statusCode == 401) {
           // TODO: implement logout logic!

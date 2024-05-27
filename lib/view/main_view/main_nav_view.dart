@@ -7,7 +7,7 @@ import '../customer_project_view/leistung_sub.dart';
 import '../customers_view/doc_screen.dart';
 import '../home_view/home_body.dart';
 import '../project_management_view/doc_screen.dart';
-import '../time_entry_view/work_assignment.view.dart';
+import '../time_entry_view/work_calendar_view.dart';
 import '../users_view/user_view.dart';
 
 class MainViewNavigator extends ConsumerStatefulWidget {
@@ -38,7 +38,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                     width: width <= 1000 ? width - 50 : ((width / 10) * 8),
                     child: switch (view) {
                       MainView.home => const HomeBody(),
-                      MainView.timeEntry => const WorkAssignmenView(),
+                      MainView.timeEntry => const WorkCalendarView(),
                       MainView.projectCustomer => const CustomerProjectMain(),
                       MainView.consumables => const ConsumableBody(),
                       MainView.material => const ConsumableBody(),
