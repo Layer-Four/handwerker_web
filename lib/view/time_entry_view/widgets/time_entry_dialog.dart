@@ -207,16 +207,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
       );
 
   Widget _buildProjectField(List<Project> projects) {
-    if (projects.isEmpty) {
-      // No projects available, use default project
-      setState(() {
-        _project = _defaultProject;
-      });
-    } else {
-      // Projects available, use the first project
-      setState(() {
-        _project = projects.first;
-      });
+    if (_project == null && projects.isNotEmpty) {
+      _project = projects.first;
     }
 
     return Padding(
