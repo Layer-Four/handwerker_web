@@ -1,5 +1,8 @@
+import 'dart:convert'; // For JSON operations
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 
 class ForgetScreen extends ConsumerStatefulWidget {
   const ForgetScreen({super.key});
@@ -11,6 +14,60 @@ class ForgetScreen extends ConsumerStatefulWidget {
 class _ForgetScreenState extends ConsumerState<ForgetScreen> {
   final TextEditingController _userNameController = TextEditingController();
   bool obscureText = true;
+  bool isLoading = false;
+
+  Future<void> resetPassword() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final String username = _userNameController.text.trim();
+    const String mandantIdString = '1';
+    final int mandantId = int.parse(mandantIdString);
+
+    if (username.isEmpty) {
+      _showSnackBar('Please enter the username.');
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+
+    final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/user/password/request');
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({'MandantID': mandantId, 'UserName': username});
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      log('Response status code: ${response.statusCode}');
+      log('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData.containsKey('id')) {
+          // Assuming 'id' presence means success
+          _showSnackBar('Passwort-Reset-Anfrage erfolgreich gesendet.');
+        } else {
+          _showSnackBar(
+              'Fehler beim Senden der Passwort-Reset-Anfrage. ${responseData['message'] ?? 'Bitte versuchen Sie es erneut.'}');
+        }
+      } else {
+        _showSnackBar('Fehler beim Senden der Passwort-Reset-Anfrage. Statuscode: ${response.statusCode}');
+      }
+    } catch (e) {
+      _showSnackBar('Fehler beim Senden der Anfrage: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void _showSnackBar(String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) => Material(
@@ -80,8 +137,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                             height: 40,
                             child: TextFormField(
                               textInputAction: TextInputAction.next,
-                              validator: (value) =>
-                                  value!.length < 6 ? 'Required' : null,
+                              validator: (value) => value!.length < 6 ? 'Required' : null,
                               obscureText: !obscureText,
                               controller: _userNameController,
                               decoration: const InputDecoration(
@@ -99,20 +155,22 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                       ),
                       const SizedBox(height: 140),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: isLoading ? null : resetPassword,
                         style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          backgroundColor:
-                              const Color.fromARGB(255, 224, 142, 60),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          backgroundColor: const Color.fromARGB(255, 224, 142, 60),
                           padding: const EdgeInsets.all(10),
                           fixedSize: const Size.fromHeight(40),
                         ),
-                        child: const Center(
-                          child: Text(
-                            'Layer Four kontaktieren',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                        child: Center(
+                          child: isLoading
+                              ? const CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                )
+                              : const Text(
+                                  'Layer Four kontaktieren',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                         ),
                       ),
                     ],
