@@ -703,7 +703,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           text: 'Eintrag erstellen',
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
           onPressed: () {
-            ref.read(eventSourceProvider.notifier).saveTimeEntry(_entry);
+            ref.read(timeVMProvider.notifier).saveTimeEntry(_entry);
             // TODO: uncommand this, after API is ready           ref.read(timeEntryProvider.notifier).uploadTimeEntry(_entry);
             Navigator.of(context).pop();
             // if (_startController.text.isEmpty || _endController.text.isEmpty) {

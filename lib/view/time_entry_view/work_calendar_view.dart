@@ -28,7 +28,7 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
     _eventCtr = EventController();
   }
 
-  void _loadEvents() => ref.read(eventSourceProvider.notifier).loadEvents().then((i) {
+  void _loadEvents() => ref.read(timeVMProvider.notifier).loadEvents().then((i) {
         setState(() {
           _allEvents.addAll(i);
           _eventCtr.addAll(_allEvents);

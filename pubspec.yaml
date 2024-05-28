@@ -21,7 +21,6 @@ dependencies:
   intl: any
   json_annotation: ^4.8.1
   shared_preferences: ^2.2.2
-  syncfusion_flutter_calendar: ^25.2.4
   calendar_view: ^1.2.0
   pdf: ^3.10.8
   path_provider: ^2.1.3
