@@ -22,20 +22,24 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
   final List<UserRole> _roles = [];
   Future<List<UserDataShort>> loadUserEntries() async {
     final loadedUsers = await ref.read(userProvider.notifier).loadUserEntries();
-    setState(() => users.addAll(loadedUsers));
+    setState(() {
+      users.addAll(loadedUsers);
+      final setL = users.toSet().toList();
+      users.clear();
+      users.addAll(setL);
+    });
     return loadedUsers;
   }
 
   void initUserRoles() => ref.read(userProvider.notifier).loadUserRoles().then(
-        (e) => setState(
-          () => _roles.addAll(e),
-        ),
+        (e) => setState(() => _roles.addAll(e)),
       );
 
   @override
   void initState() {
     super.initState();
     initUserRoles();
+    loadUserEntries();
   }
 
   @override
