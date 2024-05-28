@@ -61,6 +61,7 @@ class Api {
   final String _deleteService = '/service/delete';
   final String _deleteServiceMaterial = '/service/delete';
   final String _putResetPasswordAdress = '/user/password/reset';
+  final String _postCreateProjectEntry = '/project/create';
 
   Future<Response> get getAllProjects => _api.get(_getAllProjects);
   Future<Response> get getAllTimeEntrys => _api.get(_getAllTimeTacks);
@@ -95,6 +96,7 @@ class Api {
 
   Future<Response> postUpdateDocumentationEntry(data) =>
       _api.post(_putDocumentationDay, data: data);
+  Future<Response> postCreateProjectEntry(data) => _api.post(_postCreateProjectEntry, data: data);
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
   Future<Response> putResetPassword(Map<String, dynamic> json) =>
       _api.put(_putResetPasswordAdress, data: json);
