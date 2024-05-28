@@ -7,12 +7,10 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_provider.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
-import '../user_view.dart';
 
 class AddNewEmployee extends ConsumerStatefulWidget {
   final VoidCallback? onSave;
   final VoidCallback? onCancel;
-  final UserEntry? project;
   final double overflowWidth;
 
   const AddNewEmployee({
@@ -20,7 +18,6 @@ class AddNewEmployee extends ConsumerStatefulWidget {
     this.onSave,
     required this.onCancel,
     this.overflowWidth = 850,
-    this.project,
   });
 
   @override
@@ -50,10 +47,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
   @override
   void initState() {
     super.initState();
-    if (widget.project != null) {
-      _nameController.text =
-          widget.project!.name; // Assuming 'customer' is a field in CustomeProject
-    }
+
     initUserRoles();
   }
 
