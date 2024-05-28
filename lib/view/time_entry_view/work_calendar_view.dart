@@ -5,8 +5,8 @@ import '../../models/time_models/time_vm/time_vm.dart';
 import '../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import 'widgets/calendar_options_widget.dart';
+import 'widgets/custom_day_view.dart';
 import 'widgets/custom_week_view.dart';
-import 'widgets/info_tale_widget.dart';
 
 class WorkCalendarView extends ConsumerStatefulWidget {
   const WorkCalendarView({super.key});
@@ -26,33 +26,6 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
     super.initState();
     _loadEvents();
     _eventCtr = EventController();
-  }
-
-  void _loadEvents() => ref.read(eventSourceProvider.notifier).loadEvents().then((i) {
-        setState(() {
-          _allEvents.addAll(i);
-          _eventCtr.addAll(_allEvents);
-        });
-      });
-
-  void _updateEventController(bool isFilterWorkOrder) {
-    final oldEvents = [..._eventCtr.allEvents];
-    _eventCtr.removeAll(oldEvents);
-    if (isFilterWorkOrder == _isWorkOrder) {
-      _eventCtr.addAll(_allEvents);
-      setState(() => _isWorkOrder = null);
-      return;
-    }
-    if (isFilterWorkOrder) {
-      final workOrder = _allEvents.where((e) => e.event!.type == TimeEntryType.workOrder).toList();
-      _eventCtr.addAll(workOrder);
-      setState(() => _isWorkOrder = isFilterWorkOrder);
-      return;
-    }
-    // final timeEntrys = _allEvents.where((e) => e.event!.type == TimeEntryType.timeEntry).toList();
-    _eventCtr.addAll(_allEvents.where((e) => e.event!.type == TimeEntryType.timeEntry).toList());
-    setState(() => _isWorkOrder = isFilterWorkOrder);
-    return;
   }
 
   @override
@@ -93,39 +66,31 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
       ),
     );
   }
-}
 
-class CustomDayView extends ConsumerStatefulWidget {
-  const CustomDayView({super.key});
+  void _loadEvents() => ref.read(timeVMProvider.notifier).loadEvents().then((i) {
+        setState(() {
+          _allEvents.addAll(i);
+          _eventCtr.addAll(_allEvents);
+        });
+      });
 
-  @override
-  ConsumerState<CustomDayView> createState() => _CustomDayViewState();
-}
-
-class _CustomDayViewState extends ConsumerState<CustomDayView> {
-  @override
-  Widget build(BuildContext context) => DayView(
-        controller: CalendarControllerProvider.of(context).controller,
-        minDay: DateTime.now().add(const Duration(days: -(365 * 4))),
-        maxDay: DateTime.now().add(const Duration(days: 365 * 10)),
-        onEventTap: (events, date) => showDialog(
-            context: context,
-            builder: (context) {
-              final e = events.map((e) => e.event as TimeVMAdapter).toList();
-              if (e.length > 1) {
-                throw Exception('events more than expactet');
-              }
-              return Dialog(
-                child: Flexible(
-                  child: Material(
-                    child: InfoTableWidget(entry: e.first),
-                    // child: ListView.builder(
-                    //   itemCount: e.length,
-                    //   itemBuilder: (context, i) => InfoTableWidget(entry: e[i]),
-                    // ),
-                  ),
-                ),
-              );
-            }),
-      );
+  void _updateEventController(bool isFilterWorkOrder) {
+    final oldEvents = [..._eventCtr.allEvents];
+    _eventCtr.removeAll(oldEvents);
+    if (isFilterWorkOrder == _isWorkOrder) {
+      _eventCtr.addAll(_allEvents);
+      setState(() => _isWorkOrder = null);
+      return;
+    }
+    if (isFilterWorkOrder) {
+      final workOrder = _allEvents.where((e) => e.event!.type == TimeEntryType.workOrder).toList();
+      _eventCtr.addAll(workOrder);
+      setState(() => _isWorkOrder = isFilterWorkOrder);
+      return;
+    }
+    // final timeEntrys = _allEvents.where((e) => e.event!.type == TimeEntryType.timeEntry).toList();
+    _eventCtr.addAll(_allEvents.where((e) => e.event!.type == TimeEntryType.timeEntry).toList());
+    setState(() => _isWorkOrder = isFilterWorkOrder);
+    return;
+  }
 }

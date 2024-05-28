@@ -22,6 +22,7 @@ UserDataShort _$UserDataShortFromJson(Map<String, dynamic> json) {
 mixin _$UserDataShort {
   String get id => throw _privateConstructorUsedError;
   String get userName => throw _privateConstructorUsedError;
+  List<UserRole> get roles => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,7 @@ abstract class $UserDataShortCopyWith<$Res> {
           UserDataShort value, $Res Function(UserDataShort) then) =
       _$UserDataShortCopyWithImpl<$Res, UserDataShort>;
   @useResult
-  $Res call({String id, String userName});
+  $Res call({String id, String userName, List<UserRole> roles});
 }
 
 /// @nodoc
@@ -53,6 +54,7 @@ class _$UserDataShortCopyWithImpl<$Res, $Val extends UserDataShort>
   $Res call({
     Object? id = null,
     Object? userName = null,
+    Object? roles = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -63,6 +65,10 @@ class _$UserDataShortCopyWithImpl<$Res, $Val extends UserDataShort>
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
+      roles: null == roles
+          ? _value.roles
+          : roles // ignore: cast_nullable_to_non_nullable
+              as List<UserRole>,
     ) as $Val);
   }
 }
@@ -75,7 +81,7 @@ abstract class _$$UserDataShortImplCopyWith<$Res>
       __$$UserDataShortImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String userName});
+  $Res call({String id, String userName, List<UserRole> roles});
 }
 
 /// @nodoc
@@ -91,6 +97,7 @@ class __$$UserDataShortImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? userName = null,
+    Object? roles = null,
   }) {
     return _then(_$UserDataShortImpl(
       id: null == id
@@ -101,6 +108,10 @@ class __$$UserDataShortImplCopyWithImpl<$Res>
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
+      roles: null == roles
+          ? _value._roles
+          : roles // ignore: cast_nullable_to_non_nullable
+              as List<UserRole>,
     ));
   }
 }
@@ -108,8 +119,12 @@ class __$$UserDataShortImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserDataShortImpl extends _UserDataShort {
-  const _$UserDataShortImpl({required this.id, required this.userName})
-      : super._();
+  const _$UserDataShortImpl(
+      {required this.id,
+      required this.userName,
+      final List<UserRole> roles = const []})
+      : _roles = roles,
+        super._();
 
   factory _$UserDataShortImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDataShortImplFromJson(json);
@@ -118,10 +133,18 @@ class _$UserDataShortImpl extends _UserDataShort {
   final String id;
   @override
   final String userName;
+  final List<UserRole> _roles;
+  @override
+  @JsonKey()
+  List<UserRole> get roles {
+    if (_roles is EqualUnmodifiableListView) return _roles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_roles);
+  }
 
   @override
   String toString() {
-    return 'UserDataShort(id: $id, userName: $userName)';
+    return 'UserDataShort(id: $id, userName: $userName, roles: $roles)';
   }
 
   @override
@@ -131,12 +154,14 @@ class _$UserDataShortImpl extends _UserDataShort {
             other is _$UserDataShortImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userName, userName) ||
-                other.userName == userName));
+                other.userName == userName) &&
+            const DeepCollectionEquality().equals(other._roles, _roles));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userName);
+  int get hashCode => Object.hash(
+      runtimeType, id, userName, const DeepCollectionEquality().hash(_roles));
 
   @JsonKey(ignore: true)
   @override
@@ -155,7 +180,8 @@ class _$UserDataShortImpl extends _UserDataShort {
 abstract class _UserDataShort extends UserDataShort {
   const factory _UserDataShort(
       {required final String id,
-      required final String userName}) = _$UserDataShortImpl;
+      required final String userName,
+      final List<UserRole> roles}) = _$UserDataShortImpl;
   const _UserDataShort._() : super._();
 
   factory _UserDataShort.fromJson(Map<String, dynamic> json) =
@@ -165,6 +191,8 @@ abstract class _UserDataShort extends UserDataShort {
   String get id;
   @override
   String get userName;
+  @override
+  List<UserRole> get roles;
   @override
   @JsonKey(ignore: true)
   _$$UserDataShortImplCopyWith<_$UserDataShortImpl> get copyWith =>
