@@ -25,8 +25,9 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
     setState(() {
       users.addAll(loadedUsers);
       final setL = users.toSet().toList();
-      users.clear();
-      users.addAll(setL);
+      users
+        ..clear()
+        ..addAll(setL);
     });
     return loadedUsers;
   }
