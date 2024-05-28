@@ -1,40 +1,27 @@
-enum Measurement {
-  x,
-  m3,
-  m,
-  stk,
-  cm,
-  l,
-  mm,
-  qm,
-  qcm,
-}
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-extension MeasurementExtension on Measurement {
-  String getTitle() => switch (this) {
-        Measurement.m => 'Meter',
-        Measurement.stk => 'Stück',
-        Measurement.cm => 'Centimeter',
-        Measurement.l => 'Liter',
-        Measurement.mm => 'MilliMeter',
-        Measurement.qm => 'Quadrat Meter',
-        Measurement.qcm => 'Quadrat Centimeter',
-        Measurement.x => 'X',
-        Measurement.m3 => 'm3',
-      };
-}
+import '../unit/unit.dart';
 
-class ConsumableVM {
-  final String title;
-  final String? kuID;
-  final Measurement measurement;
-  final int amount;
-  final int priceInCents;
-  const ConsumableVM({
-    this.amount = 1,
-    this.kuID,
-    required this.measurement,
-    required this.priceInCents,
-    required this.title,
-  });
+part 'consumable_vm.freezed.dart';
+part 'consumable_vm.g.dart';
+
+@Freezed()
+class ConsumableVM with _$ConsumableVM {
+  const factory ConsumableVM({
+    required int amount,
+    required int id,
+    required String name,
+    required int price,
+    required Unit unit,
+  }) = _ConsumableVM;
+  const ConsumableVM._();
+  factory ConsumableVM.wihUnitAndJson(Map<String, dynamic> json, Unit unit) => ConsumableVM(
+        amount: json['amount'],
+        id: json['id'],
+        name: json['name'],
+        price: json['price'],
+        unit: unit,
+      );
+
+  factory ConsumableVM.fromJson(Map<String, dynamic> json) => _$ConsumableVMFromJson(json);
 }

@@ -1,59 +1,79 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert'; // For JSON operations
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
+import '/constants/api/api.dart'; // Assuming this contains the Api class
+import '../../models/consumable_models/unit/unit.dart';
+import '../../provider/consumeable_proivder/consumable_provider.dart';
 import '../shared_view_widgets/search_line_header.dart';
-import '/constants/api/api.dart';
 import 'widgets/card_widget.dart';
 
-class ConsumableBody extends StatefulWidget {
+class ConsumableBody extends ConsumerStatefulWidget {
   const ConsumableBody({super.key}); // Constructor with key initialization
 
   @override
-  State<ConsumableBody> createState() => _ConsumableBodyState();
+  ConsumerState<ConsumableBody> createState() => _ConsumableBodyState();
 }
 
-class _ConsumableBodyState extends State<ConsumableBody> {
-  List<Service> rowDataList = [];
+class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
+  final List<Unit> _units = [];
+  // TODO: change Service with ConsumableVM
+  final List<ConsumableVM> rowDataList = [];
   final Api _api = Api();
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    loadMaterialList();
   }
 
   bool isLoading = true;
+  void loadUnits() {
+    ref.read(consumableProvider.notifier).loadUnits().then(
+          (value) => setState(() => _units.addAll(value)),
+        );
+  }
 
-  Future<void> fetchData() async {
+  Future<void> loadMaterialList() async {
+    ref.read(consumableProvider.notifier).loadConsumables();
+    final material = ref.watch(consumableProvider);
     try {
-      log('Making API call to the server...');
-      final response = await _api.getMaterialsList.timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          throw Exception('The connection has timed out, please try again!');
-        },
-      );
+      final response = await _api.getMaterialsList;
+      // .timeout(
+      //   const Duration(seconds: 10),
+      //   onTimeout: () {
+      //     throw Exception('The connection has timed out, please try again!');
+      //   },
+      // );
 
       if (response.statusCode == 200) {
-        log('Response data: ${response.data}');
+        // final responseData = response.data is String ? response.data : json.encode(response.data);
 
-        // Check if response.data is a string, if not, convert it
-        final responseData = response.data is String ? response.data : json.encode(response.data);
+        final List data = response.data.map((e) => e).toList();
+        // json.decode(responseData);
+        log('Decoded response data:\n$data');
 
-        List<dynamic> data = json.decode(responseData);
+        // final services = data.map((item) => Service.fromJson(item)).toList();
         setState(() {
-          rowDataList = data.map((item) => Service.fromJson(item)).toList();
+          // rowDataList.addAll(services);
+          log('Updated rowDataList: ${json.encode(rowDataList)}');
           isLoading = false;
         });
+
+        for (var item in rowDataList) {
+          log('Service Item: ${item.toJson()}');
+        }
       } else {
         log('Failed to fetch data: ${response.statusCode}');
-        throw Exception('Failed to load data: HTTP status ${response.statusCode}');
+        _showSnackBar('Failed to fetch data: HTTP status ${response.statusCode}');
+        throw Exception('error occurent ${response.data}');
       }
     } catch (e) {
+      log('Error processing response data: $e');
       _showSnackBar('Error: $e');
       setState(() {
         isLoading = false;
@@ -82,7 +102,7 @@ class _ConsumableBodyState extends State<ConsumableBody> {
 
       if (response.statusCode == 200 || response.statusCode == 204) {
         log('Successfully deleted row with ID: ${row.id} from the backend.');
-        await fetchData(); // Fetch the updated list of services after deletion
+        await loadMaterialList(); // Fetch the updated list of services after deletion
         _showSnackBar('Row deleted successfully.');
       } else {
         log('Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}');
@@ -102,15 +122,11 @@ class _ConsumableBodyState extends State<ConsumableBody> {
       final response = await _api.updateConsumableEntry(data);
 
       if (response.statusCode == 200) {
+        log('Update response: ${response.data}');
         _showSnackBar('Update successful');
-        // Update the rowDataList with the new data
-        setState(() {
-          int index = rowDataList.indexWhere((element) => element.id == row.id);
-          if (index != -1) {
-            rowDataList[index] = row;
-          }
-        });
+        await loadMaterialList();
       } else {
+        log('Update failed with status: ${response.statusCode}, response: ${response.data}');
         var errMsg = 'Failed to update item: ${response.statusCode}';
         if (response.statusCode == 400) {
           errMsg += ' - Bad Request, check data';
@@ -121,8 +137,18 @@ class _ConsumableBodyState extends State<ConsumableBody> {
         }
         _showSnackBar(errMsg);
       }
+    } on DioException catch (e) {
+      log('Network error: ${e.message}');
+      if (e.response != null) {
+        log('Response status code: ${e.response?.statusCode}');
+        log('Response data: ${e.response?.data}');
+        log('Response headers: ${e.response?.headers}');
+        log('Request options: ${e.response?.requestOptions}');
+      }
+      _showSnackBar('Network error: ${e.message}');
     } catch (e) {
-      _showSnackBar('Network error: $e');
+      log('Unexpected error: $e');
+      _showSnackBar('Unexpected error: $e');
     }
   }
 
@@ -200,13 +226,13 @@ class _ConsumableBodyState extends State<ConsumableBody> {
         ),
       );
 
-  void _addRow(String materialName, String amount, Unit unitName, String price) {
+  void _addRow(String materialName, int amount, Unit unit, int price) {
     setState(() {
-      rowDataList.add(Service(
+      rowDataList.add(ConsumableVM(
         id: rowDataList.isNotEmpty ? rowDataList.last.id + 1 : 1,
-        materialName: materialName,
+        name: materialName,
         amount: amount,
-        unitName: unitName.name,
+        unit: unit,
         price: price,
       ));
     });
@@ -217,14 +243,14 @@ class Service {
   int id;
   String materialName;
   String amount;
-  String unitName;
+  Unit unit;
   String price;
 
   Service({
     required this.id,
     required this.materialName,
     required this.amount,
-    required this.unitName,
+    required this.unit,
     required this.price,
   });
 
@@ -232,7 +258,7 @@ class Service {
         id: json['id'],
         materialName: json['name'],
         amount: json['amount'].toString(),
-        unitName: json['materialUnitName'],
+        unit: json['materialUnitID'],
         price: json['price'].toString(),
       );
 
@@ -240,12 +266,12 @@ class Service {
         'id': id,
         'name': materialName,
         'amount': amount,
-        'materialUnitName': unitName,
+        'materialUnitID': unit.id,
         'price': price,
       };
 }
 
-class EditableRow extends StatefulWidget {
+class EditableRow extends ConsumerStatefulWidget {
   final Service row;
   final VoidCallback onDelete;
   final Function(Service) onUpdate;
@@ -258,31 +284,36 @@ class EditableRow extends StatefulWidget {
   });
 
   @override
-  State<EditableRow> createState() => _EditableRowState();
+  ConsumerState<EditableRow> createState() => _EditableRowState();
 }
 
-class _EditableRowState extends State<EditableRow> {
+class _EditableRowState extends ConsumerState<EditableRow> {
   late TextEditingController _materialNameController;
   late TextEditingController _amountController;
   late TextEditingController _unitNameController;
   late TextEditingController _priceController;
-  late String currentMaterialName;
-  late String currentAmount;
-  late String currentUnitName;
-  late String currentPrice;
   bool isEditing = false;
-
+  late Service consumable;
+  final List<Unit> _units = [];
+  Unit? _selecedUnit;
   @override
   void initState() {
+    consumable = widget.row;
     super.initState();
     _materialNameController = TextEditingController(text: widget.row.materialName);
-    _amountController = TextEditingController(text: widget.row.amount);
-    _unitNameController = TextEditingController(text: widget.row.unitName);
-    _priceController = TextEditingController(text: widget.row.price);
-    currentMaterialName = widget.row.materialName;
-    currentAmount = widget.row.amount;
-    currentUnitName = widget.row.unitName;
-    currentPrice = widget.row.price;
+    _amountController = TextEditingController(text: widget.row.amount.toString()); // Ensure this is a String
+    // _unitNameController = TextEditingController(text: widget.row.unit);
+
+    _priceController = TextEditingController(text: widget.row.price.toString()); // Ensure this is a String
+    loadUnits();
+  }
+
+  void loadUnits() {
+    ref.read(consumableProvider.notifier).loadUnits().then(
+          (value) => setState(() {
+            _units.addAll(value);
+          }),
+        );
   }
 
   @override
@@ -371,15 +402,31 @@ class _EditableRowState extends State<EditableRow> {
               ),
             ),
             Expanded(
-              child: TextField(
-                controller: _unitNameController,
-                style: const TextStyle(fontSize: 16),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
-              ),
+              child: isEditing
+                  ? DropdownButton(
+                      items: _units
+                          .map((e) => DropdownMenuItem(
+                                child: (Text(e.name)),
+                              ))
+                          .toList(),
+                      value: _units.firstWhere((e) => e.name == consumable.materialName),
+                      onChanged: (value) {
+                        log('changed ${value}');
+                        setState(() {
+                          _selecedUnit = value;
+                        });
+                      },
+                    )
+                  : Text(consumable.materialName),
+              // TextField(
+              //   controller: _unitNameController,
+              //   style: const TextStyle(fontSize: 16),
+              //   decoration: const InputDecoration(
+              //     border: InputBorder.none,
+              //     contentPadding: EdgeInsets.zero,
+              //   ),
+              //   readOnly: !isEditing,
+              // ),
             ),
             Expanded(
               child: TextField(
@@ -398,10 +445,10 @@ class _EditableRowState extends State<EditableRow> {
                   ? () {
                       setState(() {
                         isEditing = false;
-                        _materialNameController.text = currentMaterialName;
-                        _amountController.text = currentAmount;
-                        _unitNameController.text = currentUnitName;
-                        _priceController.text = currentPrice;
+                        _materialNameController.text = widget.row.materialName;
+                        _amountController.text = widget.row.amount.toString();
+                        // _unitNameController.text = widget.row.unit;
+                        _priceController.text = widget.row.price.toString();
                       });
                     }
                   : _showDeleteConfirmation,
@@ -410,23 +457,25 @@ class _EditableRowState extends State<EditableRow> {
               icon: Icon(isEditing ? Icons.save : Icons.edit),
               onPressed: () {
                 if (isEditing) {
-                  Service updatedRow = Service(
-                    id: widget.row.id,
-                    materialName: _materialNameController.text,
-                    amount: _amountController.text,
-                    unitName: _unitNameController.text,
-                    price: _priceController.text,
-                  );
+                  if (_selecedUnit != null) {
+                    Service updatedRow = Service(
+                      id: widget.row.id,
+                      materialName: _materialNameController.text,
+                      amount: _amountController.text,
+                      unit: _selecedUnit!,
+                      price: _priceController.text,
+                    );
 
-                  widget.onUpdate(updatedRow);
+                    widget.onUpdate(updatedRow);
 
-                  setState(() {
-                    currentMaterialName = _materialNameController.text;
-                    currentAmount = _amountController.text;
-                    currentUnitName = _unitNameController.text;
-                    currentPrice = _priceController.text;
-                    isEditing = false;
-                  });
+                    setState(() {
+                      isEditing = false;
+                    });
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Bitte wähle eine Einehit aus')),
+                    );
+                  }
                 } else {
                   setState(() {
                     isEditing = true;
@@ -436,17 +485,5 @@ class _EditableRowState extends State<EditableRow> {
             ),
           ],
         ),
-      );
-}
-
-class Unit {
-  final int id;
-  final String name;
-
-  Unit({required this.id, required this.name});
-
-  factory Unit.fromJson(Map<String, dynamic> json) => Unit(
-        id: json['id'],
-        name: json['name'],
       );
 }

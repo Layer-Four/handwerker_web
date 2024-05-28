@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../consumable_view.dart';
+import '../../../models/consumable_models/unit/unit.dart';
 
 class CardWidget extends StatefulWidget {
   final Function(String material, String amount, Unit unit, String price) onSave;
@@ -29,7 +29,7 @@ class _CardWidgetState extends State<CardWidget> {
   @override
   void initState() {
     super.initState();
-    _fetchUnits();
+    _loadUnits();
   }
 
   @override
@@ -40,7 +40,7 @@ class _CardWidgetState extends State<CardWidget> {
     super.dispose();
   }
 
-  Future<void> _fetchUnits() async {
+  Future<void> _loadUnits() async {
     try {
       final response = await http.get(
         Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/unit/list'),
@@ -286,9 +286,7 @@ class _CardWidgetState extends State<CardWidget> {
                                                 ))
                                             .toList(),
                                         onChanged: (Unit? newValue) {
-                                          setState(() {
-                                            _selectedUnit = newValue;
-                                          });
+                                          setState(() => _selectedUnit = newValue);
                                         },
                                       ),
                                     ],
