@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/themes/app_color.dart';
+import '../../../models/users_models/user_data_short/user_short.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_provider.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
-import '../user_view.dart';
 
 class UserRowCard extends ConsumerStatefulWidget {
   final BoxConstraints constraints;
-  final UserEntry user;
+  final UserDataShort user;
   final bool isFirst;
   final bool isLast;
 
@@ -28,12 +28,10 @@ class UserRowCard extends ConsumerStatefulWidget {
 }
 
 class _RoleRowCardState extends ConsumerState<UserRowCard> {
-  // UserRole? _selectedRole;
   final List<UserRole> _possibleRoles = [];
   void initUserRoles() {
     ref.read(userProvider.notifier).loadUserRoles().then((e) => setState(() {
           _possibleRoles.addAll(e);
-          // _selectedRole = _roles.first;
         }));
   }
 
@@ -64,21 +62,21 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                width: currentSize.maxWidth / 10 * 3,
+                width: currentSize.maxWidth / 100 * 30,
                 child: Text(
-                  widget.user.name,
+                  widget.user.userName,
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(
                 height: 40,
-                width: currentSize.maxWidth / 10 * 3,
+                width: currentSize.maxWidth / 100 * 25,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width > 1000
                       ? 200
-                      : currentSize.maxWidth / 10 * 3,
+                      : currentSize.maxWidth / 100 * 30,
                   child: buildDropdown(
-                      roleFromUser: widget.user.role.first,
+                      roleFromUser: widget.user.roles,
                       userRoles: _possibleRoles,
                       onChanged: (_) {
                         // setState(() {
@@ -95,7 +93,7 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
                 MediaQuery.of(context).size.width >= 1100 ? 300 : currentSize.maxWidth / 10 * 2.8,
             child: SymmetricButton(
               onPressed: () {
-                ref.read(userProvider.notifier).resetPassword(widget.user.name).then((e) {
+                ref.read(userProvider.notifier).resetPassword(widget.user.userName).then((e) {
                   showDialog(
                       context: context,
                       builder: (context) => Dialog(
@@ -104,7 +102,7 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
                             ),
                           ));
                 });
-                log('Password reset for ${widget.user.name}');
+                log('Password reset for ${widget.user.userName}');
               },
               text: 'Passwort zurücksetzen',
               overflow: TextOverflow.clip,
@@ -121,7 +119,7 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
   }
 
   Widget buildDropdown({
-    required UserRole roleFromUser,
+    required List<UserRole> roleFromUser,
     required List<UserRole> userRoles,
     required ValueChanged onChanged,
     required BuildContext context,
@@ -130,7 +128,7 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: DropdownButtonFormField(
           isExpanded: true,
-          value: userRoles.firstWhere((e) => e.name == roleFromUser.name),
+          value: userRoles.firstWhere((e) => e.name == roleFromUser.first.name),
           decoration: InputDecoration(
             hintText: 'Select option',
             hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -158,10 +156,16 @@ class _RoleRowCardState extends ConsumerState<UserRowCard> {
               .map<DropdownMenuItem>((value) => DropdownMenuItem(
                     onTap: () {
                       // TODO: Update Function to provider Method and update Database
-                      widget.user.copyWith(role: [value]);
+                      final x = widget.user.copyWith(roles: [value]);
+                      log(x.toJson().toString());
                     },
                     value: value,
-                    child: Text(value.name),
+                    child: Text(
+                      value.name,
+                      style: !roleFromUser.contains(value)
+                          ? null
+                          : TextStyle(color: AppColor.kPrimaryButtonColor),
+                    ),
                   ))
               .toList(),
         ),

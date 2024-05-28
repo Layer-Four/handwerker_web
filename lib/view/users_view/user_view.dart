@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../models/users_models/user_data_short/user_short.dart';
 import '../../models/users_models/user_role/user_role.dart';
+import '../../provider/user_provider/user_provider.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import 'widgets/add_button.dart';
 import 'widgets/edit_employee.dart';
@@ -17,6 +19,8 @@ class EmployeeAdministration extends ConsumerStatefulWidget {
 class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
   bool _isAddConsumableOpen = false;
   int editingProjectIndex = -1;
+  Future<List<UserDataShort>> loadUserEntries() async =>
+      await ref.read(userProvider.notifier).loadUserEntries();
 
   @override
   Widget build(BuildContext _) => LayoutBuilder(
@@ -30,15 +34,26 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: SizedBox(
                     height: 5 * 74,
-                    child: ListView.builder(
-                      itemCount: users.length,
-                      itemBuilder: (_, index) => UserRowCard(
-                        constraints,
-                        users[index],
-                        isFirst: index == 0,
-                        isLast: index == users.length - 1,
-                      ),
-                    ),
+                    child: FutureBuilder(
+                        future: loadUserEntries(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+                          if (snapshot.connectionState == ConnectionState.done &&
+                              snapshot.data == null) {
+                            throw Exception('can snapshot be null in userView?');
+                          }
+                          return ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (_, index) => UserRowCard(
+                              constraints,
+                              snapshot.data![index],
+                              isFirst: index == 0,
+                              isLast: index == users.length - 1,
+                            ),
+                          );
+                        }),
                   ),
                 ),
                 Padding(

@@ -22,36 +22,37 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
   Widget build(BuildContext context) {
     final view = ref.watch(mainNavProvider);
     double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: LayoutBuilder(
-          builder: (context, constrains) => Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: constrains.maxHeight,
-                    child: constrains.maxWidth <= 1000
-                        ? _buildpopUpNav(context, constrains)
-                        : _buildStandartNavBar(context, constrains),
-                  ),
-                  SizedBox(
-                    height: constrains.maxHeight,
-                    width: width <= 1000 ? width - 50 : ((width / 10) * 8),
-                    child: switch (view) {
-                      MainView.home => const HomeBody(),
-                      MainView.timeEntry => const WorkCalendarView(),
-                      MainView.projectCustomer => const CustomerProjectMain(),
-                      MainView.consumables => const ConsumableBody(),
-                      MainView.material => const ConsumableBody(),
-                      MainView.customer => const CustomerBody(),
-                      MainView.projectManagement => const ProjectManagementBody(),
-                      MainView.performance => const ConsumableLeistungBody(),
-                      MainView.users => const EmployeeAdministration(),
-                      // _ => const TimeEntryBody(),
-                    },
-                  ),
-                ],
-              )),
-    );
+    return Builder(
+        builder: (context) => Scaffold(
+              body: LayoutBuilder(
+                  builder: (context, constrains) => Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: constrains.maxHeight,
+                            child: constrains.maxWidth <= 1000
+                                ? _buildpopUpNav(context, constrains)
+                                : _buildStandartNavBar(context, constrains),
+                          ),
+                          SizedBox(
+                            height: constrains.maxHeight,
+                            width: width <= 1000 ? width - 50 : ((width / 10) * 8),
+                            child: switch (view) {
+                              MainView.home => const HomeBody(),
+                              MainView.timeEntry => const WorkCalendarView(),
+                              MainView.projectCustomer => const CustomerProjectMain(),
+                              MainView.consumables => const ConsumableBody(),
+                              MainView.material => const ConsumableBody(),
+                              MainView.customer => const CustomerBody(),
+                              MainView.projectManagement => const ProjectManagementBody(),
+                              MainView.performance => const ConsumableLeistungBody(),
+                              MainView.users => const EmployeeAdministration(),
+                              // _ => const TimeEntryBody(),
+                            },
+                          ),
+                        ],
+                      )),
+            ));
   }
 
   Container _buildStandartNavBar(BuildContext context, BoxConstraints constrains) => Container(
