@@ -17,7 +17,7 @@ class WorkCalendarView extends ConsumerStatefulWidget {
 
 class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
   late EventController _eventCtr;
-  bool _isWeekView = false;
+  bool _isWeekView = true;
   bool? _isWorkOrder;
   bool _isInit = false;
   final List<CalendarEventData<TimeVMAdapter>> _allEvents = [];
