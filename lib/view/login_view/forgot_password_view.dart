@@ -22,11 +22,20 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
     });
 
     final String username = _userNameController.text.trim();
-    const String mandantIdString = '1';
-    final int mandantId = int.parse(mandantIdString);
+    // const String mandantIdString = '1';
+    final int mandantId = 1; //  int.parse(mandantIdString);
 
     if (username.isEmpty) {
-      _showSnackBar('Please enter the username.');
+      _showSnackBar('Bitte einen Mandantennamen eingeben.');
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+
+    // Add validation for minimum username length
+    if (username.length < 3) {
+      _showSnackBar('Der Benutzername muss mindestens 3 Zeichen lang sein.');
       setState(() {
         isLoading = false;
       });
@@ -35,7 +44,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
 
     final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/user/password/request');
     final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode({'MandantID': mandantId, 'UserName': username});
+    final body = jsonEncode({'MandantID': mandantId, 'userName': username});
 
     try {
       final response = await http.post(url, headers: headers, body: body);
@@ -43,11 +52,20 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
       log('Response status code: ${response.statusCode}');
       log('Response body: ${response.body}');
 
+      final responseData = json.decode(response.body);
+      log('Parsed response data: $responseData');
+
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
         if (responseData.containsKey('id')) {
-          // Assuming 'id' presence means success
-          _showSnackBar('Passwort-Reset-Anfrage erfolgreich gesendet.');
+          // Log the mandant field for debugging
+          log('Mandant field: ${responseData['mandant']}');
+
+          // Check if the username matches (case-insensitive)
+          if (responseData['userName'] == username.toLowerCase()) {
+            _showSnackBar('Passwort-Reset-Anfrage erfolgreich gesendet.');
+          } else {
+            _showSnackBar('Benutzername stimmt nicht überein.');
+          }
         } else {
           _showSnackBar(
               'Fehler beim Senden der Passwort-Reset-Anfrage. ${responseData['message'] ?? 'Bitte versuchen Sie es erneut.'}');
@@ -144,7 +162,6 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                                 // hintStyle: const TextStyle(color: Colors.grey),
                                 filled: true,
                                 fillColor: Colors.transparent,
-
                                 contentPadding: EdgeInsets.all(6),
                                 focusedBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
