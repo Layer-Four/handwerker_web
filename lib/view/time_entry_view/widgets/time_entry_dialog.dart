@@ -39,8 +39,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   List<Project>? _projectsForCustomer;
   int? _selectedCustomerId;
 
-  final Project _defaultProject = Project(id: 0, title: '', customerId: 0);
-
   @override
   void initState() {
     super.initState();
