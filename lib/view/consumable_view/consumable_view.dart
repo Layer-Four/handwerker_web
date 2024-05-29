@@ -872,21 +872,27 @@ class _EditableRowState extends ConsumerState<EditableRow> {
               ),
             ),
             Expanded(
-              child: DropdownButton<int>(
-                value: currentUnitId,
-                onChanged: isEditing
-                    ? (int? newValue) {
-                        setState(() {
-                          currentUnitId = newValue!;
-                        });
-                      }
-                    : null,
-                items: widget.units.map<DropdownMenuItem<int>>((Unit unit) {
-                  return DropdownMenuItem<int>(
-                    value: unit.id,
-                    child: Text(unit.name),
-                  );
-                }).toList(),
+              child: Container(
+                padding: EdgeInsets.only(left: 4),
+                decoration: BoxDecoration(border: Border.all(), color: Colors.grey[100]),
+                child: DropdownButton<int>(
+                  isExpanded: true,
+                  underline: SizedBox.shrink(),
+                  value: currentUnitId,
+                  onChanged: isEditing
+                      ? (int? newValue) {
+                          setState(() {
+                            currentUnitId = newValue!;
+                          });
+                        }
+                      : null,
+                  items: widget.units.map<DropdownMenuItem<int>>((Unit unit) {
+                    return DropdownMenuItem<int>(
+                      value: unit.id,
+                      child: Text(unit.name),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
             Expanded(
