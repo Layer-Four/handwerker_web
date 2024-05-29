@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/api/api.dart';
 import '../../../models/time_models/time_dm/time_dm.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
+import '../../../models/users_models/user_data_short/user_short.dart';
 
 final timeVMProvider = NotifierProvider<TimeVMNotifier, List<TimeVMAdapter>>(
   () => TimeVMNotifier(),
@@ -75,6 +76,29 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
       // The status code of 404 has the following meaning: "Client error - the request contains bad syntax or cannot be fulfilled"
       // Read more about status codes at https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
       // In order to resolve this exception you typically have either to verify and fix your request code or you have to fix the server code.
+    }
+  }
+
+  Future<List<UserDataShort>> getListUserService() async {
+    final result = <UserDataShort>[];
+    try {
+      final response = await _api.getUserDataShort;
+      if (response.statusCode != 200) {
+        if (response.statusCode == 401) {
+          return result;
+        }
+        return result;
+      }
+      final jsonResponse = response.data;
+      final List data = (jsonResponse).map((e) => e).toList();
+      data.map((e) => result.add(UserDataShort.fromJson(e))).toList();
+      return result;
+    } on DioException catch (e) {
+      log('this error occurent-> $e');
+      return result;
+    } catch (e) {
+      log('this error occurent-> $e');
+      throw Exception(e);
     }
   }
 }

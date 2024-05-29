@@ -8,9 +8,9 @@ part of 'user_role.dart';
 
 _$UserRoleImpl _$$UserRoleImplFromJson(Map<String, dynamic> json) =>
     _$UserRoleImpl(
-      id: json['id'] as String? ?? '',
+      id: json['id'] as String,
       name: json['name'] as String,
-      normalizedName: json['normalizedName'] as String? ?? '',
+      normalizedName: json['normalizedName'] as String,
     );
 
 Map<String, dynamic> _$$UserRoleImplToJson(_$UserRoleImpl instance) =>
