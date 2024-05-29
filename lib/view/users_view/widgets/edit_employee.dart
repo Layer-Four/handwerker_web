@@ -7,12 +7,10 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_provider.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
-import '../user_view.dart';
 
 class AddNewEmployee extends ConsumerStatefulWidget {
   final VoidCallback? onSave;
   final VoidCallback? onCancel;
-  final UserEntry? project;
   final double overflowWidth;
 
   const AddNewEmployee({
@@ -20,7 +18,6 @@ class AddNewEmployee extends ConsumerStatefulWidget {
     this.onSave,
     required this.onCancel,
     this.overflowWidth = 850,
-    this.project,
   });
 
   @override
@@ -28,6 +25,14 @@ class AddNewEmployee extends ConsumerStatefulWidget {
 }
 
 class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
+  final RegExp _specialSign = RegExp(r'[äöüß !"#$%&()*+,./:;<=>?@[\]^_`{|}~]');
+  bool _isSnackbarOpen = false;
+  UserRole? _selectedRole;
+  bool _createdUser = false;
+  final List<UserRole> _roles = [];
+  Map<String, dynamic>? _newUser;
+
+  final int _snackBarDuration = 7;
   final TextEditingController _nameController = TextEditingController();
   // final TextEditingController _secondNameController = TextEditingController();
   // final TextEditingController _streetController = TextEditingController();
@@ -38,18 +43,11 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
   // final TextEditingController _customerNumberController = TextEditingController();
   // final TextEditingController _telephoneController = TextEditingController();
   // final TextEditingController _contactController = TextEditingController();
-  UserRole? _selectedRole;
-  bool _createdUser = false;
-  final List<UserRole> _roles = [];
-  Map<String, dynamic>? _newUser;
 
   @override
   void initState() {
     super.initState();
-    if (widget.project != null) {
-      _nameController.text =
-          widget.project!.name; // Assuming 'customer' is a field in CustomeProject
-    }
+
     initUserRoles();
   }
 
@@ -228,13 +226,32 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                       ),
                       buildTextField(
-                        hintText: 'Jonathan Müller',
+                        hintText: 'Jonathan Mueller',
                         controller: _nameController,
                         onChanged: (value) {
                           setState(() {
+                            if (value.contains(_specialSign)) {
+                              if (!_isSnackbarOpen) {
+                                setState(() => _isSnackbarOpen = true);
+                                Future.delayed(Duration(seconds: _snackBarDuration))
+                                    .then((_) => setState(() => _isSnackbarOpen = false));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    duration: Duration(seconds: _snackBarDuration),
+                                    content: const Text(
+                                        'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                                  ),
+                                );
+                              }
+                              _nameController.text = _nameController.text
+                                  .substring(0, _nameController.text.length - 1);
+                              _nameController.text.toLowerCase();
+                              return;
+                            }
                             TextSelection previousSelection = _nameController.selection;
                             _nameController.text = value;
                             _nameController.selection = previousSelection;
+                            _nameController.text.toLowerCase();
                           });
                         },
                       ),
@@ -280,7 +297,9 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                     text: 'Speichern',
                     style: const TextStyle(color: Colors.white, fontSize: 18),
                     onPressed: () {
-                      if (_selectedRole != null && _nameController.text.isNotEmpty) {
+                      if (_selectedRole != null &&
+                          _nameController.text.isNotEmpty &&
+                          !_nameController.text.contains(_specialSign)) {
                         ref
                             .read(userProvider.notifier)
                             .createUser(role: _selectedRole!, name: _nameController.text)
@@ -294,6 +313,19 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                           });
                           // createdUser = !createdUser;
                         });
+                      } else if (_nameController.text.contains(_specialSign)) {
+                        if (!_isSnackbarOpen) {
+                          setState(() => _isSnackbarOpen = true);
+                          Future.delayed(Duration(seconds: _snackBarDuration))
+                              .then((_) => setState(() => _isSnackbarOpen = false));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              duration: Duration(seconds: _snackBarDuration),
+                              content: const Text(
+                                  'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                            ),
+                          );
+                        }
                       }
                     },
                   ),

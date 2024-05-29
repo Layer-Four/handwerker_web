@@ -23,7 +23,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
 
     final String username = _userNameController.text.trim();
     // const String mandantIdString = '1';
-    final int mandantId = 1; //  int.parse(mandantIdString);
+    const int mandantId = 1; //  int.parse(mandantIdString);
 
     if (username.isEmpty) {
       _showSnackBar('Bitte einen Mandantennamen eingeben.');
@@ -71,7 +71,8 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
               'Fehler beim Senden der Passwort-Reset-Anfrage. ${responseData['message'] ?? 'Bitte versuchen Sie es erneut.'}');
         }
       } else {
-        _showSnackBar('Fehler beim Senden der Passwort-Reset-Anfrage. Statuscode: ${response.statusCode}');
+        _showSnackBar(
+            'Fehler beim Senden der Passwort-Reset-Anfrage. Statuscode: ${response.statusCode}');
       }
     } catch (e) {
       _showSnackBar('Fehler beim Senden der Anfrage: $e');

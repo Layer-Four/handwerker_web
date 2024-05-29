@@ -39,8 +39,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   List<Project>? _projectsForCustomer;
   int? _selectedCustomerId;
 
-  final Project _defaultProject = Project(id: 0, title: '', customerId: 0);
-
   @override
   void initState() {
     super.initState();
@@ -207,16 +205,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
       );
 
   Widget _buildProjectField(List<Project> projects) {
-    if (projects.isEmpty) {
-      // No projects available, use default project
-      setState(() {
-        _project = _defaultProject;
-      });
-    } else {
-      // Projects available, use the first project
-      setState(() {
-        _project = projects.first;
-      });
+    if (_project == null && projects.isNotEmpty) {
+      _project = projects.first;
     }
 
     return Padding(
@@ -713,7 +703,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           text: 'Eintrag erstellen',
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
           onPressed: () {
-            ref.read(eventSourceProvider.notifier).saveTimeEntry(_entry);
+            ref.read(timeVMProvider.notifier).saveTimeEntry(_entry);
             // TODO: uncommand this, after API is ready           ref.read(timeEntryProvider.notifier).uploadTimeEntry(_entry);
             Navigator.of(context).pop();
             // if (_startController.text.isEmpty || _endController.text.isEmpty) {
