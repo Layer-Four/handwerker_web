@@ -11,7 +11,6 @@ import '../../../../models/time_models/time_dm/time_dm.dart';
 import '../../../../models/users_models/user_data_short/user_short.dart';
 import '../../../../provider/data_provider/service_provider/service_vm_provider.dart';
 import '../../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
-import '../../../../provider/user_provider/user_provider.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
@@ -83,7 +82,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
   Future<List<UserDataShort>> loadUser() async =>
-      await ref.read(userProvider.notifier).getListUserService();
+      await ref.read(timeVMProvider.notifier).getListUserService();
 
   Widget _buildSelectUser() => FutureBuilder(
         future: loadUser(),

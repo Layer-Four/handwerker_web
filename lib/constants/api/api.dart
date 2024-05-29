@@ -60,6 +60,7 @@ class Api {
   final String _deleteService = '/service/delete';
   final String _deleteServiceMaterial = '/service/delete';
   final String _putResetPasswordAdress = '/user/password/reset';
+  final String _deleteUserAdress = '/user/delete';
 
   Future<Response> get getAllProjects => _api.get(_getAllProjects);
   Future<Response> get getAllTimeEntrys => _api.get(_getAllTimeTacks);
@@ -75,9 +76,15 @@ class Api {
   Future<Response> get getProjectsTimeEntrys => _api.get(_getTimeTacks);
   Future<Response> get getUserDocumentationEntry => _api.get(_getUserProjectDocumentation);
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
+  // Getter for customer list
+  Future<Response> get getListCustomer => _api.get(_getListCustomer);
+
+  // Getter for project list
+  Future<Response> get getListProject => _api.get(_getListProject);
 
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
   Future<Response> deleteServiceMaterial(int serviceID) => _api.delete('$_deleteServiceMaterial/$serviceID');
+  Future<Response> deleteUser(String userID) => _api.delete('$_deleteUserAdress/$userID');
   Future<Response> postCreateNewUser(Map<String, dynamic> user) => _api.post(_postNewUserAdress, data: user);
   Future<Response> postloginUser(loginData) => _api.post(_loginUserAdress, data: loginData);
   Future<Response> postProjectConsumable(data) => _api.post(_postProjectConsumabele, data: data);
@@ -101,6 +108,12 @@ class Api {
   void storeToken(String token) async => await _storage.then((value) => value.setString('TOKEN', token));
 
   Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
+  void deleteToken() => _storage.then((value) {
+        if (value.getString('TOKEN')?.isNotEmpty ?? false) {
+          value.remove('TOKEN');
+        }
+        return;
+      });
 
   final Dio _api = Dio();
 

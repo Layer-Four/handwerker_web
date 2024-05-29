@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/users_models/user_data_short/user_short.dart';
 import '../../models/users_models/user_role/user_role.dart';
-import '../../provider/user_provider/user_provider.dart';
+import '../../provider/user_provider/user_administration/user_administration._provider.dart';
+import '../../routes/app_routes.dart';
 import '../shared_view_widgets/search_line_header.dart';
-import 'widgets/add_button.dart';
-import 'widgets/edit_employee.dart';
-import 'widgets/role_row.dart';
+import 'widgets/add_button_widget.dart';
+import 'widgets/edit_employee_widget.dart';
+import 'widgets/user_row_widget.dart';
 
 class EmployeeAdministration extends ConsumerStatefulWidget {
   //StatelessWidget
@@ -17,30 +18,37 @@ class EmployeeAdministration extends ConsumerStatefulWidget {
 }
 
 class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
-  bool _isAddConsumableOpen = false;
-  final List<UserDataShort> users = [];
+  bool _isOpen = false;
+  final List<UserDataShort> _users = [];
   final List<UserRole> _roles = [];
-  Future<List<UserDataShort>> loadUserEntries() async {
-    final loadedUsers = await ref.read(userProvider.notifier).loadUserEntries();
-    setState(() {
-      users.addAll(loadedUsers);
-      final setL = users.toSet().toList();
-      users
-        ..clear()
-        ..addAll(setL);
-    });
-    return loadedUsers;
-  }
-
-  void initUserRoles() => ref.read(userProvider.notifier).loadUserRoles().then(
-        (e) => setState(() => _roles.addAll(e)),
-      );
-
   @override
   void initState() {
     super.initState();
-    initUserRoles();
-    loadUserEntries();
+    initAttributes();
+  }
+
+  void initAttributes() {
+    ref.read(userAdministrationProvider.notifier).loadUserRoles().then(
+      (e) {
+        initUsers();
+        setState(() => _roles.addAll(e));
+      },
+    );
+  }
+
+  void initUsers() {
+    if (ref.watch(userAdministrationProvider).isNotEmpty) {
+      final allEntriesAsSet = <UserDataShort>{...ref.watch(userAdministrationProvider), ..._users};
+      setState(() => _users.addAll(allEntriesAsSet));
+      return;
+    }
+    ref.read(userAdministrationProvider.notifier).loadUserEntries().then(
+      (e) {
+        final a = ref.watch(userAdministrationProvider).toSet();
+        setState(() => _users.addAll(a.toSet()));
+      },
+    );
+    return;
   }
 
   @override
@@ -50,45 +58,26 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
-                _userHeadline(constraints),
+                UserRowHeadLine(constraints),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: SizedBox(
                     height: 5 * 74,
-                    child: FutureBuilder(
-                        future: loadUserEntries(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            const Center(child: Text('Lade Mitarbeitende'));
-                          }
-                          if (snapshot.connectionState == ConnectionState.done &&
-                              snapshot.data == null) {
-                            throw Exception('can snapshot be null in userView?');
-                          }
-                          return ListView.builder(
-                            itemCount: users.length,
-                            itemBuilder: (_, index) => UserRowCard(
-                              constraints,
-                              _roles,
-                              users[index],
-                              isFirst: index == 0,
-                              isLast: index == users.length - 1,
-                            ),
-                          );
-                        }),
+                    child: _users.isEmpty ? _waitingMessage() : _userRowBuilder(constraints),
                   ),
                 ),
+                // _userRowBuilder(constraints),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AddButton(
-                    onTap: () => setState(() => _isAddConsumableOpen = !_isAddConsumableOpen),
+                    onTap: () => setState(() => _isOpen = !_isOpen),
                   ),
                 ),
                 Visibility(
-                  visible: _isAddConsumableOpen,
+                  visible: _isOpen,
                   child: AddNewEmployee(
                     onCancel: () => setState(() {
-                      _isAddConsumableOpen = !_isAddConsumableOpen;
+                      _isOpen = !_isOpen;
                     }),
                   ),
                 )
@@ -96,27 +85,46 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
             ),
           ));
 
-  Widget _userHeadline(BoxConstraints constraints) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
+  Widget _userRowBuilder(BoxConstraints constraints) => ListView.builder(
+      itemCount: _users.length,
+      itemBuilder: (_, index) => UserRowCard(
+            constraints,
+            _roles,
+            _users[index],
+            () {
+              _deleteUser(_users[index]);
+            },
+            isFirst: index == 0,
+            isLast: index == _users.length - 1,
+          ));
+
+  _deleteUser(UserDataShort user) {
+    ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
+      e
+          ? {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen),
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Mitarbeitenden erfolgreich gelöscht')),
+              )
+            }
+          : ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Mitarbeitenden konnte nicht gelöscht werden')),
+            );
+    });
+  }
+
+  Center _waitingMessage() => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              width: constraints.maxWidth / 10 * 3,
-              child: const Text(
-                'Name',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Lade Mitarbeitende',
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
-            SizedBox(
-              width: constraints.maxWidth / 10 * 3,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Rolle',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
+            const CircularProgressIndicator(),
           ],
         ),
       );

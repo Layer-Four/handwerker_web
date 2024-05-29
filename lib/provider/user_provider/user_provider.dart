@@ -1,11 +1,7 @@
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/api/api.dart';
-import '../../models/users_models/user_data_short/user_short.dart';
-import '../../models/users_models/user_role/user_role.dart';
 import '../../models/users_models/user_vm/user_vm.dart';
 
 final userProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
@@ -14,17 +10,15 @@ final userProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier()
 
 class UserNotifier extends Notifier<UserVM> {
   final Api _api = Api();
-  final _storage = SharedPreferences.getInstance();
+
   @override
   UserVM build() {
-    String token = '';
-    _storage.then((value) {
-      final token = value.getString('TOKEN') ?? '';
-      if (token.isNotEmpty) {
-        state = state.copyWith(userToken: token);
+    _api.getToken.then((value) {
+      if (value != null && value.isNotEmpty) {
+        state = state.copyWith(userToken: value);
       }
     });
-    return UserVM(userToken: token);
+    return const UserVM(userToken: '');
   }
 
   void userLogOut() {
@@ -32,13 +26,7 @@ class UserNotifier extends Notifier<UserVM> {
     deleteToken();
   }
 
-  Future<String?> getUserToken() async {
-    final token = await _storage.then((value) => value.getString('TOKEN'));
-    if (token != null && token.isNotEmpty) {
-      state = state.copyWith(userToken: token);
-    }
-    return token;
-  }
+  Future<String?> getUserToken() async => _api.getToken;
 
   Future<bool> loginUser({
     required String passwort,
@@ -62,8 +50,7 @@ class UserNotifier extends Notifier<UserVM> {
         final userToken = data.values.first as String;
         // TODO: when token Exist load user with Token
         final newUser = state.copyWith(userToken: userToken);
-        setToken(token: userToken);
-        // final userDate = http.get('www.abc/getUerdata', data: userToken);
+        _api.storeToken(userToken);
 
         if (newUser != state) {
           state = newUser;
@@ -79,14 +66,9 @@ class UserNotifier extends Notifier<UserVM> {
     return false;
   }
 
-  void setToken({required String token}) async =>
-      await _storage.then((value) => value.setString('TOKEN', token));
-  void deleteToken() async {
-    final storage = await _storage;
-    if (storage.containsKey('TOKEN')) storage.clear();
-    return;
-  }
+  void deleteToken() => _api.deleteToken();
 
+  /// TODO: This Api calls not Users!!! and is deprecated.
   void loadUsers() async {
     final response = await _api.getProjectsDM;
     if (response.statusCode == 200) {
@@ -102,100 +84,5 @@ class UserNotifier extends Notifier<UserVM> {
     try {} catch (e) {
       throw Exception(e);
     }
-  }
-
-  Future<List<UserDataShort>> getListUserService() async {
-    final result = <UserDataShort>[];
-    try {
-      final response = await _api.getUserDataShort;
-      if (response.statusCode != 200) {
-        if (response.statusCode == 401) {
-          return result;
-        }
-        return result;
-      }
-      final jsonResponse = response.data;
-      final List data = (jsonResponse).map((e) => e).toList();
-      data.map((e) => result.add(UserDataShort.fromJson(e))).toList();
-      return result;
-    } on DioException catch (e) {
-      log('this error occurent-> $e');
-      return result;
-    } catch (e) {
-      log('this error occurent-> $e');
-      throw Exception(e);
-    }
-  }
-
-  Future<List<UserRole>> loadUserRoles() async {
-    try {
-      final response = await _api.getUserRoles;
-      if (response.statusCode != 200) {
-        throw Exception('${response.statusCode} Invalid statusCode check Api call');
-      }
-      final List data = response.data.map((e) => e).toList();
-      return data.map((data) => UserRole.fromJson(data)).toList();
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  Future<Map<String, dynamic>> createUser({
-    required UserRole role,
-    required String name,
-  }) async {
-    final newUser = {
-      'userName': name,
-      'roles': [role.name],
-    };
-    try {
-      log('Usertoken ${state.userToken}');
-      log(newUser.toString());
-      final response = await _api.postCreateNewUser(newUser);
-      if (response.statusCode != 200) {
-        throw Exception('${response.statusCode} Invalid Api call ${response.data}');
-      }
-
-      final data = response.data;
-      log(data.toString());
-      return data;
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  Future<Map> resetPassword(String name) async {
-    try {
-      final response = await _api.putResetPassword({'userName': name});
-      if (response.statusCode != 200) {
-        throw Exception(
-            'Something went wrong on Request:\n ${response.statusCode} \n${response.data}');
-      }
-      return response.data;
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  Future<List<UserDataShort>> loadUserEntries() async {
-    try {
-      final response = await _api.getUserDataShort;
-      if (response.statusCode != 200) {
-        throw Exception(
-          'Something went wrong on Request:\n statuscode-> ${response.statusCode} \n${response.data}',
-        );
-      }
-      final List data = response.data.map((e) => e).toList();
-      final List<UserDataShort> users = data.map((e) => UserDataShort.fromJson(e)).toList();
-      return users;
-    } on DioException catch (e) {
-      if (e.message != null && e.message!.contains('statuscode-> 500')) {
-        log('$e');
-        throw Exception(e);
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-    return [];
   }
 }

@@ -12,5 +12,6 @@ class UserDataShort with _$UserDataShort {
     @Default([]) List<UserRole> roles,
   }) = _UserDataShort;
   const UserDataShort._();
+
   factory UserDataShort.fromJson(Map<String, dynamic> json) => _$UserDataShortFromJson(json);
 }

@@ -119,19 +119,17 @@ class __$$UserRoleImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserRoleImpl extends _UserRole {
   const _$UserRoleImpl(
-      {this.id = '', required this.name, this.normalizedName = ''})
+      {required this.id, required this.name, required this.normalizedName})
       : super._();
 
   factory _$UserRoleImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserRoleImplFromJson(json);
 
   @override
-  @JsonKey()
   final String id;
   @override
   final String name;
   @override
-  @JsonKey()
   final String normalizedName;
 
   @override
@@ -170,9 +168,9 @@ class _$UserRoleImpl extends _UserRole {
 
 abstract class _UserRole extends UserRole {
   const factory _UserRole(
-      {final String id,
+      {required final String id,
       required final String name,
-      final String normalizedName}) = _$UserRoleImpl;
+      required final String normalizedName}) = _$UserRoleImpl;
   const _UserRole._() : super._();
 
   factory _UserRole.fromJson(Map<String, dynamic> json) =
