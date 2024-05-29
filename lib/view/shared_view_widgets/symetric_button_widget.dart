@@ -3,23 +3,26 @@ import 'package:flutter/material.dart';
 class SymmetricButton extends StatelessWidget {
   final String text;
   final Function()? onPressed;
-  final Color color;
+  final Color? color;
   final EdgeInsets padding;
   final TextStyle? style;
   final TextOverflow? overflow;
+  final double elevation;
   const SymmetricButton({
     super.key,
     this.onPressed,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-    this.style = const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
-    this.color = const Color.fromARGB(255, 224, 142, 60),
+    style,
+    color,
+    this.elevation = 5,
     this.overflow,
     required this.text,
-  });
+  })  : style = style ?? const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+        color = color ?? const Color.fromARGB(255, 224, 142, 60);
 
   @override
   Widget build(BuildContext context) => Material(
-        elevation: 5,
+        elevation: elevation,
         color: color,
         borderRadius: BorderRadius.circular(11),
         type: MaterialType.card,

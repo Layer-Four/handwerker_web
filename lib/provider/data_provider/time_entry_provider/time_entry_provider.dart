@@ -4,53 +4,28 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/api/api.dart';
 import '../../../models/time_models/time_dm/time_dm.dart';
-import '../../../models/time_models/time_vm/event_source.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
 
-final eventSourceProvider = NotifierProvider<EventSourceNotifier, EventSource?>(
-  () => EventSourceNotifier(),
+final timeVMProvider = NotifierProvider<TimeVMNotifier, List<TimeVMAdapter>>(
+  () => TimeVMNotifier(),
 );
 
-class EventSourceNotifier extends Notifier<EventSource?> {
+class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
   final Api _api = Api();
   @override
-  EventSource? build() => EventSource();
+  List<TimeVMAdapter> build() => [];
 
-  Future<EventSource?> loadTimeEntrys() async {
-    try {
-      final response = await _api.getAllTimeEntrys;
-      if (response.statusCode != 200) {
-        if (response.statusCode == 401) {
-          // TODO: implement singout logic
-          log('request incompleted -> unauthorized');
-          return null;
-        }
-        log('Request not completed: ${response.statusCode} Backend returned : ${response.data}  \n as Message');
-        return null;
-      }
-      final List jsonresponse = response.data;
-      final List data = jsonresponse.map((e) => e).toList();
-      final entrys =
-          data.map((e) => TimeVMAdapter.fromTimeEntriesVM(TimeEntry.fromJson(e))).toSet().toList();
-      final events = EventSource(appointments: entrys);
-      return events;
-    } on DioException catch (e) {
-      throw Exception(e);
-    } catch (error) {
-      throw Exception(error);
-    }
-  }
-
-  Future<List<CalendarEventData>> loadEvents() async {
+  Future<List<CalendarEventData<TimeVMAdapter>>> loadEvents() async {
     try {
       final res = await _api.getAllTimeEntrys;
       if (res.statusCode != 200) {
         return [];
       }
       final List data = res.data.map((e) => e).toList();
-      final List<CalendarEventData> result = data.map(
+      final List<CalendarEventData<TimeVMAdapter>> result = data.map(
         (e) {
           final object = TimeVMAdapter.fromTimeEntriesVM(TimeEntry.fromJson(e));
+          state.add(object);
           String title = object.customerName ?? 'Kein Kunde';
           return CalendarEventData(
             title: title,
@@ -80,18 +55,14 @@ class EventSourceNotifier extends Notifier<EventSource?> {
       // print(json.encode(dataJson));
       final response = await _api.postTimeEnty(dataJson);
       if (response.statusCode != 200) {
-        if (response.statusCode == 401) {
-          // TODO:logout user!
-          return;
-        }
         log('something went wrong on create TimeEntry -> ${response.data}');
         return;
       }
       final jsonResponse = response.data;
       log('json=> $jsonResponse');
       final data = jsonResponse.map((e) => TimeVMAdapter.fromJson(e)).toList();
-      if (state!.appointments != null) {
-        final newstate = EventSource(appointments: [...state!.appointments!, data]);
+      if (state.isNotEmpty) {
+        final newstate = <TimeVMAdapter>[...state, data];
         state = newstate;
       }
       return;

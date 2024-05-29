@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,18 +75,18 @@ class Api {
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
 
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
-  Future<Response> deleteServiceMaterial(int serviceID) => _api.delete('$_deleteServiceMaterial/$serviceID');
-  Future<Response> createNewUser(Map<String, dynamic> user) => _api.post(_postNewUserAdress, data: user);
+
   Future<Response> postloginUser(loginData) => _api.post(_loginUserAdress, data: loginData);
   Future<Response> postProjectConsumable(data) => _api.post(_postProjectConsumabele, data: data);
   Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
   Future<Response> postTimeEnty(data) => _api.post(_postTimeEntryAdress, data: data);
-  Future<Response> updateProjectConsumableEntry(data) => _api.post(_putProjectMaterial, data: data);
+  Future<Response> postUpdateProjectConsumableEntry(data) =>
+      _api.post(_putProjectMaterial, data: data);
 
-  Future<Response> updateConsumableEntry(Map<String, dynamic> json) =>
-      _api.put(_putProjectWebMaterialAdress, data: json);
 
-  Future<Response> updateDocumentationEntry(data) => _api.post(_putDocumentationDay, data: data);
+
+  Future<Response> postUpdateDocumentationEntry(data) =>
+      _api.post(_putDocumentationDay, data: data);
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
   Future<Response> putResetPassword(Map<String, dynamic> json) => _api.put(_putResetPasswordAdress, data: json);
 
@@ -110,11 +108,8 @@ class Api {
     _api.options = _baseOption;
     _api.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
-        log(DateTime.now().toIso8601String());
         getToken.then((e) {
           final accesMap = {'Authorization': 'Bearer $e'};
-
-          log(DateTime.now().toIso8601String());
           return options.headers.addEntries(accesMap.entries);
         });
 
@@ -131,12 +126,12 @@ class Api {
         }
         handler.next(error);
       },
-      onResponse: (Response<dynamic> response, ResponseInterceptorHandler handler) {
-        if (response.statusCode == 401) {
-          throw Exception('nicht Autorisiert');
-        }
-        handler.next(response);
-      },
+      // onResponse: (Response<dynamic> response, ResponseInterceptorHandler handler) {
+      //   if (response.statusCode == 401) {
+      //     throw Exception('nicht Autorisiert');
+      //   }
+      //   handler.next(response);
+      // },
     ));
   }
 }

@@ -98,7 +98,8 @@ class UserNotifier extends Notifier<UserVM> {
     return false;
   }
 
-  void setToken({required String token}) async => await _storage.then((value) => value.setString('TOKEN', token));
+  void setToken({required String token}) async =>
+      await _storage.then((value) => value.setString('TOKEN', token));
 
   void deleteToken() async {
     final storage = await _storage;

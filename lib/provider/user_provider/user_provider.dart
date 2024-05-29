@@ -140,7 +140,10 @@ class UserNotifier extends Notifier<UserVM> {
     }
   }
 
-  Future<Map<String, dynamic>> createUser({required UserRole role, required String name}) async {
+  Future<Map<String, dynamic>> createUser({
+    required UserRole role,
+    required String name,
+  }) async {
     final newUser = {
       'userName': name,
       'roles': [role.name],
@@ -148,7 +151,7 @@ class UserNotifier extends Notifier<UserVM> {
     try {
       log('Usertoken ${state.userToken}');
       log(newUser.toString());
-      final response = await _api.createNewUser(newUser);
+      final response = await _api.postCreateNewUser(newUser);
       if (response.statusCode != 200) {
         throw Exception('${response.statusCode} Invalid Api call ${response.data}');
       }
@@ -172,5 +175,27 @@ class UserNotifier extends Notifier<UserVM> {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  Future<List<UserDataShort>> loadUserEntries() async {
+    try {
+      final response = await _api.getUserDataShort;
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Something went wrong on Request:\n statuscode-> ${response.statusCode} \n${response.data}',
+        );
+      }
+      final List data = response.data.map((e) => e).toList();
+      final List<UserDataShort> users = data.map((e) => UserDataShort.fromJson(e)).toList();
+      return users;
+    } on DioException catch (e) {
+      if (e.message != null && e.message!.contains('statuscode-> 500')) {
+        log('$e');
+        throw Exception(e);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+    return [];
   }
 }
