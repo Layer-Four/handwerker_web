@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -76,14 +78,14 @@ class Api {
 
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
   Future<Response> deleteServiceMaterial(int serviceID) => _api.delete('$_deleteServiceMaterial/$serviceID');
-  Future<Response> createNewUser(Map<String, dynamic> user) => _api.post(_postNewUserAdress, data: user);
+  Future<Response> postCreateNewUser(Map<String, dynamic> user) => _api.post(_postNewUserAdress, data: user);
   Future<Response> postloginUser(loginData) => _api.post(_loginUserAdress, data: loginData);
   Future<Response> postProjectConsumable(data) => _api.post(_postProjectConsumabele, data: data);
   Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
   Future<Response> postTimeEnty(data) => _api.post(_postTimeEntryAdress, data: data);
   Future<Response> postUpdateProjectConsumableEntry(data) => _api.post(_putProjectMaterial, data: data);
 
-  Future<Response> updateConsumableEntry(Map<String, dynamic> json) =>
+  Future<Response> postUpdateConsumableEntry(Map<String, dynamic> json) =>
       _api.put(_putProjectWebMaterialAdress, data: json);
 
   Future<Response> postUpdateDocumentationEntry(data) => _api.post(_putDocumentationDay, data: data);
