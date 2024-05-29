@@ -3,10 +3,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../consumable_view.dart';
+import '../../../models/consumable_models/unit/unit.dart';
 
 class CardWidget extends StatefulWidget {
-  final Function(String material, String amount, Unit unit, String price) onSave;
+  final Function(String material, int amount, Unit unit, int price) onSave;
   final Function onHideCard;
 
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
@@ -29,7 +29,7 @@ class _CardWidgetState extends State<CardWidget> {
   @override
   void initState() {
     super.initState();
-    _fetchUnits();
+    _loadUnits();
   }
 
   @override
@@ -40,7 +40,7 @@ class _CardWidgetState extends State<CardWidget> {
     super.dispose();
   }
 
-  Future<void> _fetchUnits() async {
+  Future<void> _loadUnits() async {
     try {
       final response = await http.get(
         Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/unit/list'),
@@ -115,9 +115,9 @@ class _CardWidgetState extends State<CardWidget> {
 
   void createService() async {
     final String material = _materialController.text.trim();
-    final String amount = _amountController.text.trim();
+    final int amount = int.parse(_amountController.text.trim());
     final Unit unit = _selectedUnit!;
-    final String price = _priceController.text.trim();
+    final int price = int.parse(_priceController.text.trim());
 
     if (!_validateInputs()) {
       return;
@@ -150,7 +150,7 @@ class _CardWidgetState extends State<CardWidget> {
         throw Exception('Failed to create service.');
       }
     } catch (e) {
-      log('eror on createservice $e');
+      log('Error on createService: $e');
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -286,9 +286,7 @@ class _CardWidgetState extends State<CardWidget> {
                                                 ))
                                             .toList(),
                                         onChanged: (Unit? newValue) {
-                                          setState(() {
-                                            _selectedUnit = newValue;
-                                          });
+                                          setState(() => _selectedUnit = newValue);
                                         },
                                       ),
                                     ],
