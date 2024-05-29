@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../../models/consumable_models/unit/unit.dart';
 
 class CardWidget extends StatefulWidget {
-  final Function(String material, String amount, Unit unit, String price) onSave;
+  final Function(String material, int amount, Unit unit, int price) onSave;
   final Function onHideCard;
 
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
@@ -115,9 +115,9 @@ class _CardWidgetState extends State<CardWidget> {
 
   void createService() async {
     final String material = _materialController.text.trim();
-    final String amount = _amountController.text.trim();
+    final int amount = int.parse(_amountController.text.trim());
     final Unit unit = _selectedUnit!;
-    final String price = _priceController.text.trim();
+    final int price = int.parse(_priceController.text.trim());
 
     if (!_validateInputs()) {
       return;
@@ -150,7 +150,7 @@ class _CardWidgetState extends State<CardWidget> {
         throw Exception('Failed to create service.');
       }
     } catch (e) {
-      log('eror on createservice $e');
+      log('Error on createService: $e');
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(

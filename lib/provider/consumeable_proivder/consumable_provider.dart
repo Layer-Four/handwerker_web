@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -21,35 +20,36 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
     return [];
   }
 
-  loadConsumables() async {
+  Future<List<Unit>> loadConsumables() async {
+    final List<ConsumableVM> result = [];
     final units = await loadUnits();
     try {
-      _api.getMaterialsList.then((e) {
-        if (e.statusCode != 200) {
-          throw Exception('Error on loading Material, status-> ${e.statusCode}\n ${e.data}');
-        }
-        final List data = e.data.map((e) => e).toList();
-        final result = [];
-        for (var e in data) {
-          final unitKey = e['materialUnitName'];
-          final searchedUnit = units.firstWhere((e) => e.name == unitKey);
-          final material = ConsumableVM.wihUnitAndJson(e, searchedUnit);
-          log(material.toJson().toString());
-          final newstate = [...state, material];
-          state = newstate;
-        }
-        // return ConsumableVM.wihUnitAndJson(e, searchedUnit);
-      });
-    } catch (e) {}
+      final response = await _api.getMaterialsList;
+      if (response.statusCode != 200) {
+        throw Exception('Error on loading Material, status-> ${response.statusCode}\n ${response.data}');
+      }
+      final List data = response.data.map((e) => e).toList();
+      for (var e in data) {
+        final unitKey = e['materialUnitName'];
+        final searchedUnit = units.firstWhere((unit) => unit.name == unitKey);
+        final material = ConsumableVM.wihUnitAndJson(e, searchedUnit);
+        log(material.toJson().toString());
+        result.add(material);
+      }
+      state = result;
+    } catch (e) {
+      log('Error loading consumables: $e');
+    }
+    return units;
   }
 
-  ///method thats load Units from Database via [Api] instance
+  /// Method that loads Units from Database via [Api] instance
   Future<List<Unit>> loadUnits() async {
     final result = <Unit>[];
     try {
       final response = await _api.getAllUnits;
       if (response.statusCode != 200) {
-        throw Exception('Wrong Response occurent status -> ${response.statusCode}  \n${response.data}');
+        throw Exception('Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
       }
       final List data = response.data.map((e) => e).toList();
 
@@ -57,12 +57,12 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
         final entry = Unit.fromJson(e);
         result.add(entry);
       }
-      log(result.length.toString());
+      log('Loaded ${result.length} units.');
     } on DioException catch (e) {
-      log(' DioException return $e');
+      log('DioException: $e');
       throw Exception(e);
     } catch (e) {
-      log(e.toString());
+      log('Exception: $e');
       throw Exception(e);
     }
     return result;
