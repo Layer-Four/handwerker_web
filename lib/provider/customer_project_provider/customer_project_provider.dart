@@ -4,7 +4,6 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '/models/users_models/user_vm/user_vm.dart';
 import '../../constants/api/api.dart';
@@ -17,18 +16,16 @@ final customerProjectProvider = NotifierProvider<UserNotifier, UserVM>(() => Use
 
 class UserNotifier extends Notifier<UserVM> {
   final Api api = Api();
-  final _storage = SharedPreferences.getInstance();
 
   @override
   UserVM build() {
-    String token = '';
-    _storage.then((value) {
-      final token = value.getString('TOKEN') ?? '';
-      if (token.isNotEmpty) {
+    api.getToken.then((value) {
+      final token = value;
+      if (token != null) {
         state = state.copyWith(userToken: token);
       }
     });
-    return UserVM(userToken: token);
+    return const UserVM(userToken: '');
   }
 
   void fetchInfos() async {
@@ -51,7 +48,7 @@ class UserNotifier extends Notifier<UserVM> {
   }
 
   Future<String?> getUserToken() async {
-    final token = await _storage.then((value) => value.getString('TOKEN'));
+    final token = await api.getToken;
     if (token != null && token.isNotEmpty) {
       state = state.copyWith(userToken: token);
     }
@@ -81,7 +78,7 @@ class UserNotifier extends Notifier<UserVM> {
         final userToken = data.values.first as String;
         // TODO: when token Exist load user with Token
         final newUser = state.copyWith(userToken: userToken);
-        setToken(token: userToken);
+        api.storeToken(userToken);
         // final userDate = http.get('www.abc/getUerdata', data: userToken);
 
         if (newUser != state) {
@@ -98,15 +95,11 @@ class UserNotifier extends Notifier<UserVM> {
     return false;
   }
 
-  void setToken({required String token}) async =>
-      await _storage.then((value) => value.setString('TOKEN', token));
+  void setToken({required String token}) => api.storeToken(token);
 
-  void deleteToken() async {
-    final storage = await _storage;
-    if (storage.containsKey('TOKEN')) storage.clear();
-    return;
-  }
+  void deleteToken() => api.deleteToken();
 
+  /// TODO: This Api calls not Users!!! and is deprecated.
   void loadUsers() async {
     final response = await api.getProjectsDM;
     if (response.statusCode == 200) {
