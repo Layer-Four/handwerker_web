@@ -99,12 +99,6 @@ class Api {
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
   Future<Response> putResetPassword(Map<String, dynamic> json) => _api.put(_putResetPasswordAdress, data: json);
 
-  // Getter for customer list
-  Future<Response> get getListCustomer => _api.get(_getListCustomer);
-
-  // Getter for project list
-  Future<Response> get getListProject => _api.get(_getListProject);
-
   void storeToken(String token) async => await _storage.then((value) => value.setString('TOKEN', token));
 
   Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
