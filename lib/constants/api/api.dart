@@ -95,7 +95,7 @@ class Api {
   Future<Response> postUpdateProjectConsumableEntry(data) => _api.post(_putProjectMaterial, data: data);
 
   Future<Response> postUpdateConsumableEntry(Map<String, dynamic> json) =>
-      _api.put(_putProjectWebMaterialAdress, data: json);
+      _api.post(_putProjectWebMaterialAdress, data: json);
 
   Future<Response> postUpdateDocumentationEntry(data) => _api.post(_putDocumentationDay, data: data);
   Future<Response> postCreateProjectEntry(ProjectEntryVM data) =>
