@@ -12,6 +12,8 @@ class ProjectEntryVM with _$ProjectEntryVM {
     int? projectStatusId,
     int? customerId,
     String? description,
+    @Default([]) List<String> kundenzuweisungOptions,
+    @Default([]) List<String> statusOptions,
   }) = _ProjectEntryVM;
 
   factory ProjectEntryVM.fromJson(Map<String, dynamic> json) => _$ProjectEntryVMFromJson(json);

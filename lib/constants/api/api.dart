@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
 
 class Customer {
   final String? companyName;
@@ -96,7 +97,8 @@ class Api {
 
   Future<Response> postUpdateDocumentationEntry(data) =>
       _api.post(_putDocumentationDay, data: data);
-  Future<Response> postCreateProjectEntry(data) => _api.post(_postCreateProjectEntry, data: data);
+  Future<Response> postCreateProjectEntry(ProjectEntryVM data) =>
+      _api.post(_postCreateProjectEntry, data: data.toJson());
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
   Future<Response> putResetPassword(Map<String, dynamic> json) =>
       _api.put(_putResetPasswordAdress, data: json);

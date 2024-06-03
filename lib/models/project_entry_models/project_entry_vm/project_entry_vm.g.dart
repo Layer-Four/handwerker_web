@@ -14,6 +14,14 @@ _$ProjectEntryVMImpl _$$ProjectEntryVMImplFromJson(Map<String, dynamic> json) =>
       projectStatusId: (json['projectStatusId'] as num?)?.toInt(),
       customerId: (json['customerId'] as num?)?.toInt(),
       description: json['description'] as String?,
+      kundenzuweisungOptions: (json['kundenzuweisungOptions'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      statusOptions: (json['statusOptions'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$ProjectEntryVMImplToJson(
@@ -25,4 +33,6 @@ Map<String, dynamic> _$$ProjectEntryVMImplToJson(
       'projectStatusId': instance.projectStatusId,
       'customerId': instance.customerId,
       'description': instance.description,
+      'kundenzuweisungOptions': instance.kundenzuweisungOptions,
+      'statusOptions': instance.statusOptions,
     };
