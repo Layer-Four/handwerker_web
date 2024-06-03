@@ -10,17 +10,15 @@ import '../../models/consumable_models/unit/unit.dart';
 final consumableProvider = NotifierProvider<ConsumeableNotifier, List<ConsumableVM>>(() => ConsumeableNotifier());
 
 class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
-  /// Instance from Api class for Internet Api Request
   final Api _api = Api();
 
-  /// Default value when [consumableProvider] initialized
   @override
   List<ConsumableVM> build() {
     loadConsumables();
     return [];
   }
 
-  Future<List<Unit>> loadConsumables() async {
+  Future<void> loadConsumables() async {
     final List<ConsumableVM> result = [];
     final units = await loadUnits();
     try {
@@ -31,7 +29,14 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       final List data = response.data.map((e) => e).toList();
       for (var e in data) {
         final unitKey = e['materialUnitName'];
-        final searchedUnit = units.firstWhere((unit) => unit.name == unitKey);
+        final searchedUnit = units.firstWhere(
+          (unit) => unit.name == unitKey,
+          orElse: () {
+            log('Unit with name $unitKey not found. Using default unit.');
+            return Unit(id: -1, name: 'Unknown');
+          },
+        );
+
         final material = ConsumableVM.wihUnitAndJson(e, searchedUnit);
         log(material.toJson().toString());
         result.add(material);
@@ -40,10 +45,8 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
     } catch (e) {
       log('Error loading consumables: $e');
     }
-    return units;
   }
 
-  /// Method that loads Units from Database via [Api] instance
   Future<List<Unit>> loadUnits() async {
     final result = <Unit>[];
     try {
@@ -66,5 +69,24 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       throw Exception(e);
     }
     return result;
+  }
+
+  Future<void> deleteConsumable(int id) async {
+    try {
+      final response = await _api.deleteServiceMaterial(id);
+      log('Received response: ${response.data}');
+      log('Response status code: ${response.statusCode}');
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        log('Successfully deleted row with ID: $id from the backend.');
+        state = state.where((item) => item.id != id).toList();
+      } else {
+        log('Failed to delete row with ID: $id. Status code: ${response.statusCode}, response: ${response.data}');
+        throw Exception('Failed to delete the item from the server: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Exception when trying to delete row with ID: $id: $e');
+      throw Exception('Error when attempting to delete the item: $e');
+    }
   }
 }

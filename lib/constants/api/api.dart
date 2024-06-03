@@ -58,7 +58,7 @@ class Api {
   final String _getListProject = '/project/list';
   final String _putProjectWebMaterialAdress = '/material/update';
   final String _deleteService = '/service/delete';
-  final String _deleteServiceMaterial = '/service/delete';
+  final String _deleteServiceMaterial = '/material/delete';
   final String _putResetPasswordAdress = '/user/password/reset';
   final String _deleteUserAdress = '/user/delete';
 
