@@ -4,6 +4,8 @@ import 'dart:convert'; // For JSON operations
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../../constants/themes/app_color.dart';
+import '../users_view/widgets/add_button_widget.dart';
 import '/constants/api/api.dart';
 import '../shared_view_widgets/search_line_header.dart';
 
@@ -137,7 +139,6 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
           padding: const EdgeInsets.fromLTRB(75, 30, 30, 15),
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SearchLineHeader(title: 'Leistungsverwaltung'),
@@ -151,8 +152,14 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
                       onUpdate: (updatedRow) => updateRow(updatedRow), // Now passing onUpdate
                       row: rowData,
                     )),
-                const SizedBox(height: 40),
-                buildAddButton(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: AddButton(
+                    onTap: () => setState(() {
+                      isCardVisible = !isCardVisible;
+                    }),
+                  ),
+                ),
                 if (isCardVisible)
                   CardWidget(
                     onSave: _addRow,
@@ -177,22 +184,6 @@ class _ConsumableLeistungBodyState extends State<ConsumableLeistungBody> {
           Spacer(),
           SizedBox(width: 110) // Adjust spacing as needed
         ],
-      );
-
-  Widget buildAddButton() => Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: FloatingActionButton(
-            onPressed: () {
-              setState(() {
-                isCardVisible = !isCardVisible;
-              });
-            },
-            backgroundColor: Colors.orange,
-            child: Icon(isCardVisible ? Icons.remove : Icons.add, color: Colors.white),
-          ),
-        ),
       );
 
   void _addRow(String title, String price) {
@@ -597,9 +588,9 @@ class _CardWidgetState extends State<CardWidget> {
                                     color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               'Verwerfen',
-                              style: TextStyle(color: Colors.orange),
+                              style: TextStyle(color: AppColor.kPrimaryButtonColor),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -638,7 +629,7 @@ class _CardWidgetState extends State<CardWidget> {
                             },
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
-                              backgroundColor: Colors.orange,
+                              backgroundColor: AppColor.kPrimaryButtonColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 side: const BorderSide(

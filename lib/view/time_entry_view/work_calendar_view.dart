@@ -42,7 +42,7 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         child: Column(
           children: [
-            const SearchLineHeader(title: 'Stundenübersicht', searchbarEnabled: false),
+            const SearchLineHeader(title: 'Stundenübersicht'),
             CalendarOptionsRow(
               isWeekViewChoosed: _isWeekView,
               isWorkOrder: _isWorkOrder,

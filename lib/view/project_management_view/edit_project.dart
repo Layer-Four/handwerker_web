@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../customer_project_view/custom_project.dart';
+import '../administration_view/custom_project.dart';
 import '../shared_view_widgets/symetric_button_widget.dart';
 
 class AddNewProject extends StatefulWidget {

@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../customer_project_view/custom_project.dart';
+import '../administration_view/custom_project.dart';
 import '../shared_view_widgets/search_line_header.dart';
+import '../users_view/widgets/add_button_widget.dart';
 import 'customer_card.dart';
 import 'edit_project.dart';
 
@@ -24,20 +25,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
 
   @override
   Widget build(BuildContext context) {
-    //, WidgetRef ref
     final screenWidth = MediaQuery.of(context).size.width;
-    //ref.read(customerProjectProvider.notifier).fetchInfos(); //todo: implement api
-
-/*    late List<TextEditingController> _controllers;
-    late List<bool> _isEditing;
-
-    void _addNewConsumable() {
-      setState(() {
-        final newController = TextEditingController();
-        _controllers.add(newController);
-        _isEditing.add(true);
-      });
-    }*/
 
     return Container(
       color: Colors.white,
@@ -45,6 +33,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
         padding: const EdgeInsets.fromLTRB(75, 30, 65, 30),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchLineHeader(title: 'Projektverwaltung'),
               const SizedBox(
@@ -88,32 +77,14 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                   ),
                 ),
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: Material(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(50),
-                      child: Center(
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          icon: Icon(
-                            isAddNewProject ? Icons.remove : Icons.add,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              isAddNewProject = !isAddNewProject;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: AddButton(
+                  onTap: () {
+                    setState(() {
+                      isAddNewProject = !isAddNewProject;
+                    });
+                  },
                 ),
               ),
               Visibility(
@@ -126,11 +97,6 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                     onSave: () {
                       log('save');
                       //Todo: Call api for saving
-                      //If Edit was clicked (therefore index != -1), also pass which customer is to be edited
-                      //Might be a different apie then
-                      /*                  setState(() {
-                        _addNewConsumable();
-                      });*/
                     },
                     onCancel: () {
                       log('cancel');

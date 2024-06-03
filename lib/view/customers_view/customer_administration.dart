@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../customer_project_view/custom_project.dart';
+import '../administration_view/custom_project.dart';
 import '../shared_view_widgets/search_line_header.dart';
+import '../users_view/widgets/add_button_widget.dart';
 import 'customer_card.dart';
 import 'edit_customer.dart';
 
@@ -45,6 +46,7 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
         padding: const EdgeInsets.fromLTRB(75, 30, 65, 30),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchLineHeader(title: 'Kundenverwaltung'),
               const SizedBox(
@@ -88,34 +90,44 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                   ),
                 ),
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: Material(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(50),
-                      child: Center(
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          icon: Icon(
-                            isAddConsumableOpen ? Icons.remove : Icons.add,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              isAddConsumableOpen = !isAddConsumableOpen;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: AddButton(
+                  onTap: () {
+                    setState(() {
+                      isAddConsumableOpen = !isAddConsumableOpen;
+                    });
+                  },
                 ),
               ),
+              // Container(
+              //   alignment: Alignment.topLeft,
+              //   child: ClipRRect(
+              //     borderRadius: BorderRadius.circular(50),
+              //     child: SizedBox(
+              //       height: 30,
+              //       width: 30,
+              //       child: Material(
+              //         color: Colors.orange,
+              //         borderRadius: BorderRadius.circular(50),
+              //         child: Center(
+              //           child: IconButton(
+              //             padding: EdgeInsets.zero,
+              //             icon: Icon(
+              //               isAddConsumableOpen ? Icons.remove : Icons.add,
+              //               color: Colors.white,
+              //             ),
+              //             onPressed: () {
+              //               setState(() {
+              //                 isAddConsumableOpen = !isAddConsumableOpen;
+              //               });
+              //             },
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Visibility(
                 visible: isAddConsumableOpen,
                 child: SizedBox(

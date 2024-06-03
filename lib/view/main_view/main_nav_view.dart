@@ -5,11 +5,11 @@ import '../../provider/settings_provider/nav_provider.dart';
 import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
 import '../consumable_view/consumable_view.dart';
-import '../customer_project_view/doc_screen.dart';
-import '../customer_project_view/leistung_sub.dart';
-import '../customers_view/doc_screen.dart';
+import '../administration_view/doc_screen.dart';
+import '../administration_view/leistung_sub.dart';
+import '../customers_view/customer_administration.dart';
 import '../home_view/home_body.dart';
-import '../project_management_view/doc_screen.dart';
+import '../project_management_view/project_managment_view.dart';
 import '../time_entry_view/work_calendar_view.dart';
 import '../users_view/user_view.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../customer_project_view/custom_project.dart';
+import '../administration_view/custom_project.dart';
 
 // ignore: must_be_immutable
 class CustomerCard extends StatefulWidget {

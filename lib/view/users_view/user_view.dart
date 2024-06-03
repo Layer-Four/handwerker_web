@@ -57,7 +57,9 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
+                const SearchLineHeader(
+                  title: 'Mitarbeiterverwaltung',
+                ),
                 UserRowHeadLine(constraints),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),

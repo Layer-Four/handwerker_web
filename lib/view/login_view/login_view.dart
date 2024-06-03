@@ -237,7 +237,7 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       const SizedBox(height: 3),
-                      buildTextField(emailCon, 'Bitte eine gültige Mandatenname eingeben'),
+                      _buildUsernameTextField(emailCon, 'Bitte eine gültige Mandatenname eingeben'),
                       const SizedBox(height: 20),
                       const SizedBox(
                         width: 350,
@@ -270,7 +270,8 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget buildTextField(TextEditingController controller, String errorMessage) => Container(
+  Widget _buildUsernameTextField(TextEditingController controller, String errorMessage) =>
+      Container(
         width: 355,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -284,6 +285,7 @@ class _LoginViewState extends State<LoginView> {
             duration: const Duration(milliseconds: 300),
             height: isFocused ? 44 : 40,
             child: TextFormField(
+              autofocus: true,
               textInputAction: TextInputAction.next,
               validator: (value) {
                 if (value!.isEmpty) {
