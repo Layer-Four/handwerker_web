@@ -1,22 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:dio/dio.dart';
 
 import '../customer_project_view/custom_project.dart';
 import '../shared_view_widgets/symetric_button_widget.dart';
+import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
+import 'package:handwerker_web/constants/api/api.dart';
 
 class AddNewProject extends StatefulWidget {
   final VoidCallback onSave;
   final VoidCallback onCancel;
   final CustomeProject? project;
+  final ProjectEntryVM projectEntryVM;
 
-  const AddNewProject({super.key, required this.onSave, required this.onCancel, this.project});
+
+  const AddNewProject({
+    Key? key,
+    required this.onSave,
+    required this.onCancel,
+    this.project,
+    required this.projectEntryVM,
+  }) : super(key: key);
+
+  factory AddNewProject.withDefaultVM({
+    Key? key,
+    required VoidCallback onSave,
+    required VoidCallback onCancel,
+    required CustomeProject? project,
+    ProjectEntryVM? projectEntryVM, // Change to nullable
+  }) {
+    return AddNewProject(
+      key: key,
+      onSave: onSave,
+      onCancel: onCancel,
+      project: project,
+      projectEntryVM: projectEntryVM ?? ProjectEntryVM(), // Use default value if null
+    );
+  }
 
   @override
   State<AddNewProject> createState() => _AddNewProjectState();
 }
 
 class _AddNewProjectState extends State<AddNewProject> {
-  final TextEditingController _projectNameController = TextEditingController();
   final TextEditingController _secondNameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -25,22 +51,89 @@ class _AddNewProjectState extends State<AddNewProject> {
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _dateStartController = TextEditingController();
   final TextEditingController _dateEndController = TextEditingController();
-  String? kundenzuweisungOption;
-  String? statusOption;
+  String? selectedProject;
+  String? selectedCustomer;
+  String? selectedStatus;
+  List<Customer> customerOptions = [];
+  List<String> statusOptions = ['Offen', 'Geschlossen', 'In Bearbeitung', 'On Hold'];
+  List<Project> projectOptions = [];
+  bool isLoadingCustomers = true;
+  bool isLoadingProjects = true;
+  late ProjectEntryVM _projectEntryVM;
 
   @override
   void initState() {
     super.initState();
-    if (widget.project != null) {
-      _projectNameController.text =
-          widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
+    fetchProjects();
+    fetchCustomers();
+    _projectEntryVM = ProjectEntryVM();
+  }
+
+  Future<void> fetchProjects() async {
+    setState(() {
+      isLoadingProjects = true;
+    });
+    try {
+      final response = await Api().getListProject;
+      final List<dynamic> data = response.data;
+      setState(() {
+        projectOptions = data.map((json) => Project.fromJson(json)).toList();
+        isLoadingProjects = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoadingProjects = false;
+      });
+      // Handle the error appropriately
     }
   }
 
-  //dispose of controllers
+  Future<void> fetchCustomers() async {
+    setState(() {
+      isLoadingCustomers = true;
+    });
+    try {
+      final response = await Api().getListCustomer;
+      final List<dynamic> data = response.data;
+      setState(() {
+        customerOptions = data.map((json) => Customer.fromJson(json)).toList();
+        isLoadingCustomers = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoadingCustomers = false;
+      });
+      // Handle the error appropriately
+    }
+  }
+
+  /*Future<void> _saveProjectEntry() async {
+    // Validate the form or fields if necessary
+
+    // Create a new ProjectEntryVM object with the entered data
+    ProjectEntryVM newProjectEntry = ProjectEntryVM(
+      title: selectedProject,
+      dateOfStart: _dateStartController.text,
+      dateOfTermination: _dateEndController.text,
+      customerId: selectedCustomer?.id,
+      description: _descriptionController.text,
+      // Add other properties as needed
+    );
+
+    try {
+      // Call the API to create the project entry
+      await Api().postCreateProjectEntry(newProjectEntry);
+
+      // Call the onSave callback provided by the parent widget
+      widget.onSave();
+    } catch (e) {
+      // Handle errors if necessary
+      print('Error: $e');
+    }
+  }*/
+
   @override
   void dispose() {
-    _projectNameController.dispose();
     _secondNameController.dispose();
     _descriptionController.dispose();
     _emailController.dispose();
@@ -49,7 +142,7 @@ class _AddNewProjectState extends State<AddNewProject> {
     _contactController.dispose();
     _dateStartController.dispose();
     _dateEndController.dispose();
-    super.dispose(); // Always call super.dispose() last
+    super.dispose();
   }
 
   Future<void> _selectDate(TextEditingController controller, BuildContext context) async {
@@ -78,8 +171,8 @@ class _AddNewProjectState extends State<AddNewProject> {
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: const Color.fromARGB(255, 220, 217, 217),
-                ),
+              color: const Color.fromARGB(255, 220, 217, 217),
+            ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 15,
               vertical: 5,
@@ -96,86 +189,91 @@ class _AddNewProjectState extends State<AddNewProject> {
             ),
             filled: true,
             fillColor: Colors.white,
-            suffixIcon: const Icon(Icons.calendar_today), // Icon to indicate it's a date field
+            suffixIcon: const Icon(Icons.calendar_today),
           ),
-          readOnly: true, // Prevent keyboard from appearing
-          onTap: () =>
-              _selectDate(controller, context), // Open date picker when the field is tapped
+          readOnly: true,
+          onTap: () => _selectDate(controller, context),
         ),
       );
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
-          child: Card(
-            elevation: 9,
-            child: Container(
-              color: const Color.fromARGB(255, 255, 255, 255),
-              height: 400,
-              width: double.infinity,
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(6),
-                          child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        const SizedBox(height: 5),
-                        buildTextField(
-                          hintText: 'Project X',
-                          controller: _projectNameController,
-                          context: context,
-                        ),
-                        const SizedBox(height: 20),
-                        const Padding(
-                          padding: EdgeInsets.all(6),
-                          child: Text(
-                            'Kundenzuweisung',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        buildDropdown(
-                          options: ['Kunde X', 'Firma GmbH', 'Stammkunde Y'],
-                          selectedValue: kundenzuweisungOption,
-                          onChanged: (value) {
-                            setState(() {
-                              kundenzuweisungOption = value;
-                            });
-                          },
-                          context: context,
-                        ),
-                        const SizedBox(height: 20),
-                        const Padding(
-                          padding: EdgeInsets.all(6),
-                          child: Text(
-                            'Status',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        buildDropdown(
-                          options: ['Offen', 'Geschlossen', 'In Bearbeitung', 'On Hold'],
-                          selectedValue: statusOption,
-                          onChanged: (value) {
-                            setState(() {
-                              statusOption = value;
-                            });
-                          },
-                          context: context,
-                        ),
-                      ],
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
+      child: Card(
+        elevation: 9,
+        child: Container(
+          color: const Color.fromARGB(255, 255, 255, 255),
+          height: 400,
+          width: double.infinity,
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(6),
+                      child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
-                  ),
-                  const SizedBox(width: 40),
-                  Expanded(
-                      child: Column(
+                    const SizedBox(height: 5),
+                    buildDropdown(
+                      options: projectOptions.map((project) => project.title ?? '').toList(),
+                      selectedValue: selectedProject,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedProject = value;
+                        });
+                      },
+                      context: context,
+                    ),
+                    const SizedBox(height: 20),
+                    const Padding(
+                      padding: EdgeInsets.all(6),
+                      child: Text(
+                        'Kundenzuweisung',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    isLoadingCustomers
+                        ? Center(child: CircularProgressIndicator())
+                        : buildDropdown(
+                      options: customerOptions.map((customer) => customer.companyName ?? '').toList(),
+                      selectedValue: selectedCustomer,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCustomer = value;
+                        });
+                      },
+                      context: context,
+                    ),
+                    const SizedBox(height: 20),
+                    const Padding(
+                      padding: EdgeInsets.all(6),
+                      child: Text(
+                        'Status',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    buildDropdown(
+                      options: statusOptions,
+                      selectedValue: selectedStatus,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedStatus = value;
+                        });
+                      },
+                      context: context,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 40),
+              Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
@@ -247,12 +345,12 @@ class _AddNewProjectState extends State<AddNewProject> {
                       ),
                     ],
                   ))
-                ],
-              ),
-            ),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
 }
 
 Widget buildTextField({
@@ -270,8 +368,8 @@ Widget buildTextField({
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: const Color.fromARGB(255, 220, 217, 217),
-                ),
+              color: const Color.fromARGB(255, 220, 217, 217),
+            ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 15,
               vertical: 5,
@@ -296,39 +394,43 @@ Widget buildDropdown({
   required String? selectedValue,
   required ValueChanged<String?> onChanged,
   required BuildContext context,
-}) =>
-    Padding(
-      padding: const EdgeInsets.only(left: 8, right: 8),
-      child: DropdownButtonFormField<String>(
-        value: selectedValue,
-        decoration: InputDecoration(
-          hintText: 'Select option',
-          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: const Color.fromARGB(255, 220, 217, 217),
-              ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 5,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(255, 220, 217, 217),
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
-          ),
-          filled: true,
-          fillColor: Colors.white,
+}) {
+  // Remove duplicates from the list of options
+  options = options.toSet().toList();
+
+  return Padding(
+    padding: const EdgeInsets.only(left: 8, right: 8),
+    child: DropdownButtonFormField<String>(
+      value: selectedValue,
+      decoration: InputDecoration(
+        hintText: 'Select option',
+        hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: const Color.fromARGB(255, 220, 217, 217),
         ),
-        onChanged: onChanged,
-        items: options
-            .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                ))
-            .toList(),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 5,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Color.fromARGB(255, 220, 217, 217),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+        ),
+        filled: true,
+        fillColor: Colors.white,
       ),
-    );
+      onChanged: onChanged,
+      items: options
+          .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      ))
+          .toList(),
+    ),
+  );
+}

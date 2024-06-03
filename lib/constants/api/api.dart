@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
 
 class Customer {
   final String? companyName;
@@ -61,6 +62,7 @@ class Api {
   final String _deleteServiceMaterial = '/service/delete';
   final String _putResetPasswordAdress = '/user/password/reset';
   final String _deleteUserAdress = '/user/delete';
+  final String _postCreateProjectEntry = '/project/create';
 
   Future<Response> get getAllProjects => _api.get(_getAllProjects);
   Future<Response> get getAllTimeEntrys => _api.get(_getAllTimeTacks);
@@ -96,6 +98,8 @@ class Api {
       _api.put(_putProjectWebMaterialAdress, data: json);
 
   Future<Response> postUpdateDocumentationEntry(data) => _api.post(_putDocumentationDay, data: data);
+  Future<Response> postCreateProjectEntry(ProjectEntryVM data) =>
+      _api.post(_postCreateProjectEntry, data: data.toJson());
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
   Future<Response> putResetPassword(Map<String, dynamic> json) => _api.put(_putResetPasswordAdress, data: json);
 

@@ -122,7 +122,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                   // alignment: Alignment.topLeft,
                   height: MediaQuery.of(context).size.height / 3,
                   width: screenWidth / 2,
-                  child: AddNewProject(
+                  child: AddNewProject.withDefaultVM(
                     onSave: () {
                       log('save');
                       //Todo: Call api for saving
