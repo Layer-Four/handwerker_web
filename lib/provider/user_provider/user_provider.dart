@@ -23,7 +23,7 @@ class UserNotifier extends Notifier<UserVM> {
 
   void userLogOut() {
     state = state.copyWith(userToken: '');
-    deleteToken();
+    _api.deleteToken();
   }
 
   Future<String?> getUserToken() async => _api.getToken;
@@ -65,8 +65,6 @@ class UserNotifier extends Notifier<UserVM> {
     }
     return false;
   }
-
-  void deleteToken() => _api.deleteToken();
 
   /// TODO: This Api calls not Users!!! and is deprecated.
   void loadUsers() async {

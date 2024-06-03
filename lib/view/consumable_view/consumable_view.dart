@@ -610,7 +610,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
       final data = row.toJson();
       log('Sending update request with data: $data');
 
-      final response = await _api.postUpdateConsumableEntry(data);
+      final response = await _api.putUpdateConsumableEntry(data);
 
       if (response.statusCode == 200) {
         log('Update response: ${response.data}');

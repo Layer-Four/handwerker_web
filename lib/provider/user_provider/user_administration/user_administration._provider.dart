@@ -16,19 +16,6 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
   @override
   List<UserDataShort> build() => [];
 
-  Future<List<UserRole>> loadUserRoles() async {
-    try {
-      final response = await _api.getUserRoles;
-      if (response.statusCode != 200) {
-        throw Exception('${response.statusCode} Invalid statusCode check Api call');
-      }
-      final List data = response.data.map((e) => e).toList();
-      return data.map((data) => UserRole.fromJson(data)).toList();
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
   Future<Map<String, dynamic>> createUser({
     required UserRole role,
     required String name,
@@ -53,17 +40,26 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
     }
   }
 
-  Future<Map> resetPassword(String name) async {
+  Future<bool> deleteUser(String userID) async {
+    log('user in State-> ${state.length}');
     try {
-      final response = await _api.putResetPassword({'userName': name});
+      final response = await _api.deleteUser(userID);
       if (response.statusCode != 200) {
-        throw Exception(
-            'Something went wrong on Request:\n ${response.statusCode} \n${response.data}');
+        throw Exception("can't delete User. status -> ${response.statusCode} : ${response.data}");
       }
-      return response.data;
+      loadUserEntries();
+      log('user in State-> ${state.length}');
+      final List<UserDataShort> between = [];
+      state.map((e) => {if (e.id != userID) between.add(e)});
+      state = between;
+      return true;
+    } on DioException catch (e) {
+      log('DioException ${e.message}');
     } catch (e) {
+      log('General Exception on deleteUser \n$e');
       throw Exception(e);
     }
+    return false;
   }
 
   Future<void> loadUserEntries() async {
@@ -91,21 +87,52 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
     return;
   }
 
-  Future<bool> deleteUser(String userID) async {
-    log('user in State-> ${state.length}');
+  Future<List<UserRole>> loadUserRoles() async {
     try {
-      final response = await _api.deleteUser(userID);
+      final response = await _api.getUserRoles;
       if (response.statusCode != 200) {
-        throw Exception("can't delete User. status -> ${response.statusCode} : ${response.data}");
+        throw Exception('${response.statusCode} Invalid statusCode check Api call');
       }
-      log('user in State-> ${state.length}');
-      return true;
-    } on DioException catch (e) {
-      log('DioException ${e.message}');
+      final List data = response.data.map((e) => e).toList();
+      return data.map((data) => UserRole.fromJson(data)).toList();
     } catch (e) {
-      log('General Exception on deleteUser \n$e');
       throw Exception(e);
     }
-    return false;
+  }
+
+  Future<Map> resetPassword(String name) async {
+    try {
+      final response = await _api.putResetPassword({'userName': name});
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Something went wrong on Request:\n ${response.statusCode} \n${response.data}');
+      }
+      return response.data;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> updateUser(UserDataShort user) async {
+    final roles = user.roles.map((e) => e.name).toList();
+    final Map<String, dynamic> userId = {'userId': user.id};
+    final json = user.toJson();
+    json.update('roles', (e) => e = roles);
+    json.removeWhere((key, value) => key == 'id');
+    json.addAll(userId);
+    log(json.toString());
+
+    try {
+      final response = await _api.putUpdateUser(json);
+      if (response.statusCode != 200) {
+        throw Exception(
+            'something went wrong on update User-> ${response.statusCode}\n${response.data}');
+      }
+      loadUserEntries();
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
   }
 }

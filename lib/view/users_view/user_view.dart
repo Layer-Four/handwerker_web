@@ -79,6 +79,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                     onCancel: () => setState(() {
                       _isOpen = !_isOpen;
                     }),
+                    onSave: () => initUsers(),
                   ),
                 )
               ],
@@ -107,9 +108,12 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                 const SnackBar(content: Text('Mitarbeitenden erfolgreich gelöscht')),
               )
             }
-          : ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Mitarbeitenden konnte nicht gelöscht werden')),
-            );
+          : {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Mitarbeitenden konnte nicht gelöscht werden')),
+              ),
+              Navigator.of(context).pop(),
+            };
     });
   }
 
