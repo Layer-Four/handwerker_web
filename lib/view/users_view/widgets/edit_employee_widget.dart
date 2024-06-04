@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -179,7 +178,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
               padding: const EdgeInsets.all(8.0),
               child: QrImageView(
                 // data: 'Nutzername: ${_nameController.text}\nEinmal Passwort: Xcy24KjIq0abkAd',
-                data: '${_newUser!['userName']},${_newUser!['password']}',
+                data: '${_newUser!['userName']} ${_newUser!['password']}',
                 version: QrVersions.auto,
                 size: MediaQuery.of(context).size.width >= overflowWith
                     ? 250
@@ -304,16 +303,22 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             .read(userAdministrationProvider.notifier)
                             .createUser(role: _selectedRole!, name: _nameController.text)
                             .then((value) {
+                          if (value.keys.contains('error')) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Nutzer konnte nicht erstellt werden.\nNutzer mit diesem Namen exisiert bereits'),
+                              ),
+                            );
+                            return;
+                          }
                           setState(() {
                             _newUser = value;
-                            log(_newUser.toString());
                             _createdUser = _newUser != null;
-                            log(_createdUser.toString());
-                            return;
                           });
-                          // createdUser = !createdUser;
+                          return;
                         });
-                      } else if (_nameController.text.contains(_specialSign)) {
+                      } else {
                         if (!_isSnackbarOpen) {
                           setState(() => _isSnackbarOpen = true);
                           Future.delayed(Duration(seconds: _snackBarDuration))

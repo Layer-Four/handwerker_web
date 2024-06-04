@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/api/api.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
 import '../../../models/users_models/user_role/user_role.dart';
-import '../user_provider.dart';
 
 final userAdministrationProvider = NotifierProvider<UserAdministrationNotifer, List<UserDataShort>>(
     () => UserAdministrationNotifer());
@@ -14,7 +13,12 @@ final userAdministrationProvider = NotifierProvider<UserAdministrationNotifer, L
 class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
   final Api _api = Api();
   @override
-  List<UserDataShort> build() => [];
+  List<UserDataShort> build() {
+    loadUserEntries();
+    return [];
+  }
+
+  void clearState() => state = [];
 
   Future<Map<String, dynamic>> createUser({
     required UserRole role,
@@ -25,17 +29,22 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       'roles': [role.name],
     };
     try {
-      log(newUser.toString());
-      log('BearerToken  ${ref.watch(userProvider).userToken}');
       final response = await _api.postCreateNewUser(newUser);
       if (response.statusCode != 200) {
         throw Exception('${response.statusCode} Invalid Api call ${response.data}');
       }
-
       final data = response.data;
       log(data.toString());
       return data;
+    } on DioException catch (e) {
+      if (e.toString().contains('400')) {
+        return {'error': 'duplicated user'};
+      }
+      throw Exception('DioException-> ${e.message}');
     } catch (e) {
+      if (e.toString().contains('400')) {
+        return {'error': 'duplicated user'};
+      }
       throw Exception(e);
     }
   }
@@ -47,11 +56,13 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       if (response.statusCode != 200) {
         throw Exception("can't delete User. status -> ${response.statusCode} : ${response.data}");
       }
-      loadUserEntries();
-      log('user in State-> ${state.length}');
-      final List<UserDataShort> between = [];
-      state.map((e) => {if (e.id != userID) between.add(e)});
-      state = between;
+      if (response.data.contains('User deleted successfully.')) {
+        loadUserEntries();
+      }
+      final List<UserDataShort> newState = [];
+      state.map((e) => {if (e.id != userID) newState.add(e)}).toList();
+      // log('länge state-> ${state.length} länge zwischneliste-> ${newState.length}');
+      state = newState;
       return true;
     } on DioException catch (e) {
       log('DioException ${e.message}');

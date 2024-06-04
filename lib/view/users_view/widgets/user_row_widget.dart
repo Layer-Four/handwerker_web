@@ -33,7 +33,7 @@ class UserRowCard extends ConsumerStatefulWidget {
 }
 
 class _UserRowCardState extends ConsumerState<UserRowCard> {
-  late final UserDataShort user;
+  late UserDataShort user;
   late final BoxConstraints constraints;
   late final bool isFirst;
   late final bool isLast;
@@ -79,7 +79,7 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
   Widget buildDropdown({
     required List<UserRole> roleFromUser,
     required List<UserRole> userRoles,
-    required ValueChanged onChanged,
+    // required ValueChanged onChanged,
     required BuildContext context,
   }) =>
       Container(
@@ -113,7 +113,9 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
           //   filled: true,
           //   fillColor: Colors.grey[100],
           // ),
-          onChanged: onChanged,
+          onChanged: (role) {
+            setState(() => user = user.copyWith(roles: [role!]));
+          },
           items: userRoles
               .map((value) => DropdownMenuItem(
                     onTap: () {
@@ -131,6 +133,7 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
                                 r ? 'Erfolgreich angepasst' : 'Leider ist etwas schief gegagen'),
                           ),
                         );
+                        // Navigator.of(context).restorablePushReplacementNamed(AppRoutes.viewScreen);
                       });
                     },
                     value: value,
@@ -304,15 +307,8 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
           SizedBox(
             height: 40,
             width: constraints.maxWidth / 100 * 20,
-            child: buildDropdown(
-                roleFromUser: user.roles,
-                userRoles: possibleRoles,
-                onChanged: (_) {
-                  // setState(() {
-                  //   _selectedRole = value;
-                  // });
-                },
-                context: context),
+            child:
+                buildDropdown(roleFromUser: user.roles, userRoles: possibleRoles, context: context),
           ),
         ],
       );

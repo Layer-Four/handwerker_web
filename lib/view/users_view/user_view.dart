@@ -19,7 +19,6 @@ class EmployeeAdministration extends ConsumerStatefulWidget {
 
 class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
   bool _isOpen = false;
-  final List<UserDataShort> _users = [];
   final List<UserRole> _roles = [];
   @override
   void initState() {
@@ -30,25 +29,9 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
   void initAttributes() {
     ref.read(userAdministrationProvider.notifier).loadUserRoles().then(
       (e) {
-        initUsers();
         setState(() => _roles.addAll(e));
       },
     );
-  }
-
-  void initUsers() {
-    if (ref.watch(userAdministrationProvider).isNotEmpty) {
-      final allEntriesAsSet = <UserDataShort>{...ref.watch(userAdministrationProvider), ..._users};
-      setState(() => _users.addAll(allEntriesAsSet));
-      return;
-    }
-    ref.read(userAdministrationProvider.notifier).loadUserEntries().then(
-      (e) {
-        final a = ref.watch(userAdministrationProvider).toSet();
-        setState(() => _users.addAll(a.toSet()));
-      },
-    );
-    return;
   }
 
   @override
@@ -57,18 +40,17 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SearchLineHeader(
-                  title: 'Mitarbeiterverwaltung',
-                ),
+                const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
                 UserRowHeadLine(constraints),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: SizedBox(
                     height: 5 * 74,
-                    child: _users.isEmpty ? _waitingMessage() : _userRowBuilder(constraints),
+                    child: ref.watch(userAdministrationProvider).isEmpty
+                        ? _waitingMessage()
+                        : _userRowBuilder(constraints),
                   ),
                 ),
-                // _userRowBuilder(constraints),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: AddButton(
@@ -81,7 +63,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                     onCancel: () => setState(() {
                       _isOpen = !_isOpen;
                     }),
-                    onSave: () => initUsers(),
+                    onSave: () {},
                   ),
                 )
               ],
@@ -89,22 +71,23 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
           ));
 
   Widget _userRowBuilder(BoxConstraints constraints) => ListView.builder(
-      itemCount: _users.length,
+      itemCount: ref.watch(userAdministrationProvider).length,
       itemBuilder: (_, index) => UserRowCard(
             constraints,
             _roles,
-            _users[index],
+            ref.watch(userAdministrationProvider)[index],
             () {
-              _deleteUser(_users[index]);
+              _deleteUser(ref.watch(userAdministrationProvider)[index]);
             },
             isFirst: index == 0,
-            isLast: index == _users.length - 1,
+            isLast: index == ref.watch(userAdministrationProvider).length - 1,
           ));
 
   _deleteUser(UserDataShort user) {
     ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
       e
           ? {
+              Navigator.of(context).pop(),
               Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen),
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Mitarbeitenden erfolgreich gelöscht')),
