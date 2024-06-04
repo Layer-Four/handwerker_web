@@ -11,6 +11,7 @@ import '../../../../models/time_models/time_dm/time_dm.dart';
 import '../../../../models/users_models/user_data_short/user_short.dart';
 import '../../../../provider/data_provider/service_provider/service_vm_provider.dart';
 import '../../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
+import '../../../constants/themes/app_color.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
@@ -698,13 +699,21 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   Widget _submitInput() => Padding(
         padding: const EdgeInsets.all(16.0),
         child: SymmetricButton(
-          color: Colors.orange,
+          color: AppColor.kPrimaryButtonColor,
           text: 'Eintrag erstellen',
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
           onPressed: () {
-            ref.read(timeVMProvider.notifier).saveTimeEntry(_entry);
+            ref.read(timeVMProvider.notifier).saveTimeEntry(_entry).then((e) {
+              Navigator.of(context).pop();
+              return ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Center(
+                    child: Text(e ? 'Eintrag wurde erstellt' : 'Leider ist etwas schief gegangen'),
+                  ),
+                ),
+              );
+            });
             // TODO: uncommand this, after API is ready           ref.read(timeEntryProvider.notifier).uploadTimeEntry(_entry);
-            Navigator.of(context).pop();
             // if (_startController.text.isEmpty || _endController.text.isEmpty) {
             //   return ScaffoldMessenger.of(context).showSnackBar(
             //     const SnackBar(
@@ -723,11 +732,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             //     _durationController.clear();
             //     _dayPickerController.text = '${now.day}.${now.month}.${now.year}';
             //   });
-            return ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Center(child: Text('Vorsicht Lügner!')),
-              ),
-            );
             // }
           },
         ),

@@ -16,7 +16,7 @@ class SymmetricButton extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     this.borderRadius,
     this.elevation = 5,
-    this.overflow,
+    this.overflow = TextOverflow.clip,
     style,
     required this.text,
   })  : style = style ?? const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
@@ -26,7 +26,7 @@ class SymmetricButton extends StatelessWidget {
   Widget build(BuildContext context) => Material(
         elevation: elevation,
         color: color,
-        borderRadius: borderRadius ?? BorderRadius.circular(11),
+        borderRadius: borderRadius ?? BorderRadius.circular(6),
         type: MaterialType.card,
         child: InkWell(
           onTap: onPressed,

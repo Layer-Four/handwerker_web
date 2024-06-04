@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../constants/themes/app_color.dart';
 
 class AddButton extends StatefulWidget {
-  final VoidCallback? onTap;
+  final void Function()? onTap;
   const AddButton({super.key, this.onTap});
 
   @override
@@ -14,7 +14,7 @@ class _AddButtonState extends State<AddButton> {
   bool isOpen = false;
   @override
   Widget build(context) => Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: SizedBox(
           height: 40,
           width: 40,
