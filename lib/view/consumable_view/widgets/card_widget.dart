@@ -1,27 +1,27 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/consumable_models/unit/unit.dart';
+import '../../../provider/consumeable_proivder/consumable_provider.dart';
 
-class CardWidget extends StatefulWidget {
+class CardWidget extends ConsumerStatefulWidget {
   final Function(String material, int amount, Unit unit, int price) onSave;
   final Function onHideCard;
 
   const CardWidget({required this.onSave, required this.onHideCard, super.key});
 
   @override
-  State<CardWidget> createState() => _CardWidgetState();
+  ConsumerState<CardWidget> createState() => _CardWidgetState();
 }
 
-class _CardWidgetState extends State<CardWidget> {
+class _CardWidgetState extends ConsumerState<CardWidget> {
   final TextEditingController _materialController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   bool _isLoading = false;
   bool _isFetchingUnits = true;
-  List<Unit> _units = [];
+  final List<Unit> _units = [];
   Unit? _selectedUnit;
   String _amountError = '';
   String _priceError = '';
@@ -40,30 +40,21 @@ class _CardWidgetState extends State<CardWidget> {
     super.dispose();
   }
 
-  Future<void> _loadUnits() async {
-    try {
-      final response = await http.get(
-        Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/unit/list'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body);
-        setState(() {
-          _units = data.map((item) => Unit.fromJson(item)).toList();
-          _isFetchingUnits = false;
-        });
-      } else {
-        throw Exception('Failed to load units');
-      }
-    } catch (e) {
-      log('Error fetching units: $e');
+  void _loadUnits() {
+    setState(() => _isLoading = true);
+    ref.read(consumableProvider.notifier).loadUnits().then((value) {
+      setState(() {
+        _units.addAll(value);
+        _isFetchingUnits = false;
+        _isLoading = false;
+      });
+    }).catchError((error) {
       setState(() {
         _isFetchingUnits = false;
+        _isLoading = false;
       });
-    }
+      log('Error loading units: $error');
+    });
   }
 
   bool _validateInputs() {
@@ -113,7 +104,7 @@ class _CardWidgetState extends State<CardWidget> {
     return isValid;
   }
 
-  void createService() async {
+  void _createService() async {
     final String material = _materialController.text.trim();
     final int amount = int.parse(_amountController.text.trim());
     final Unit unit = _selectedUnit!;
@@ -127,27 +118,20 @@ class _CardWidgetState extends State<CardWidget> {
       setState(() {
         _isLoading = true;
       });
-      final response = await http.post(
-        Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/material/create'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'name': material,
-          'amount': amount,
-          'materialUnitId': unit.id,
-          'price': price,
-        }),
-      );
 
-      if (response.statusCode == 200) {
-        widget.onSave(material, amount, unit, price);
+      await ref.read(consumableProvider.notifier).createService(material, amount, unit, price).then((value) {
+        setState(() {
+          _priceController.clear();
+          _selectedUnit = null;
+          _amountController.clear();
+          _materialController.clear();
+        });
+      });
 
-        if (Navigator.canPop(context)) {
-          Navigator.of(context).pop(); // Only pop if there's a stack to pop from.
-        }
-      } else {
-        throw Exception('Failed to create service.');
+      widget.onSave(material, amount, unit, price);
+
+      if (Navigator.canPop(context)) {
+        Navigator.of(context).pop();
       }
     } catch (e) {
       log('Error on createService: $e');
@@ -361,7 +345,7 @@ class _CardWidgetState extends State<CardWidget> {
                               TextButton(
                                 onPressed: () {
                                   if (_validateInputs()) {
-                                    createService();
+                                    _createService();
                                   }
                                 },
                                 style: TextButton.styleFrom(
