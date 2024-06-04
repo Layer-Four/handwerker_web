@@ -36,7 +36,7 @@ class NavButtonWidget extends ConsumerWidget {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
+                  padding: const EdgeInsets.only(left: 12.0, right: 0),
                   child: Icon(
                     icon ?? Icons.home,
                     size: 24,
@@ -58,12 +58,12 @@ class NavButtonWidget extends ConsumerWidget {
                     }
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     child: Text(
                       title,
                       style: Theme.of(context)
                           .textTheme
-                          .headlineSmall
+                          .titleLarge
                           ?.copyWith(fontWeight: FontWeight.w600),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -74,13 +74,16 @@ class NavButtonWidget extends ConsumerWidget {
             if (subcategoriestitles.isNotEmpty)
               Row(
                 children: [
-                  const SizedBox(width: 50),
-                  Expanded(
+                  const SizedBox(width: 45),
+                  Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: List.generate(
                         subcategoriestitles.length,
                         (index) => TextButton(
+                          style: TextButton.styleFrom(
+                            overlayColor: Colors.grey[600],
+                          ),
                           onPressed: () {
                             final MainView? next =
                                 MainViewExtension.getMainview(subcategoriestitles[index]);
@@ -88,13 +91,13 @@ class NavButtonWidget extends ConsumerWidget {
                           },
                           child: Text(
                             subcategoriestitles[index],
-                            style: TextStyle(
-                              color: subcategoryMainViews[index] == ref.watch(mainNavProvider)
-                                  ? AppColor.kPrimaryButtonColor
-                                  : Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
-                            ),
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: subcategoryMainViews[index] == ref.watch(mainNavProvider)
+                                      ? AppColor.kPrimaryButtonColor
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),

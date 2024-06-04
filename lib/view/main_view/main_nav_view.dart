@@ -23,7 +23,6 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
   @override
   Widget build(BuildContext context) {
     final view = ref.watch(mainNavProvider);
-    double width = MediaQuery.of(context).size.width;
     return Builder(
         builder: (context) => Scaffold(
               body: LayoutBuilder(
@@ -37,8 +36,9 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                                 : _buildStandartNavBar(context, constrains),
                           ),
                           SizedBox(
-                            height: constrains.maxHeight,
-                            width: width <= 1000 ? width - 50 : ((width / 10) * 8),
+                            width: constrains.maxWidth <= 1000
+                                ? constrains.maxWidth - 50
+                                : ((constrains.maxWidth - 250)),
                             child: switch (view) {
                               MainView.home => const HomeBody(),
                               MainView.timeEntry => const WorkCalendarView(),
@@ -56,8 +56,9 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
             ));
   }
 
-  Container _buildStandartNavBar(BuildContext context, BoxConstraints constrains) => Container(
-        width: (MediaQuery.of(context).size.width / 10) * 2,
+  Widget _buildStandartNavBar(BuildContext context, BoxConstraints constrains) => Container(
+        width: 250,
+        // width: constrains.maxWidth > 1100 ? 220 : (MediaQuery.of(context).size.width / 100) * 20,
         color: const Color.fromARGB(255, 208, 207, 207),
         child: SingleChildScrollView(
           child: Column(
@@ -82,17 +83,13 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                 icon: Icons.access_time,
                 title: 'Zeiteintrag',
                 nextView: MainView.timeEntry,
-                subcategoriestitles: [
-                  'Zeiteintrag ',
-                ],
-                subcategoryMainViews: [
-                  MainView.timeEntry,
-                ],
+                subcategoriestitles: ['Zeiteintrag'],
+                subcategoryMainViews: [MainView.timeEntry],
               ),
               const NavButtonWidget(
+                icon: Icons.signal_cellular_alt_sharp,
                 title: 'Berichte',
                 nextView: MainView.projectCustomer,
-                icon: Icons.signal_cellular_alt_sharp,
                 subcategoriestitles: ['Kunden/Projekte'],
                 subcategoryMainViews: [MainView.projectCustomer],
               ),
@@ -100,7 +97,12 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                 title: 'Verwaltung',
                 nextView: MainView.consumables,
                 icon: Icons.folder_open,
-                subcategoriestitles: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
+                subcategoriestitles: [
+                  'Material',
+                  'Kunden',
+                  'Projekte',
+                  'Leistungen',
+                ],
                 height: 200,
                 subcategoryMainViews: [
                   MainView.consumables,
@@ -128,7 +130,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
         ),
       );
 
-  Widget _buildpopUpNav(BuildContext context, BoxConstraints constrains) => Align(
+  Widget _buildpopUpNav(BuildContext context, BoxConstraints constrains) => Container(
         alignment: Alignment.topLeft,
         child: IconButton(
           onPressed: () => showDialog(

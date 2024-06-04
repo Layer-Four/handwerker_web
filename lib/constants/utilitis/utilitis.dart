@@ -107,6 +107,9 @@ class Utilitis {
           builder: (context) => Dialog(
                 backgroundColor: Colors.white,
                 child: SizedBox(
+                  // decoration: BoxDecoration(
+                  // border: Border.all(color: AppColor.kTextfieldBorder, width: 1.5),
+                  // borderRadius: BorderRadius.circular(30)),
                   height: 350,
                   width: MediaQuery.of(context).size.width / 10 * 60,
                   child: Column(
