@@ -13,7 +13,6 @@ class AddNewProject extends StatefulWidget {
   final CustomeProject? project;
   final ProjectEntryVM projectEntryVM;
 
-
   const AddNewProject({
     Key? key,
     required this.onSave,
@@ -34,7 +33,8 @@ class AddNewProject extends StatefulWidget {
       onSave: onSave,
       onCancel: onCancel,
       project: project,
-      projectEntryVM: projectEntryVM ?? ProjectEntryVM(), // Use default value if null
+      projectEntryVM:
+          projectEntryVM ?? ProjectEntryVM(), // Use default value if null
     );
   }
 
@@ -46,7 +46,8 @@ class _AddNewProjectState extends State<AddNewProject> {
   final TextEditingController _secondNameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _customerNumberController = TextEditingController();
+  final TextEditingController _customerNumberController =
+      TextEditingController();
   final TextEditingController _telephoneController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _dateStartController = TextEditingController();
@@ -55,7 +56,12 @@ class _AddNewProjectState extends State<AddNewProject> {
   String? selectedCustomer;
   String? selectedStatus;
   List<Customer> customerOptions = [];
-  List<String> statusOptions = ['Offen', 'Geschlossen', 'In Bearbeitung', 'On Hold'];
+  List<String> statusOptions = [
+    'Offen',
+    'Geschlossen',
+    'In Bearbeitung',
+    'On Hold'
+  ];
   List<Project> projectOptions = [];
   bool isLoadingCustomers = true;
   bool isLoadingProjects = true;
@@ -107,17 +113,21 @@ class _AddNewProjectState extends State<AddNewProject> {
     }
   }
 
-  /*Future<void> _saveProjectEntry() async {
-    // Validate the form or fields if necessary
+  Future<void> _saveProjectEntry() async {
+    // Find the selected Customer object based on the selected company name
+    Customer selectedCustomerObject = customerOptions.firstWhere(
+      (customer) => customer.companyName == selectedCustomer,
+      orElse: () => Customer(companyName: 'Unknown', id: -1),
+    );
 
     // Create a new ProjectEntryVM object with the entered data
     ProjectEntryVM newProjectEntry = ProjectEntryVM(
       title: selectedProject,
       dateOfStart: _dateStartController.text,
       dateOfTermination: _dateEndController.text,
-      customerId: selectedCustomer?.id,
+      customerId: selectedCustomerObject?.id,
       description: _descriptionController.text,
-      // Add other properties as needed
+      projectStatusId: _projectEntryVM.projectStatusId,
     );
 
     try {
@@ -130,7 +140,7 @@ class _AddNewProjectState extends State<AddNewProject> {
       // Handle errors if necessary
       print('Error: $e');
     }
-  }*/
+  }
 
   @override
   void dispose() {
@@ -145,7 +155,8 @@ class _AddNewProjectState extends State<AddNewProject> {
     super.dispose();
   }
 
-  Future<void> _selectDate(TextEditingController controller, BuildContext context) async {
+  Future<void> _selectDate(
+      TextEditingController controller, BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -171,8 +182,8 @@ class _AddNewProjectState extends State<AddNewProject> {
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: const Color.fromARGB(255, 220, 217, 217),
-            ),
+                  color: const Color.fromARGB(255, 220, 217, 217),
+                ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 15,
               vertical: 5,
@@ -185,7 +196,8 @@ class _AddNewProjectState extends State<AddNewProject> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+              borderSide:
+                  const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
             ),
             filled: true,
             fillColor: Colors.white,
@@ -198,92 +210,101 @@ class _AddNewProjectState extends State<AddNewProject> {
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
-      child: Card(
-        elevation: 9,
-        child: Container(
-          color: const Color.fromARGB(255, 255, 255, 255),
-          height: 400,
-          width: double.infinity,
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(6),
-                      child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
+          child: Card(
+            elevation: 9,
+            child: Container(
+              color: const Color.fromARGB(255, 255, 255, 255),
+              height: 400,
+              width: double.infinity,
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text('Name',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        const SizedBox(height: 5),
+                        buildDropdown(
+                          options: projectOptions
+                              .map((project) => project.title ?? '')
+                              .toList(),
+                          selectedValue: selectedProject,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedProject = value;
+                            });
+                          },
+                          context: context,
+                        ),
+                        const SizedBox(height: 20),
+                        const Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text(
+                            'Kundenzuweisung',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        isLoadingCustomers
+                            ? Center(child: CircularProgressIndicator())
+                            : buildDropdown(
+                                options: customerOptions
+                                    .map((customer) =>
+                                        customer.companyName ?? '')
+                                    .toList(),
+                                selectedValue: selectedCustomer,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedCustomer = value;
+                                  });
+                                },
+                                context: context,
+                              ),
+                        const SizedBox(height: 20),
+                        const Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text(
+                            'Status',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        buildDropdown(
+                          options: statusOptions,
+                          selectedValue: selectedStatus,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedStatus = value;
+                            });
+                          },
+                          context: context,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 5),
-                    buildDropdown(
-                      options: projectOptions.map((project) => project.title ?? '').toList(),
-                      selectedValue: selectedProject,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedProject = value;
-                        });
-                      },
-                      context: context,
-                    ),
-                    const SizedBox(height: 20),
-                    const Padding(
-                      padding: EdgeInsets.all(6),
-                      child: Text(
-                        'Kundenzuweisung',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    isLoadingCustomers
-                        ? Center(child: CircularProgressIndicator())
-                        : buildDropdown(
-                      options: customerOptions.map((customer) => customer.companyName ?? '').toList(),
-                      selectedValue: selectedCustomer,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedCustomer = value;
-                        });
-                      },
-                      context: context,
-                    ),
-                    const SizedBox(height: 20),
-                    const Padding(
-                      padding: EdgeInsets.all(6),
-                      child: Text(
-                        'Status',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    buildDropdown(
-                      options: statusOptions,
-                      selectedValue: selectedStatus,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedStatus = value;
-                        });
-                      },
-                      context: context,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 40),
-              Expanded(
-                  child: Column(
+                  ),
+                  const SizedBox(width: 40),
+                  Expanded(
+                      child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
                         padding: EdgeInsets.all(6),
-                        child: Text('Beschreibung', style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text('Beschreibung',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                       TextField(
                         controller: _descriptionController,
-                        maxLines: 2, // Allows the text field to expand to 7 lines.
-                        minLines: 2, // Ensures the text field always shows 7 lines.
+                        maxLines:
+                            2, // Allows the text field to expand to 7 lines.
+                        minLines:
+                            2, // Ensures the text field always shows 7 lines.
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -315,7 +336,9 @@ class _AddNewProjectState extends State<AddNewProject> {
                           context: context),
                       const SizedBox(height: 5),
                       buildDateField(
-                          controller: _dateEndController, hintText: 'Enddatum', context: context),
+                          controller: _dateEndController,
+                          hintText: 'Enddatum',
+                          context: context),
                       const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -338,19 +361,19 @@ class _AddNewProjectState extends State<AddNewProject> {
                             child: SymmetricButton(
                               color: Colors.orange,
                               text: 'Speichern',
-                              onPressed: widget.onSave,
+                              onPressed: _saveProjectEntry,
                             ),
                           ),
                         ],
                       ),
                     ],
                   ))
-            ],
+                ],
+              ),
+            ),
           ),
         ),
-      ),
-    ),
-  );
+      );
 }
 
 Widget buildTextField({
@@ -368,8 +391,8 @@ Widget buildTextField({
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: const Color.fromARGB(255, 220, 217, 217),
-            ),
+                  color: const Color.fromARGB(255, 220, 217, 217),
+                ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 15,
               vertical: 5,
@@ -382,7 +405,8 @@ Widget buildTextField({
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+              borderSide:
+                  const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
             ),
           ),
         ),
@@ -405,8 +429,8 @@ Widget buildDropdown({
       decoration: InputDecoration(
         hintText: 'Select option',
         hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-          color: const Color.fromARGB(255, 220, 217, 217),
-        ),
+              color: const Color.fromARGB(255, 220, 217, 217),
+            ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 5,
@@ -419,17 +443,19 @@ Widget buildDropdown({
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+          borderSide:
+              const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
         ),
         filled: true,
         fillColor: Colors.white,
       ),
       onChanged: onChanged,
       items: options
-          .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
-        value: value,
-        child: Text(value),
-      ))
+          .map<DropdownMenuItem<String>>(
+              (String value) => DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  ))
           .toList(),
     ),
   );
