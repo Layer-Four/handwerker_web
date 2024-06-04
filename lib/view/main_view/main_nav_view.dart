@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../constants/themes/app_color.dart';
+
 import '../../provider/settings_provider/nav_provider.dart';
-import '../../provider/user_provider/user_provider.dart';
-import '../../routes/app_routes.dart';
-import '../consumable_view/consumable_view.dart';
 import '../administration_view/doc_screen.dart';
 import '../administration_view/leistung_sub.dart';
+import '../consumable_view/consumable_view.dart';
 import '../customers_view/customer_administration.dart';
 import '../home_view/home_body.dart';
 import '../project_management_view/project_managment_view.dart';
 import '../time_entry_view/work_calendar_view.dart';
 import '../users_view/user_view.dart';
+import 'widgets/nav_button_widget.dart';
 
 class MainViewNavigator extends ConsumerStatefulWidget {
   const MainViewNavigator({super.key});
@@ -207,103 +206,6 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
             ),
           ),
           icon: const Icon(Icons.menu),
-        ),
-      );
-}
-
-class NavButtonWidget extends ConsumerWidget {
-  final String title;
-  final MainView? nextView;
-  final IconData? icon;
-  final List<String> subcategoriestitles;
-  final List<MainView> subcategoryMainViews; // List of subcategory main views
-  final Color? color;
-  final double width;
-  final double? height;
-  const NavButtonWidget({
-    super.key,
-    required this.title,
-    this.nextView,
-    this.icon,
-    this.subcategoriestitles = const <String>[],
-    this.subcategoryMainViews = const [],
-    this.color,
-    this.width = 250,
-    this.height = 100,
-  });
-  @override
-  Widget build(BuildContext context, WidgetRef ref) => SizedBox(
-        width: width,
-        height: height,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: Icon(
-                    icon ?? Icons.home,
-                    size: 24,
-                  ),
-                ),
-                InkWell(
-                  child: Text(
-                    title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w600),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onTap: () {
-                    if (nextView == null) {
-                      Navigator.of(context).pushReplacementNamed(AppRoutes.initialRoute);
-                      ref.read(userProvider.notifier).userLogOut();
-                      return;
-                    }
-                    if (subcategoriestitles.isEmpty || subcategoryMainViews.isEmpty) {
-                      final MainView? next = MainViewExtension.getMainview(title);
-                      if (next != null) ref.read(mainNavProvider.notifier).state = next;
-                    } else {
-                      ref.read(mainNavProvider.notifier).state = subcategoryMainViews.first;
-                    }
-                  },
-                ),
-              ],
-            ),
-            if (subcategoriestitles.isNotEmpty)
-              Row(
-                children: [
-                  const SizedBox(width: 50),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(
-                        subcategoriestitles.length,
-                        (index) => TextButton(
-                          onPressed: () {
-                            final MainView? next =
-                                MainViewExtension.getMainview(subcategoriestitles[index]);
-                            if (next != null) ref.read(mainNavProvider.notifier).state = next;
-                          },
-                          child: Text(
-                            subcategoriestitles[index],
-                            style: TextStyle(
-                              color: subcategoryMainViews[index] == ref.watch(mainNavProvider)
-                                  ? AppColor.kPrimaryButtonColor
-                                  : Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-          ],
         ),
       );
 }
