@@ -46,6 +46,7 @@ class Api {
   final String _getUserRoleAdress = '/role/list';
   final String _postNewUserAdress = '/user/create';
   final String _postProjectConsumabele = '/userProjectMaterial/create';
+  final String _createCardMaterial = '/material/create';
   final String _putDocumentationDay = '/userProjectDay/update';
   final String _putProjectMaterial = '/userProjectMaterial/update';
   final String _getCustomerProject = '/customer/project/read/all';
@@ -88,6 +89,7 @@ class Api {
   Future<Response> postCreateNewUser(Map<String, dynamic> user) => _api.post(_postNewUserAdress, data: user);
   Future<Response> postloginUser(loginData) => _api.post(_loginUserAdress, data: loginData);
   Future<Response> postProjectConsumable(data) => _api.post(_postProjectConsumabele, data: data);
+  Future<Response> postCardMaterial(Map<String, dynamic> data) => _api.post(_createCardMaterial, data: data);
   Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
   Future<Response> postTimeEnty(data) => _api.post(_postTimeEntryAdress, data: data);
   Future<Response> postUpdateProjectConsumableEntry(data) => _api.post(_putProjectMaterial, data: data);
