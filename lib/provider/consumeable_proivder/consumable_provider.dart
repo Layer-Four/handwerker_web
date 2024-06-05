@@ -29,26 +29,23 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       final response = await _api.getMaterialsList;
       if (response.statusCode != 200) {
         throw Exception(
-            'Error on loading Material, status-> ${response.statusCode}\n ${response.data}');
+          'Error on loading Material, status-> ${response.statusCode}\n ${response.data}',
+        );
       }
       final List data = response.data.map((e) => e).toList();
       for (var e in data) {
         final unitKey = e['materialUnitName'];
         final searchedUnit = _units.firstWhere(
           (unit) => unit.name == unitKey,
-          orElse: () {
-            log('Unit with name $unitKey not found. Using default unit.');
-            return const Unit(id: -1, name: 'Unknown');
-          },
+          orElse: () => const Unit(id: -1, name: 'Fehler'),
         );
 
         final material = ConsumableVM.wihUnitAndJson(e, searchedUnit);
-        log(material.toJson().toString());
         result.add(material);
       }
       state = result;
     } catch (e) {
-      log('Error loading consumables: $e');
+      log('Error on loadConsumables: $e');
     }
   }
 
@@ -81,22 +78,17 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
 
   Future<bool> deleteConsumable(int id) async {
     try {
-      final response = await _api.deleteServiceMaterial(id);
-      log('Received response: ${response.data}');
-      log('Response status code: ${response.statusCode}');
-
-      if (response.statusCode == 200 || response.statusCode == 204) {
-        log('Successfully deleted row with ID: $id from the backend.');
-        state = state.where((item) => item.id != id).toList();
-        return true;
-      } else {
-        log('Failed to delete row with ID: $id. Status code: ${response.statusCode}, response: ${response.data}');
-        throw Exception('Failed to delete the item from the server: ${response.statusCode}');
+      final response = await _api.deleteConsumable(id);
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to delete Consumable from the server: ${response.statusCode}\n${response.data}',
+        );
       }
+      state = state.where((item) => item.id != id).toList();
+      return true;
     } catch (e) {
-      log('Exception when trying to delete row with ID: $id: $e');
-      // throw Exception('Error when attempting to delete the item: $e');
-      return false;
+      throw Exception('Error when attempting to delete the item: $e');
+      // return false;
     }
   }
 
@@ -135,36 +127,19 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
   Future<bool> updateConsumable(ConsumableVM consumble) async {
     try {
       final data = consumble.toJson();
-      log('Sending update request with data: $data');
       final response = await _api.postUpdateConsumableEntry(data);
       if (response.statusCode != 200) {
         log('Update response: ${response.data}');
-        log('Update failed with status: ${response.statusCode}, response: ${response.data}');
-        var errMsg = 'Failed to update item: ${response.statusCode}';
-        if (response.statusCode == 400) {
-          errMsg += ' - Bad Request, check data';
-        } else if (response.statusCode == 404) {
-          errMsg += ' - Item not found';
-        } else if (response.statusCode == 500) {
-          errMsg += ' - Server error';
-        }
-        log(errMsg);
         throw Exception(
-            'Exception on updateConsumable status-> ${response.statusCode}\n${response.data}');
+          'Exception on updateConsumable status-> ${response.statusCode}\n${response.data}',
+        );
       }
       return true;
     } on DioException catch (e) {
-      log('Network error: ${e.message}');
-      if (e.response != null) {
-        log('Response status code: ${e.response?.statusCode}');
-        log('Response data: ${e.response?.data}');
-        log('Response headers: ${e.response?.headers}');
-        log('Request options: ${e.response?.requestOptions}');
-        return false;
-      }
+      throw Exception('DioException: status ${e.response?.statusCode}\n${e.message}');
     } catch (e) {
-      throw Exception('Unexpected error: $e');
+      log('ERROR ON ConsumableProvider-> $e');
+      return false;
     }
-    return false;
   }
 }

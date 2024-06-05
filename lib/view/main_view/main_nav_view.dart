@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../provider/settings_provider/nav_provider.dart';
-import '../administration_view/documentation_body_view.dart';
-import '../administration_view/widgets/leistung_sub.dart';
-import '../consumable_view/consumable_view.dart';
-import '../customers_view/customer_administration.dart';
+import '../administration_view/consumable_view/consumable_view.dart';
+import '../administration_view/customers_view/customer_administration.dart';
+import '../review_view/documentation_body_view.dart';
+import '../administration_view/service_view/service_body_view.dart';
 import '../home_view/home_body.dart';
-import '../project_management_view/project_managment_view.dart';
+import '../administration_view/project_management_view/project_managment_view.dart';
 import '../time_entry_view/work_calendar_view.dart';
 import '../users_view/user_view.dart';
 import 'widgets/nav_button_widget.dart';
@@ -46,7 +46,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                               MainView.consumables => const ConsumableBody(),
                               MainView.customer => const CustomerBody(),
                               MainView.projectManagement => const ProjectManagementBody(),
-                              MainView.performance => const ConsumableLeistungBody(),
+                              MainView.performance => const ServiceBody(),
                               MainView.users => const EmployeeAdministration(),
                               // _ => const TimeEntryBody(),
                             },

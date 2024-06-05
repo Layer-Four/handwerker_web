@@ -1,11 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import '../../../models/project_models/customer_projekt_model/custom_project.dart';
 import 'project_report.dart';
 
-// ignore: must_be_immutable
 class ProjectDetails extends StatefulWidget {
   final CustomeProject project;
   const ProjectDetails(this.project, {super.key});
@@ -54,7 +50,6 @@ class _ProjectDetailsState extends State<ProjectDetails> {
           ),
           SizedBox(width: screenWidthInPercent * 2),
           SizedBox(
-            // width: double.infinity,
             width: screenWidthInPercent * 60,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -120,7 +115,6 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        log('clicked');
                         showDialog(
                           context: context,
                           builder: (BuildContext context) => Dialog(
@@ -165,13 +159,11 @@ Widget exampleRow(Icon icon, String leistung, String menge, String preis, String
               ),
               Text(
                 leistung,
-                //    textAlign: TextAlign.right,
                 style: const TextStyle(fontSize: 16),
               ),
             ],
           ),
         ),
-        //  const Spacer(),
         Expanded(
             flex: 2,
             child: Text(
@@ -179,7 +171,6 @@ Widget exampleRow(Icon icon, String leistung, String menge, String preis, String
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 16),
             )),
-        //   const Spacer(),
         Expanded(
           flex: 2,
           child: Text(
@@ -188,7 +179,6 @@ Widget exampleRow(Icon icon, String leistung, String menge, String preis, String
             style: const TextStyle(fontSize: 16),
           ),
         ),
-        //  const Spacer(),
         Expanded(
           flex: 1,
           child: Text(

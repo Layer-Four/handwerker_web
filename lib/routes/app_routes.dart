@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../view/customers_view/customer_administration.dart';
+import '../view/administration_view/customers_view/customer_administration.dart';
 import '../view/login_view/forgot_password_view.dart';
 import '../view/login_view/login_view.dart';
 import '../view/login_view/reset_password.dart';
 import '../view/main_view/main_nav_view.dart';
-import '../view/project_management_view/project_managment_view.dart';
+import '../view/administration_view/project_management_view/project_managment_view.dart';
 import '../view/start_view/start_view.dart';
 
 class AppRoutes {

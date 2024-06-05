@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../constants/themes/app_color.dart';
 import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
@@ -152,7 +149,6 @@ class UserRowCard extends ConsumerWidget {
                       _showNewPasswordPopUp(context, e);
                     }),
                 onReject: () => Navigator.of(context).pop());
-            log('Password reset for ${user.userName}');
           },
           text: 'Passwort zurücksetzen',
           overflow: TextOverflow.clip,

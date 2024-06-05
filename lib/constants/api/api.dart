@@ -91,7 +91,7 @@ class Api {
 
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
-  Future<Response> deleteServiceMaterial(int serviceID) =>
+  Future<Response> deleteConsumable(int serviceID) =>
       _api.delete('$_deleteServiceMaterial/$serviceID');
   void deleteToken() => _storage.then((value) {
         if (value.getString('TOKEN')?.isNotEmpty ?? false) {
