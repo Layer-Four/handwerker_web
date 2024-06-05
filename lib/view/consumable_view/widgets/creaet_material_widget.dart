@@ -3,6 +3,7 @@ import 'dart:developer' as log;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../constants/themes/app_color.dart';
 import '../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../models/consumable_models/unit/unit.dart';
 import '../../../provider/consumeable_proivder/consumable_provider.dart';
@@ -115,25 +116,29 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        width: double.maxFinite,
-        height: 350,
-        child: Card(
-          surfaceTintColor: Colors.white,
-          elevation: 6,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 36),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            width: 200,
+  Widget build(BuildContext context) => LayoutBuilder(
+      builder: (context, constraints) => SizedBox(
+            width: MediaQuery.of(context).size.width > 1000 ? 800 : constraints.maxHeight,
+            // height: 350,
+            child: Card(
+              surfaceTintColor: Colors.white,
+              elevation: 6,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            width: MediaQuery.of(context).size.width > 850
+                                ? 180
+                                : constraints.maxWidth / 10 * 2.3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -166,11 +171,11 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                               ],
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: SizedBox(
-                            width: 100,
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            width: MediaQuery.of(context).size.width > 1000
+                                ? 180
+                                : constraints.maxWidth / 10 * 2.3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -217,11 +222,11 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                               ],
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: SizedBox(
-                            width: 100,
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            width: MediaQuery.of(context).size.width > 1000
+                                ? 180
+                                : constraints.maxWidth / 10 * 2.3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -247,11 +252,11 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                               ],
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: SizedBox(
-                            width: 100,
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            width: MediaQuery.of(context).size.width > 1000
+                                ? 180
+                                : constraints.maxWidth / 10 * 2.3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -310,71 +315,63 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(22.0),
-                    child: Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SymmetricButton(
-                          onPressed: () {
-                            _nameController.clear();
-                            _amountController.clear();
-                            _priceController.clear();
-                            widget.onHideCard();
-                          },
-                          textStyle: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              side: const BorderSide(
-                                  color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12),
+                          child: SymmetricButton(
+                            onPressed: () {
+                              _nameController.clear();
+                              _amountController.clear();
+                              _priceController.clear();
+                              widget.onHideCard();
+                            },
+                            text: 'Verwerfen',
+                            color: AppColor.kWhite,
+                            textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: AppColor.kPrimaryButtonColor,
+                                ),
                           ),
-                          text: 'Verwerfen',
-                          // style: TextStyle(color: Colors.orange),
                         ),
-                        const SizedBox(width: 10),
-                        SymmetricButton(
-                          text: 'Speichern',
-                          onPressed: () {
-                            if (_nameController.text.isNotEmpty ||
-                                _amountController.text.isNotEmpty ||
-                                _selectedUnit != null ||
-                                _priceController.text.isNotEmpty) {
-                              ref
-                                  .read(consumableProvider.notifier)
-                                  .createConsumable(_consumable)
-                                  .then((e) {
-                                e
-                                    ? {
-                                        ref.refresh(consumableProvider),
-                                        _nameController.clear(),
-                                        _amountController.clear(),
-                                        _priceController.clear(),
-                                      }
-                                    : _showSnackBar('hat nicht geklappt');
-                              });
-                            }
-                            // _materialController.text,
-                            // int.tryParse(_), Unit unit, double price
-                          },
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12),
+                          child: SymmetricButton(
+                            text: 'Speichern',
+                            onPressed: () {
+                              if (_nameController.text.isNotEmpty ||
+                                  _amountController.text.isNotEmpty ||
+                                  _selectedUnit != null ||
+                                  _priceController.text.isNotEmpty) {
+                                ref
+                                    .read(consumableProvider.notifier)
+                                    .createConsumable(_consumable)
+                                    .then((e) {
+                                  e
+                                      ? {
+                                          ref.refresh(consumableProvider),
+                                          _nameController.clear(),
+                                          _amountController.clear(),
+                                          _priceController.clear(),
+                                        }
+                                      : _showSnackBar('hat nicht geklappt');
+                                });
+                              }
+                              // _materialController.text,
+                              // int.tryParse(_), Unit unit, double price
+                            },
+                          ),
                         ),
                       ],
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      );
+          ));
 }
 
 // class DecimalTextInputFormatter extends TextInputFormatter {
