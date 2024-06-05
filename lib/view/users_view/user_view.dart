@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../constants/utilitis/utilitis.dart';
 import '../../models/users_models/user_data_short/user_short.dart';
 import '../../models/users_models/user_role/user_role.dart';
 import '../../provider/user_provider/user_administration/user_administration._provider.dart';
-import '../../routes/app_routes.dart';
 import '../shared_view_widgets/search_line_header.dart';
 import 'widgets/add_button_widget.dart';
 import 'widgets/edit_employee_widget.dart';
+import 'widgets/user_row_headline_widget.dart';
 import 'widgets/user_row_widget.dart';
 
 class EmployeeAdministration extends ConsumerStatefulWidget {
@@ -19,7 +20,6 @@ class EmployeeAdministration extends ConsumerStatefulWidget {
 
 class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
   bool _isOpen = false;
-  final List<UserDataShort> _users = [];
   final List<UserRole> _roles = [];
   @override
   void initState() {
@@ -27,105 +27,62 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
     initAttributes();
   }
 
-  void initAttributes() {
-    ref.read(userAdministrationProvider.notifier).loadUserRoles().then(
-      (e) {
-        initUsers();
-        setState(() => _roles.addAll(e));
-      },
-    );
-  }
-
-  void initUsers() {
-    if (ref.watch(userAdministrationProvider).isNotEmpty) {
-      final allEntriesAsSet = <UserDataShort>{...ref.watch(userAdministrationProvider), ..._users};
-      setState(() => _users.addAll(allEntriesAsSet));
-      return;
-    }
-    ref.read(userAdministrationProvider.notifier).loadUserEntries().then(
-      (e) {
-        final a = ref.watch(userAdministrationProvider).toSet();
-        setState(() => _users.addAll(a.toSet()));
-      },
-    );
-    return;
-  }
+  void initAttributes() => ref
+      .read(userAdministrationProvider.notifier)
+      .loadUserRoles()
+      .then((e) => setState(() => _roles.addAll(e)));
 
   @override
-  Widget build(BuildContext _) => LayoutBuilder(
-      builder: (_, constraints) => SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
-                UserRowHeadLine(constraints),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: SizedBox(
-                    height: 5 * 74,
-                    child: _users.isEmpty ? _waitingMessage() : _userRowBuilder(constraints),
-                  ),
-                ),
-                // _userRowBuilder(constraints),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: AddButton(
-                    onTap: () => setState(() => _isOpen = !_isOpen),
-                  ),
-                ),
-                Visibility(
-                  visible: _isOpen,
-                  child: AddNewEmployee(
-                    onCancel: () => setState(() {
-                      _isOpen = !_isOpen;
-                    }),
-                  ),
-                )
-              ],
+  Widget build(BuildContext ctx) => SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
+            const UserRowHeadLine(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: SizedBox(
+                height: 5 * 74,
+                child: ref.watch(userAdministrationProvider).isEmpty
+                    ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')
+                    : _userRowBuilder(),
+              ),
             ),
-          ));
+            AddButton(
+              onTap: () => setState(() => _isOpen = !_isOpen),
+            ),
+            SizedBox(
+              child: _isOpen ? AddNewEmployee(_roles) : const SizedBox.shrink(),
+            )
+          ],
+        ),
+      );
 
-  Widget _userRowBuilder(BoxConstraints constraints) => ListView.builder(
-      itemCount: _users.length,
-      itemBuilder: (_, index) => UserRowCard(
-            constraints,
-            _roles,
-            _users[index],
-            () {
-              _deleteUser(_users[index]);
-            },
-            isFirst: index == 0,
-            isLast: index == _users.length - 1,
-          ));
+  Widget _userRowBuilder() => ListView.builder(
+        itemCount: ref.watch(userAdministrationProvider).length,
+        itemBuilder: (_, index) => UserRowCard(
+          ref.watch(userAdministrationProvider)[index],
+          _roles,
+          () => _deleteUser(ref.watch(userAdministrationProvider)[index]),
+        ),
+      );
 
-  _deleteUser(UserDataShort user) {
+  void _deleteUser(UserDataShort user) {
     ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
       e
           ? {
-              Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen),
+              ref.refresh(userAdministrationProvider),
+              Navigator.of(context).pop(),
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Mitarbeitenden erfolgreich gelöscht')),
               )
             }
-          : ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Mitarbeitenden konnte nicht gelöscht werden')),
-            );
+          : {
+              Navigator.of(context).pop(),
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Mitarbeitenden konnte nicht gelöscht werden')),
+              ),
+            };
     });
   }
-
-  Center _waitingMessage() => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Lade Mitarbeitende',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ),
-            const CircularProgressIndicator(),
-          ],
-        ),
-      );
 }

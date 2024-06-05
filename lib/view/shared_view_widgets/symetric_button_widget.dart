@@ -5,7 +5,7 @@ class SymmetricButton extends StatelessWidget {
   final Function()? onPressed;
   final Color? color;
   final EdgeInsets padding;
-  final TextStyle? style;
+  final TextStyle? textStyle;
   final TextOverflow? overflow;
   final double elevation;
   final BorderRadius? borderRadius;
@@ -16,17 +16,17 @@ class SymmetricButton extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     this.borderRadius,
     this.elevation = 5,
-    this.overflow,
-    style,
+    this.overflow = TextOverflow.clip,
+    textStyle,
     required this.text,
-  })  : style = style ?? const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+  })  : textStyle = textStyle ?? const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
         color = color ?? const Color.fromARGB(255, 224, 142, 60);
 
   @override
   Widget build(BuildContext context) => Material(
         elevation: elevation,
         color: color,
-        borderRadius: borderRadius ?? BorderRadius.circular(11),
+        borderRadius: borderRadius ?? BorderRadius.circular(6),
         type: MaterialType.card,
         child: InkWell(
           onTap: onPressed,
@@ -39,7 +39,7 @@ class SymmetricButton extends StatelessWidget {
                 text,
                 overflow: overflow,
                 textAlign: TextAlign.center,
-                style: style,
+                style: textStyle,
               ),
             ),
           ),

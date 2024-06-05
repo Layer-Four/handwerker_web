@@ -4,71 +4,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/themes/app_color.dart';
+import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_administration/user_administration._provider.dart';
 import '../../shared_view_widgets/symetric_button_widget.dart';
 
-class UserRowCard extends ConsumerStatefulWidget {
-  final BoxConstraints constraints;
+class UserRowCard extends ConsumerWidget {
   final List<UserRole> possibleRoles;
   final UserRole nullRole;
   final UserDataShort user;
-  final bool isFirst;
-  final bool isLast;
   final Function() onAccept;
 
   const UserRowCard(
-    this.constraints,
-    this.possibleRoles,
     this.user,
+    this.possibleRoles,
     this.onAccept, {
     super.key,
-    this.isFirst = false,
-    this.isLast = false,
     this.nullRole = const UserRole(id: ' ', name: '', normalizedName: ''),
   });
-  @override
-  ConsumerState<UserRowCard> createState() => _UserRowCardState();
-}
-
-class _UserRowCardState extends ConsumerState<UserRowCard> {
-  late final UserDataShort user;
-  late final BoxConstraints constraints;
-  late final bool isFirst;
-  late final bool isLast;
-  late final List<UserRole> possibleRoles;
-  @override
-  void initState() {
-    super.initState();
-    constraints = widget.constraints;
-    isFirst = widget.isFirst;
-    isLast = widget.isLast;
-    user = widget.user;
-    possibleRoles = widget.possibleRoles;
-  }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) =>
-      Container(
+  Widget build(BuildContext context, WidgetRef ref) => Container(
         height: 75,
-        width: constraints.maxWidth,
-        decoration: BoxDecoration(
-          border: Border(
-            top: isFirst ? BorderSide.none : const BorderSide(),
-            bottom: isLast ? const BorderSide() : BorderSide.none,
-          ),
+        width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide()),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _userDataRow(context),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 100 * 20,
+                  child: Text(
+                    user.userName,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.fade,
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width / 100 * 20,
+                  child: buildDropdown(
+                    roleFromUser: user.roles,
+                    userRoles: possibleRoles,
+                    context: context,
+                    ref: ref,
+                  ),
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _deleteButton(context, ref),
+                _deleteButton(context),
                 _passwordResetButton(context, ref),
               ],
             ),
@@ -79,8 +71,8 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
   Widget buildDropdown({
     required List<UserRole> roleFromUser,
     required List<UserRole> userRoles,
-    required ValueChanged onChanged,
     required BuildContext context,
+    required WidgetRef ref,
   }) =>
       Container(
         padding: const EdgeInsets.only(left: 8, right: 8),
@@ -93,34 +85,24 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
           underline: const SizedBox.shrink(),
           isExpanded: true,
           value: roleFromUser.isEmpty ? null : roleFromUser.first,
-          //  userRoles.firstWhere((e) => e.name == roleFromUser.first.name),
-
-          // decoration: InputDecoration(
-          //   contentPadding: const EdgeInsets.symmetric(
-          //     horizontal: 15,
-          //     vertical: 5,
-          //   ),
-          //   enabledBorder: OutlineInputBorder(
-          //     borderRadius: BorderRadius.circular(12),
-          //     borderSide: const BorderSide(
-          //       color: Color.fromARGB(255, 220, 217, 217),
-          //     ),
-          //   ),
-          //   focusedBorder: OutlineInputBorder(
-          //     borderRadius: BorderRadius.circular(12),
-          //     borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
-          //   ),
-          //   filled: true,
-          //   fillColor: Colors.grey[100],
-          // ),
-          onChanged: onChanged,
+          onChanged: (role) {
+            ref
+                .read(userAdministrationProvider.notifier)
+                .updateUser(user.copyWith(roles: [role!]))
+                .then((r) {
+              // ignore: unused_result
+              ref.refresh(userAdministrationProvider);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  showCloseIcon: true,
+                  content: Text(r ? 'Erfolgreich angepasst' : 'Leider ist etwas schief gegagen'),
+                ),
+              );
+              // Navigator.of(context).restorablePushReplacementNamed(AppRoutes.viewScreen);
+            });
+          },
           items: userRoles
               .map((value) => DropdownMenuItem(
-                    onTap: () {
-                      // TODO: Update Function to provider Method and update Database
-                      final x = user.copyWith(roles: [value]);
-                      log(x.toJson().toString());
-                    },
                     value: value,
                     child: Text(value.name),
                   ))
@@ -128,7 +110,7 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
         ),
       );
 
-  Widget _deleteButton(BuildContext context, WidgetRef ref) => Padding(
+  Widget _deleteButton(BuildContext context) => Padding(
         padding: const EdgeInsets.only(right: 16.0),
         child: Container(
           width: 80,
@@ -137,53 +119,56 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
               borderRadius: BorderRadius.circular(6)),
           child: SymmetricButton(
             onPressed: () {
-              _showAskDeletePopUp(
+              Utilitis.askPopUp(
                 context,
-                onAccept: widget.onAccept,
+                message: 'Sind sie sicher, dass sie diesen Mitarbeitenden löschen wollen?',
+                onAccept: onAccept,
                 onReject: () => Navigator.of(context).pop(),
               );
-
-              log('Lösche ${user.userName}');
             },
             borderRadius: BorderRadius.circular(6),
             color: AppColor.kWhite,
             text: 'Löschen',
             overflow: TextOverflow.clip,
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-            style: Theme.of(context).textTheme.labelMedium,
+            textStyle: Theme.of(context).textTheme.labelMedium,
           ),
         ),
       );
 
   Widget _passwordResetButton(BuildContext context, WidgetRef ref) => SizedBox(
-        width: MediaQuery.of(context).size.width >= 1100 ? 250 : constraints.maxWidth / 10 * 2.2,
+        width: MediaQuery.of(context).size.width >= 1100
+            ? 250
+            : MediaQuery.of(context).size.width / 10 * 2.2,
         child: SymmetricButton(
           borderRadius: BorderRadius.circular(6),
           onPressed: () {
-            ref.read(userAdministrationProvider.notifier).resetPassword(user.userName).then((e) {
-              _showNewPasswordPopUp(context, e);
-            });
+            Utilitis.askPopUp(context,
+                message: 'Soll das Passwort wirklich zurück gesetzt werden?',
+                onAccept: () => ref
+                        .read(userAdministrationProvider.notifier)
+                        .resetPassword(user.userName)
+                        .then((e) {
+                      _showNewPasswordPopUp(context, e);
+                    }),
+                onReject: () => Navigator.of(context).pop());
             log('Password reset for ${user.userName}');
           },
           text: 'Passwort zurücksetzen',
           overflow: TextOverflow.clip,
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kWhite),
+          textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kWhite),
         ),
       );
 
-  Future<dynamic> _showAskDeletePopUp(
-    BuildContext context, {
-    required Function() onAccept,
-    required Function() onReject,
-  }) =>
+  Future<dynamic> _showNewPasswordPopUp(BuildContext context, Map<dynamic, dynamic> e) =>
       showDialog(
           context: context,
           builder: (context) => Dialog(
                 backgroundColor: Colors.white,
                 child: SizedBox(
-                  height: 350,
-                  width: constraints.maxWidth / 10 * 60,
+                  height: 250,
+                  width: 250,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -192,31 +177,33 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
                         child: Column(
                           children: [
                             Text(
-                              'Sind sie sicher, dass sie diesen Mitarbeitenden löschen wollen?',
+                              'Mitarbeiter:',
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20.0),
-                                  child: SymmetricButton(
-                                    borderRadius: BorderRadius.circular(6),
-                                    text: 'Ja',
-                                    onPressed: onAccept,
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20.0),
-                                  child: SymmetricButton(
-                                    borderRadius: BorderRadius.circular(6),
-                                    text: 'Nein',
-                                    onPressed: onReject,
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                  ),
-                                ),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                '   ${e['userName']}',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Passwort:',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                '     ${e['password']}',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
                             ),
                           ],
                         ),
@@ -225,116 +212,4 @@ class _UserRowCardState extends ConsumerState<UserRowCard> {
                   ),
                 ),
               ));
-
-  Future<dynamic> _showNewPasswordPopUp(BuildContext context, Map<dynamic, dynamic> e) => showDialog(
-      context: context,
-      builder: (context) => Dialog(
-            backgroundColor: Colors.white,
-            child: SizedBox(
-              height: 250,
-              width: 250,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Mitarbeiter:',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            '   ${e['userName']}',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Passwort:',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            '     ${e['password']}',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ));
-
-  Widget _userDataRow(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: constraints.maxWidth / 100 * 20,
-            child: Text(
-              user.userName,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              overflow: TextOverflow.fade,
-            ),
-          ),
-          SizedBox(
-            height: 40,
-            width: constraints.maxWidth / 100 * 20,
-            child: buildDropdown(
-                roleFromUser: user.roles,
-                userRoles: possibleRoles,
-                onChanged: (_) {
-                  // setState(() {
-                  //   _selectedRole = value;
-                  // });
-                },
-                context: context),
-          ),
-        ],
-      );
-}
-
-class UserRowHeadLine extends StatelessWidget {
-  final BoxConstraints constraints;
-  const UserRowHeadLine(
-    this.constraints, {
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          children: [
-            SizedBox(
-              width: constraints.maxWidth / 10 * 2,
-              child: const Text(
-                'Name',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(
-              width: constraints.maxWidth / 10 * 2,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Rolle',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
 }

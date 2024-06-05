@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -9,16 +8,10 @@ import '../../../provider/user_provider/user_administration/user_administration.
 import '../../shared_view_widgets/symetric_button_widget.dart';
 
 class AddNewEmployee extends ConsumerStatefulWidget {
-  final VoidCallback? onSave;
-  final VoidCallback? onCancel;
   final double overflowWidth;
+  final List<UserRole> roles;
 
-  const AddNewEmployee({
-    super.key,
-    this.onSave,
-    required this.onCancel,
-    this.overflowWidth = 850,
-  });
+  const AddNewEmployee(this.roles, {super.key, this.overflowWidth = 850});
 
   @override
   ConsumerState<AddNewEmployee> createState() => _AddNewEmployeeState();
@@ -47,32 +40,9 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
   @override
   void initState() {
     super.initState();
-
-    initUserRoles();
+    _roles.addAll(widget.roles);
+    _selectedRole = _roles.first;
   }
-
-  void initUserRoles() {
-    ref.read(userAdministrationProvider.notifier).loadUserRoles().then((e) => setState(() {
-          _roles.addAll(e);
-          _selectedRole = _roles.first;
-        }));
-  }
-
-  //dispose of controllers
-  // @override
-  // void dispose() {
-  //   _nameController.dispose();
-  //   _secondNameController.dispose();
-  //   _streetController.dispose();
-  //   _housenumberController.dispose();
-  //   _cityController.dispose();
-  //   _postNumberController.dispose();
-  //   _emailController.dispose();
-  //   _customerNumberController.dispose();
-  //   _telephoneController.dispose();
-  //   _contactController.dispose();
-  //   super.dispose(); // Always call super.dispose() last
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +129,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                       padding: EdgeInsets.symmetric(
                           horizontal: MediaQuery.of(context).size.width >= overflowWith ? 50 : 15,
                           vertical: MediaQuery.of(context).size.width >= overflowWith ? 6 : 3),
-                      style: MediaQuery.of(context).size.width >= overflowWith
+                      textStyle: MediaQuery.of(context).size.width >= overflowWith
                           ? Theme.of(context)
                               .textTheme
                               .headlineSmall!
@@ -179,7 +149,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
               padding: const EdgeInsets.all(8.0),
               child: QrImageView(
                 // data: 'Nutzername: ${_nameController.text}\nEinmal Passwort: Xcy24KjIq0abkAd',
-                data: '${_newUser!['userName']},${_newUser!['password']}',
+                data: '${_newUser!['userName']} ${_newUser!['password']}',
                 version: QrVersions.auto,
                 size: MediaQuery.of(context).size.width >= overflowWith
                     ? 250
@@ -225,36 +195,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                       ),
-                      buildTextField(
-                        hintText: 'Jonathan Mueller',
-                        controller: _nameController,
-                        onChanged: (value) {
-                          setState(() {
-                            if (value.contains(_specialSign)) {
-                              if (!_isSnackbarOpen) {
-                                setState(() => _isSnackbarOpen = true);
-                                Future.delayed(Duration(seconds: _snackBarDuration))
-                                    .then((_) => setState(() => _isSnackbarOpen = false));
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    duration: Duration(seconds: _snackBarDuration),
-                                    content: const Text(
-                                        'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
-                                  ),
-                                );
-                              }
-                              _nameController.text = _nameController.text
-                                  .substring(0, _nameController.text.length - 1);
-                              _nameController.text.toLowerCase();
-                              return;
-                            }
-                            TextSelection previousSelection = _nameController.selection;
-                            _nameController.text = value;
-                            _nameController.selection = previousSelection;
-                            _nameController.text.toLowerCase();
-                          });
-                        },
-                      ),
+                      buildTextField(),
                     ],
                   ),
                 ),
@@ -274,17 +215,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                       ),
-                      _roles.isNotEmpty
-                          ? buildDropdown(
-                              options: _roles,
-                              // selectedValue: roleOption,
-                              onChanged: (UserRole? value) {
-                                setState(() {
-                                  if (value != null) _selectedRole = value;
-                                });
-                              },
-                            )
-                          : const Text('Lade Nutzerrolle'),
+                      _roles.isNotEmpty ? buildDropdown() : const Text('Lade Nutzerrolle'),
                     ],
                   ),
                 ),
@@ -295,7 +226,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                   width: 140,
                   child: SymmetricButton(
                     text: 'Speichern',
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
+                    textStyle: const TextStyle(color: Colors.white, fontSize: 18),
                     onPressed: () {
                       if (_selectedRole != null &&
                           _nameController.text.isNotEmpty &&
@@ -304,16 +235,24 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             .read(userAdministrationProvider.notifier)
                             .createUser(role: _selectedRole!, name: _nameController.text)
                             .then((value) {
+                          // ignore: unused_result
+                          ref.refresh(userAdministrationProvider);
+                          if (value.keys.contains('error')) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Nutzer konnte nicht erstellt werden.\nNutzer mit diesem Namen exisiert bereits'),
+                              ),
+                            );
+                            return;
+                          }
                           setState(() {
                             _newUser = value;
-                            log(_newUser.toString());
                             _createdUser = _newUser != null;
-                            log(_createdUser.toString());
-                            return;
                           });
-                          // createdUser = !createdUser;
+                          return;
                         });
-                      } else if (_nameController.text.contains(_specialSign)) {
+                      } else {
                         if (!_isSnackbarOpen) {
                           setState(() => _isSnackbarOpen = true);
                           Future.delayed(Duration(seconds: _snackBarDuration))
@@ -336,18 +275,13 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
         ],
       );
 
-  Widget buildTextField({
-    required String hintText,
-    required TextEditingController controller,
-    final Function(String)? onChanged,
-  }) =>
-      SizedBox(
+  Widget buildTextField() => SizedBox(
         child: Padding(
           padding: const EdgeInsets.only(left: 8, right: 8),
           child: TextField(
-            controller: controller,
+            controller: _nameController,
             decoration: InputDecoration(
-              hintText: hintText,
+              hintText: 'Jonathan Mueller',
               hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: const Color.fromARGB(255, 220, 217, 217),
                   ),
@@ -366,18 +300,40 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                 borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
               ),
             ),
-            onChanged: onChanged,
+            onChanged: (value) {
+              setState(() {
+                if (value.contains(_specialSign)) {
+                  if (!_isSnackbarOpen) {
+                    setState(() => _isSnackbarOpen = true);
+                    Future.delayed(Duration(seconds: _snackBarDuration))
+                        .then((_) => setState(() => _isSnackbarOpen = false));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: Duration(seconds: _snackBarDuration),
+                        content: const Text(
+                            'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                      ),
+                    );
+                  }
+                  _nameController.text =
+                      _nameController.text.substring(0, _nameController.text.length - 1);
+                  _nameController.text.toLowerCase();
+                  return;
+                }
+                TextSelection previousSelection = _nameController.selection;
+                _nameController.text = value;
+                _nameController.selection = previousSelection;
+                _nameController.text.toLowerCase();
+              });
+            },
           ),
         ),
       );
 
-  Widget buildDropdown({
-    required List<UserRole> options,
-    Function(UserRole?)? onChanged,
-  }) =>
-      DropdownButtonFormField(
+// TODO:We need a FormField or is a normal DropDown suiteable
+  Widget buildDropdown() => DropdownButtonFormField(
         isExpanded: true,
-        value: options.first,
+        value: _selectedRole,
         decoration: InputDecoration(
           hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 color: const Color.fromARGB(255, 220, 217, 217),
@@ -399,8 +355,8 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
           filled: true,
           fillColor: Colors.grey[100],
         ),
-        onChanged: onChanged,
-        items: options
+        onChanged: (e) => setState(() => _selectedRole = e!),
+        items: _roles
             .map((value) => DropdownMenuItem(
                   value: value,
                   child: Text(value.name),

@@ -9,9 +9,9 @@ part 'consumable_vm.g.dart';
 class ConsumableVM with _$ConsumableVM {
   const factory ConsumableVM({
     required int amount,
-    required int id,
+    int? id,
     required String name,
-    required int price,
+    required double price,
     required Unit unit,
   }) = _ConsumableVM;
   const ConsumableVM._();

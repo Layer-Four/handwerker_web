@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../customer_project_view/custom_project.dart';
+import '../../models/project_models/customer_projekt_model/custom_project.dart';
 import '../shared_view_widgets/symetric_button_widget.dart';
 
 class AddNewProject extends StatefulWidget {
@@ -227,7 +227,7 @@ class _AddNewProjectState extends State<AddNewProject> {
                             child: SymmetricButton(
                               color: const Color.fromARGB(255, 241, 241, 241),
                               text: 'Verwerfen',
-                              style: const TextStyle(color: Colors.orange),
+                              textStyle: const TextStyle(color: Colors.orange),
                               onPressed: () {
                                 widget.onCancel();
                                 //Dispose of controllers

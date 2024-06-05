@@ -210,7 +210,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                           name: _materialNameController.text,
                           amount: int.parse(_amountController.text),
                           unit: _currentUnit ?? _consumable.unit,
-                          price: int.parse(_priceController.text),
+                          price: double.parse(_priceController.text),
                         );
                         ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable);
 

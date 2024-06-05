@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../customer_project_view/custom_project.dart';
+import '../../constants/themes/app_color.dart';
+import '../../models/project_models/customer_projekt_model/custom_project.dart';
 import '../shared_view_widgets/symetric_button_widget.dart';
 
 class AddNewConsumable extends StatefulWidget {
@@ -214,7 +215,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                         child: SymmetricButton(
                           color: const Color.fromARGB(255, 241, 241, 241),
                           text: 'Verwerfen',
-                          style: const TextStyle(color: Colors.orange),
+                          textStyle: TextStyle(color: AppColor.kPrimaryButtonColor),
                           onPressed: () {
                             widget.onCancel();
                             //Dispose of controllers
@@ -225,7 +226,6 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: SymmetricButton(
-                          color: Colors.orange,
                           text: 'Speichern',
                           onPressed: widget.onSave,
                         ),

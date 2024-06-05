@@ -7,6 +7,7 @@ import '../../../models/time_models/time_dm/time_dm.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
 
+// TODO: refactor Time Provider to CalendarEventData
 final timeVMProvider = NotifierProvider<TimeVMNotifier, List<TimeVMAdapter>>(
   () => TimeVMNotifier(),
 );
@@ -50,32 +51,26 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
     return [];
   }
 
-  void saveTimeEntry(TimeEntry data) async {
-    final dataJson = data.toJson();
+  Future<bool> saveTimeEntry(TimeEntry entry) async {
+    final json = entry.toJson();
     try {
-      // print(json.encode(dataJson));
-      final response = await _api.postTimeEnty(dataJson);
+      final response = await _api.postTimeEnty(json);
       if (response.statusCode != 200) {
         log('something went wrong on create TimeEntry -> ${response.data}');
-        return;
+        throw Exception('somthing went wrong, status ->${response.statusCode}\n${response.data}');
       }
       final jsonResponse = response.data;
-      log('json=> $jsonResponse');
       final data = jsonResponse.map((e) => TimeVMAdapter.fromJson(e)).toList();
       if (state.isNotEmpty) {
         final newstate = <TimeVMAdapter>[...state, data];
         state = newstate;
       }
-      return;
+      return true;
     } on DioException catch (e) {
       log('DioException -> $e');
-      return;
+      return false;
     } catch (e) {
       throw Exception(e);
-      // "This exception was thrown because the response has a status code of 404 and RequestOptions.validateStatus was configured to throw for this status code.
-      // The status code of 404 has the following meaning: "Client error - the request contains bad syntax or cannot be fulfilled"
-      // Read more about status codes at https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-      // In order to resolve this exception you typically have either to verify and fix your request code or you have to fix the server code.
     }
   }
 
