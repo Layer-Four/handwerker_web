@@ -104,12 +104,8 @@ class _PasswordViewState extends State<PasswordView> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Passwort zurücksetzen',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                // You can add other style properties here as needed
                               ),
                         ),
                       ),
@@ -121,12 +117,6 @@ class _PasswordViewState extends State<PasswordView> {
                         child: Text(
                           'Altes Passwort',
                           style: TextStyle(fontWeight: FontWeight.bold),
-                          //  Theme.of(context)
-                          //     .textTheme
-                          //     .bodyLarge
-                          //     ?.copyWith(
-                          //         color: const Color.fromARGB(
-                          //             192, 255, 255, 255),
                         ),
                       ),
                       const SizedBox(
@@ -157,15 +147,13 @@ class _PasswordViewState extends State<PasswordView> {
                                   ),
                                 ),
                                 filled: true,
-                                fillColor:
-                                    const Color.fromARGB(255, 231, 226, 226),
+                                fillColor: const Color.fromARGB(255, 231, 226, 226),
                               ).copyWith(
                                 contentPadding: const EdgeInsets.all(12),
                                 isDense: true,
                               ),
                             ),
                           )),
-
                       const SizedBox(
                         height: 20,
                       ),
@@ -176,96 +164,12 @@ class _PasswordViewState extends State<PasswordView> {
                           child: Text(
                             'Neues Passwort',
                             style: TextStyle(fontWeight: FontWeight.bold),
-                            //  Theme.of(context)
-                            //     .textTheme
-                            //     .bodyLarge
-                            //     ?.copyWith(
-                            //         color: const Color.fromARGB(
-                            //             192, 255, 255, 255),
                           ),
                         ),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      // Container(
-                      //   width: 350,
-                      //   decoration: BoxDecoration(
-                      //     borderRadius: BorderRadius.circular(8),
-                      //     color: const Color.fromARGB(255, 231, 226, 226),
-                      //   ),
-                      //   child: Focus(
-                      //     onFocusChange: (hasFocus) {
-                      //       setState(() {
-                      //         isFocused = hasFocus;
-                      //       });
-                      //     },
-                      //     child: AnimatedContainer(
-                      //       duration: const Duration(milliseconds: 300),
-                      //       height: isFocused ? 44 : 40,
-                      //       child: TextFormField(
-                      //         textInputAction: TextInputAction.next,
-                      //         validator: (value) =>
-                      //             value!.length < 6 ? 'Required' : null,
-                      //         obscureText: !_isPasswordVisible,
-                      //         controller: passCon,
-                      //         decoration: InputDecoration(
-                      //           filled: true,
-                      //           fillColor: Colors.transparent,
-                      //           suffixIcon: IconButton(
-                      //             onPressed: () {
-                      //               setState(() {
-                      //                 _isPasswordVisible =
-                      //                     !_isPasswordVisible; // Toggle visibility
-                      //               });
-                      //             },
-                      //             icon: Icon(
-                      //               _isPasswordVisible
-                      //                   ? Icons.visibility_off
-                      //                   : Icons
-                      //                       .visibility, // Toggle the icon based on the state
-                      //               color: Theme.of(context).iconTheme.color,
-                      //             ),
-                      //           ),
-                      //           contentPadding: const EdgeInsets.all(10),
-                      //           focusedBorder: OutlineInputBorder(
-                      //             borderRadius: BorderRadius.circular(8),
-                      //             borderSide: const BorderSide(
-                      //                 color: Color.fromARGB(255, 224, 142, 60)),
-                      //           ),
-                      //           enabledBorder: OutlineInputBorder(
-                      //             borderRadius: BorderRadius.circular(12),
-                      //             borderSide: BorderSide(
-                      //               color: isFocused
-                      //                   ? const Color.fromARGB(
-                      //                       255, 224, 142, 60)
-                      //                   : Colors.transparent,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-
-                      // Align(
-                      //   alignment: Alignment.centerLeft,
-                      //   child: Text(
-                      //     'Neues Passwort',
-                      //     style: Theme.of(context)
-                      //         .textTheme
-                      //         .headlineSmall
-                      //         ?.copyWith(fontSize: 16),
-                      //   ),
-                      // ),
-                      // TextFormField(
-                      //   onChanged: (password) {
-                      //     setState(() {
-                      //       newpasswordController.text = password;
-                      //     });
-                      //     onPasswordChanged(password);
-                      //   },
-
                       Focus(
                           onFocusChange: (hasFocus) {
                             setState(() {
@@ -287,8 +191,7 @@ class _PasswordViewState extends State<PasswordView> {
                                 }
                                 return null;
                               },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               controller: newpasswordController,
                               keyboardType: TextInputType.text,
                               obscureText: _isOldPasswordVisible ? true : false,
@@ -305,16 +208,14 @@ class _PasswordViewState extends State<PasswordView> {
                                   ),
                                 ),
                                 filled: true,
-                                fillColor:
-                                    const Color.fromARGB(255, 231, 226, 226),
+                                fillColor: const Color.fromARGB(255, 231, 226, 226),
                               ).copyWith(
                                 contentPadding: const EdgeInsets.all(12),
                                 isDense: true,
                                 suffixIcon: IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      _isOldPasswordVisible =
-                                          !_isOldPasswordVisible;
+                                      _isOldPasswordVisible = !_isOldPasswordVisible;
                                     });
                                   },
                                   icon: _isOldPasswordVisible
@@ -323,19 +224,16 @@ class _PasswordViewState extends State<PasswordView> {
                                 ),
                                 errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(
-                                      color:
-                                          Color.fromARGB(255, 231, 226, 226)),
+                                  borderSide:
+                                      const BorderSide(color: Color.fromARGB(255, 231, 226, 226)),
                                 ),
                                 focusedErrorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      const BorderSide(color: Colors.red),
+                                  borderSide: const BorderSide(color: Colors.red),
                                 ),
                               ),
                             ),
                           )),
-
                       const SizedBox(
                         height: 7,
                       ),
@@ -352,7 +250,6 @@ class _PasswordViewState extends State<PasswordView> {
                       const SizedBox(
                         height: 7,
                       ),
-
                       Focus(
                         onFocusChange: (hasFocus) {
                           setState(() {
@@ -372,8 +269,7 @@ class _PasswordViewState extends State<PasswordView> {
                               }
                               return null;
                             },
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             controller: passwordController,
                             keyboardType: TextInputType.text,
                             obscureText: isVisable,
@@ -381,8 +277,7 @@ class _PasswordViewState extends State<PasswordView> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: const BorderSide(
-                                  color: Colors
-                                      .transparent, // Default state border color
+                                  color: Colors.transparent, // Default state border color
                                   width: 1,
                                 ),
                               ),
@@ -393,18 +288,8 @@ class _PasswordViewState extends State<PasswordView> {
                                   width: 2,
                                 ),
                               ),
-
-                              // focusedBorder: OutlineInputBorder(
-                              //   borderRadius: BorderRadius.circular(8),
-                              //   borderSide: const BorderSide(
-                              //     color: Color.fromARGB(255, 224, 142,
-                              //         60), // Orange color when focused
-                              //     width: 2,
-                              //   ),
-                              // ),
                               filled: true,
-                              fillColor: const Color.fromARGB(
-                                  255, 231, 226, 226), // Background color
+                              fillColor: const Color.fromARGB(255, 231, 226, 226),
                               contentPadding: const EdgeInsets.all(12),
                               isDense: true,
                               suffixIcon: IconButton(
@@ -414,24 +299,15 @@ class _PasswordViewState extends State<PasswordView> {
                                   });
                                 },
                                 icon: Icon(
-                                  isVisable
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  // color: Colors.grey,
+                                  isVisable ? Icons.visibility : Icons.visibility_off,
                                 ),
                               ),
                               errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide:
-                                      BorderSide.none // Red border on error
-                                  ),
+                                  borderSide: BorderSide.none),
                               focusedErrorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide.none // Red border on error
-                                  // Red border w
-                                  //hen focused and error
-                                  ),
+                                  borderSide: BorderSide.none),
                             ),
                           ),
                         ),
@@ -454,12 +330,9 @@ class _PasswordViewState extends State<PasswordView> {
                                     width: 20,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: isPassword6Char
-                                          ? Colors.green
-                                          : Colors.white,
+                                      color: isPassword6Char ? Colors.green : Colors.white,
                                       border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 189, 189, 189),
+                                        color: const Color.fromARGB(255, 189, 189, 189),
                                       ),
                                     ),
                                     child: const Icon(
@@ -484,12 +357,9 @@ class _PasswordViewState extends State<PasswordView> {
                                         width: 20,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: isPasswordHas1Number
-                                              ? Colors.green
-                                              : Colors.white,
+                                          color: isPasswordHas1Number ? Colors.green : Colors.white,
                                           border: Border.all(
-                                              color: const Color.fromARGB(
-                                                  255, 189, 189, 189)),
+                                              color: const Color.fromARGB(255, 189, 189, 189)),
                                         ),
                                         child: const Icon(
                                           Icons.check,
@@ -515,12 +385,9 @@ class _PasswordViewState extends State<PasswordView> {
                                     width: 20,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: hasUppercase
-                                          ? Colors.green
-                                          : Colors.white,
+                                      color: hasUppercase ? Colors.green : Colors.white,
                                       border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 189, 189, 189)),
+                                          color: const Color.fromARGB(255, 189, 189, 189)),
                                     ),
                                     child: const Icon(
                                       Icons.check,
@@ -544,12 +411,9 @@ class _PasswordViewState extends State<PasswordView> {
                                     width: 20,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: hasLowercase
-                                          ? Colors.green
-                                          : Colors.white,
+                                      color: hasLowercase ? Colors.green : Colors.white,
                                       border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 189, 189, 189)),
+                                          color: const Color.fromARGB(255, 189, 189, 189)),
                                     ),
                                     child: const Icon(
                                       Icons.check,
@@ -573,12 +437,9 @@ class _PasswordViewState extends State<PasswordView> {
                                     width: 20,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: hasSpecialCharacters
-                                          ? Colors.green
-                                          : Colors.white,
+                                      color: hasSpecialCharacters ? Colors.green : Colors.white,
                                       border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 189, 189, 189)),
+                                          color: const Color.fromARGB(255, 189, 189, 189)),
                                     ),
                                     child: const Icon(
                                       Icons.check,
@@ -607,19 +468,12 @@ class _PasswordViewState extends State<PasswordView> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 // Check if the new password matches the confirmation password
-                                if (passwordController.text ==
-                                    newpasswordController.text) {
-                                  // Proceed with updating the password
-                                  // Replace this line with the appropriate logic to update the password
-                                  // For example, you might call an API to update the password
-                                  // Once the password is updated successfully, navigate to the login view
-                                  Navigator.pushReplacementNamed(
-                                      context, AppRoutes.anmeldeScreen);
+                                if (passwordController.text == newpasswordController.text) {
+                                  Navigator.pushReplacementNamed(context, AppRoutes.anmeldeScreen);
                                 } else {
                                   // Show error if passwords don't match
                                 }
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                   content: Text(
                                     'Die Passwörter stimmen nicht überein. Bitte versuche es erneut.',
                                   ),
@@ -627,8 +481,7 @@ class _PasswordViewState extends State<PasswordView> {
                               } else {
                                 // Show error if form validation fails
 
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                   content: Text(
                                     ' Error .',
                                   ),
@@ -639,15 +492,12 @@ class _PasswordViewState extends State<PasswordView> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              backgroundColor:
-                                  const Color.fromARGB(255, 224, 142, 60),
+                              backgroundColor: const Color.fromARGB(255, 224, 142, 60),
                             ),
                             child: const Center(
                               child: Text(
                                 'Speichern',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),

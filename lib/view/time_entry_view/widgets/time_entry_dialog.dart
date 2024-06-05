@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../../constants/api/api.dart';
 import '../../../../models/service_models/service_vm/service_vm.dart';
 import '../../../../models/time_models/time_dm/time_dm.dart';
@@ -687,12 +684,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
   Future getData(Api apo) async {
-    log('Attempt to call api');
     final response = await apo.getAllProjects;
-    log('Done calling api');
-    log(response.statusMessage.toString());
-    log(response.statusCode.toString());
-    log(response.data.toString());
     return response.data;
   }
 
@@ -713,26 +705,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 ),
               );
             });
-            // TODO: uncommand this, after API is ready           ref.read(timeEntryProvider.notifier).uploadTimeEntry(_entry);
-            // if (_startController.text.isEmpty || _endController.text.isEmpty) {
-            //   return ScaffoldMessenger.of(context).showSnackBar(
-            //     const SnackBar(
-            //       content: Text('Bitte wählen sie Start- und Endzeit'),
-            //     ),
-            //   );
-            // } else {
-            // final data = _entry.toJson();
-            // log(json.encode(data));
-            // ref.read(timeEntryVMProvider.notifier).uploadTimeEntry(_entry);
-            //   final now = DateTime.now();
-            //   setState(() {
-            //     _startController.clear();
-            //     _descriptionController.clear();
-            //     _endController.clear();
-            //     _durationController.clear();
-            //     _dayPickerController.text = '${now.day}.${now.month}.${now.year}';
-            //   });
-            // }
           },
         ),
       );
