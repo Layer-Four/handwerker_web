@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../provider/settings_provider/nav_provider.dart';
-import '../administration_view/doc_screen.dart';
-import '../administration_view/leistung_sub.dart';
+import '../administration_view/documentation_body_view.dart';
+import '../administration_view/widgets/leistung_sub.dart';
 import '../consumable_view/consumable_view.dart';
 import '../customers_view/customer_administration.dart';
 import '../home_view/home_body.dart';

@@ -6,32 +6,35 @@ import '../../constants/api/api.dart';
 import '../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../models/consumable_models/unit/unit.dart';
 
-final consumableProvider = NotifierProvider<ConsumeableNotifier, List<ConsumableVM>>(() => ConsumeableNotifier());
+final consumableProvider =
+    NotifierProvider<ConsumeableNotifier, List<ConsumableVM>>(() => ConsumeableNotifier());
 
 class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
-// final TextEditingController _materialController = TextEditingController();
-// final TextEditingController _amountController = TextEditingController();
-// final TextEditingController _priceController = TextEditingController();
+  final List<Unit> _units = [];
   final Api _api = Api();
 
   @override
   List<ConsumableVM> build() {
     loadConsumables();
+    loadUnits();
     return [];
   }
 
   Future<void> loadConsumables() async {
     final List<ConsumableVM> result = [];
-    final units = await loadUnits();
+    if (_units.isEmpty) {
+      await loadUnits();
+    }
     try {
       final response = await _api.getMaterialsList;
       if (response.statusCode != 200) {
-        throw Exception('Error on loading Material, status-> ${response.statusCode}\n ${response.data}');
+        throw Exception(
+            'Error on loading Material, status-> ${response.statusCode}\n ${response.data}');
       }
       final List data = response.data.map((e) => e).toList();
       for (var e in data) {
         final unitKey = e['materialUnitName'];
-        final searchedUnit = units.firstWhere(
+        final searchedUnit = _units.firstWhere(
           (unit) => unit.name == unitKey,
           orElse: () {
             log('Unit with name $unitKey not found. Using default unit.');
@@ -50,11 +53,12 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
   }
 
   Future<List<Unit>> loadUnits() async {
-    final result = <Unit>[];
+    final List<Unit> result = [];
     try {
       final response = await _api.getAllUnits;
       if (response.statusCode != 200) {
-        throw Exception('Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
+        throw Exception(
+            'Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
       }
       // final List data = response.data.map((e) => e).toList();
       final List data = response.data as List;
@@ -62,6 +66,9 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
         final entry = Unit.fromJson(e as Map<String, dynamic>);
         result.add(entry);
       }
+      final Set newUnits = {..._units, ...result};
+      _units.clear();
+      _units.addAll([...newUnits]);
       return result;
     } on DioException catch (e) {
       log('DioException: $e');
@@ -72,7 +79,7 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
     }
   }
 
-  Future<void> deleteConsumable(int id) async {
+  Future<bool> deleteConsumable(int id) async {
     try {
       final response = await _api.deleteServiceMaterial(id);
       log('Received response: ${response.data}');
@@ -81,52 +88,47 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       if (response.statusCode == 200 || response.statusCode == 204) {
         log('Successfully deleted row with ID: $id from the backend.');
         state = state.where((item) => item.id != id).toList();
+        return true;
       } else {
         log('Failed to delete row with ID: $id. Status code: ${response.statusCode}, response: ${response.data}');
         throw Exception('Failed to delete the item from the server: ${response.statusCode}');
       }
     } catch (e) {
       log('Exception when trying to delete row with ID: $id: $e');
-      throw Exception('Error when attempting to delete the item: $e');
+      // throw Exception('Error when attempting to delete the item: $e');
+      return false;
     }
   }
 
-  Future<void> createService(String material, int amount, Unit unit, int price) async {
+  Future<bool> createConsumable(ConsumableVM consumable) async {
     try {
-      final response = await _api.postCardMaterial({
+      final response = await _api.postCreateMaterial({
         // Assuming your API expects a JSON body containing material details
-        'name': material,
-        'amount': amount,
-        'materialUnitID': unit.id, // use unit.id
-        'price': price,
+        'name': consumable.name,
+        'amount': consumable.amount,
+        'materialUnitID': consumable.unit.id, // use unit.id
+        'price': consumable.price,
       });
 
       if (response.statusCode != 200) {
         throw Exception('Wrong Response occurred, status -> ${response.statusCode}');
       }
 
-      final id = response.data['id'] as int; // Extract ID
+      // final id = response.data['id'] as int; // Extract ID
+      // final List data = response.data.map((e) => e).toList();
+      final unitID = response.data['materialUnitID'];
+      final searchedUnit = _units.firstWhere((e) => e.id == unitID);
 
-      final newMaterial = ConsumableVM(
-        id: id,
-        name: material,
-        amount: amount,
-        unit: unit,
-        price: price,
-      );
+      final newConsumabelList = ConsumableVM.wihUnitAndJson(response.data, searchedUnit);
 
-      // Update state immutably
-      state = [...state, newMaterial];
+      state = [...state, newConsumabelList];
+      return true;
     } on DioException catch (error) {
       log(error.message ?? 'DioException -> ${jsonEncode(error)}');
+      throw Exception(error.message ?? 'DioException -> ${jsonEncode(error)}');
     } catch (error) {
       log('Error on createService: $error');
-      rethrow;
-    } finally {
-      // Clear text fields regardless of success or failure
-      // _materialController.clear();
-      // _amountController.clear();
-      // _priceController.clear();
+      return false;
     }
   }
 
@@ -147,7 +149,8 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
           errMsg += ' - Server error';
         }
         log(errMsg);
-        throw Exception('Exception on updateConsumable status-> ${response.statusCode}\n${response.data}');
+        throw Exception(
+            'Exception on updateConsumable status-> ${response.statusCode}\n${response.data}');
       }
       return true;
     } on DioException catch (e) {

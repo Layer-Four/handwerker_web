@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
-import '../administration_view/custom_project.dart';
+import '../../models/project_models/customer_projekt_model/custom_project.dart';
 import 'project_report.dart';
 
 // ignore: must_be_immutable

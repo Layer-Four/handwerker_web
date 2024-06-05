@@ -103,7 +103,7 @@ class Api {
   Future<Response> getDokuforProjectURL(int projectID) =>
       _api.get('/project/$projectID/documentations');
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
-  Future<Response> postCardMaterial(Map<String, dynamic> data) =>
+  Future<Response> postCreateMaterial(Map<String, dynamic> data) =>
       _api.post(_createCardMaterial, data: data);
   Future<Response> postCreateNewUser(Map<String, dynamic> user) =>
       _api.post(_postNewUserAdress, data: user);
