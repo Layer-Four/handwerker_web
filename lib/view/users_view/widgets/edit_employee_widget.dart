@@ -129,7 +129,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                       padding: EdgeInsets.symmetric(
                           horizontal: MediaQuery.of(context).size.width >= overflowWith ? 50 : 15,
                           vertical: MediaQuery.of(context).size.width >= overflowWith ? 6 : 3),
-                      style: MediaQuery.of(context).size.width >= overflowWith
+                      textStyle: MediaQuery.of(context).size.width >= overflowWith
                           ? Theme.of(context)
                               .textTheme
                               .headlineSmall!
@@ -226,7 +226,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                   width: 140,
                   child: SymmetricButton(
                     text: 'Speichern',
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
+                    textStyle: const TextStyle(color: Colors.white, fontSize: 18),
                     onPressed: () {
                       if (_selectedRole != null &&
                           _nameController.text.isNotEmpty &&

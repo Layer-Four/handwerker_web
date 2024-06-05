@@ -43,7 +43,7 @@ class CalendarOptionsRow extends StatelessWidget {
                   elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
                   text: 'Planung',
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  style: isWorkOrder == null || !isWorkOrder!
+                  textStyle: isWorkOrder == null || !isWorkOrder!
                       ? null
                       : const TextStyle(color: Colors.black),
                   color: (isWorkOrder == null || !isWorkOrder!) ? null : AppColor.kWhite,
@@ -64,7 +64,7 @@ class CalendarOptionsRow extends StatelessWidget {
                   text: 'Zeiteintrag',
                   elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  style: isWorkOrder == null || isWorkOrder!
+                  textStyle: isWorkOrder == null || isWorkOrder!
                       ? null
                       : const TextStyle(color: Colors.black),
                   color: (isWorkOrder == null || isWorkOrder!) ? null : AppColor.kWhite,
@@ -85,7 +85,7 @@ class CalendarOptionsRow extends StatelessWidget {
                   elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   onPressed: onTapDayView,
-                  style: isWeekViewChoosed ? null : const TextStyle(color: Colors.black),
+                  textStyle: isWeekViewChoosed ? null : const TextStyle(color: Colors.black),
                   color: isWeekViewChoosed ? null : AppColor.kWhite,
                 ),
               ),
@@ -104,7 +104,7 @@ class CalendarOptionsRow extends StatelessWidget {
                   elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   onPressed: onTapWeekViewView,
-                  style: !isWeekViewChoosed ? null : const TextStyle(color: Colors.black),
+                  textStyle: !isWeekViewChoosed ? null : const TextStyle(color: Colors.black),
                   color: !isWeekViewChoosed ? null : AppColor.kWhite,
                 ),
               ),

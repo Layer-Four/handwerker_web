@@ -131,7 +131,7 @@ class UserRowCard extends ConsumerWidget {
             text: 'Löschen',
             overflow: TextOverflow.clip,
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-            style: Theme.of(context).textTheme.labelMedium,
+            textStyle: Theme.of(context).textTheme.labelMedium,
           ),
         ),
       );
@@ -157,7 +157,7 @@ class UserRowCard extends ConsumerWidget {
           text: 'Passwort zurücksetzen',
           overflow: TextOverflow.clip,
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kWhite),
+          textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kWhite),
         ),
       );
 

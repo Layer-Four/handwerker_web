@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../models/consumable_models/unit/unit.dart';
 import '../../../provider/consumeable_proivder/consumable_provider.dart';
+import '../../shared_view_widgets/symetric_button_widget.dart';
 
 class CreateMaterialCard extends ConsumerStatefulWidget {
   final Function()? onAccept;
@@ -320,14 +321,14 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        TextButton(
+                        SymmetricButton(
                           onPressed: () {
                             _nameController.clear();
                             _amountController.clear();
                             _priceController.clear();
                             widget.onHideCard();
                           },
-                          style: TextButton.styleFrom(
+                          textStyle: TextButton.styleFrom(
                             padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
@@ -336,13 +337,12 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                   color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
                             ),
                           ),
-                          child: const Text(
-                            'Verwerfen',
-                            style: TextStyle(color: Colors.orange),
-                          ),
+                          text: 'Verwerfen',
+                          // style: TextStyle(color: Colors.orange),
                         ),
                         const SizedBox(width: 10),
-                        TextButton(
+                        SymmetricButton(
+                          text: 'Speichern',
                           onPressed: () {
                             if (_nameController.text.isNotEmpty ||
                                 _amountController.text.isNotEmpty ||
@@ -365,19 +365,6 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                             // _materialController.text,
                             // int.tryParse(_), Unit unit, double price
                           },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
-                            backgroundColor: Colors.orange,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              side: const BorderSide(
-                                  color: Color.fromARGB(255, 231, 226, 226), width: 1.0),
-                            ),
-                          ),
-                          child: const Text(
-                            'Speichern',
-                            style: TextStyle(color: Colors.white),
-                          ),
                         ),
                       ],
                     ),

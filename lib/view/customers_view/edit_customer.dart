@@ -215,7 +215,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                         child: SymmetricButton(
                           color: const Color.fromARGB(255, 241, 241, 241),
                           text: 'Verwerfen',
-                          style: TextStyle(color: AppColor.kPrimaryButtonColor),
+                          textStyle: TextStyle(color: AppColor.kPrimaryButtonColor),
                           onPressed: () {
                             widget.onCancel();
                             //Dispose of controllers

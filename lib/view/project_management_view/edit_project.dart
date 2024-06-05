@@ -227,7 +227,7 @@ class _AddNewProjectState extends State<AddNewProject> {
                             child: SymmetricButton(
                               color: const Color.fromARGB(255, 241, 241, 241),
                               text: 'Verwerfen',
-                              style: const TextStyle(color: Colors.orange),
+                              textStyle: const TextStyle(color: Colors.orange),
                               onPressed: () {
                                 widget.onCancel();
                                 //Dispose of controllers
