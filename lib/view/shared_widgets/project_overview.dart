@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../../models/project_models/customer_projekt_model/custom_project.dart';
 import 'project_card.dart';
 
 // ignore: must_be_immutable

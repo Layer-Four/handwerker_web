@@ -5,7 +5,7 @@ import '../../../../constants/themes/app_color.dart';
 import '../../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../../models/consumable_models/unit/unit.dart';
 import '../../../../provider/consumeable_proivder/consumable_provider.dart';
-import '../../../shared_view_widgets/symetric_button_widget.dart';
+import '../../../shared_widgets/symetric_button_widget.dart';
 
 class CreateMaterialCard extends ConsumerStatefulWidget {
   final List<Unit> units;

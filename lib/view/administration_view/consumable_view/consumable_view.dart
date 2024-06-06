@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../models/consumable_models/unit/unit.dart';
 import '../../../provider/consumeable_proivder/consumable_provider.dart';
-import '../../shared_view_widgets/search_line_header.dart';
+import '../../shared_widgets/search_line_header.dart';
 import '../../users_view/widgets/add_button_widget.dart';
 import 'widgets/consumeabel_row_widget.dart';
 import 'widgets/creaet_material_widget.dart';

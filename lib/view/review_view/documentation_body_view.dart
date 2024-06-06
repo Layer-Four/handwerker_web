@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../models/project_models/customer_projekt_model/custom_project.dart';
-import '../shared_view_widgets/search_line_header.dart';
-import '../administration_view/widgets/character_card.dart';
+import '../shared_widgets/character_card.dart';
+import '../shared_widgets/search_line_header.dart';
 
 class CustomerProjectMain extends ConsumerWidget {
   const CustomerProjectMain({super.key});

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../../view/shared_view_widgets/symetric_button_widget.dart';
+import '../../view/shared_widgets/symetric_button_widget.dart';
 import '../themes/app_color.dart';
 
 class Utilitis {

@@ -5,7 +5,7 @@ import '../../../constants/themes/app_color.dart';
 import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_administration/user_administration._provider.dart';
-import '../../shared_view_widgets/symetric_button_widget.dart';
+import '../../shared_widgets/symetric_button_widget.dart';
 
 class AddNewEmployee extends ConsumerStatefulWidget {
   final double overflowWidth;

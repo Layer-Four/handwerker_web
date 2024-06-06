@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../../constants/themes/app_color.dart';
 
 class SearchLineHeader extends StatefulWidget {
-  final String _currentViewTitle;
+  final String title;
   final bool searchbarEnabled;
 
   const SearchLineHeader({
     super.key,
-    required String title,
     this.searchbarEnabled = false,
-  }) : _currentViewTitle = title;
+    required this.title,
+  });
 
   @override
   State<SearchLineHeader> createState() => _SearchLineHeaderState();
@@ -18,6 +18,14 @@ class SearchLineHeader extends StatefulWidget {
 
 class _SearchLineHeaderState extends State<SearchLineHeader> {
   final TextEditingController _searchController = TextEditingController();
+  late final String _title;
+  late final bool _isEnabled;
+  @override
+  void initState() {
+    _title = widget.title;
+    _isEnabled = widget.searchbarEnabled;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -26,13 +34,13 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
           child: SizedBox(
             height: 50,
             width: constrains.maxWidth,
-            child: widget.searchbarEnabled
+            child: _isEnabled
                 ? Row(
                     children: [
                       SizedBox(
                         width: (constrains.maxWidth / 10) * 3.5,
                         child: Text(
-                          widget._currentViewTitle,
+                          _title,
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: AppColor.kPrimaryButtonColor,
@@ -81,7 +89,7 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
                     width: constrains.maxWidth - 100,
                     child: Center(
                       child: Text(
-                        widget._currentViewTitle,
+                        _title,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w600,
                             color: AppColor.kPrimaryButtonColor,

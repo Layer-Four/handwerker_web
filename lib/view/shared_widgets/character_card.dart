@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../../models/project_models/customer_projekt_model/custom_project.dart';
 import 'project_overview.dart';
 
 // ignore: must_be_immutable

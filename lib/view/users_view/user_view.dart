@@ -4,7 +4,7 @@ import '../../constants/utilitis/utilitis.dart';
 import '../../models/users_models/user_data_short/user_short.dart';
 import '../../models/users_models/user_role/user_role.dart';
 import '../../provider/user_provider/user_administration/user_administration._provider.dart';
-import '../shared_view_widgets/search_line_header.dart';
+import '../shared_widgets/search_line_header.dart';
 import 'widgets/add_button_widget.dart';
 import 'widgets/edit_employee_widget.dart';
 import 'widgets/user_row_headline_widget.dart';

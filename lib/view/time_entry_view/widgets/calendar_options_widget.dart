@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/themes/app_color.dart';
-import '../../shared_view_widgets/symetric_button_widget.dart';
+import '../../shared_widgets/symetric_button_widget.dart';
 import 'time_entry_dialog.dart';
 
 class CalendarOptionsRow extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/time_models/time_vm/time_vm.dart';
 import '../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
-import '../shared_view_widgets/search_line_header.dart';
+import '../shared_widgets/search_line_header.dart';
 import 'widgets/calendar_options_widget.dart';
 import 'widgets/custom_day_view.dart';
 import 'widgets/custom_week_view.dart';
