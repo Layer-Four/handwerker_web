@@ -5,7 +5,7 @@ import '../../../../constants/themes/app_color.dart';
 import '../../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../../models/consumable_models/unit/unit.dart';
 import '../../../../provider/consumeable_proivder/consumable_provider.dart';
-import '../../../shared_view_widgets/symetric_button_widget.dart';
+import '../../../shared_widgets/symetric_button_widget.dart';
 
 class CreateMaterialCard extends ConsumerStatefulWidget {
   final List<Unit> units;
@@ -97,12 +97,12 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     hintText: 'Material',
                                     contentPadding: const EdgeInsets.all(10),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                       borderSide: BorderSide.none,
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
                                   ),
                                   onChanged: (value) {
@@ -134,12 +134,12 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     hintText: 'Menge',
                                     contentPadding: const EdgeInsets.all(10),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                       borderSide: BorderSide.none,
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
                                   ),
                                   onChanged: (value) {
@@ -176,6 +176,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                 Text('Einheit', style: Theme.of(context).textTheme.labelLarge),
                                 const SizedBox(height: 15),
                                 DropdownButton<Unit>(
+                                  borderRadius: BorderRadius.circular(6),
                                   isExpanded: true,
                                   value: _selectedUnit,
                                   // hint: const Text('Einheit'),
@@ -217,12 +218,12 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     hintText: 'Preis/€',
                                     contentPadding: const EdgeInsets.all(10),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                       borderSide: BorderSide.none,
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
                                   ),
                                   onChanged: (value) {

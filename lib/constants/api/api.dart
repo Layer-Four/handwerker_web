@@ -62,12 +62,12 @@ class Api {
         }
         handler.next(error);
       },
-      // onResponse: (Response<dynamic> response, ResponseInterceptorHandler handler) {
-      //   if (response.statusCode == 401) {
-      //     throw Exception('nicht Autorisiert');
-      //   }
-      //   handler.next(response);
-      // },
+      onResponse: (Response<dynamic> response, ResponseInterceptorHandler handler) {
+        if (response.statusCode == 401) {
+          throw Exception('nicht Autorisiert');
+        }
+        handler.next(response);
+      },
     ));
   }
   Future<Response> get getAllProjects => _api.get(_getAllProjects);
@@ -113,7 +113,7 @@ class Api {
 
   Future<Response> postProjectConsumable(data) => _api.post(_postProjectConsumabele, data: data);
   Future<Response> postTimeEnty(data) => _api.post(_postTimeEntryAdress, data: data);
-  Future<Response> postUpdateConsumableEntry(Map<String, dynamic> json) =>
+  Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) =>
       _api.put(_putProjectWebMaterialAdress, data: json);
 
   Future<Response> postUpdateDocumentationEntry(data) =>

@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/settings_provider/nav_provider.dart';
 import '../administration_view/consumable_view/consumable_view.dart';
 import '../administration_view/customers_view/customer_administration.dart';
-import '../review_view/documentation_body_view.dart';
+import '../administration_view/project_management_view/project_managment_view.dart';
 import '../administration_view/service_view/service_body_view.dart';
 import '../home_view/home_body.dart';
-import '../administration_view/project_management_view/project_managment_view.dart';
+import '../review_view/projekt_overview_view.dart';
 import '../time_entry_view/work_calendar_view.dart';
 import '../users_view/user_view.dart';
 import 'widgets/nav_button_widget.dart';
@@ -42,7 +42,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                             child: switch (view) {
                               MainView.home => const HomeBody(),
                               MainView.timeEntry => const WorkCalendarView(),
-                              MainView.projectCustomer => const CustomerProjectMain(),
+                              MainView.projectCustomer => const ProjectOverviewView(),
                               MainView.consumables => const ConsumableBody(),
                               MainView.customer => const CustomerBody(),
                               MainView.projectManagement => const ProjectManagementBody(),

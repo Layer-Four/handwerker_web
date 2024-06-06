@@ -9,7 +9,7 @@ import '../../../../models/users_models/user_data_short/user_short.dart';
 import '../../../../provider/data_provider/service_provider/service_vm_provider.dart';
 import '../../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '../../../constants/themes/app_color.dart';
-import '../../shared_view_widgets/symetric_button_widget.dart';
+import '../../shared_widgets/symetric_button_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
   const TimeEntryDialog({super.key});

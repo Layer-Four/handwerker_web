@@ -12,7 +12,9 @@ _$ConsumableVMImpl _$$ConsumableVMImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String,
       price: (json['price'] as num).toDouble(),
-      unit: Unit.fromJson(json['unit'] as Map<String, dynamic>),
+      unit: json['unit'] == null
+          ? null
+          : Unit.fromJson(json['unit'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ConsumableVMImplToJson(_$ConsumableVMImpl instance) =>

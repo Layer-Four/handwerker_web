@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../models/consumable_models/unit/unit.dart';
 import '../../../provider/consumeable_proivder/consumable_provider.dart';
-import '../../shared_view_widgets/search_line_header.dart';
+import '../../shared_widgets/search_line_header.dart';
 import '../../users_view/widgets/add_button_widget.dart';
 import 'widgets/consumeabel_row_widget.dart';
 import 'widgets/creaet_material_widget.dart';
@@ -24,23 +23,24 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
   bool _isSnackbarShowed = false;
   late final Duration _snackbarDuration;
   final List<Unit> _units = [];
-  List<ConsumableVM> consumableList = [];
   bool isLoading = true;
   bool isCardVisible = false;
 
   @override
   void initState() {
     super.initState();
-    loadUnits();
     _snackbarDuration = widget.snackbarDuration;
+    initUnitsConsumable();
   }
 
-  void loadUnits() {
+  void initUnitsConsumable() async {
     setState(() => isLoading = true);
     ref.read(consumableProvider.notifier).loadUnits().then((value) {
-      loadMaterialList();
       setState(() {
         _units.addAll(value);
+        if (_units.isNotEmpty) {
+          isLoading = false;
+        }
       });
     });
   }
@@ -48,7 +48,6 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
   void loadMaterialList() {
     ref.read(consumableProvider.notifier).loadConsumables().then((_) {
       setState(() {
-        consumableList = ref.watch(consumableProvider);
         isLoading = false;
       });
     });
@@ -58,7 +57,10 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
     if (_isSnackbarShowed) return;
     setState(() => _isSnackbarShowed = true);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: _snackbarDuration),
+      SnackBar(
+        content: Center(child: Text(message)),
+        duration: _snackbarDuration,
+      ),
     );
     Future.delayed(_snackbarDuration).then(
       (_) => setState(() => _isSnackbarShowed = false),
@@ -74,26 +76,27 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
   }
 
   Widget buildCardContent() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchLineHeader(title: 'Material Management'),
               buildHeaderRow(),
-              consumableList.isEmpty && _units.isEmpty
+              _units.isEmpty
                   ? const Text('No data available')
                   : SizedBox(
-                      width: MediaQuery.of(context).size.width - 50,
-                      height: 5 * 74,
+                      // width: MediaQuery.of(context).size.width - 50,
+                      height: 9 * 74,
                       child: ListView.builder(
-                        itemCount: consumableList.length,
+                        itemCount: ref.watch(consumableProvider).length,
                         itemBuilder: (context, i) => ConsumebaleDataRow(
-                          consumable: consumableList[i],
+                          consumable: ref.watch(consumableProvider)[i],
+                          units: _units,
                           onDelete: () {
                             ref
                                 .read(consumableProvider.notifier)
-                                .deleteConsumable(consumableList[i].id!)
+                                .deleteConsumable(ref.watch(consumableProvider)[i].id!)
                                 .then((e) {
                               // ignore: unused_result
                               ref.refresh(consumableProvider);
@@ -102,20 +105,16 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
                                   : _showSnackBar('Error when attempting to delete the item: $e');
                             });
                           },
-                          // => deleteService(consumableList[i]),
-                          units: _units,
                         ),
                       ),
                     ),
               AddButton(
                 onTap: () => setState(() => isCardVisible = !isCardVisible),
               ),
-              // const SizedBox(height: 40),
-              // buildAddButton(),
               if (isCardVisible)
                 CreateMaterialCard(
-                  onHideCard: () => setState(() => isCardVisible = false),
                   units: _units,
+                  onHideCard: () => setState(() => isCardVisible = false),
                 ),
             ],
           ),
@@ -125,37 +124,52 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
   Widget buildHeaderRow() => Row(
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width / 10 * 2.0,
+            width: MediaQuery.of(context).size.width > 1000
+                ? 200
+                : MediaQuery.of(context).size.width / 10 * 1.8,
             child: Text(
               'Material',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width / 10 * 2.0,
+            width: MediaQuery.of(context).size.width > 1000
+                ? 200
+                : MediaQuery.of(context).size.width / 10 * 1.8,
             child: Text(
               'Menge',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width / 10 * 2.0,
+            width: MediaQuery.of(context).size.width > 1000
+                ? 200
+                : MediaQuery.of(context).size.width / 10 * 1.8,
             child: Text(
               'Einheit',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          Text(
-            'Preis',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width > 1000
+                ? 200
+                : MediaQuery.of(context).size.width / 10 * 1.8,
+            child: Text(
+              'Preis',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       );

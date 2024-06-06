@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/time_models/time_vm/time_vm.dart';
 import '../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
-import '../shared_view_widgets/search_line_header.dart';
+import '../shared_widgets/search_line_header.dart';
 import 'widgets/calendar_options_widget.dart';
 import 'widgets/custom_day_view.dart';
 import 'widgets/custom_week_view.dart';
@@ -16,11 +16,11 @@ class WorkCalendarView extends ConsumerStatefulWidget {
 }
 
 class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
+  final List<CalendarEventData<TimeVMAdapter>> _allEvents = [];
   late EventController _eventCtr;
+  bool _isInit = false;
   bool _isWeekView = true;
   bool? _isWorkOrder;
-  bool _isInit = false;
-  final List<CalendarEventData<TimeVMAdapter>> _allEvents = [];
   @override
   void initState() {
     super.initState();
@@ -51,12 +51,12 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
               onTapTimeEntry: () => _updateEventController(false),
               onTapWorkOrder: () => _updateEventController(true),
             ),
-            Material(
-              borderRadius: BorderRadius.circular(8),
-              clipBehavior: Clip.antiAlias,
-              elevation: 9,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height - 130,
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 130,
+              child: Material(
+                borderRadius: BorderRadius.circular(6),
+                clipBehavior: Clip.antiAlias,
+                elevation: 9,
                 child: _isWeekView ? const CustomWeekView() : const CustomDayView(),
               ),
             ),

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../../view/shared_view_widgets/symetric_button_widget.dart';
+import '../../view/shared_widgets/symetric_button_widget.dart';
 import '../themes/app_color.dart';
 
 class Utilitis {
@@ -52,7 +52,6 @@ class Utilitis {
 
   static HeaderStyle buildCustomHeadStyle(BuildContext context) => HeaderStyle(
         leftIcon: Container(
-          // width: MediaQuery.of(context).size.width * 0.31,
           padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
           child: Icon(
             Icons.arrow_left_outlined,
@@ -63,7 +62,6 @@ class Utilitis {
         rightIcon: Container(
           padding: const EdgeInsets.symmetric(vertical: 6),
           alignment: Alignment.centerLeft,
-          // width: MediaQuery.of(context).size.width * 0.31,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -107,9 +105,6 @@ class Utilitis {
         builder: (context) => Dialog(
           backgroundColor: Colors.white,
           child: SizedBox(
-            // decoration: BoxDecoration(
-            // border: Border.all(color: AppColor.kTextfieldBorder, width: 1.5),
-            // borderRadius: BorderRadius.circular(30)),
             height: 350,
             width: MediaQuery.of(context).size.width / 10 * 60,
             child: Column(

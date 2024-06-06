@@ -5,20 +5,16 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_administration/user_administration._provider.dart';
-import '../../shared_view_widgets/symetric_button_widget.dart';
+import '../../shared_widgets/symetric_button_widget.dart';
 
 class UserRowCard extends ConsumerWidget {
   final List<UserRole> possibleRoles;
-  final UserRole nullRole;
   final UserDataShort user;
-  final Function() onAccept;
 
   const UserRowCard(
     this.user,
-    this.possibleRoles,
-    this.onAccept, {
+    this.possibleRoles, {
     super.key,
-    this.nullRole = const UserRole(id: ' ', name: '', normalizedName: ''),
   });
 
   @override
@@ -32,7 +28,6 @@ class UserRowCard extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 100 * 20,
@@ -57,7 +52,7 @@ class UserRowCard extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _deleteButton(context),
+                _deleteButton(context, ref),
                 _passwordResetButton(context, ref),
               ],
             ),
@@ -78,10 +73,16 @@ class UserRowCard extends ConsumerWidget {
           borderRadius: BorderRadius.circular(6),
           color: Colors.grey[100],
         ),
-        child: DropdownButton<UserRole?>(
+        child: DropdownButton(
           underline: const SizedBox.shrink(),
           isExpanded: true,
           value: roleFromUser.isEmpty ? null : roleFromUser.first,
+          items: userRoles
+              .map((e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e.name),
+                  ))
+              .toList(),
           onChanged: (role) {
             ref
                 .read(userAdministrationProvider.notifier)
@@ -98,16 +99,10 @@ class UserRowCard extends ConsumerWidget {
               // Navigator.of(context).restorablePushReplacementNamed(AppRoutes.viewScreen);
             });
           },
-          items: userRoles
-              .map((value) => DropdownMenuItem(
-                    value: value,
-                    child: Text(value.name),
-                  ))
-              .toList(),
         ),
       );
 
-  Widget _deleteButton(BuildContext context) => Padding(
+  Widget _deleteButton(BuildContext context, WidgetRef ref) => Padding(
         padding: const EdgeInsets.only(right: 16.0),
         child: Container(
           width: 80,
@@ -119,7 +114,7 @@ class UserRowCard extends ConsumerWidget {
               Utilitis.askPopUp(
                 context,
                 message: 'Sind sie sicher, dass sie diesen Mitarbeitenden löschen wollen?',
-                onAccept: onAccept,
+                onAccept: () => _deleteUser(context, user, ref),
                 onReject: () => Navigator.of(context).pop(),
               );
             },
@@ -208,4 +203,24 @@ class UserRowCard extends ConsumerWidget {
                   ),
                 ),
               ));
+
+  void _deleteUser(BuildContext context, UserDataShort user, WidgetRef ref) {
+    ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
+      e
+          ? {
+              ref.refresh(userAdministrationProvider),
+              Navigator.of(context).pop(),
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Center(child: Text('Mitarbeitenden erfolgreich gelöscht'))),
+              )
+            }
+          : {
+              Navigator.of(context).pop(),
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Center(child: Text('Mitarbeitenden konnte nicht gelöscht werden'))),
+              ),
+            };
+    });
+  }
 }

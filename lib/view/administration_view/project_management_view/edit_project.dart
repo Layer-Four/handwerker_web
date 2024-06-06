@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../models/project_models/customer_projekt_model/custom_project.dart';
-import '../../shared_view_widgets/symetric_button_widget.dart';
+import '../../shared_widgets/symetric_button_widget.dart';
 
 class AddNewProject extends StatefulWidget {
   final VoidCallback onSave;

@@ -12,10 +12,10 @@ class ConsumableVM with _$ConsumableVM {
     int? id,
     required String name,
     required double price,
-    required Unit unit,
+    Unit? unit,
   }) = _ConsumableVM;
   const ConsumableVM._();
-  factory ConsumableVM.wihUnitAndJson(Map<String, dynamic> json, Unit unit) => ConsumableVM(
+  factory ConsumableVM.wihUnitAndJson(Map<String, dynamic> json, Unit? unit) => ConsumableVM(
         amount: json['amount'],
         id: json['id'],
         name: json['name'],

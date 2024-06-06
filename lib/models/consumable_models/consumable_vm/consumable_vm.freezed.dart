@@ -24,7 +24,7 @@ mixin _$ConsumableVM {
   int? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
-  Unit get unit => throw _privateConstructorUsedError;
+  Unit? get unit => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,9 +38,9 @@ abstract class $ConsumableVMCopyWith<$Res> {
           ConsumableVM value, $Res Function(ConsumableVM) then) =
       _$ConsumableVMCopyWithImpl<$Res, ConsumableVM>;
   @useResult
-  $Res call({int amount, int? id, String name, double price, Unit unit});
+  $Res call({int amount, int? id, String name, double price, Unit? unit});
 
-  $UnitCopyWith<$Res> get unit;
+  $UnitCopyWith<$Res>? get unit;
 }
 
 /// @nodoc
@@ -60,7 +60,7 @@ class _$ConsumableVMCopyWithImpl<$Res, $Val extends ConsumableVM>
     Object? id = freezed,
     Object? name = null,
     Object? price = null,
-    Object? unit = null,
+    Object? unit = freezed,
   }) {
     return _then(_value.copyWith(
       amount: null == amount
@@ -79,17 +79,21 @@ class _$ConsumableVMCopyWithImpl<$Res, $Val extends ConsumableVM>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double,
-      unit: null == unit
+      unit: freezed == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
-              as Unit,
+              as Unit?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $UnitCopyWith<$Res> get unit {
-    return $UnitCopyWith<$Res>(_value.unit, (value) {
+  $UnitCopyWith<$Res>? get unit {
+    if (_value.unit == null) {
+      return null;
+    }
+
+    return $UnitCopyWith<$Res>(_value.unit!, (value) {
       return _then(_value.copyWith(unit: value) as $Val);
     });
   }
@@ -103,10 +107,10 @@ abstract class _$$ConsumableVMImplCopyWith<$Res>
       __$$ConsumableVMImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int amount, int? id, String name, double price, Unit unit});
+  $Res call({int amount, int? id, String name, double price, Unit? unit});
 
   @override
-  $UnitCopyWith<$Res> get unit;
+  $UnitCopyWith<$Res>? get unit;
 }
 
 /// @nodoc
@@ -124,7 +128,7 @@ class __$$ConsumableVMImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = null,
     Object? price = null,
-    Object? unit = null,
+    Object? unit = freezed,
   }) {
     return _then(_$ConsumableVMImpl(
       amount: null == amount
@@ -143,10 +147,10 @@ class __$$ConsumableVMImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double,
-      unit: null == unit
+      unit: freezed == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
-              as Unit,
+              as Unit?,
     ));
   }
 }
@@ -159,7 +163,7 @@ class _$ConsumableVMImpl extends _ConsumableVM {
       this.id,
       required this.name,
       required this.price,
-      required this.unit})
+      this.unit})
       : super._();
 
   factory _$ConsumableVMImpl.fromJson(Map<String, dynamic> json) =>
@@ -174,7 +178,7 @@ class _$ConsumableVMImpl extends _ConsumableVM {
   @override
   final double price;
   @override
-  final Unit unit;
+  final Unit? unit;
 
   @override
   String toString() {
@@ -217,7 +221,7 @@ abstract class _ConsumableVM extends ConsumableVM {
       final int? id,
       required final String name,
       required final double price,
-      required final Unit unit}) = _$ConsumableVMImpl;
+      final Unit? unit}) = _$ConsumableVMImpl;
   const _ConsumableVM._() : super._();
 
   factory _ConsumableVM.fromJson(Map<String, dynamic> json) =
@@ -232,7 +236,7 @@ abstract class _ConsumableVM extends ConsumableVM {
   @override
   double get price;
   @override
-  Unit get unit;
+  Unit? get unit;
   @override
   @JsonKey(ignore: true)
   _$$ConsumableVMImplCopyWith<_$ConsumableVMImpl> get copyWith =>
