@@ -13,24 +13,25 @@ class CustomWeekView extends StatelessWidget {
   Widget build(BuildContext context) => WeekView(
         controller: CalendarControllerProvider.of(context).controller,
         weekTitleHeight: 70,
+        liveTimeIndicatorSettings:
+            LiveTimeIndicatorSettings(color: AppColor.kPrimaryButtonColor, height: 2),
         weekDayBuilder: (DateTime day) {
           double width = MediaQuery.of(context).size.width;
           bool isToday = (DateTime.now().year == day.year) &&
               (DateTime.now().month == day.month) &&
               (DateTime.now().day == day.day);
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: width < 1000 ? 12.0 : 30.0, vertical: 6),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: isToday ? AppColor.kPrimaryButtonColor : AppColor.kTextfieldBorder),
-              child: Text(
-                '${day.day}\n${Utilitis.getWeekDayString(day.weekday)}',
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: isToday ? AppColor.kWhite : null,
-                    ),
-              ),
+          return Container(
+            margin: EdgeInsets.symmetric(horizontal: width < 1000 ? 12.0 : 30.0, vertical: 6),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: isToday ? AppColor.kPrimaryButtonColor : AppColor.kTextfieldBorder),
+            child: Text(
+              '${day.day}\n${Utilitis.getWeekDayString(day.weekday)}',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: isToday ? AppColor.kWhite : null,
+                  ),
+              textAlign: TextAlign.center,
             ),
           );
         },
@@ -55,12 +56,25 @@ class CustomWeekView extends StatelessWidget {
                   ),
                 )),
         onEventTap: (events, date) => showDialog(
+            barrierColor: const Color.fromARGB(20, 0, 0, 0),
             context: context,
             builder: (context) {
               final e = events.map((e) => e.event as TimeVMAdapter).toList();
               return Dialog(
-                child: Flexible(
+                child: Container(
+                  width: MediaQuery.of(context).size.width > 900
+                      ? 500
+                      : MediaQuery.of(context).size.width / 10 * 8,
+                  height: MediaQuery.of(context).size.height > 800
+                      ? 350
+                      : MediaQuery.of(context).size.height / 10 * 8,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColor.kTextfieldBorder),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
                   child: Material(
+                    borderRadius: BorderRadius.circular(6),
+                    clipBehavior: Clip.antiAlias,
                     child: ListView.builder(
                       itemCount: e.length,
                       itemBuilder: (context, i) => InfoTableWidget(entry: e[i]),

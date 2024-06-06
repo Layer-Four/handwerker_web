@@ -16,11 +16,11 @@ class WorkCalendarView extends ConsumerStatefulWidget {
 }
 
 class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
+  final List<CalendarEventData<TimeVMAdapter>> _allEvents = [];
   late EventController _eventCtr;
+  bool _isInit = false;
   bool _isWeekView = true;
   bool? _isWorkOrder;
-  bool _isInit = false;
-  final List<CalendarEventData<TimeVMAdapter>> _allEvents = [];
   @override
   void initState() {
     super.initState();
@@ -51,12 +51,12 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
               onTapTimeEntry: () => _updateEventController(false),
               onTapWorkOrder: () => _updateEventController(true),
             ),
-            Material(
-              borderRadius: BorderRadius.circular(8),
-              clipBehavior: Clip.antiAlias,
-              elevation: 9,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height - 130,
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 130,
+              child: Material(
+                borderRadius: BorderRadius.circular(6),
+                clipBehavior: Clip.antiAlias,
+                elevation: 9,
                 child: _isWeekView ? const CustomWeekView() : const CustomDayView(),
               ),
             ),

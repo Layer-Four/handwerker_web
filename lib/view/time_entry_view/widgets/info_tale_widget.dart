@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../../../constants/themes/app_color.dart';
 import '../../../../models/time_models/time_vm/time_vm.dart';
 
 class InfoTableWidget extends StatelessWidget {
@@ -11,13 +9,8 @@ class InfoTableWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: AppColor.kTextfieldBorder),
-            borderRadius: BorderRadius.circular(6),
-            color: AppColor.kWhite),
-        margin: const EdgeInsets.all(6),
-        padding: const EdgeInsets.all(6),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
