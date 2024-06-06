@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/utilitis/utilitis.dart';
-import '../../models/users_models/user_data_short/user_short.dart';
 import '../../models/users_models/user_role/user_role.dart';
 import '../../provider/user_provider/user_administration/user_administration._provider.dart';
 import '../shared_widgets/search_line_header.dart';
@@ -42,7 +41,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(
-                height: 5 * 74,
+                height: 9 * 74,
                 child: ref.watch(userAdministrationProvider).isEmpty
                     ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')
                     : _userRowBuilder(),
@@ -63,26 +62,6 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
         itemBuilder: (_, index) => UserRowCard(
           ref.watch(userAdministrationProvider)[index],
           _roles,
-          () => _deleteUser(ref.watch(userAdministrationProvider)[index]),
         ),
       );
-
-  void _deleteUser(UserDataShort user) {
-    ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
-      e
-          ? {
-              ref.refresh(userAdministrationProvider),
-              Navigator.of(context).pop(),
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Mitarbeitenden erfolgreich gelöscht')),
-              )
-            }
-          : {
-              Navigator.of(context).pop(),
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Mitarbeitenden konnte nicht gelöscht werden')),
-              ),
-            };
-    });
-  }
 }

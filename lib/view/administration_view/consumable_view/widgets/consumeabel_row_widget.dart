@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../../constants/themes/app_color.dart';
 import '../../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../../models/consumable_models/unit/unit.dart';
@@ -36,9 +35,9 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
     super.initState();
     _consumable = widget.consumable;
     _currentUnit = _consumable.unit;
-    _materialNameController = TextEditingController(text: widget.consumable.name);
-    _amountController = TextEditingController(text: widget.consumable.amount.toString());
-    _priceController = TextEditingController(text: widget.consumable.price.toString());
+    _materialNameController = TextEditingController(text: _consumable.name);
+    _amountController = TextEditingController(text: _consumable.amount.toString());
+    _priceController = TextEditingController(text: _consumable.price.toString());
     _units = widget.units;
   }
 
@@ -50,6 +49,162 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) => Container(
+        height: 75,
+        // width: MediaQuery.of(context).size.width,
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: Colors.black, width: 1.0),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width > 1100
+                      ? 200
+                      : MediaQuery.of(context).size.width / 10 * 1.8,
+                  child: TextField(
+                    controller: _materialNameController,
+                    style: const TextStyle(fontSize: 16),
+                    decoration: InputDecoration(
+                      border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+                      contentPadding: const EdgeInsets.all(4),
+                    ),
+                    readOnly: !isEditing,
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width > 1100
+                      ? 200
+                      : MediaQuery.of(context).size.width / 10 * 1.8,
+                  child: TextField(
+                    controller: _amountController,
+                    style: const TextStyle(fontSize: 16),
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.all(4),
+                    ),
+                    readOnly: !isEditing,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width > 1100
+                      ? 200
+                      : MediaQuery.of(context).size.width / 10 * 1.8,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: const Color.fromARGB(255, 240, 237, 237),
+                      width: 1.0,
+                    ),
+                    color: const Color.fromARGB(249, 254, 255, 253),
+                  ),
+                  child: DropdownButton<Unit?>(
+                    isExpanded: true,
+                    underline: const SizedBox.shrink(),
+                    value: _consumable.unit,
+                    items: _units
+                        .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                child: Text(e.name),
+                              ),
+                            ))
+                        .toList(),
+                    onChanged: isEditing
+                        ? (Unit? newValue) {
+                            setState(() {
+                              _consumable = _consumable.copyWith(unit: newValue);
+                              _currentUnit = newValue;
+                            });
+                          }
+                        : null,
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width > 1100
+                      ? 200
+                      : MediaQuery.of(context).size.width / 10 * 1.8,
+                  child: TextField(
+                    controller: _priceController,
+                    style: const TextStyle(fontSize: 16),
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.all(4),
+                    ),
+                    readOnly: !isEditing,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: MediaQuery.of(context).size.width > 800 ? 32 : 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: isEditing
+                        ? () {
+                            setState(() {
+                              isEditing = false;
+                              _materialNameController.text = widget.consumable.name;
+                              _amountController.text = widget.consumable.amount.toString();
+                              _priceController.text = widget.consumable.price.toString();
+                            });
+                          }
+                        : _showDeleteConfirmation,
+                    child: Icon(isEditing ? Icons.cancel : Icons.delete, size: 25),
+                  ),
+                  InkWell(
+                    child: Icon(isEditing ? Icons.save : Icons.edit, size: 25),
+                    onTap: () {
+                      if (isEditing) {
+                        ConsumableVM updatedConsumable = ConsumableVM(
+                          id: widget.consumable.id,
+                          name: _materialNameController.text,
+                          amount: int.parse(_amountController.text),
+                          unit: _currentUnit ?? _consumable.unit,
+                          price: double.parse(_priceController.text),
+                        );
+                        ref
+                            .read(consumableProvider.notifier)
+                            .updateConsumable(updatedConsumable)
+                            .then((b) {
+                          // ignore: unused_result
+                          if (b) ref.refresh(consumableProvider);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Center(
+                                child: Text(
+                                  b ? 'wurde erfolgreich angebpasst' : 'hat leider nicht geklappt',
+                                ),
+                              ),
+                            ),
+                          );
+                        });
+                        setState(() {
+                          isEditing = false;
+                        });
+                      } else {
+                        setState(() {
+                          isEditing = true;
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
   void _showDeleteConfirmation() {
     showDialog(
       context: context,
@@ -83,142 +238,4 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
       ),
     );
   }
-
-  @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.only(bottom: 12, top: 15),
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.black,
-              width: 1.0,
-            ),
-          ),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: TextField(
-                controller: _materialNameController,
-                style: const TextStyle(fontSize: 16),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: TextField(
-                controller: _amountController,
-                style: const TextStyle(fontSize: 16),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 50),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 240, 237, 237),
-                      width: 1.0,
-                    ),
-                    color: const Color.fromARGB(249, 254, 255, 253),
-                  ),
-                  child: DropdownButton<Unit>(
-                    isExpanded: true,
-                    underline: const SizedBox.shrink(),
-                    value: _consumable.unit.id == -1 ? null : _consumable.unit,
-                    onChanged: isEditing
-                        ? (newValue) {
-                            setState(() {
-                              _currentUnit = newValue;
-                            });
-                          }
-                        : null,
-                    items: _units
-                        .map((Unit unit) => DropdownMenuItem(
-                              value: unit,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                child: Text(unit.name),
-                              ),
-                            ))
-                        .toList(),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: TextField(
-                controller: _priceController,
-                style: const TextStyle(fontSize: 16),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                readOnly: !isEditing,
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(isEditing ? Icons.cancel : Icons.delete),
-                    onPressed: isEditing
-                        ? () {
-                            setState(() {
-                              isEditing = false;
-                              _materialNameController.text = widget.consumable.name;
-                              _amountController.text = widget.consumable.amount.toString();
-                              // currentUnitId = widget.consumable.unit.id;
-                              _priceController.text = widget.consumable.price.toString();
-                              // ensureValidUnitId();
-                            });
-                          }
-                        : _showDeleteConfirmation,
-                  ),
-                  IconButton(
-                    icon: Icon(isEditing ? Icons.save : Icons.edit),
-                    onPressed: () {
-                      if (isEditing) {
-                        // Ensure that the selected unit ID is correctly set
-
-                        ConsumableVM updatedConsumable = ConsumableVM(
-                          id: widget.consumable.id,
-                          name: _materialNameController.text,
-                          amount: int.parse(_amountController.text),
-                          unit: _currentUnit ?? _consumable.unit,
-                          price: double.parse(_priceController.text),
-                        );
-                        ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable);
-
-                        setState(() {
-                          isEditing = false;
-                        });
-                      } else {
-                        setState(() {
-                          isEditing = true;
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
 }

@@ -97,12 +97,12 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     hintText: 'Material',
                                     contentPadding: const EdgeInsets.all(10),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                       borderSide: BorderSide.none,
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
                                   ),
                                   onChanged: (value) {
@@ -134,12 +134,12 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     hintText: 'Menge',
                                     contentPadding: const EdgeInsets.all(10),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                       borderSide: BorderSide.none,
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
                                   ),
                                   onChanged: (value) {
@@ -176,6 +176,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                 Text('Einheit', style: Theme.of(context).textTheme.labelLarge),
                                 const SizedBox(height: 15),
                                 DropdownButton<Unit>(
+                                  borderRadius: BorderRadius.circular(6),
                                   isExpanded: true,
                                   value: _selectedUnit,
                                   // hint: const Text('Einheit'),
@@ -217,12 +218,12 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     hintText: 'Preis/€',
                                     contentPadding: const EdgeInsets.all(10),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                       borderSide: BorderSide.none,
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.grey, width: 0),
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
                                   ),
                                   onChanged: (value) {

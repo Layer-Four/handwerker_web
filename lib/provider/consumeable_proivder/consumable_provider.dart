@@ -34,14 +34,14 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       }
       final List data = response.data.map((e) => e).toList();
       for (var e in data) {
-        final unitKey = e['materialUnitName'];
-        final searchedUnit = _units.firstWhere(
-          (unit) => unit.name == unitKey,
-          orElse: () => const Unit(id: -1, name: 'Fehler'),
-        );
-
-        final material = ConsumableVM.wihUnitAndJson(e, searchedUnit);
-        result.add(material);
+        final String? unitKey = e['materialUnitName'];
+        if (unitKey != null) {
+          final searchedUnit = _units.firstWhere((unit) => unit.name == unitKey);
+          final material = ConsumableVM.wihUnitAndJson(e, searchedUnit);
+          result.add(material);
+        } else {
+          result.add(ConsumableVM.fromJson(e));
+        }
       }
       state = result;
     } catch (e) {
@@ -98,7 +98,7 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
         // Assuming your API expects a JSON body containing material details
         'name': consumable.name,
         'amount': consumable.amount,
-        'materialUnitID': consumable.unit.id, // use unit.id
+        'materialUnitID': consumable.unit?.id, // use unit.id
         'price': consumable.price,
       });
 
@@ -125,9 +125,17 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
   }
 
   Future<bool> updateConsumable(ConsumableVM consumble) async {
+    final json = {
+      'amount': consumble.amount,
+      'name': consumble.name,
+      'id': consumble.id,
+      'price': consumble.price,
+      'materialUnitID': consumble.unit?.id,
+    };
     try {
-      final data = consumble.toJson();
-      final response = await _api.postUpdateConsumableEntry(data);
+      final data = json;
+      log(jsonEncode(data));
+      final response = await _api.putUpdateConsumableEntry(data);
       if (response.statusCode != 200) {
         log('Update response: ${response.data}');
         throw Exception(

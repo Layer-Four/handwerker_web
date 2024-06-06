@@ -5,8 +5,8 @@ import '../../models/project_models/customer_projekt_model/custom_project.dart';
 import '../shared_widgets/character_card.dart';
 import '../shared_widgets/search_line_header.dart';
 
-class CustomerProjectMain extends ConsumerWidget {
-  const CustomerProjectMain({super.key});
+class ProjectOverviewView extends ConsumerWidget {
+  const ProjectOverviewView({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width;
