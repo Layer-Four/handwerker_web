@@ -28,15 +28,12 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
     return Container(
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(75, 30, 65, 30),
+        padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchLineHeader(title: 'Projektverwaltung'),
-              const SizedBox(
-                height: 60,
-              ),
               const Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Row(
@@ -49,12 +46,9 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
               SizedBox(
-                width: screenWidth > 600 ? double.infinity : null,
-                height: MediaQuery.of(context).size.height / 2 - 100,
+                width: screenWidth > 1000 ? double.infinity : null,
+                height: 9 * 74,
                 /*isAddNewProject
                     ? MediaQuery.of(context).size.height / 3
                     : MediaQuery.of(context).size.height - 300,*/
@@ -76,34 +70,20 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AddButton(
-                  onTap: () {
-                    setState(() {
-                      isAddNewProject = !isAddNewProject;
-                    });
-                  },
-                ),
-              ),
-              Visibility(
-                visible: isAddNewProject,
-                child: SizedBox(
-                  // alignment: Alignment.topLeft,
-                  height: MediaQuery.of(context).size.height / 3,
-                  width: screenWidth / 2,
-                  child: AddNewProject(
-                    onSave: () {},
-                    onCancel: () {
-                      setState(() {
-                        isAddNewProject = !isAddNewProject;
-                      });
-                    },
-                    project: editingProjectIndex != -1
-                        ? project[editingProjectIndex]
-                        : null, //If a project was clicked instead of the + icon, we pass the project and prefill the data
-                  ),
-                ),
-              )
+                  padding: const EdgeInsets.all(8.0),
+                  child: AddButton(
+                    isOpen: isAddNewProject,
+                    onTap: () => setState(() => isAddNewProject = !isAddNewProject),
+                    hideAbleChild: AddNewProject(
+                      onSave: () {},
+                      onCancel: () {
+                        setState(() => isAddNewProject = !isAddNewProject);
+                      },
+                      project: editingProjectIndex != -1
+                          ? project[editingProjectIndex]
+                          : null, //If a project was clicked instead of the + icon, we pass the project and prefill the data
+                    ),
+                  )),
             ],
           ),
         ),

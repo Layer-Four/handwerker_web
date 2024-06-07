@@ -9,7 +9,12 @@ class AddNewConsumable extends StatefulWidget {
   final VoidCallback onCancel;
   final CustomeProject? project;
 
-  const AddNewConsumable({super.key, required this.onSave, required this.onCancel, this.project});
+  const AddNewConsumable({
+    super.key,
+    required this.onSave,
+    required this.onCancel,
+    this.project,
+  });
 
   @override
   State<AddNewConsumable> createState() => _AddNewConsumableState();
@@ -31,8 +36,8 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
   void initState() {
     super.initState();
     if (widget.project != null) {
-      _firstNameController.text =
-          widget.project!.customer; // Assuming 'customer' is a field in CustomeProject
+      // Assuming 'customer' is a field in CustomeProject
+      _firstNameController.text = widget.project!.customer;
     }
   }
 
@@ -54,14 +59,12 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 8.0),
+        child: Container(
+          width: MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
           child: Card(
             elevation: 9,
-            child: Container(
-              color: const Color.fromARGB(255, 255, 255, 255),
-              height: 400,
-              width: double.infinity,
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -218,9 +221,8 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                           textStyle: TextStyle(color: AppColor.kPrimaryButtonColor),
                           onPressed: () {
                             widget.onCancel();
-                            //Dispose of controllers
-                            //     dispose();
-                          }, //onCancel
+                            // dispose();
+                          },
                         ),
                       ),
                       Padding(
@@ -255,7 +257,7 @@ Widget buildTextField({
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: const Color.fromARGB(255, 220, 217, 217),
+                  color: AppColor.kTextfieldBorder,
                 ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 15,
@@ -263,13 +265,13 @@ Widget buildTextField({
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Color.fromARGB(255, 220, 217, 217),
+              borderSide: BorderSide(
+                color: AppColor.kTextfieldBorder,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+              borderSide: BorderSide(color: AppColor.kTextfieldBorder),
             ),
           ),
         ),

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/themes/app_color.dart';
 import '../../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../../models/consumable_models/unit/unit.dart';
-import '../../../../provider/consumeable_proivder/consumable_provider.dart';
+import '../../../../provider/data_provider/consumeable_proivder/consumable_provider.dart';
 
 class ConsumebaleDataRow extends ConsumerStatefulWidget {
   final ConsumableVM consumable;

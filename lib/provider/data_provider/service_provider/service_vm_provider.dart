@@ -6,12 +6,15 @@ import '../../../constants/api/api.dart';
 import '../../../models/service_models/service_vm/service_vm.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
 
-final serviceVMProvider = AsyncNotifierProvider<ServiceNotifer, List<ServiceVM>?>(() => ServiceNotifer());
+final serviceVMProvider = NotifierProvider<ServiceNotifer, List<ServiceVM>>(() => ServiceNotifer());
 
-class ServiceNotifer extends AsyncNotifier<List<ServiceVM>?> {
+class ServiceNotifer extends Notifier<List<ServiceVM>> {
   final Api _api = Api();
   @override
-  List<ServiceVM>? build() => null;
+  List<ServiceVM> build() {
+    loadServices();
+    return [];
+  }
 
   void loadServices() async {
     try {
@@ -25,7 +28,7 @@ class ServiceNotifer extends AsyncNotifier<List<ServiceVM>?> {
       }
       final data = response.data;
       final services = data.map<ServiceVM>((e) => ServiceVM.fromJson(e)).toList();
-      state = AsyncValue.data(services);
+      state = services;
     } catch (e) {
       throw Exception(e);
     }
@@ -58,6 +61,22 @@ class ServiceNotifer extends AsyncNotifier<List<ServiceVM>?> {
     } catch (e) {
       log('this error occurent-> $e');
       throw Exception(e);
+    }
+  }
+
+  Future<bool> deleteService(int serviceID) async {
+    try {
+      final response = await _api.deleteService(serviceID);
+      if (response.statusCode != 200) {
+        throw Exception('deleteService dismiss-> status: ${response.statusCode}\n${response.data}');
+      }
+      return true;
+    } on DioException catch (e) {
+      throw Exception('DioException occurent dio status-> ${e.response?.statusCode}\n${e.message}');
+    } catch (e) {
+      log('Exception when trying to delete row with ID: ${serviceID}: $e');
+      return false;
+      // throw Exception(e);
     }
   }
 }

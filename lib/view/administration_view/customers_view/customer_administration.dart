@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/project_models/customer_projekt_model/custom_project.dart';
@@ -23,7 +25,7 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
     return Container(
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(75, 30, 65, 30),
+        padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,30 +69,19 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AddButton(
-                  onTap: () {
-                    setState(() {
-                      isAddConsumableOpen = !isAddConsumableOpen;
-                    });
+              AddButton(
+                isOpen: isAddConsumableOpen,
+                onTap: () {
+                  log(isAddConsumableOpen.toString());
+                  setState(() => isAddConsumableOpen = !isAddConsumableOpen);
+                  log(isAddConsumableOpen.toString());
+                },
+                hideAbleChild: AddNewConsumable(
+                  onSave: () {},
+                  onCancel: () {
+                    setState(() => isAddConsumableOpen = !isAddConsumableOpen);
                   },
-                ),
-              ),
-              Visibility(
-                visible: isAddConsumableOpen,
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height / 3,
-                  width: screenWidth / 2,
-                  child: AddNewConsumable(
-                    onSave: () {},
-                    onCancel: () {
-                      setState(() {
-                        isAddConsumableOpen = !isAddConsumableOpen;
-                      });
-                    },
-                    project: editingProjectIndex != -1 ? project[editingProjectIndex] : null,
-                  ),
+                  project: editingProjectIndex != -1 ? project[editingProjectIndex] : null,
                 ),
               )
             ],

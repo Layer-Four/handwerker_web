@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/consumable_models/unit/unit.dart';
-import '../../../provider/consumeable_proivder/consumable_provider.dart';
+import '../../../provider/data_provider/consumeable_proivder/consumable_provider.dart';
 import '../../shared_widgets/search_line_header.dart';
 import '../../users_view/widgets/add_button_widget.dart';
 import 'widgets/consumeabel_row_widget.dart';
-import 'widgets/creaet_material_widget.dart';
+import 'widgets/create_material_widget.dart';
 
 class ConsumableBody extends ConsumerStatefulWidget {
   final Duration snackbarDuration;
@@ -20,11 +20,11 @@ class ConsumableBody extends ConsumerStatefulWidget {
 }
 
 class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
+  bool _isOpen = false;
   bool _isSnackbarShowed = false;
   late final Duration _snackbarDuration;
   final List<Unit> _units = [];
   bool isLoading = true;
-  bool isCardVisible = false;
 
   @override
   void initState() {
@@ -109,13 +109,14 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
                       ),
                     ),
               AddButton(
-                onTap: () => setState(() => isCardVisible = !isCardVisible),
+                onTap: () => setState(() => _isOpen = !_isOpen),
+                isOpen: _isOpen,
+                hideAbleChild: CreateMaterialCard(
+                    units: _units,
+                    onReject: () {
+                      setState(() => _isOpen = !_isOpen);
+                    }),
               ),
-              if (isCardVisible)
-                CreateMaterialCard(
-                  units: _units,
-                  onHideCard: () => setState(() => isCardVisible = false),
-                ),
             ],
           ),
         ),

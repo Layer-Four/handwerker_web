@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// TODO: Please load all Datas from Api instance
 import 'package:http/http.dart' as http;
 import '../../../../constants/api/api.dart';
 import '../../../../models/service_models/service_vm/service_vm.dart';
@@ -23,7 +24,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   final TextEditingController _durationController = TextEditingController();
   final TextEditingController _endController = TextEditingController();
   final TextEditingController _startController = TextEditingController();
-  bool initServices = false;
   bool isUserSet = false;
   bool isProjectSet = false;
   TimeOfDay? selectedTime;
@@ -112,7 +112,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                   height: 40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+                    border: Border.all(color: AppColor.kTextfieldBorder),
                   ),
                   child: DropdownButton(
                     menuMaxHeight: 300,
@@ -170,7 +170,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               height: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+                border: Border.all(color: AppColor.kTextfieldBorder),
               ),
               child: DropdownButton<int>(
                 underline: const SizedBox(),
@@ -222,7 +222,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             height: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
+              border: Border.all(color: AppColor.kTextfieldBorder),
             ),
             child: DropdownButton<Project>(
               underline: const SizedBox(),
@@ -311,7 +311,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 maxLines: null,
                 decoration: InputDecoration(
                   hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: const Color.fromARGB(255, 220, 217, 217),
+                        color: AppColor.kTextfieldBorder,
                       ),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 15,
@@ -319,13 +319,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 220, 217, 217),
+                    borderSide: BorderSide(
+                      color: AppColor.kTextfieldBorder,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                    borderSide: BorderSide(color: AppColor.kTextfieldBorder),
                   ),
                 ),
                 onChanged: (value) {
@@ -340,67 +340,48 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
 
-  Widget _buildServiceDropdown() => ref.watch(serviceVMProvider).when(
-        loading: () => const CircularProgressIndicator.adaptive(),
-        error: (error, stackTrace) => const SizedBox(),
-        data: (data) {
-          if (data == null) {
-            ref.watch(serviceVMProvider.notifier).loadServices();
-          }
-          final services = data;
-          if (services != null && !initServices) {
-            setState(() {
-              _choosenService = services.first;
-              _entry = _entry.copyWith(
-                serviceID: services.first.id,
-                // serviceTitle: services.first.name,
-              );
-              initServices = true;
-            });
-          }
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    'Leistung',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ),
-                Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color.fromARGB(255, 220, 217, 217)),
-                  ),
-                  child: DropdownButton(
-                    underline: const SizedBox(),
-                    isExpanded: true,
-                    value: _choosenService,
-                    items: services
-                        ?.map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(' ${e.name}'),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (e) => setState(() {
-                      _choosenService = e;
-                      _entry = _entry.copyWith(
-                        // serviceTitle: e!.name,
-                        serviceID: e!.id,
-                      );
-                    }),
-                  ),
-                ),
-              ],
+  Widget _buildServiceDropdown() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                'Leistung',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
             ),
-          );
-        },
+            Container(
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColor.kTextfieldBorder),
+              ),
+              child: DropdownButton(
+                underline: const SizedBox(),
+                isExpanded: true,
+                value: _choosenService,
+                items: ref
+                    .watch(serviceVMProvider)
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(' ${e.name}'),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (e) => setState(() {
+                  _choosenService = e;
+                  _entry = _entry.copyWith(
+                    // serviceTitle: e!.name,
+                    serviceID: e!.id,
+                  );
+                }),
+              ),
+            ),
+          ],
+        ),
       );
 
   /// Split the [String] values from the TextEdingController with the given
@@ -475,7 +456,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       },
                       decoration: InputDecoration(
                         hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: const Color.fromARGB(255, 220, 217, 217),
+                              color: AppColor.kTextfieldBorder,
                             ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 15,
@@ -483,13 +464,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 220, 217, 217),
+                          borderSide: BorderSide(
+                            color: AppColor.kTextfieldBorder,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                          borderSide: BorderSide(color: AppColor.kTextfieldBorder),
                         ),
                       ),
                     ),
@@ -526,7 +507,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         decoration: InputDecoration(
                           hintText: 'min.',
                           hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                color: const Color.fromARGB(255, 220, 217, 217),
+                                color: AppColor.kTextfieldBorder,
                               ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 15,
@@ -534,13 +515,11 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 220, 217, 217),
-                            ),
+                            borderSide: BorderSide(color: AppColor.kTextfieldBorder),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                            borderSide: BorderSide(color: AppColor.kTextfieldBorder),
                           ),
                         )),
                   ),
@@ -577,7 +556,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     controller: _startController,
                     decoration: InputDecoration(
                       hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: const Color.fromARGB(255, 220, 217, 217),
+                            color: AppColor.kTextfieldBorder,
                           ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 15,
@@ -585,13 +564,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 220, 217, 217),
+                        borderSide: BorderSide(
+                          color: AppColor.kTextfieldBorder,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                        borderSide: BorderSide(color: AppColor.kTextfieldBorder),
                       ),
                     ),
                     onTap: () async {
@@ -635,7 +614,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     controller: _endController,
                     decoration: InputDecoration(
                       hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: const Color.fromARGB(255, 220, 217, 217),
+                            color: AppColor.kTextfieldBorder,
                           ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 15,
@@ -643,13 +622,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 220, 217, 217),
+                        borderSide: BorderSide(
+                          color: AppColor.kTextfieldBorder,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                        borderSide: BorderSide(color: AppColor.kTextfieldBorder),
                       ),
                     ),
                     onTap: () async {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/themes/app_color.dart';
+
 class SymmetricButton extends StatelessWidget {
   final String text;
   final Function()? onPressed;
@@ -10,22 +12,21 @@ class SymmetricButton extends StatelessWidget {
   final double elevation;
   final BorderRadius? borderRadius;
   const SymmetricButton({
-    color,
+    this.color,
     super.key,
     this.onPressed,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     this.borderRadius,
     this.elevation = 5,
     this.overflow = TextOverflow.clip,
-    textStyle,
+    this.textStyle,
     required this.text,
-  })  : textStyle = textStyle ?? const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
-        color = color ?? const Color.fromARGB(255, 224, 142, 60);
+  });
 
   @override
   Widget build(BuildContext context) => Material(
         elevation: elevation,
-        color: color,
+        color: color ?? AppColor.kPrimaryButtonColor,
         borderRadius: borderRadius ?? BorderRadius.circular(6),
         type: MaterialType.card,
         child: InkWell(
@@ -39,7 +40,8 @@ class SymmetricButton extends StatelessWidget {
                 text,
                 overflow: overflow,
                 textAlign: TextAlign.center,
-                style: textStyle,
+                style: textStyle ??
+                    Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kWhite),
               ),
             ),
           ),
