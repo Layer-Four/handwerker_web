@@ -100,9 +100,7 @@ class _CardWidgetState extends State<CreateServiceWidget> {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: MediaQuery.of(context).size.width > 1000
-            ? 800
-            : MediaQuery.of(context).size.width / 10 * 9,
+        width: MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width / 10 * 9,
         child: Card(
           surfaceTintColor: Colors.white,
           elevation: 6,
@@ -115,17 +113,13 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width > 1000
-                          ? 200
-                          : MediaQuery.of(context).size.width / 10 * 3,
+                      width:
+                          MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 3,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Leistung',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold)),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
                           TextField(
                             controller: _leistungController,
                             decoration: InputDecoration(
@@ -134,8 +128,7 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                               hintText: 'Leistung',
                               contentPadding: const EdgeInsets.all(10),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide.none),
+                                  borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(color: Colors.grey, width: 0),
                                 borderRadius: BorderRadius.circular(12),
@@ -146,9 +139,8 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width > 1000
-                          ? 200
-                          : MediaQuery.of(context).size.width / 10 * 3,
+                      width:
+                          MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 3,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -161,8 +153,7 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                               hintText: 'Preis/std',
                               contentPadding: const EdgeInsets.all(10),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide.none),
+                                  borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(color: Colors.grey, width: 0),
                                 borderRadius: BorderRadius.circular(12),
@@ -183,10 +174,8 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                         padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12),
                         child: SymmetricButton(
                           text: 'Verwerfen',
-                          textStyle: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(color: AppColor.kPrimaryButtonColor),
+                          textStyle:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
                           color: AppColor.kWhite,
                           onPressed: () {
                             _leistungController.clear();
@@ -199,10 +188,7 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                         padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12.0),
                         child: SymmetricButton(
                           text: 'Speichern',
-                          textStyle: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(color: AppColor.kWhite),
+                          textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColor.kWhite),
                           onPressed: () {
                             final leistung = _leistungController.text;
                             final preis = _preisController.text;

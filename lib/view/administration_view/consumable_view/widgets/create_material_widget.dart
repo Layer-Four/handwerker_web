@@ -64,7 +64,6 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
   Widget build(BuildContext context) => LayoutBuilder(
       builder: (context, constraints) => SizedBox(
             width: MediaQuery.of(context).size.width > 1000 ? 800 : constraints.maxHeight,
-            // height: 350,
             child: Card(
               surfaceTintColor: Colors.white,
               elevation: 6,
@@ -81,9 +80,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            width: MediaQuery.of(context).size.width > 850
-                                ? 180
-                                : constraints.maxWidth / 10 * 2.3,
+                            width: MediaQuery.of(context).size.width > 850 ? 180 : constraints.maxWidth / 10 * 2.3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -109,8 +106,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     TextSelection previousSelection = _nameController.selection;
                                     _nameController.text = value;
                                     _nameController.selection = previousSelection;
-                                    setState(() => _consumable =
-                                        _consumable.copyWith(name: _nameController.text));
+                                    setState(() => _consumable = _consumable.copyWith(name: _nameController.text));
                                   },
                                 ),
                               ],
@@ -118,9 +114,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            width: MediaQuery.of(context).size.width > 1000
-                                ? 180
-                                : constraints.maxWidth / 10 * 2.3,
+                            width: MediaQuery.of(context).size.width > 1000 ? 180 : constraints.maxWidth / 10 * 2.3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -144,12 +138,11 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                   ),
                                   onChanged: (value) {
                                     if (int.tryParse(value) == null) {
-                                      _amountController.text = _amountController.text
-                                          .substring(0, _amountController.text.length - 1);
+                                      _amountController.text =
+                                          _amountController.text.substring(0, _amountController.text.length - 1);
                                       return _showSnackBar('Bitte geben sie nur Zahlen ein');
                                     }
                                     if (int.parse(value) > 10000) {
-                                      // TODO:Check max size of Decimal and react to it.
                                       return _showSnackBar('Diese Zahl ist zu groß');
                                     }
                                     TextSelection previousSelection = _amountController.selection;
@@ -167,9 +160,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            width: MediaQuery.of(context).size.width > 1000
-                                ? 180
-                                : constraints.maxWidth / 10 * 2.3,
+                            width: MediaQuery.of(context).size.width > 1000 ? 180 : constraints.maxWidth / 10 * 2.3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -179,7 +170,6 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                   borderRadius: BorderRadius.circular(6),
                                   isExpanded: true,
                                   value: _selectedUnit,
-                                  // hint: const Text('Einheit'),
                                   items: _units
                                       .map((Unit unit) => DropdownMenuItem<Unit>(
                                             value: unit,
@@ -198,18 +188,14 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            width: MediaQuery.of(context).size.width > 1000
-                                ? 180
-                                : constraints.maxWidth / 10 * 2.3,
+                            width: MediaQuery.of(context).size.width > 1000 ? 180 : constraints.maxWidth / 10 * 2.3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Preis', style: Theme.of(context).textTheme.labelLarge),
                                 const SizedBox(height: 15),
                                 TextFormField(
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))
-                                  ],
+                                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))],
                                   keyboardType: TextInputType.number,
                                   controller: _priceController,
                                   decoration: InputDecoration(
@@ -241,15 +227,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     }
 
                                     if (double.parse(value) > 10000) {
-                                      // TODO:Check max size of Decimal and react to it.
                                       return _showSnackBar('Diese Zahl ist zu groß');
                                     }
                                     TextSelection previousSelection = _priceController.selection;
                                     _priceController.text = value;
                                     _priceController.selection = previousSelection;
                                     setState(() {
-                                      _consumable = _consumable.copyWith(
-                                          price: double.parse(_priceController.text));
+                                      _consumable = _consumable.copyWith(price: double.parse(_priceController.text));
                                     });
                                   },
                                 ),
@@ -283,24 +267,23 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                           child: SymmetricButton(
                             text: 'Speichern',
                             onPressed: () {
-                              if (_nameController.text.isNotEmpty ||
-                                  _amountController.text.isNotEmpty ||
-                                  _selectedUnit != null ||
-                                  _priceController.text.isNotEmpty) {
-                                ref
-                                    .read(consumableProvider.notifier)
-                                    .createConsumable(_consumable)
-                                    .then((e) {
-                                  e
-                                      ? {
-                                          ref.refresh(consumableProvider),
-                                          _nameController.clear(),
-                                          _amountController.clear(),
-                                          _priceController.clear(),
-                                        }
-                                      : _showSnackBar('hat nicht geklappt');
-                                });
+                              if (_nameController.text.isEmpty ||
+                                  _amountController.text.isEmpty ||
+                                  _selectedUnit == null ||
+                                  _priceController.text.isEmpty) {
+                                _showSnackBar('Bitte alle Felder ausfüllen');
+                                return;
                               }
+                              ref.read(consumableProvider.notifier).createConsumable(_consumable).then((e) {
+                                e
+                                    ? {
+                                        ref.refresh(consumableProvider),
+                                        _nameController.clear(),
+                                        _amountController.clear(),
+                                        _priceController.clear(),
+                                      }
+                                    : _showSnackBar('hat nicht geklappt');
+                              });
                             },
                           ),
                         ),
