@@ -14,8 +14,7 @@ class CreateServiceWidget extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CardWidgetState createState() => _CardWidgetState();
+  State<CreateServiceWidget> createState() => _CardWidgetState();
 }
 
 class _CardWidgetState extends State<CreateServiceWidget> {
