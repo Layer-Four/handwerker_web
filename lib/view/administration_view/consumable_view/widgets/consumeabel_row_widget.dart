@@ -221,6 +221,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
 
                         ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable).then((b) {
                           if (b) {
+                            // ignore: unused_result
                             ref.refresh(consumableProvider);
                             // Ensure the Euro symbol is visible after the update
                             setState(() {
