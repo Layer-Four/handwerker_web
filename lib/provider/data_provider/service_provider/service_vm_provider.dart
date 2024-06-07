@@ -70,13 +70,48 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
       if (response.statusCode != 200) {
         throw Exception('deleteService dismiss-> status: ${response.statusCode}\n${response.data}');
       }
+      loadServices();
       return true;
     } on DioException catch (e) {
       throw Exception('DioException occurent dio status-> ${e.response?.statusCode}\n${e.message}');
     } catch (e) {
-      log('Exception when trying to delete row with ID: ${serviceID}: $e');
+      log('Exception when trying to delete row with ID: $serviceID: $e');
       return false;
       // throw Exception(e);
+    }
+  }
+
+  Future<bool> createService(ServiceVM service) async {
+    try {
+      final response = await _api.postCreateService(service.toJson());
+      if (response.statusCode != 200) {
+        throw Exception('createService dismiss-> status: ${response.statusCode}\n${response.data}');
+      }
+      final dbService = ServiceVM.fromJson(response.data);
+      log(dbService.toJson().toString());
+      loadServices();
+      return true;
+    } on DioException catch (e) {
+      throw Exception('DioException occurent dio status-> ${e.response?.statusCode}\n${e.message}');
+    } catch (e) {
+      log('Exception on createService: $e');
+      return false;
+    }
+  }
+
+  Future<bool> updateService(ServiceVM service) async {
+    try {
+      final response = await _api.putUpdateService(service.toJson());
+      if (response.statusCode != 200) {
+        throw Exception('updateService dismiss-> status: ${response.statusCode}\n${response.data}');
+      }
+      loadServices();
+      return true;
+    } on DioException catch (e) {
+      throw Exception('DioException occurent dio status-> ${e.response?.statusCode}\n${e.message}');
+    } catch (e) {
+      log('Exception on createService: $e');
+      return false;
     }
   }
 }
