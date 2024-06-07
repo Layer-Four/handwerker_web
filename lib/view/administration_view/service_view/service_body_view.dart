@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../constants/api/api.dart';
-import '../../../models/service_models/service_vm/service_vm.dart';
 import '../../../provider/data_provider/service_provider/service_vm_provider.dart';
 import '../../shared_widgets/search_line_header.dart';
 import '../../users_view/widgets/add_button_widget.dart';
@@ -18,41 +16,45 @@ class ServiceBodyView extends ConsumerStatefulWidget {
 }
 
 class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
-  bool isCardVisible = false;
+  bool _isCardVisible = false;
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: Colors.white,
+  Widget build(BuildContext context) => SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SearchLineHeader(title: 'Leistungsverwaltung'),
-                const SizedBox(height: 44),
-                buildHeaderRow(),
-                ...ref.watch(serviceVMProvider).map((service) => ServiceDataWidget(
-                      onDelete: () => deleteService(service),
-                      onUpdate: (service) {}, // updateRow(updatedRow), // Now passing onUpdate
-                      service: service,
-                    )),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: AddButton(
-                    isOpen: isCardVisible,
-                    hideAbleChild: CreateServiceWidget(
-                      onSave: (s, d) {},
-                      onHideCard: () => setState(() => isCardVisible = false),
-                    ),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SearchLineHeader(title: 'Leistungsverwaltung'),
+              _buildHeaderRow(),
+              ...ref.watch(serviceVMProvider).map((service) => ServiceDataWidget(
+                    onDelete: () =>
+                        ref.read(serviceVMProvider.notifier).deleteService(service.id!).then((e) {
+                      _showSnackBar(
+                        e
+                            ? 'Leistung erfolgreich gelöscht'
+                            : 'Leistung konnte nicht gelöscht werden',
+                      );
+                    }),
+                    onUpdate: (service) {}, // updateRow(updatedRow), // Now passing onUpdate
+                    service: service,
+                  )),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: AddButton(
+                  isOpen: _isCardVisible,
+                  onTap: () => setState(() => _isCardVisible = !_isCardVisible),
+                  hideAbleChild: CreateServiceWidget(
+                    onSave: () {},
+                    onReject: () => setState(() => _isCardVisible = false),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
@@ -92,27 +94,6 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
         ),
       );
 
-  void deleteService(ServiceVM row) async {
-    final Api api = Api();
-
-    try {
-      final response = await api.deleteService(row.id!);
-      print('Received response status code: ${response.statusCode} for row ID: ${row.id}');
-
-      if (response.statusCode == 200 || response.statusCode == 204) {
-        print('Successfully deleted row with ID: ${row.id} from the backend.');
-        _showSnackBar('Row deleted successfully.');
-      } else {
-        print(
-            'Failed to delete row with ID: ${row.id}. Status code: ${response.statusCode}, Response data: ${response.data}');
-        _showSnackBar('Failed to delete the item from the server: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Exception when trying to delete row with ID: ${row.id}: $e');
-      _showSnackBar('Error when attempting to delete the item: $e');
-    }
-  }
-
   // Future<void> updateRow(Service row) async {
   //   final url = Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/service/update');
   //   try {
@@ -143,18 +124,21 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
   //   }
   // }
 
-  Widget buildHeaderRow() => const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          ),
-          SizedBox(width: 30),
-          Expanded(
-            child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          ),
-          Spacer(),
-          SizedBox(width: 110) // Adjust spacing as needed
-        ],
+  Widget _buildHeaderRow() => const Padding(
+        padding: EdgeInsets.symmetric(vertical: 12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(width: 30),
+            Expanded(
+              child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ),
+            Spacer(),
+            SizedBox(width: 110) // Adjust spacing as needed
+          ],
+        ),
       );
 }

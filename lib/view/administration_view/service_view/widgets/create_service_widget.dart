@@ -4,10 +4,14 @@ import '../../../../constants/themes/app_color.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
 class CreateServiceWidget extends StatefulWidget {
-  final Function(String title, double price) onSave;
-  final Function onHideCard;
+  final Function() onSave;
+  final Function onReject;
 
-  const CreateServiceWidget({required this.onSave, required this.onHideCard, super.key});
+  const CreateServiceWidget({
+    required this.onSave,
+    required this.onReject,
+    super.key,
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -188,7 +192,7 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                           onPressed: () {
                             _leistungController.clear();
                             _preisController.clear();
-                            widget.onHideCard();
+                            widget.onReject();
                           },
                         ),
                       ),

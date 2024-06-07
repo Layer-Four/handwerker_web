@@ -34,27 +34,27 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
 
   @override
   Widget build(BuildContext ctx) => SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
-            const UserRowHeadLine(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
+              const UserRowHeadLine(),
+              SizedBox(
                 height: 9 * 74,
                 child: ref.watch(userAdministrationProvider).isEmpty
                     ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')
                     : _userRowBuilder(),
               ),
-            ),
-            AddButton(
-                isOpen: _isOpen,
-                onTap: () => setState(() => _isOpen = !_isOpen),
-                hideAbleChild: SizedBox(
-                  child: _isOpen ? AddNewEmployee(_roles) : const SizedBox.shrink(),
-                )),
-          ],
+              AddButton(
+                  isOpen: _isOpen,
+                  onTap: () => setState(() => _isOpen = !_isOpen),
+                  hideAbleChild: SizedBox(
+                    child: _isOpen ? AddNewEmployee(_roles) : const SizedBox.shrink(),
+                  )),
+            ],
+          ),
         ),
       );
 

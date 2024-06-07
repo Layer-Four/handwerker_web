@@ -63,4 +63,20 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
       throw Exception(e);
     }
   }
+
+  Future<bool> deleteService(int serviceID) async {
+    try {
+      final response = await _api.deleteService(serviceID);
+      if (response.statusCode != 200) {
+        throw Exception('deleteService dismiss-> status: ${response.statusCode}\n${response.data}');
+      }
+      return true;
+    } on DioException catch (e) {
+      throw Exception('DioException occurent dio status-> ${e.response?.statusCode}\n${e.message}');
+    } catch (e) {
+      log('Exception when trying to delete row with ID: ${serviceID}: $e');
+      return false;
+      // throw Exception(e);
+    }
+  }
 }
