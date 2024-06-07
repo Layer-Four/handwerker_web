@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import '../view/login_view/forgot_password_view.dart';
 import '../view/login_view/login_view.dart';
 import '../view/login_view/reset_password.dart';
-import '../view/main_view/main_nav_view.dart';
+import '../view/main_navigation_view/main_nav_view.dart';
 import '../view/start_view/start_view.dart';
 
 class AppRoutes {

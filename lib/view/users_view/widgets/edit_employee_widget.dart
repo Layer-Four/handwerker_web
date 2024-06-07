@@ -221,12 +221,11 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
                 child: SizedBox(
                   width: 140,
                   child: SymmetricButton(
                     text: 'Speichern',
-                    textStyle: const TextStyle(color: Colors.white, fontSize: 18),
                     onPressed: () {
                       if (_selectedRole != null &&
                           _nameController.text.isNotEmpty &&
@@ -282,22 +281,23 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
             controller: _nameController,
             decoration: InputDecoration(
               hintText: 'Jonathan Mueller',
-              hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: const Color.fromARGB(255, 220, 217, 217),
-                  ),
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: AppColor.kTextfieldBorder),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 5,
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(
-                  color: Color.fromARGB(255, 220, 217, 217),
+                borderSide: BorderSide(
+                  color: AppColor.kTextfieldBorder,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+                borderSide: BorderSide(color: AppColor.kTextfieldBorder),
               ),
             ),
             onChanged: (value) {
@@ -336,7 +336,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
         value: _selectedRole,
         decoration: InputDecoration(
           hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: const Color.fromARGB(255, 220, 217, 217),
+                color: AppColor.kTextfieldBorder,
               ),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 15,
@@ -344,13 +344,13 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(255, 220, 217, 217),
+            borderSide: BorderSide(
+              color: AppColor.kTextfieldBorder,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color.fromARGB(255, 220, 217, 217)),
+            borderSide: BorderSide(color: AppColor.kTextfieldBorder),
           ),
           filled: true,
           fillColor: Colors.grey[100],

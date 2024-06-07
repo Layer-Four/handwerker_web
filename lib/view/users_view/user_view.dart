@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../constants/utilitis/utilitis.dart';
 import '../../models/users_models/user_role/user_role.dart';
 import '../../provider/user_provider/user_administration/user_administration._provider.dart';
 import '../shared_widgets/search_line_header.dart';
 import 'widgets/add_button_widget.dart';
 import 'widgets/edit_employee_widget.dart';
+import 'widgets/user_data_widget.dart';
 import 'widgets/user_row_headline_widget.dart';
-import 'widgets/user_row_widget.dart';
 
 class EmployeeAdministration extends ConsumerStatefulWidget {
   //StatelessWidget
@@ -48,11 +49,11 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
               ),
             ),
             AddButton(
-              onTap: () => setState(() => _isOpen = !_isOpen),
-            ),
-            SizedBox(
-              child: _isOpen ? AddNewEmployee(_roles) : const SizedBox.shrink(),
-            )
+                isOpen: _isOpen,
+                onTap: () => setState(() => _isOpen = !_isOpen),
+                hideAbleChild: SizedBox(
+                  child: _isOpen ? AddNewEmployee(_roles) : const SizedBox.shrink(),
+                )),
           ],
         ),
       );
