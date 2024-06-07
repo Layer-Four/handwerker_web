@@ -11,7 +11,7 @@ class Api {
   // delete Adress
   final String _deleteService = '/service/delete';
   final String _deleteServiceMaterial = '/material/delete';
-  final String _deleteUserAdress = '/user/delete';
+  final String _deleteUser = '/user/delete';
   // get Adress
   final String _getAllProjects = '/project/read/all';
   final String _getAllTimeTacks = '/timetracking/read/all';
@@ -20,26 +20,29 @@ class Api {
   final String _getListUsersShort = '/user/list';
   final String _getListCustomer = '/customer/list';
   final String _getListProject = '/project/list';
-  final String _getProjectsAdress = '/project/list';
+  final String _getProjects = '/project/list';
   final String _getProjectsConsumable = '/userProjectMaterial/read/1';
-  final String _getServiceAdress = '/service/list';
+  final String _getService = '/service/list';
   final String _getTimeTacks = '/timetracking/read/3';
   final String _getUserProjectDocumentation = '/userProjectDay/read/2';
-  final String _getUserRoleAdress = '/role/list';
+  final String _getUserRole = '/role/list';
   final String _getMaterialsList = '/material/list';
   final String _getUserServiceListByID = '/userservice/list?userid=';
   final String _getUserServiceList = '/userservice/list';
   // post Adress
+  final String _postcreateCardMaterial = '/material/create';
+  final String _postCreateService = '/service/create';
   final String _postDocumentationDay = '/userProjectDay/create';
-  final String _postloginUserAdress = '/user/login';
-  final String _postNewUserAdress = '/user/create';
-  final String _postTimeEntryAdress = '/timetracking/create';
+  final String _postloginUser = '/user/login';
+  final String _postNewUser = '/user/create';
+  final String _postTimeEntry = '/timetracking/create';
   final String _postProjectConsumabele = '/userProjectMaterial/create';
-  final String _createCardMaterial = '/material/create';
+  // put Adress
   final String _putDocumentationDay = '/userProjectDay/update';
   final String _putProjectMaterial = '/userProjectMaterial/update';
-  final String _putProjectWebMaterialAdress = '/material/update';
-  final String _putResetPasswordAdress = '/user/password/reset';
+  final String _putProjectWebMaterial = '/material/update';
+  final String _putResetPassword = '/user/password/reset';
+  final String _putUpdateService = '/service/update';
   final String _putUpdateUser = '/user/update';
 
   Api() {
@@ -74,20 +77,20 @@ class Api {
   Future<Response> get getAllTimeEntrys => _api.get(_getAllTimeTacks);
   Future<Response> get getAllUnits => _api.get(_getAllUnitsList);
   Future<Response> get getCustomerProjects => _api.get(_getCustomerProject);
-  Future<Response> get getExecuteableServices => _api.get(_getServiceAdress);
+  Future<Response> get getExecuteableServices => _api.get(_getService);
   // Getter for customer list
   Future<Response> get getListCustomer => _api.get(_getListCustomer);
   // Getter for project list
   Future<Response> get getListProject => _api.get(_getListProject);
   Future<Response> get getMaterialsList => _api.get(_getMaterialsList);
   Future<Response> get getProjectConsumableEntry => _api.get(_getProjectsConsumable);
-  Future<Response> get getProjectsDM => _api.get(_getProjectsAdress);
+  Future<Response> get getProjectsDM => _api.get(_getProjects);
   Future<Response> get getProjectsTimeEntrys => _api.get(_getTimeTacks);
   Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
   Future<Response> get getUserDataShort => _api.get(_getListUsersShort);
   Future<Response> get getUserDocumentationEntry => _api.get(_getUserProjectDocumentation);
 
-  Future<Response> get getUserRoles => _api.get(_getUserRoleAdress);
+  Future<Response> get getUserRoles => _api.get(_getUserRole);
 
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
@@ -99,22 +102,24 @@ class Api {
         }
         return;
       });
-  Future<Response> deleteUser(String userID) => _api.delete('$_deleteUserAdress/$userID');
+  Future<Response> deleteUser(String userID) => _api.delete('$_deleteUser/$userID');
   Future<Response> getDokuforProjectURL(int projectID) =>
       _api.get('/project/$projectID/documentations');
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
   Future<Response> postCreateMaterial(Map<String, dynamic> data) =>
-      _api.post(_createCardMaterial, data: data);
+      _api.post(_postcreateCardMaterial, data: data);
   Future<Response> postCreateNewUser(Map<String, dynamic> user) =>
-      _api.post(_postNewUserAdress, data: user);
+      _api.post(_postNewUser, data: user);
+  Future<Response> postCreateService(Map<String, dynamic> json) =>
+      _api.post(_postCreateService, data: json);
   Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
 
-  Future<Response> postloginUser(loginData) => _api.post(_postloginUserAdress, data: loginData);
+  Future<Response> postloginUser(loginData) => _api.post(_postloginUser, data: loginData);
 
   Future<Response> postProjectConsumable(data) => _api.post(_postProjectConsumabele, data: data);
-  Future<Response> postTimeEnty(data) => _api.post(_postTimeEntryAdress, data: data);
+  Future<Response> postTimeEnty(data) => _api.post(_postTimeEntry, data: data);
   Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) =>
-      _api.put(_putProjectWebMaterialAdress, data: json);
+      _api.put(_putProjectWebMaterial, data: json);
 
   Future<Response> postUpdateDocumentationEntry(data) =>
       _api.post(_putDocumentationDay, data: data);
@@ -122,7 +127,9 @@ class Api {
   Future<Response> postUpdateProjectConsumableEntry(data) =>
       _api.post(_putProjectMaterial, data: data);
   Future<Response> putResetPassword(Map<String, dynamic> json) =>
-      _api.put(_putResetPasswordAdress, data: json);
+      _api.put(_putResetPassword, data: json);
+  Future<Response> putUpdateService(Map<String, dynamic> json) =>
+      _api.put(_putUpdateService, data: json);
 
   Future<Response> putUpdateUser(Map<String, dynamic> json) => _api.put(_putUpdateUser, data: json);
   void storeToken(String token) async =>

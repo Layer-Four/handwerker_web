@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../constants/themes/app_color.dart';
+import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../../models/consumable_models/unit/unit.dart';
 import '../../../../provider/data_provider/consumeable_proivder/consumable_provider.dart';
@@ -194,7 +194,12 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                               _priceController.text = '${widget.consumable.price}€'; // Ensure the price has € symbol
                             });
                           }
-                        : _showDeleteConfirmation,
+                        : () => Utilitis.askPopUp(
+                              context,
+                              message: 'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
+                              onReject: () => Navigator.of(context).pop(),
+                              onAccept: widget.onDelete,
+                            ),
                     child: Icon(isEditing ? Icons.cancel : Icons.delete, size: 25),
                   ),
                   InkWell(
@@ -255,38 +260,4 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
           ],
         ),
       );
-
-  void _showDeleteConfirmation() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Sind Sie sicher, dass Sie dieses Objekt löschen wollen?'),
-        actionsAlignment: MainAxisAlignment.spaceEvenly,
-        actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: AppColor.kPrimaryButtonColor,
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-              widget.onDelete();
-            },
-            child: const Text('Ja'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: AppColor.kPrimaryButtonColor,
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Nein'),
-          ),
-        ],
-      ),
-    );
-  }
 }
