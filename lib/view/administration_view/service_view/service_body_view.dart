@@ -105,7 +105,7 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
             services.isEmpty
                 ? const Center(child: Text('No services available'))
                 : SizedBox(
-                    height: 9 * 74,
+                    height: 9 * 60,
                     child: ListView.builder(
                       itemCount: services.length,
                       itemBuilder: (context, i) {
@@ -114,37 +114,36 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
                         return ServiceDataWidget(
                           key: ValueKey(service.id),
                           service: service,
-                          onDelete: () async {
+                          onDelete: () {
                             log('Requesting deletion of service with ID: ${service.id}');
-                            final success = await ref.read(serviceVMProvider.notifier).deleteService(service.id!);
-                            if (success) {
-                              log('Service with ID ${service.id} deleted successfully');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Leistung wurde erfolgreich gelöscht'),
-                                ),
-                              );
-                            } else {
-                              log('Failed to delete service with ID ${service.id}');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Leider ist etwas schief gegangen versuchen sie es erneut'),
-                                ),
-                              );
-                            }
+                            ref.read(serviceVMProvider.notifier).deleteService(service.id!).then((e) {
+                              if (e) {
+                                log('Service with ID ${service.id} deleted successfully');
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Center(child: Text('Leistung wurde erfolgreich gelöscht')),
+                                  ),
+                                );
+                              } else {
+                                log('Failed to delete service with ID ${service.id}');
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Center(child: Text('Leider ist etwas schief gegangen versuchen sie es erneut')),
+                                  ),
+                                );
+                              }
+                            });
                           },
                         );
                       },
                     ),
                   ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: AddButton(
-                isOpen: _isCardVisible,
-                onTap: () => setState(() => _isCardVisible = !_isCardVisible),
-                hideAbleChild: CreateServiceWidget(
-                  onReject: () => setState(() => _isCardVisible = false),
-                ),
+            AddButton(
+              isOpen: _isCardVisible,
+              onTap: () => setState(() => _isCardVisible = !_isCardVisible),
+              hideAbleChild: CreateServiceWidget(
+                onReject: () => setState(() => _isCardVisible = false),
               ),
             ),
           ],

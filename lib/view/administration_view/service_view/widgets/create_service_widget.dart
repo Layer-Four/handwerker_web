@@ -7,7 +7,7 @@ import '../../../../models/service_models/service_vm/service_vm.dart';
 import '../../../../provider/data_provider/service_provider/service_vm_provider.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
-class CreateServiceWidget extends StatefulWidget {
+class CreateServiceWidget extends ConsumerStatefulWidget {
   final Function onReject;
 
   const CreateServiceWidget({
@@ -16,10 +16,10 @@ class CreateServiceWidget extends StatefulWidget {
   });
 
   @override
-  State<CreateServiceWidget> createState() => _CardWidgetState();
+  ConsumerState<CreateServiceWidget> createState() => _CardWidgetState();
 }
 
-class _CardWidgetState extends State<CreateServiceWidget> {
+class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
   final TextEditingController _leistungController = TextEditingController();
   final TextEditingController _preisController = TextEditingController();
   ServiceVM _newService = const ServiceVM(name: '', hourlyRate: 0);
@@ -29,6 +29,43 @@ class _CardWidgetState extends State<CreateServiceWidget> {
     _leistungController.dispose();
     _preisController.dispose();
     super.dispose();
+  }
+
+  void _resetFields() {
+    setState(() {
+      _leistungController.clear();
+      _preisController.clear();
+      _newService = const ServiceVM(name: '', hourlyRate: 0);
+    });
+  }
+
+  void _saveService(BuildContext context, WidgetRef ref) {
+    final leistung = _leistungController.text;
+    final preis = _preisController.text;
+    if (leistung.isNotEmpty && preis.isNotEmpty) {
+      ref.read(serviceVMProvider.notifier).createService(_newService).then((e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Center(
+              child: Text(e ? 'Neue Leistung wurde erstellt' : 'Leider ist etwas schief gegagen'),
+            ),
+          ),
+        );
+        if (e) {
+          _resetFields(); // Reset fields if creation is successful
+        }
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Center(
+            child: Text('Bitte füllen Sie alle Felder aus.'),
+          ),
+          backgroundColor: AppColor.kPrimary,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
   }
 
   @override
@@ -87,7 +124,8 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                                   setState(() {
                                     _newService = _newService.copyWith(name: _leistungController.text);
                                   });
-                                }),
+                                },
+                                onSubmitted: (_) => _saveService(context, ref)),
                           ],
                         ),
                       ),
@@ -144,6 +182,7 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                                       _newService.copyWith(hourlyRate: double.tryParse(_preisController.text) ?? 0);
                                 });
                               },
+                              onFieldSubmitted: (_) => _saveService(context, ref),
                             ),
                           ],
                         ),
@@ -172,42 +211,10 @@ class _CardWidgetState extends State<CreateServiceWidget> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12.0),
-                        child: Consumer(
-                          builder: (context, ref, child) => SymmetricButton(
-                            text: 'Speichern',
-                            textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColor.kWhite),
-                            onPressed: () {
-                              final leistung = _leistungController.text;
-                              final preis = _preisController.text;
-                              if (leistung.isNotEmpty && preis.isNotEmpty) {
-                                ref.read(serviceVMProvider.notifier).createService(_newService).then((e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Center(
-                                          child: Text(
-                                              e ? 'Neue Leistung wurde erstellt' : 'Leider ist etwas schief gegagen')),
-                                    ),
-                                  );
-                                });
-                              } else {
-                                showDialog(
-                                  barrierColor: const Color.fromARGB(20, 0, 0, 0),
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    backgroundColor: AppColor.kWhite,
-                                    title: const Text('Fehlende Informationen'),
-                                    content: const Text('Bitte füllen Sie alle Felder aus.'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                            },
-                          ),
+                        child: SymmetricButton(
+                          text: 'Speichern',
+                          textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColor.kWhite),
+                          onPressed: () => _saveService(context, ref),
                         ),
                       ),
                     ],
