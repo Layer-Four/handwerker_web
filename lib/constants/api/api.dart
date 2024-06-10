@@ -2,6 +2,38 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
+
+class Customer {
+  final String? companyName;
+  final int id;
+
+  Customer({this.companyName, required this.id});
+
+  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+    companyName:
+    json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
+    id: json['id'] != null ? json['id'] as int : -1,
+  );
+}
+
+// Project class
+class Project {
+  final String? title;
+  final int id;
+  final int customerId; // Add customerId property
+
+  Project({this.title, required this.id, required this.customerId}); // Update constructor
+
+  factory Project.fromJson(Map<String, dynamic> json) => Project(
+    title: json['title'] != null ? json['title'] as String : 'Default Title',
+    id: json['id'] != null ? json['id'] as int : -1,
+    customerId: json['customerId'] != null
+        ? json['customerId'] as int
+        : -1, // Parse customerId from JSON
+  );
+}
+
 
 class Api {
   // Routes
@@ -46,6 +78,7 @@ class Api {
   final String _putResetPassword = '/user/password/reset';
   final String _putUpdateService = '/service/update';
   final String _putUpdateUser = '/user/update';
+  final String _postCreateProjectEntry = '/project/create';
 
   Api() {
     _api.options = _baseOption;
@@ -97,6 +130,7 @@ class Api {
   Future<Response> get getUserRoles => _api.get(_getUserRole);
 
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
+  Future<Response> postCreateProjectEntry(ProjectEntryVM data) => _api.post(_postCreateProjectEntry, data: data.toJson());
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
   Future<Response> deleteConsumable(int serviceID) => _api.delete('$_deleteServiceMaterial/$serviceID');
   void deleteToken() => _storage.then((value) {
@@ -126,32 +160,4 @@ class Api {
   Future<Response> putUpdateService(Map<String, dynamic> json) => _api.put(_putUpdateService, data: json);
 
   Future<Response> putUpdateUser(Map<String, dynamic> json) => _api.put(_putUpdateUser, data: json);
-  void storeToken(String token) async => await _storage.then((value) => value.setString('TOKEN', token));
-}
 
-class Customer {
-  final String? companyName;
-  final int id;
-
-  Customer({this.companyName, required this.id});
-
-  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
-        companyName: json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
-        id: json['id'] != null ? json['id'] as int : -1,
-      );
-}
-
-// Project class
-class Project {
-  final String? title;
-  final int id;
-  final int customerId;
-
-  Project({this.title, required this.id, required this.customerId}); // Update constructor
-
-  factory Project.fromJson(Map<String, dynamic> json) => Project(
-        title: json['title'] != null ? json['title'] as String : 'Default Title',
-        id: json['id'] != null ? json['id'] as int : -1,
-        customerId: json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
-      );
-}
