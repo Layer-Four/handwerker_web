@@ -1,7 +1,5 @@
 import 'dart:developer';
 
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
