@@ -70,20 +70,23 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: AddButton(
-                    isOpen: isAddNewProject,
-                    onTap: () => setState(() => isAddNewProject = !isAddNewProject),
-                    hideAbleChild: AddNewProject(
-                      onSave: () {},
-                      onCancel: () {
-                        setState(() => isAddNewProject = !isAddNewProject);
-                      },
-                      project: editingProjectIndex != -1
-                          ? project[editingProjectIndex]
-                          : null, //If a project was clicked instead of the + icon, we pass the project and prefill the data
-                    ),
-                  )),
+                padding: const EdgeInsets.all(8.0),
+                child: AddButton(
+                  isOpen: isAddNewProject,
+                  onTap: () => setState(() => isAddNewProject = !isAddNewProject),
+                  hideAbleChild: AddNewProject.withDefaultVM(
+                    onSave: () {
+                      // Handle the save operation here
+                    },
+                    onCancel: () {
+                      setState(() => isAddNewProject = !isAddNewProject);
+                    },
+                    project: editingProjectIndex != -1
+                        ? project[editingProjectIndex]
+                        : null,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
