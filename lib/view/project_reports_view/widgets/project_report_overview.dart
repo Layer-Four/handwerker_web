@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../../../models/project_models/customer_projekt_model/custom_project.dart';
 import '../../../models/project_models/project_report_dm/project_report_dm.dart';
 import 'project_card.dart';

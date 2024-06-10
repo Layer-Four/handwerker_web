@@ -1,14 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:dio/dio.dart';
 
-import '../../../constants/themes/app_color.dart';
-import '../../../models/project_models/customer_projekt_model/custom_project.dart';
-import '../../shared_widgets/symetric_button_widget.dart';
-//import '../customer_project_view/custom_project.dart';
-import '../../shared_widgets/symetric_button_widget.dart';
-import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
-import 'package:handwerker_web/constants/api/api.dart';
+import '../../../../constants/api/api.dart';
+import '../../../../constants/themes/app_color.dart';
+import '../../../../models/project_entry_models/project_entry_vm/project_entry_vm.dart';
+import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../../../shared_widgets/symetric_button_widget.dart';
 
 class AddNewProject extends StatefulWidget {
   final VoidCallback onSave;
@@ -17,12 +16,12 @@ class AddNewProject extends StatefulWidget {
   final ProjectEntryVM projectEntryVM;
 
   const AddNewProject({
-    Key? key,
+    super.key,
     required this.onSave,
     required this.onCancel,
     this.project,
     required this.projectEntryVM,
-  }) : super(key: key);
+  });
 
   factory AddNewProject.withDefaultVM({
     Key? key,
@@ -30,15 +29,14 @@ class AddNewProject extends StatefulWidget {
     required VoidCallback onCancel,
     required CustomeProject? project,
     ProjectEntryVM? projectEntryVM, // Change to nullable
-  }) {
-    return AddNewProject(
-      key: key,
-      onSave: onSave,
-      onCancel: onCancel,
-      project: project,
-      projectEntryVM: projectEntryVM ?? ProjectEntryVM(), // Use default value if null
-    );
-  }
+  }) =>
+      AddNewProject(
+        key: key,
+        onSave: onSave,
+        onCancel: onCancel,
+        project: project,
+        projectEntryVM: projectEntryVM ?? const ProjectEntryVM(), // Use default value if null
+      );
 
   @override
   State<AddNewProject> createState() => _AddNewProjectState();
@@ -67,14 +65,12 @@ class _AddNewProjectState extends State<AddNewProject> {
   List<Project> projectOptions = [];
   bool isLoadingCustomers = true;
   bool isLoadingProjects = true;
-  late ProjectEntryVM _projectEntryVM;
 
   @override
   void initState() {
     super.initState();
     fetchProjects();
     fetchCustomers();
-    _projectEntryVM = widget.projectEntryVM;
   }
 
   Future<void> fetchProjects() async {
@@ -134,13 +130,13 @@ class _AddNewProjectState extends State<AddNewProject> {
       dateOfStart: _dateStartController.text,
       dateOfTermination: _dateEndController.text,
       projectStatusId: selectedStatusId,
-      customerId: selectedCustomerObject?.id,
+      customerId: selectedCustomerObject.id,
       description: _descriptionController.text,
     );
 
     try {
       // Call the API to create the project entry
-      print('Data sent: ${newProjectEntry.toJson()}');
+      log('Data sent: ${newProjectEntry.toJson()}');
 
       await Api().postCreateProjectEntry(newProjectEntry);
 
@@ -148,7 +144,7 @@ class _AddNewProjectState extends State<AddNewProject> {
       widget.onSave();
     } catch (e) {
       // Handle errors if necessary
-      print('Error: $e');
+      log('Error: $e');
     }
   }
 
@@ -260,7 +256,7 @@ class _AddNewProjectState extends State<AddNewProject> {
                         ),
                         const SizedBox(height: 5),
                         isLoadingCustomers
-                            ? Center(child: CircularProgressIndicator())
+                            ? const Center(child: CircularProgressIndicator())
                             : buildDropdown(
                                 options: customerOptions
                                     .map((customer) => customer.companyName ?? '')
