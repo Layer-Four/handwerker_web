@@ -86,6 +86,8 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                     controller: _materialNameController,
                     style: const TextStyle(fontSize: 16),
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
                       border: isEditing ? const OutlineInputBorder() : InputBorder.none,
                       contentPadding: const EdgeInsets.all(4),
                     ),
@@ -97,10 +99,27 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                   child: TextField(
                     controller: _amountController,
                     style: const TextStyle(fontSize: 16),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(4),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
+                      border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+                      contentPadding: const EdgeInsets.all(4),
                     ),
+                    onChanged: (value) {
+                      if (int.tryParse(value) == null) {
+                        _amountController.text = _amountController.text.substring(0, _amountController.text.length - 1);
+                        return _showSnackBar('Bitte geben sie nur Zahlen ein');
+                      }
+
+                      TextSelection previousSelection = _amountController.selection;
+                      _amountController.text = value;
+                      _amountController.selection = previousSelection;
+                      setState(
+                        () => _consumable = _consumable.copyWith(
+                          amount: int.parse(_amountController.text),
+                        ),
+                      );
+                    },
                     readOnly: !isEditing,
                     keyboardType: TextInputType.number,
                   ),
@@ -112,7 +131,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                       color: const Color.fromARGB(255, 240, 237, 237),
                       width: 1.0,
                     ),
-                    color: const Color.fromARGB(249, 254, 255, 253),
+                    color: isEditing ? Colors.grey[200] : const Color.fromARGB(249, 254, 255, 253),
                   ),
                   child: DropdownButton<Unit?>(
                     isExpanded: true,
@@ -144,9 +163,11 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                     inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))],
                     controller: _priceController,
                     style: const TextStyle(fontSize: 16),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(4),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
+                      border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+                      contentPadding: const EdgeInsets.all(4),
                     ),
                     readOnly: !isEditing,
                     onChanged: (value) {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/utilitis/utilitis.dart';
@@ -6,10 +8,12 @@ import '../../../../provider/data_provider/service_provider/service_vm_provider.
 
 class ServiceDataWidget extends StatefulWidget {
   final ServiceVM service;
+  final VoidCallback onDelete;
 
   const ServiceDataWidget({
     super.key,
     required this.service,
+    required this.onDelete,
   });
 
   @override
@@ -19,16 +23,16 @@ class ServiceDataWidget extends StatefulWidget {
 class _ServiceDataWidgetState extends State<ServiceDataWidget> {
   late TextEditingController _titleController;
   late TextEditingController _priceController;
-  late ServiceVM _servive;
+  late ServiceVM _service;
 
   bool isEditing = false;
 
   @override
   void initState() {
     super.initState();
-    _servive = widget.service;
-    _priceController = TextEditingController(text: _servive.hourlyRate.toString());
-    _titleController = TextEditingController(text: _servive.name);
+    _service = widget.service;
+    _priceController = TextEditingController(text: _service.hourlyRate.toString());
+    _titleController = TextEditingController(text: _service.name);
   }
 
   @override
@@ -52,9 +56,7 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
             Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width > 1000
-                      ? 200
-                      : MediaQuery.of(context).size.width / 10 * 3,
+                  width: MediaQuery.of(context).size.width > 1000 ? 300 : MediaQuery.of(context).size.width / 10 * 3,
                   child: TextField(
                     controller: _titleController,
                     style: const TextStyle(fontSize: 16),
@@ -66,9 +68,7 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width > 1000
-                      ? 200
-                      : MediaQuery.of(context).size.width / 10 * 3,
+                  width: MediaQuery.of(context).size.width > 1000 ? 300 : MediaQuery.of(context).size.width / 10 * 3,
                   child: TextField(
                     controller: _priceController,
                     style: const TextStyle(fontSize: 16),
@@ -93,29 +93,22 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                           ? () {
                               setState(() {
                                 isEditing = false;
-                                _titleController.text = _servive.name;
-                                _priceController.text = _servive.hourlyRate.toString();
+                                _titleController.text = _service.name;
+                                _priceController.text = _service.hourlyRate.toString();
                               });
                             }
-                          : () => Utilitis.askPopUp(context,
-                              message: 'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
-                              onAccept: () {
-                                ref
-                                    .read(serviceVMProvider.notifier)
-                                    .deleteService(_servive.id!)
-                                    .then((e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Center(
-                                    child: Text(
-                                      e
-                                          ? 'Leistung wurde erfolgreich gelöscht'
-                                          : 'Leider ist etwas schief gegangen versuchen sie es erneut',
-                                    ),
-                                  )));
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                              onReject: () => Navigator.of(context).pop()),
+                          : () {
+                              log('Deleting service with ID: ${_service.id}');
+                              Utilitis.askPopUp(
+                                context,
+                                message: 'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
+                                onAccept: () async {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                  widget.onDelete();
+                                },
+                                onReject: () => Navigator.of(context).pop(),
+                              );
+                            },
                     ),
                     IconButton(
                       icon: Icon(isEditing ? Icons.save : Icons.edit),
@@ -130,16 +123,17 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                               .read(serviceVMProvider.notifier)
                               .updateService(updatedRow)
                               .then((e) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Center(
-                                    child: Text(
-                                      e
-                                          ? 'Leistung wurde erfolgreich geändert'
-                                          : 'Leider hat es nicht Funktioniert\nversuche es erneut',
+                                    content: Center(
+                                      child: Text(
+                                        e
+                                            ? 'Leistung wurde erfolgreich geändert'
+                                            : 'Leider hat es nicht Funktioniert\nversuche es erneut',
+                                      ),
                                     ),
-                                  ))));
+                                  )));
 
                           setState(() {
-                            _servive = _servive.copyWith(
+                            _service = _service.copyWith(
                               hourlyRate: double.tryParse(_priceController.text) ?? 0.0,
                               name: _titleController.text,
                             );
