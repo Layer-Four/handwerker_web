@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/themes/app_color.dart';
-import '../../shared_view_widgets/symetric_button_widget.dart';
+import '../../shared_widgets/symetric_button_widget.dart';
 import 'time_entry_dialog.dart';
 
 class CalendarOptionsRow extends StatelessWidget {
@@ -34,7 +34,7 @@ class CalendarOptionsRow extends StatelessWidget {
                 decoration: isWorkOrder == null || !isWorkOrder!
                     ? null
                     : BoxDecoration(
-                        borderRadius: BorderRadius.circular(11),
+                        borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
                 // width: 100,
@@ -43,7 +43,7 @@ class CalendarOptionsRow extends StatelessWidget {
                   elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
                   text: 'Planung',
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  style: isWorkOrder == null || !isWorkOrder!
+                  textStyle: isWorkOrder == null || !isWorkOrder!
                       ? null
                       : const TextStyle(color: Colors.black),
                   color: (isWorkOrder == null || !isWorkOrder!) ? null : AppColor.kWhite,
@@ -55,7 +55,7 @@ class CalendarOptionsRow extends StatelessWidget {
                 decoration: isWorkOrder == null || isWorkOrder!
                     ? null
                     : BoxDecoration(
-                        borderRadius: BorderRadius.circular(11),
+                        borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
                 // width: 100,
@@ -64,7 +64,7 @@ class CalendarOptionsRow extends StatelessWidget {
                   text: 'Zeiteintrag',
                   elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  style: isWorkOrder == null || isWorkOrder!
+                  textStyle: isWorkOrder == null || isWorkOrder!
                       ? null
                       : const TextStyle(color: Colors.black),
                   color: (isWorkOrder == null || isWorkOrder!) ? null : AppColor.kWhite,
@@ -76,16 +76,16 @@ class CalendarOptionsRow extends StatelessWidget {
                 decoration: isWeekViewChoosed
                     ? null
                     : BoxDecoration(
-                        borderRadius: BorderRadius.circular(11),
+                        borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
                 height: 30,
                 child: SymmetricButton(
                   text: 'Tag',
-                  elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
+                  elevation: isWeekViewChoosed ? 5 : 2,
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   onPressed: onTapDayView,
-                  style: isWeekViewChoosed ? null : const TextStyle(color: Colors.black),
+                  textStyle: isWeekViewChoosed ? null : const TextStyle(color: Colors.black),
                   color: isWeekViewChoosed ? null : AppColor.kWhite,
                 ),
               ),
@@ -94,17 +94,17 @@ class CalendarOptionsRow extends StatelessWidget {
                 decoration: !isWeekViewChoosed
                     ? null
                     : BoxDecoration(
-                        borderRadius: BorderRadius.circular(11),
+                        borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
                 // width: 100,
                 height: 30,
                 child: SymmetricButton(
                   text: 'Woche',
-                  elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
+                  elevation: !isWeekViewChoosed ? 5 : 2,
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   onPressed: onTapWeekViewView,
-                  style: !isWeekViewChoosed ? null : const TextStyle(color: Colors.black),
+                  textStyle: !isWeekViewChoosed ? null : const TextStyle(color: Colors.black),
                   color: !isWeekViewChoosed ? null : AppColor.kWhite,
                 ),
               ),
@@ -121,7 +121,7 @@ class CalendarOptionsRow extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(6),
                               ),
                               height: MediaQuery.of(context).size.height - 400,
                               width: 500,

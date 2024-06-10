@@ -6,8 +6,9 @@ part 'service_vm.g.dart';
 class ServiceVM with _$ServiceVM {
   const factory ServiceVM({
     required String name,
-    required int id,
-  }) = _Service;
+    int? id,
+    required double hourlyRate,
+  }) = _ServiceVM;
 
   factory ServiceVM.fromJson(Map<String, dynamic> json) => _$ServiceVMFromJson(json);
 }

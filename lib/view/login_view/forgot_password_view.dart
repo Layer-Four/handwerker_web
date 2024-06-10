@@ -1,8 +1,9 @@
 import 'dart:convert'; // For JSON operations
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+
+import '../../constants/themes/app_color.dart';
 
 class ForgetScreen extends ConsumerStatefulWidget {
   const ForgetScreen({super.key});
@@ -22,8 +23,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
     });
 
     final String username = _userNameController.text.trim();
-    // const String mandantIdString = '1';
-    const int mandantId = 1; //  int.parse(mandantIdString);
+    const int mandantId = 1;
 
     if (username.isEmpty) {
       _showSnackBar('Bitte einen Mandantennamen eingeben.');
@@ -49,18 +49,10 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
     try {
       final response = await http.post(url, headers: headers, body: body);
 
-      log('Response status code: ${response.statusCode}');
-      log('Response body: ${response.body}');
-
       final responseData = json.decode(response.body);
-      log('Parsed response data: $responseData');
 
       if (response.statusCode == 200) {
         if (responseData.containsKey('id')) {
-          // Log the mandant field for debugging
-          log('Mandant field: ${responseData['mandant']}');
-
-          // Check if the username matches (case-insensitive)
           if (responseData['userName'] == username.toLowerCase()) {
             _showSnackBar('Passwort-Reset-Anfrage erfolgreich gesendet.');
           } else {
@@ -112,19 +104,16 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: GestureDetector(
-                            child: const Text(
+                            child: Text(
                               'Passwort zurücksetzen',
                               style: TextStyle(
-                                color: Colors.orange,
+                                color: AppColor.kPrimaryButtonColor,
                                 fontWeight: FontWeight.w700,
-                                // decoration: TextDecoration.underline,
-                                decorationColor: Colors.orange,
+                                decorationColor: AppColor.kPrimaryButtonColor,
                                 decorationThickness: 2.0,
                               ),
                             ),
-                            onTap: () {
-                              // Navigator.of(context).pushNamed(AppRoutes.forgotPassword);
-                            },
+                            onTap: () {},
                           ),
                         ),
                       ),
@@ -147,9 +136,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                         ),
                         child: Focus(
                           onFocusChange: (hasFocus) {
-                            setState(() {
-                              // Use this to update UI on focus changes if needed
-                            });
+                            setState(() {});
                           },
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 300),
@@ -160,7 +147,6 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                               obscureText: !obscureText,
                               controller: _userNameController,
                               decoration: const InputDecoration(
-                                // hintStyle: const TextStyle(color: Colors.grey),
                                 filled: true,
                                 fillColor: Colors.transparent,
                                 contentPadding: EdgeInsets.all(6),

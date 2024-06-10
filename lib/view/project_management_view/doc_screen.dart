@@ -2,10 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../customer_project_view/custom_project.dart';
-import '../shared_view_widgets/search_line_header.dart';
-import 'customer_card.dart';
-import 'edit_project.dart';
+import 'package:handwerker_web/models/project_models/customer_projekt_model/custom_project.dart';
+import '../shared_widgets/search_line_header.dart';
+import 'package:handwerker_web/view/administration_view/customers_view/widgets/customer_card.dart';
+import 'package:handwerker_web/view/administration_view/project_management_view/edit_project.dart';
+
 
 class ProjectManagementBody extends ConsumerStatefulWidget {
   //StatelessWidget

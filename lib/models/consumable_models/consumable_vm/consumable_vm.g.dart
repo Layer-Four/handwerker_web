@@ -9,10 +9,12 @@ part of 'consumable_vm.dart';
 _$ConsumableVMImpl _$$ConsumableVMImplFromJson(Map<String, dynamic> json) =>
     _$ConsumableVMImpl(
       amount: (json['amount'] as num).toInt(),
-      id: (json['id'] as num).toInt(),
+      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String,
-      price: (json['price'] as num).toInt(),
-      unit: Unit.fromJson(json['unit'] as Map<String, dynamic>),
+      price: (json['price'] as num).toDouble(),
+      unit: json['unit'] == null
+          ? null
+          : Unit.fromJson(json['unit'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ConsumableVMImplToJson(_$ConsumableVMImpl instance) =>

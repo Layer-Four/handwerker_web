@@ -5,26 +5,23 @@ enum MainView {
   timeEntry,
   projectCustomer,
   consumables,
-  material,
   customer,
   projectManagement,
   performance,
   users,
 }
 
-extension MainViewExtennsion on MainView {
-  MainView? getMainview(String current) => switch (current) {
+extension MainViewExtension on MainView {
+  static MainView? getMainview(String current) => switch (current) {
         'Home' => MainView.home,
         'Zeiteintrag' => MainView.timeEntry,
-        'Berichte' => MainView.projectCustomer,
-        //'Verwaltung' => MainView.consumables,
+        'Kunden/Projekte' => MainView.projectCustomer,
         'Material' => MainView.consumables,
         'Kunden' => MainView.customer,
         'Projekte' => MainView.projectManagement,
         'Leistungen' => MainView.performance,
-        //'Leistungen' => MainView.,
-        'Mitarbeiter' => MainView.users,
-        'Log Out' => null,
+        'Rechte' => MainView.users,
+        'Log Out' => MainView.home,
         _ => null,
       };
 }

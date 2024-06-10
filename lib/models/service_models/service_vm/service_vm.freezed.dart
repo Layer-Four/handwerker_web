@@ -15,13 +15,14 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ServiceVM _$ServiceVMFromJson(Map<String, dynamic> json) {
-  return _Service.fromJson(json);
+  return _ServiceVM.fromJson(json);
 }
 
 /// @nodoc
 mixin _$ServiceVM {
   String get name => throw _privateConstructorUsedError;
-  int get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
+  double get hourlyRate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,7 @@ abstract class $ServiceVMCopyWith<$Res> {
   factory $ServiceVMCopyWith(ServiceVM value, $Res Function(ServiceVM) then) =
       _$ServiceVMCopyWithImpl<$Res, ServiceVM>;
   @useResult
-  $Res call({String name, int id});
+  $Res call({String name, int? id, double hourlyRate});
 }
 
 /// @nodoc
@@ -51,116 +52,136 @@ class _$ServiceVMCopyWithImpl<$Res, $Val extends ServiceVM>
   @override
   $Res call({
     Object? name = null,
-    Object? id = null,
+    Object? id = freezed,
+    Object? hourlyRate = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
+      hourlyRate: null == hourlyRate
+          ? _value.hourlyRate
+          : hourlyRate // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$ServiceImplCopyWith<$Res>
+abstract class _$$ServiceVMImplCopyWith<$Res>
     implements $ServiceVMCopyWith<$Res> {
-  factory _$$ServiceImplCopyWith(
-          _$ServiceImpl value, $Res Function(_$ServiceImpl) then) =
-      __$$ServiceImplCopyWithImpl<$Res>;
+  factory _$$ServiceVMImplCopyWith(
+          _$ServiceVMImpl value, $Res Function(_$ServiceVMImpl) then) =
+      __$$ServiceVMImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int id});
+  $Res call({String name, int? id, double hourlyRate});
 }
 
 /// @nodoc
-class __$$ServiceImplCopyWithImpl<$Res>
-    extends _$ServiceVMCopyWithImpl<$Res, _$ServiceImpl>
-    implements _$$ServiceImplCopyWith<$Res> {
-  __$$ServiceImplCopyWithImpl(
-      _$ServiceImpl _value, $Res Function(_$ServiceImpl) _then)
+class __$$ServiceVMImplCopyWithImpl<$Res>
+    extends _$ServiceVMCopyWithImpl<$Res, _$ServiceVMImpl>
+    implements _$$ServiceVMImplCopyWith<$Res> {
+  __$$ServiceVMImplCopyWithImpl(
+      _$ServiceVMImpl _value, $Res Function(_$ServiceVMImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? name = null,
-    Object? id = null,
+    Object? id = freezed,
+    Object? hourlyRate = null,
   }) {
-    return _then(_$ServiceImpl(
+    return _then(_$ServiceVMImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
+      hourlyRate: null == hourlyRate
+          ? _value.hourlyRate
+          : hourlyRate // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$ServiceImpl implements _Service {
-  const _$ServiceImpl({required this.name, required this.id});
+class _$ServiceVMImpl implements _ServiceVM {
+  const _$ServiceVMImpl(
+      {required this.name, this.id, required this.hourlyRate});
 
-  factory _$ServiceImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ServiceImplFromJson(json);
+  factory _$ServiceVMImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ServiceVMImplFromJson(json);
 
   @override
   final String name;
   @override
-  final int id;
+  final int? id;
+  @override
+  final double hourlyRate;
 
   @override
   String toString() {
-    return 'ServiceVM(name: $name, id: $id)';
+    return 'ServiceVM(name: $name, id: $id, hourlyRate: $hourlyRate)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ServiceImpl &&
+            other is _$ServiceVMImpl &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.id, id) || other.id == id));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.hourlyRate, hourlyRate) ||
+                other.hourlyRate == hourlyRate));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, id);
+  int get hashCode => Object.hash(runtimeType, name, id, hourlyRate);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ServiceImplCopyWith<_$ServiceImpl> get copyWith =>
-      __$$ServiceImplCopyWithImpl<_$ServiceImpl>(this, _$identity);
+  _$$ServiceVMImplCopyWith<_$ServiceVMImpl> get copyWith =>
+      __$$ServiceVMImplCopyWithImpl<_$ServiceVMImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ServiceImplToJson(
+    return _$$ServiceVMImplToJson(
       this,
     );
   }
 }
 
-abstract class _Service implements ServiceVM {
-  const factory _Service({required final String name, required final int id}) =
-      _$ServiceImpl;
+abstract class _ServiceVM implements ServiceVM {
+  const factory _ServiceVM(
+      {required final String name,
+      final int? id,
+      required final double hourlyRate}) = _$ServiceVMImpl;
 
-  factory _Service.fromJson(Map<String, dynamic> json) = _$ServiceImpl.fromJson;
+  factory _ServiceVM.fromJson(Map<String, dynamic> json) =
+      _$ServiceVMImpl.fromJson;
 
   @override
   String get name;
   @override
-  int get id;
+  int? get id;
+  @override
+  double get hourlyRate;
   @override
   @JsonKey(ignore: true)
-  _$$ServiceImplCopyWith<_$ServiceImpl> get copyWith =>
+  _$$ServiceVMImplCopyWith<_$ServiceVMImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

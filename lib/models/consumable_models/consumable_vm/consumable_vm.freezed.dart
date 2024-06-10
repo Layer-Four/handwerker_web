@@ -21,10 +21,10 @@ ConsumableVM _$ConsumableVMFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ConsumableVM {
   int get amount => throw _privateConstructorUsedError;
-  int get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  int get price => throw _privateConstructorUsedError;
-  Unit get unit => throw _privateConstructorUsedError;
+  double get price => throw _privateConstructorUsedError;
+  Unit? get unit => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,9 +38,9 @@ abstract class $ConsumableVMCopyWith<$Res> {
           ConsumableVM value, $Res Function(ConsumableVM) then) =
       _$ConsumableVMCopyWithImpl<$Res, ConsumableVM>;
   @useResult
-  $Res call({int amount, int id, String name, int price, Unit unit});
+  $Res call({int amount, int? id, String name, double price, Unit? unit});
 
-  $UnitCopyWith<$Res> get unit;
+  $UnitCopyWith<$Res>? get unit;
 }
 
 /// @nodoc
@@ -57,20 +57,20 @@ class _$ConsumableVMCopyWithImpl<$Res, $Val extends ConsumableVM>
   @override
   $Res call({
     Object? amount = null,
-    Object? id = null,
+    Object? id = freezed,
     Object? name = null,
     Object? price = null,
-    Object? unit = null,
+    Object? unit = freezed,
   }) {
     return _then(_value.copyWith(
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as int,
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -78,18 +78,22 @@ class _$ConsumableVMCopyWithImpl<$Res, $Val extends ConsumableVM>
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
-      unit: null == unit
+              as double,
+      unit: freezed == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
-              as Unit,
+              as Unit?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $UnitCopyWith<$Res> get unit {
-    return $UnitCopyWith<$Res>(_value.unit, (value) {
+  $UnitCopyWith<$Res>? get unit {
+    if (_value.unit == null) {
+      return null;
+    }
+
+    return $UnitCopyWith<$Res>(_value.unit!, (value) {
       return _then(_value.copyWith(unit: value) as $Val);
     });
   }
@@ -103,10 +107,10 @@ abstract class _$$ConsumableVMImplCopyWith<$Res>
       __$$ConsumableVMImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int amount, int id, String name, int price, Unit unit});
+  $Res call({int amount, int? id, String name, double price, Unit? unit});
 
   @override
-  $UnitCopyWith<$Res> get unit;
+  $UnitCopyWith<$Res>? get unit;
 }
 
 /// @nodoc
@@ -121,20 +125,20 @@ class __$$ConsumableVMImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? amount = null,
-    Object? id = null,
+    Object? id = freezed,
     Object? name = null,
     Object? price = null,
-    Object? unit = null,
+    Object? unit = freezed,
   }) {
     return _then(_$ConsumableVMImpl(
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as int,
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -142,11 +146,11 @@ class __$$ConsumableVMImplCopyWithImpl<$Res>
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
-      unit: null == unit
+              as double,
+      unit: freezed == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
-              as Unit,
+              as Unit?,
     ));
   }
 }
@@ -156,10 +160,10 @@ class __$$ConsumableVMImplCopyWithImpl<$Res>
 class _$ConsumableVMImpl extends _ConsumableVM {
   const _$ConsumableVMImpl(
       {required this.amount,
-      required this.id,
+      this.id,
       required this.name,
       required this.price,
-      required this.unit})
+      this.unit})
       : super._();
 
   factory _$ConsumableVMImpl.fromJson(Map<String, dynamic> json) =>
@@ -168,13 +172,13 @@ class _$ConsumableVMImpl extends _ConsumableVM {
   @override
   final int amount;
   @override
-  final int id;
+  final int? id;
   @override
   final String name;
   @override
-  final int price;
+  final double price;
   @override
-  final Unit unit;
+  final Unit? unit;
 
   @override
   String toString() {
@@ -214,10 +218,10 @@ class _$ConsumableVMImpl extends _ConsumableVM {
 abstract class _ConsumableVM extends ConsumableVM {
   const factory _ConsumableVM(
       {required final int amount,
-      required final int id,
+      final int? id,
       required final String name,
-      required final int price,
-      required final Unit unit}) = _$ConsumableVMImpl;
+      required final double price,
+      final Unit? unit}) = _$ConsumableVMImpl;
   const _ConsumableVM._() : super._();
 
   factory _ConsumableVM.fromJson(Map<String, dynamic> json) =
@@ -226,13 +230,13 @@ abstract class _ConsumableVM extends ConsumableVM {
   @override
   int get amount;
   @override
-  int get id;
+  int? get id;
   @override
   String get name;
   @override
-  int get price;
+  double get price;
   @override
-  Unit get unit;
+  Unit? get unit;
   @override
   @JsonKey(ignore: true)
   _$$ConsumableVMImplCopyWith<_$ConsumableVMImpl> get copyWith =>

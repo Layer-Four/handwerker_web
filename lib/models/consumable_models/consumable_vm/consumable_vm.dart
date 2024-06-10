@@ -9,13 +9,13 @@ part 'consumable_vm.g.dart';
 class ConsumableVM with _$ConsumableVM {
   const factory ConsumableVM({
     required int amount,
-    required int id,
+    int? id,
     required String name,
-    required int price,
-    required Unit unit,
+    required double price,
+    Unit? unit,
   }) = _ConsumableVM;
   const ConsumableVM._();
-  factory ConsumableVM.wihUnitAndJson(Map<String, dynamic> json, Unit unit) => ConsumableVM(
+  factory ConsumableVM.wihUnitAndJson(Map<String, dynamic> json, Unit? unit) => ConsumableVM(
         amount: json['amount'],
         id: json['id'],
         name: json['name'],
