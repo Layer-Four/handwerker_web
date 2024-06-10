@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/themes/app_color.dart';
-import '../../provider/settings_provider/user_provider.dart';
+import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
 
 class LoginView extends StatefulWidget {

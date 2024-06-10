@@ -122,56 +122,59 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
         ),
       );
 
-  Widget buildHeaderRow() => Row(
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width > 1000
-                ? 200
-                : MediaQuery.of(context).size.width / 10 * 1.8,
-            child: Text(
-              'Material',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-              overflow: TextOverflow.ellipsis,
+  Widget buildHeaderRow() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 200
+                  : MediaQuery.of(context).size.width / 10 * 1.8,
+              child: Text(
+                'Material',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width > 1000
-                ? 200
-                : MediaQuery.of(context).size.width / 10 * 1.8,
-            child: Text(
-              'Menge',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-              overflow: TextOverflow.ellipsis,
+            SizedBox(
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 200
+                  : MediaQuery.of(context).size.width / 10 * 1.8,
+              child: Text(
+                'Menge',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width > 1000
-                ? 200
-                : MediaQuery.of(context).size.width / 10 * 1.8,
-            child: Text(
-              'Einheit',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-              overflow: TextOverflow.ellipsis,
+            SizedBox(
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 200
+                  : MediaQuery.of(context).size.width / 10 * 1.8,
+              child: Text(
+                'Einheit',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width > 1000
-                ? 200
-                : MediaQuery.of(context).size.width / 10 * 1.8,
-            child: Text(
-              'Preis',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-              overflow: TextOverflow.ellipsis,
+            SizedBox(
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 200
+                  : MediaQuery.of(context).size.width / 10 * 1.8,
+              child: Text(
+                'Preis',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 }

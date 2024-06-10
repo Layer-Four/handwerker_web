@@ -79,7 +79,7 @@ class Utilitis {
 
   static Widget waitingMessage(BuildContext context, String message) => Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),

@@ -39,9 +39,6 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
                       ServiceDataWidget(service: ref.watch(serviceVMProvider)[i]),
                 ),
               ),
-              // ...ref.watch(serviceVMProvider).map(
-              //       (service) =>
-              //     ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: AddButton(
@@ -57,20 +54,32 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
         ),
       );
 
-  Widget _buildHeaderRow() => const Padding(
-        padding: EdgeInsets.symmetric(vertical: 12.0),
+  Widget _buildHeaderRow() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Text('Leistung', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 400
+                  : MediaQuery.of(context).size.width / 10 * 3,
+              child: Text(
+                'Leistung',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
             ),
-            SizedBox(width: 30),
-            Expanded(
-              child: Text('Preis/std', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 400
+                  : MediaQuery.of(context).size.width / 10 * 3,
+              child: Text(
+                'Preis/std',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
             ),
-            Spacer(),
-            SizedBox(width: 110) // Adjust spacing as needed
           ],
         ),
       );

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/project_models/customer_projekt_model/custom_project.dart';
 import '../../shared_widgets/search_line_header.dart';
 import '../../users_view/widgets/add_button_widget.dart';
-import 'customer_card.dart';
-import 'edit_project.dart';
+import '../customers_view/widgets/customer_card.dart';
+import 'widgets/edit_project.dart';
 
 class ProjectManagementBody extends ConsumerStatefulWidget {
   //StatelessWidget
@@ -24,6 +24,10 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    // final projekts = ref.watch(projektOverviewProvider);
+    // for (var e in projekts) {
+    //   log(jsonEncode(e));
+    // }
 
     return Container(
       color: Colors.white,
@@ -34,14 +38,16 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchLineHeader(title: 'Projektverwaltung'),
-              const Padding(
-                padding: EdgeInsets.all(10.0),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       'Name',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                   ],
                 ),
@@ -49,9 +55,6 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
               SizedBox(
                 width: screenWidth > 1000 ? double.infinity : null,
                 height: 9 * 74,
-                /*isAddNewProject
-                    ? MediaQuery.of(context).size.height / 3
-                    : MediaQuery.of(context).size.height - 300,*/
                 child: ListView.builder(
                   itemCount: project.length,
                   itemBuilder: (_, index) => GestureDetector(

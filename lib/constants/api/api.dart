@@ -17,6 +17,7 @@ class Api {
   final String _getAllTimeTacks = '/timetracking/read/all';
   final String _getAllUnitsList = '/material/unit/list';
   final String _getCustomerProject = '/customer/project/read/all';
+  final String _getCustomerProjectReport = '/customer/web/read/report';
   final String _getListUsersShort = '/user/list';
   final String _getListCustomer = '/customer/list';
   final String _getListProject = '/project/list';
@@ -42,6 +43,7 @@ class Api {
   final String _putProjectMaterial = '/userProjectMaterial/update';
   final String _putProjectWebMaterial = '/material/update';
   final String _putResetPassword = '/user/password/reset';
+  final String _putSetNewPassword = '/user/password/change';
   final String _putUpdateService = '/service/update';
   final String _putUpdateUser = '/user/update';
 
@@ -77,6 +79,7 @@ class Api {
   Future<Response> get getAllTimeEntrys => _api.get(_getAllTimeTacks);
   Future<Response> get getAllUnits => _api.get(_getAllUnitsList);
   Future<Response> get getCustomerProjects => _api.get(_getCustomerProject);
+  Future<Response> get getAllCustomerProjectReports => _api.get(_getCustomerProjectReport);
   Future<Response> get getExecuteableServices => _api.get(_getService);
   // Getter for customer list
   Future<Response> get getListCustomer => _api.get(_getListCustomer);
@@ -128,6 +131,8 @@ class Api {
       _api.post(_putProjectMaterial, data: data);
   Future<Response> putResetPassword(Map<String, dynamic> json) =>
       _api.put(_putResetPassword, data: json);
+  Future<Response> putSetNewPassword(Map<String, dynamic> json) =>
+      _api.put(_putSetNewPassword, data: json);
   Future<Response> putUpdateService(Map<String, dynamic> json) =>
       _api.put(_putUpdateService, data: json);
 

@@ -53,7 +53,7 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width > 1000
-                      ? 200
+                      ? 400
                       : MediaQuery.of(context).size.width / 10 * 3,
                   child: TextField(
                     controller: _titleController,
@@ -67,7 +67,7 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width > 1000
-                      ? 200
+                      ? 400
                       : MediaQuery.of(context).size.width / 10 * 3,
                   child: TextField(
                     controller: _priceController,
