@@ -64,6 +64,12 @@ class _AddNewProjectState extends State<AddNewProject> {
     'In Bearbeitung',
     'On Hold'
   ];
+  final Map<String, int> statusOptionsMap = {
+    'Offen': 3,
+    'Geschlossen': 5,
+    'In Bearbeitung': 6,
+    'On Hold': 7,
+  };
   List<Project> projectOptions = [];
   bool isLoadingCustomers = true;
   bool isLoadingProjects = true;
@@ -121,19 +127,27 @@ class _AddNewProjectState extends State<AddNewProject> {
       (customer) => customer.companyName == selectedCustomer,
       orElse: () => Customer(companyName: 'Unknown', id: -1),
     );
+    //String accessToken = "";
+
+    //Dio dio = Dio();
+    //dio.options.headers['Authorization'] = 'Bearer $accessToken';
+
+    int? selectedStatusId = statusOptionsMap[selectedStatus];
 
     // Create a new ProjectEntryVM object with the entered data
     ProjectEntryVM newProjectEntry = ProjectEntryVM(
       title: selectedProject,
       dateOfStart: _dateStartController.text,
       dateOfTermination: _dateEndController.text,
+      projectStatusId: selectedStatusId,
       customerId: selectedCustomerObject?.id,
       description: _descriptionController.text,
-      projectStatusId: _projectEntryVM.projectStatusId,
     );
 
     try {
       // Call the API to create the project entry
+      print('Data sent: ${newProjectEntry.toJson()}');
+
       await Api().postCreateProjectEntry(newProjectEntry);
 
       // Call the onSave callback provided by the parent widget
