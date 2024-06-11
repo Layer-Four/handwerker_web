@@ -22,7 +22,12 @@ class CreateServiceWidget extends ConsumerStatefulWidget {
 class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
   final TextEditingController _leistungController = TextEditingController();
   final TextEditingController _preisController = TextEditingController();
-  ServiceVM _newService = const ServiceVM(name: '', hourlyRate: 0);
+  ServiceVM _newService = const ServiceVM(
+    name: '',
+    hourlyRate: 0,
+  );
+  bool _isSnackbarShowed = false;
+  late final Duration _snackbarDuration = const Duration(seconds: 7);
 
   @override
   void dispose() {
@@ -35,8 +40,29 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
     setState(() {
       _leistungController.clear();
       _preisController.clear();
-      _newService = const ServiceVM(name: '', hourlyRate: 0);
+      _newService = const ServiceVM(
+        name: '',
+        hourlyRate: 0,
+      );
     });
+  }
+
+  void _showSnackBar(String message) {
+    if (_isSnackbarShowed) return;
+    setState(() => _isSnackbarShowed = true);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.black.withOpacity(0.7),
+        duration: _snackbarDuration,
+      ),
+    );
+    Future.delayed(_snackbarDuration).then(
+      (_) => setState(() => _isSnackbarShowed = false),
+    );
   }
 
   void _saveService(BuildContext context, WidgetRef ref) {
@@ -58,10 +84,11 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          width: MediaQuery.of(context).size.width,
           content: const Center(
             child: Text('Bitte füllen Sie alle Felder aus.'),
           ),
-          backgroundColor: AppColor.kPrimary,
+          backgroundColor: Colors.black.withOpacity(0.7),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -69,41 +96,43 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-        width: MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width / 10 * 8,
-        child: Card(
-          surfaceTintColor: Colors.white,
-          elevation: 6,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  width: MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width / 10 * 8,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      'Neue Leistung anlegen',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) => SizedBox(
+          width: MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width / 10 * 8,
+          child: Card(
+            surfaceTintColor: Colors.white,
+            elevation: 6,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    width: MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width / 10 * 8,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        'Neue Leistung anlegen',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
+                      ),
                     ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      width:
-                          MediaQuery.of(context).size.width > 1000 ? 300 : MediaQuery.of(context).size.width / 10 * 3.5,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Leistung',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
-                            TextField(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width > 1000
+                            ? 300
+                            : MediaQuery.of(context).size.width / 10 * 3.5,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Leistung',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+                              TextField(
                                 controller: _leistungController,
                                 decoration: InputDecoration(
                                   filled: true,
@@ -125,37 +154,33 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
                                     _newService = _newService.copyWith(name: _leistungController.text);
                                   });
                                 },
-                                onSubmitted: (_) => _saveService(context, ref)),
-                          ],
+                                onSubmitted: (_) => _saveService(context, ref),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width > 1000
-                            ? 300
-                            : MediaQuery.of(context).size.width / 10 * 3.5,
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        width: MediaQuery.of(context).size.width > 1000 ? 180 : constraints.maxWidth / 10 * 2.3,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Preis/std', style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text('Preis', style: Theme.of(context).textTheme.labelLarge),
+                            const SizedBox(height: 15),
                             TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                  RegExp(
-                                    r'^\d*[\.\,]?\d{0,2}',
-                                  ),
-                                ),
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))],
+                              keyboardType: TextInputType.number,
                               controller: _preisController,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: const Color.fromARGB(211, 245, 241, 241),
-                                hintText: 'Preis/std',
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                                hintText: 'Preis/€',
+                                contentPadding: const EdgeInsets.all(10),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(6), borderSide: BorderSide.none),
+                                  borderRadius: BorderRadius.circular(6),
+                                  borderSide: BorderSide.none,
+                                ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(color: Colors.grey, width: 0),
                                   borderRadius: BorderRadius.circular(6),
@@ -174,6 +199,13 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
                                   }
                                   value = newValue;
                                 }
+
+                                if (double.parse(value) > 10000) {
+                                  _showSnackBar('Diese Zahl ist zu groß');
+                                  _preisController.text = value.substring(0, value.length - 1);
+                                  return;
+                                }
+
                                 TextSelection previousSelection = _preisController.selection;
                                 _preisController.text = value;
                                 _preisController.selection = previousSelection;
@@ -187,40 +219,40 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12),
-                        child: SymmetricButton(
-                          text: 'Verwerfen',
-                          textStyle:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
-                          color: AppColor.kWhite,
-                          onPressed: () {
-                            _leistungController.clear();
-                            _preisController.clear();
-                            widget.onReject();
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12.0),
-                        child: SymmetricButton(
-                          text: 'Speichern',
-                          textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColor.kWhite),
-                          onPressed: () => _saveService(context, ref),
-                        ),
-                      ),
                     ],
                   ),
-                ),
-              ],
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12),
+                          child: SymmetricButton(
+                            text: 'Verwerfen',
+                            textStyle:
+                                Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
+                            color: AppColor.kWhite,
+                            onPressed: () {
+                              _leistungController.clear();
+                              _preisController.clear();
+                              widget.onReject();
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12.0),
+                          child: SymmetricButton(
+                            text: 'Speichern',
+                            textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColor.kWhite),
+                            onPressed: () => _saveService(context, ref),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

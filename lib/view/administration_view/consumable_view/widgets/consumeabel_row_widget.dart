@@ -35,6 +35,11 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
   late final List<Unit> _units;
   bool isEditing = false;
 
+  String? _initialMaterialName;
+  int? _initialAmount;
+  String? _initialPrice;
+  Unit? _initialUnit;
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +50,12 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
     _priceController = TextEditingController(text: '${_consumable.price}€'); // Initialize with € symbol
     _units = widget.units;
     _snackbarDuration = widget.snackbarDuration;
+
+    // Store initial values
+    _initialMaterialName = _consumable.name;
+    _initialAmount = _consumable.amount;
+    _initialPrice = '${_consumable.price}€';
+    _initialUnit = _consumable.unit;
   }
 
   @override
@@ -59,12 +70,24 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
     if (_isSnackbarShowed) return;
     setState(() => _isSnackbarShowed = true);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: _snackbarDuration),
+      SnackBar(
+        content: Center(
+          child: Text(message),
+        ),
+        duration: _snackbarDuration,
+        behavior: SnackBarBehavior.floating,
+      ),
     );
     Future.delayed(_snackbarDuration).then(
       (_) => setState(() => _isSnackbarShowed = false),
     );
   }
+
+  bool _hasChanges() =>
+      _materialNameController.text != _initialMaterialName ||
+      _amountController.text != _initialAmount.toString() ||
+      _priceController.text.replaceAll('€', '') != _initialPrice?.replaceAll('€', '') ||
+      _currentUnit != _initialUnit;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -205,8 +228,8 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  InkWell(
-                    onTap: isEditing
+                  IconButton(
+                    onPressed: isEditing
                         ? () {
                             setState(() {
                               isEditing = false;
@@ -219,14 +242,22 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                               context,
                               message: 'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
                               onReject: () => Navigator.of(context).pop(),
-                              onAccept: widget.onDelete,
+                              onAccept: () async {
+                                Navigator.of(context).pop();
+                                widget.onDelete();
+                              },
                             ),
-                    child: Icon(isEditing ? Icons.cancel : Icons.delete, size: 25),
+                    icon: Icon(isEditing ? Icons.cancel : Icons.delete, size: 25),
                   ),
-                  InkWell(
-                    child: Icon(isEditing ? Icons.save : Icons.edit, size: 25),
-                    onTap: () {
+                  IconButton(
+                    icon: Icon(isEditing ? Icons.save : Icons.edit, size: 25),
+                    onPressed: () {
                       if (isEditing) {
+                        if (!_hasChanges()) {
+                          _showSnackBar('Keine Änderungen erkannt.');
+                          return;
+                        }
+
                         String priceValue = _priceController.text;
 
                         // Add the Euro symbol before sending to the server if not present
@@ -254,8 +285,6 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                               _priceController.text = priceValue; // Set the price with the € symbol
                               isEditing = false;
                             });
-                          } else {
-                            _showSnackBar('hat leider nicht geklappt');
                           }
 
                           ScaffoldMessenger.of(context).showSnackBar(

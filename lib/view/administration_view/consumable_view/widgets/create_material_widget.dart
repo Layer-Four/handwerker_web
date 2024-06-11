@@ -53,7 +53,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
     if (_isSnackbarShowed) return;
     setState(() => _isSnackbarShowed = true);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: _snackbarDuration),
+      SnackBar(
+          content: Text(
+            message,
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Colors.black.withOpacity(0.7),
+          duration: _snackbarDuration),
     );
     Future.delayed(_snackbarDuration).then(
       (_) => setState(() => _isSnackbarShowed = false),
@@ -97,7 +103,15 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                       borderRadius: BorderRadius.circular(6),
                                       borderSide: BorderSide.none,
                                     ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
                                     focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.grey, width: 0),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.grey, width: 0),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
@@ -271,7 +285,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                   _amountController.text.isEmpty ||
                                   _selectedUnit == null ||
                                   _priceController.text.isEmpty) {
-                                _showSnackBar('Bitte alle Felder ausfüllen');
+                                _showSnackBar('Bitte füllen Sie alle Felder aus.');
                                 return;
                               }
                               ref.read(consumableProvider.notifier).createConsumable(_consumable).then((e) {

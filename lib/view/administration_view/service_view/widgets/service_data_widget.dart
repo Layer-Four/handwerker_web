@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/service_models/service_vm/service_vm.dart';
@@ -27,12 +28,20 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
 
   bool isEditing = false;
 
+  // Store initial values
+  late String _initialTitle;
+  late String _initialPrice;
+
   @override
   void initState() {
     super.initState();
     _service = widget.service;
-    _priceController = TextEditingController(text: _service.hourlyRate.toString());
     _titleController = TextEditingController(text: _service.name);
+    _priceController = TextEditingController(text: '${_service.hourlyRate}€');
+
+    // Initialize initial values
+    _initialTitle = _service.name;
+    _initialPrice = '${_service.hourlyRate}€';
   }
 
   @override
@@ -40,6 +49,19 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
     _titleController.dispose();
     _priceController.dispose();
     super.dispose();
+  }
+
+  bool _hasChanges() => _titleController.text != _initialTitle || _priceController.text != _initialPrice;
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(
+          child: Text(message),
+        ),
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 
   @override
@@ -77,6 +99,39 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                       contentPadding: EdgeInsets.zero,
                     ),
                     readOnly: !isEditing,
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}€?$')),
+                    ],
+                    onChanged: (value) {
+                      if (value.contains(',')) {
+                        final list = value.split('');
+                        String newValue = '';
+                        for (var e in list) {
+                          if (e == ',') {
+                            newValue += '.';
+                          } else {
+                            newValue += e;
+                          }
+                        }
+                        value = newValue;
+                      }
+
+                      if (double.tryParse(value.replaceAll('€', '')) != null &&
+                          double.parse(value.replaceAll('€', '')) > 10000) {
+                        _showSnackBar('Diese Zahl ist zu groß');
+                        _priceController.text = value.substring(0, value.length - 1) + '€';
+                        _priceController.selection =
+                            TextSelection.fromPosition(TextPosition(offset: _priceController.text.length - 1));
+                        return;
+                      }
+
+                      if (!value.endsWith('€')) {
+                        _priceController.text = value + '€';
+                        _priceController.selection =
+                            TextSelection.fromPosition(TextPosition(offset: _priceController.text.length - 1));
+                      }
+                    },
                   ),
                 ),
               ],
@@ -93,8 +148,8 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                           ? () {
                               setState(() {
                                 isEditing = false;
-                                _titleController.text = _service.name;
-                                _priceController.text = _service.hourlyRate.toString();
+                                _titleController.text = _initialTitle;
+                                _priceController.text = _initialPrice;
                               });
                             }
                           : () {
@@ -114,10 +169,22 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                       icon: Icon(isEditing ? Icons.save : Icons.edit),
                       onPressed: () {
                         if (isEditing) {
+                          if (!_hasChanges()) {
+                            _showSnackBar('Keine Änderungen erkannt.');
+                            return;
+                          }
+                          String priceValue = _priceController.text;
+
+                          // Ensure the Euro symbol is present before sending to the server
+                          if (!priceValue.endsWith('€')) {
+                            priceValue += '€';
+                          }
+                          double parsedPrice = double.parse(priceValue.replaceAll('€', ''));
+
                           ServiceVM updatedRow = ServiceVM(
                             id: widget.service.id,
                             name: _titleController.text,
-                            hourlyRate: double.tryParse(_priceController.text) ?? 0.0,
+                            hourlyRate: parsedPrice,
                           );
                           ref
                               .read(serviceVMProvider.notifier)
@@ -134,9 +201,12 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
 
                           setState(() {
                             _service = _service.copyWith(
-                              hourlyRate: double.tryParse(_priceController.text) ?? 0.0,
+                              hourlyRate: parsedPrice,
                               name: _titleController.text,
                             );
+                            // Update initial values to the new values after save
+                            _initialTitle = _titleController.text;
+                            _initialPrice = priceValue;
                             isEditing = false;
                           });
                         } else {

@@ -112,6 +112,7 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
                         final service = services[i];
                         log('Building ServiceDataWidget for service ID: ${service.id}');
                         return ServiceDataWidget(
+                          key: ValueKey(service.id),
                           service: service,
                           onDelete: () {
                             log('Requesting deletion of service with ID: ${service.id}');

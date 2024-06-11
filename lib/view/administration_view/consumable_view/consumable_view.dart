@@ -87,7 +87,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
                   ? const Text('No data available')
                   : SizedBox(
                       // width: MediaQuery.of(context).size.width - 50,
-                      height: 9 * 74,
+                      height: 9 * 60,
                       child: ListView.builder(
                         itemCount: ref.watch(consumableProvider).length,
                         itemBuilder: (context, i) => ConsumebaleDataRow(
@@ -101,7 +101,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
                               // ignore: unused_result
                               ref.refresh(consumableProvider);
                               e
-                                  ? _showSnackBar('Row deleted successfully.')
+                                  ? _showSnackBar('Material wurde erfolgreich gelöscht.')
                                   : _showSnackBar('Error when attempting to delete the item: $e');
                             });
                           },
@@ -125,9 +125,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
   Widget buildHeaderRow() => Row(
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width > 1000
-                ? 200
-                : MediaQuery.of(context).size.width / 10 * 1.8,
+            width: MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
             child: Text(
               'Material',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -137,9 +135,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width > 1000
-                ? 200
-                : MediaQuery.of(context).size.width / 10 * 1.8,
+            width: MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
             child: Text(
               'Menge',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -149,9 +145,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width > 1000
-                ? 200
-                : MediaQuery.of(context).size.width / 10 * 1.8,
+            width: MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
             child: Text(
               'Einheit',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -161,9 +155,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width > 1000
-                ? 200
-                : MediaQuery.of(context).size.width / 10 * 1.8,
+            width: MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
             child: Text(
               'Preis',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
