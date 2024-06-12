@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:dio/dio.dart';
@@ -6,6 +7,7 @@ import '../../../constants/api/api.dart';
 import '../../../models/time_models/time_dm/time_dm.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
+import '../../user_provider/user_provider.dart';
 
 // TODO: refactor Time Provider to CalendarEventData
 final timeVMProvider = NotifierProvider<TimeVMNotifier, List<TimeVMAdapter>>(
@@ -53,6 +55,8 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
 
   Future<bool> saveTimeEntry(TimeEntry entry) async {
     final json = entry.toJson();
+    log(ref.watch(userProvider).userToken);
+    log(jsonEncode(json));
     try {
       final response = await _api.postTimeEnty(json);
       if (response.statusCode != 200) {

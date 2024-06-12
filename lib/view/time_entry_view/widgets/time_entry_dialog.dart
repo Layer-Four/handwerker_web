@@ -79,6 +79,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           ),
         ),
       );
+
   Future<List<UserDataShort>> loadUser() async =>
       await ref.read(timeVMProvider.notifier).getListUserService();
 
@@ -131,7 +132,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       _selectedUser = e!;
                       _entry = _entry.copyWith(userID: e.id);
                     }),
-                    onTap: () => (_users == null) ? loadUser() : () => null,
+                    onTap: () => (_users == null) ? loadUser() : null,
                   ),
                 ),
               ],

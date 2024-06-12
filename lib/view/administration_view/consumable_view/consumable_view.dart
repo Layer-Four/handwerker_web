@@ -84,7 +84,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
               const SearchLineHeader(title: 'Material Management'),
               buildHeaderRow(),
               _units.isEmpty
-                  ? const Text('No data available')
+                  ? const Text('Keine Daten gefunden')
                   : SizedBox(
                       // width: MediaQuery.of(context).size.width - 50,
                       height: 9 * 74,
@@ -99,11 +99,13 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
                                 .deleteConsumable(ref.watch(consumableProvider)[i].id!)
                                 .then((e) {
                               // ignore: unused_result
-                              ref.refresh(consumableProvider);
+                              // ref.refresh(consumableProvider);
                               e
-                                  ? _showSnackBar('Row deleted successfully.')
-                                  : _showSnackBar('Error when attempting to delete the item: $e');
+                                  ? _showSnackBar('Eintrag erfolgreich gelöscht')
+                                  : _showSnackBar(
+                                      'Es ist ein Fehler aufgetreten wärend dem Löschen von: $e');
                             });
+                            Navigator.of(context).pop();
                           },
                         ),
                       ),

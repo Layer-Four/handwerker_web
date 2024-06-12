@@ -71,7 +71,6 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                       : MediaQuery.of(context).size.width / 10 * 3,
                   child: TextField(
                     controller: _priceController,
-                    style: const TextStyle(fontSize: 16),
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.zero,
@@ -112,6 +111,8 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                                           : 'Leider ist etwas schief gegangen versuchen sie es erneut',
                                     ),
                                   )));
+                                  // ignore: unused_result
+                                  ref.refresh(serviceVMProvider);
                                   Navigator.of(context).pop();
                                 });
                               },

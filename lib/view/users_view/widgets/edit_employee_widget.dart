@@ -236,11 +236,14 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             .then((value) {
                           // ignore: unused_result
                           ref.refresh(userAdministrationProvider);
+
                           if (value.keys.contains('error')) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text(
-                                    'Nutzer konnte nicht erstellt werden.\nNutzer mit diesem Namen exisiert bereits'),
+                                content: Center(
+                                  child: Text(
+                                      'Nutzer konnte nicht erstellt werden.\nNutzer mit diesem Namen exisiert bereits'),
+                                ),
                               ),
                             );
                             return;
@@ -259,8 +262,10 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               duration: Duration(seconds: _snackBarDuration),
-                              content: const Text(
-                                  'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                              content: const Center(
+                                child: Text(
+                                    'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                              ),
                             ),
                           );
                         }
@@ -310,8 +315,10 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         duration: Duration(seconds: _snackBarDuration),
-                        content: const Text(
-                            'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                        content: const Center(
+                          child:
+                              Text('Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                        ),
                       ),
                     );
                   }

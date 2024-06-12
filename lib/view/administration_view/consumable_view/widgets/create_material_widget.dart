@@ -53,7 +53,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
     if (_isSnackbarShowed) return;
     setState(() => _isSnackbarShowed = true);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: _snackbarDuration),
+      SnackBar(content: Center(child: Text(message)), duration: _snackbarDuration),
     );
     Future.delayed(_snackbarDuration).then(
       (_) => setState(() => _isSnackbarShowed = false),

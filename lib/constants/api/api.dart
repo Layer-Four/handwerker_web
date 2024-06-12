@@ -85,8 +85,10 @@ class Api {
     _api.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
         getToken.then((e) {
-          final accesMap = {'Authorization': 'Bearer $e'};
-          options.headers.addEntries(accesMap.entries);
+          if (e != null) {
+            final accesMap = {'Authorization': 'Bearer $e'};
+            options.headers.addEntries(accesMap.entries);
+          }
         });
 
         if (!options.path.contains('http')) {

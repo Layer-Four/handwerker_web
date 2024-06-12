@@ -5,14 +5,10 @@ import '../../shared_widgets/project_details.dart';
 // ignore: must_be_immutable
 class ProjectCard extends StatefulWidget {
   final CustomeProject report;
-  final bool isFirst;
-  final bool isLast;
 
   const ProjectCard(
     this.report, {
     super.key,
-    this.isFirst = false,
-    this.isLast = false,
   });
 
   @override
@@ -33,13 +29,8 @@ class _ProjectCardState extends State<ProjectCard> {
             Container(
               // width: double.infinity,
               width: screenWidthInPercent * 70,
-              decoration: BoxDecoration(
-                border: Border(
-                  top: widget.isFirst ? BorderSide.none : const BorderSide(),
-                  // left: const BorderSide(),
-                  // right: const BorderSide(),
-                  bottom: widget.isLast ? const BorderSide() : BorderSide.none,
-                ),
+              decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide()),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),

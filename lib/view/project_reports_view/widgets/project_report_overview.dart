@@ -228,79 +228,70 @@ class _CharacterCardState extends State<ProjectOverview> {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // SizedBox(width: MediaQuery.of(context).size.width * 0.2),
-              Container(
-                color: Colors.amber,
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      const Expanded(
-                        flex: 8,
-                        child: Text(
-                          'Projekt',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      const Expanded(
-                        flex: 8,
-                        child: Text(
-                          'Status',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          //    textAlign: TextAlign.right,
-                        ),
-                      ),
-                      //     const Spacer(),
-                      const Expanded(
-                        flex: 8,
-                        child: Text(
-                          'Zeitraum',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      //        const Spacer(),
-                      const Expanded(
-                        flex: 8,
-                        child: Text(
-                          '',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.right,
-                        ), //Placeholder so the spacers space accordingly.
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
-            child:
-                //  ProjectCard(
-                //   widget.report,
-                // ),
-                ListView.builder(
-              itemCount: project.length,
-              itemBuilder: (_, index) => ProjectCard(
-                project[index],
-                isFirst: index == 0,
-                isLast: index == project.length,
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 8,
+                    child: Text(
+                      'Projekt',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                      // style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: Text(
+                      'Status',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: Text(
+                      'Zeitraum',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  //        const Spacer(),
+                  const Expanded(
+                    flex: 8,
+                    child: Text(
+                      '',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.right,
+                    ), //Placeholder so the spacers space accordingly.
+                  ),
+                  const Expanded(flex: 1, child: SizedBox.shrink())
+                ],
               ),
             ),
           ),
-          const SizedBox(
-            height: 30,
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child:
+                  //  ProjectCard(
+                  //   widget.report,
+                  // ),
+                  ListView.builder(
+                itemCount: project.length,
+                itemBuilder: (_, i) => ProjectCard(project[i]),
+              ),
+            ),
           ),
         ],
       );
