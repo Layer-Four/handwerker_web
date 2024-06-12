@@ -84,26 +84,26 @@ class Api {
     _api.options = _baseOption;
     _api.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
-        getToken.then((e) {
-          if (e != null) {
-            final accesMap = {'Authorization': 'Bearer $e'};
-            options.headers.addEntries(accesMap.entries);
-          }
-        });
+        String? token = await getToken;
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
 
         if (!options.path.contains('http')) {
           options.path = _baseUrl + options.path;
         }
-        return handler.next(options);
+        handler.next(options);
       },
       onError: (DioException error, ErrorInterceptorHandler handler) async {
-        if (error.message != null && error.message!.contains('500')) {
-          _storage.then((e) => e.clear());
+        if (error.response?.statusCode == 401) {
+          // Handle token refresh logic here if needed
+          log('401 Unauthorized: ${error.response?.data}');
         }
         handler.next(error);
       },
-      onResponse: (Response<dynamic> response, ResponseInterceptorHandler handler) {
+      onResponse: (Response response, ResponseInterceptorHandler handler) {
         if (response.statusCode == 401) {
+          log('401 Unauthorized response: ${response.data}');
           throw Exception('nicht Autorisiert');
         }
         handler.next(response);

@@ -87,7 +87,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBody> {
                   ? const Text('Keine Daten gefunden')
                   : SizedBox(
                       // width: MediaQuery.of(context).size.width - 50,
-                      height: 9 * 74,
+                      height: 9 * 60,
                       child: ListView.builder(
                         itemCount: ref.watch(consumableProvider).length,
                         itemBuilder: (context, i) => ConsumebaleDataRow(
