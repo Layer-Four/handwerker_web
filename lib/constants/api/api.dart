@@ -11,10 +11,9 @@ class Customer {
   Customer({this.companyName, required this.id});
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
-    companyName:
-    json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
-    id: json['id'] != null ? json['id'] as int : -1,
-  );
+        companyName: json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
+        id: json['id'] != null ? json['id'] as int : -1,
+      );
 }
 
 // Project class
@@ -26,14 +25,11 @@ class Project {
   Project({this.title, required this.id, required this.customerId}); // Update constructor
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
-    title: json['title'] != null ? json['title'] as String : 'Default Title',
-    id: json['id'] != null ? json['id'] as int : -1,
-    customerId: json['customerId'] != null
-        ? json['customerId'] as int
-        : -1, // Parse customerId from JSON
-  );
+        title: json['title'] != null ? json['title'] as String : 'Default Title',
+        id: json['id'] != null ? json['id'] as int : -1,
+        customerId: json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
+      );
 }
-
 
 class Api {
   // Routes
@@ -84,24 +80,26 @@ class Api {
     _api.options = _baseOption;
     _api.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
-        getToken.then((e) {
-          final accesMap = {'Authorization': 'Bearer $e'};
-          options.headers.addEntries(accesMap.entries);
-        });
+        String? token = await getToken;
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
 
         if (!options.path.contains('http')) {
           options.path = _baseUrl + options.path;
         }
-        return handler.next(options);
+        handler.next(options);
       },
       onError: (DioException error, ErrorInterceptorHandler handler) async {
-        if (error.message != null && error.message!.contains('500')) {
-          _storage.then((e) => e.clear());
+        if (error.response?.statusCode == 401) {
+          // Handle token refresh logic here if needed
+          log('401 Unauthorized: ${error.response?.data}');
         }
         handler.next(error);
       },
-      onResponse: (Response<dynamic> response, ResponseInterceptorHandler handler) {
+      onResponse: (Response response, ResponseInterceptorHandler handler) {
         if (response.statusCode == 401) {
+          log('401 Unauthorized response: ${response.data}');
           throw Exception('nicht Autorisiert');
         }
         handler.next(response);
@@ -128,10 +126,10 @@ class Api {
   Future<Response> get getUserRoles => _api.get(_getUserRole);
 
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
-  Future<Response> postCreateProjectEntry(ProjectEntryVM data) => _api.post(_postCreateProjectEntry, data: data.toJson());
+  Future<Response> postCreateProjectEntry(ProjectEntryVM data) =>
+      _api.post(_postCreateProjectEntry, data: data.toJson());
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
-  Future<Response> deleteConsumable(int serviceID) =>
-      _api.delete('$_deleteServiceMaterial/$serviceID');
+  Future<Response> deleteConsumable(int serviceID) => _api.delete('$_deleteServiceMaterial/$serviceID');
   void deleteToken() => _storage.then((value) {
         if (value.getString('TOKEN')?.isNotEmpty ?? false) {
           value.remove('TOKEN');
@@ -139,35 +137,25 @@ class Api {
         return;
       });
   Future<Response> deleteUser(String userID) => _api.delete('$_deleteUser/$userID');
-  Future<Response> getDokuforProjectURL(int projectID) =>
-      _api.get('/project/$projectID/documentations');
+  Future<Response> getDokuforProjectURL(int projectID) => _api.get('/project/$projectID/documentations');
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
-  Future<Response> postCreateMaterial(Map<String, dynamic> data) =>
-      _api.post(_postcreateCardMaterial, data: data);
-  Future<Response> postCreateNewUser(Map<String, dynamic> user) =>
-      _api.post(_postNewUser, data: user);
-  Future<Response> postCreateService(Map<String, dynamic> json) =>
-      _api.post(_postCreateService, data: json);
+  Future<Response> postCreateMaterial(Map<String, dynamic> data) => _api.post(_postcreateCardMaterial, data: data);
+  Future<Response> postCreateNewUser(Map<String, dynamic> user) => _api.post(_postNewUser, data: user);
+  Future<Response> postCreateService(Map<String, dynamic> json) => _api.post(_postCreateService, data: json);
   Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
 
   Future<Response> postloginUser(loginData) => _api.post(_postloginUser, data: loginData);
 
   Future<Response> postProjectConsumable(data) => _api.post(_postProjectConsumabele, data: data);
   Future<Response> postTimeEnty(data) => _api.post(_postTimeEntry, data: data);
-  Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) =>
-      _api.put(_putProjectWebMaterial, data: json);
+  Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) => _api.put(_putProjectWebMaterial, data: json);
 
-  Future<Response> postUpdateDocumentationEntry(data) =>
-      _api.post(_putDocumentationDay, data: data);
+  Future<Response> postUpdateDocumentationEntry(data) => _api.post(_putDocumentationDay, data: data);
 
-  Future<Response> postUpdateProjectConsumableEntry(data) =>
-      _api.post(_putProjectMaterial, data: data);
-  Future<Response> putResetPassword(Map<String, dynamic> json) =>
-      _api.put(_putResetPassword, data: json);
-  Future<Response> putUpdateService(Map<String, dynamic> json) =>
-      _api.put(_putUpdateService, data: json);
+  Future<Response> postUpdateProjectConsumableEntry(data) => _api.post(_putProjectMaterial, data: data);
+  Future<Response> putResetPassword(Map<String, dynamic> json) => _api.put(_putResetPassword, data: json);
+  Future<Response> putUpdateService(Map<String, dynamic> json) => _api.put(_putUpdateService, data: json);
 
   Future<Response> putUpdateUser(Map<String, dynamic> json) => _api.put(_putUpdateUser, data: json);
-  void storeToken(String token) async =>
-      await _storage.then((value) => value.setString('TOKEN', token));
+  void storeToken(String token) async => await _storage.then((value) => value.setString('TOKEN', token));
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/consumable_models/consumable_vm/consumable_vm.dart';
@@ -9,9 +10,11 @@ class ConsumebaleDataRow extends ConsumerStatefulWidget {
   final ConsumableVM consumable;
   final VoidCallback onDelete;
   final List<Unit> units;
+  final Duration snackbarDuration;
 
   const ConsumebaleDataRow({
     super.key,
+    this.snackbarDuration = const Duration(seconds: 7),
     required this.consumable,
     required this.onDelete,
     required this.units,
@@ -22,6 +25,8 @@ class ConsumebaleDataRow extends ConsumerStatefulWidget {
 }
 
 class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
+  bool _isSnackbarShowed = false;
+  late final Duration _snackbarDuration;
   late TextEditingController _materialNameController;
   late TextEditingController _amountController;
   late TextEditingController _priceController;
@@ -30,6 +35,11 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
   late final List<Unit> _units;
   bool isEditing = false;
 
+  String? _initialMaterialName;
+  int? _initialAmount;
+  String? _initialPrice;
+  Unit? _initialUnit;
+
   @override
   void initState() {
     super.initState();
@@ -37,8 +47,15 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
     _currentUnit = _consumable.unit;
     _materialNameController = TextEditingController(text: _consumable.name);
     _amountController = TextEditingController(text: _consumable.amount.toString());
-    _priceController = TextEditingController(text: _consumable.price.toString());
+    _priceController = TextEditingController(text: '${_consumable.price}€'); // Initialize with € symbol
     _units = widget.units;
+    _snackbarDuration = widget.snackbarDuration;
+
+    // Store initial values
+    _initialMaterialName = _consumable.name;
+    _initialAmount = _consumable.amount;
+    _initialPrice = '${_consumable.price}€';
+    _initialUnit = _consumable.unit;
   }
 
   @override
@@ -48,6 +65,29 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
     _priceController.dispose();
     super.dispose();
   }
+
+  void _showSnackBar(String message) {
+    if (_isSnackbarShowed) return;
+    setState(() => _isSnackbarShowed = true);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(
+          child: Text(message),
+        ),
+        duration: _snackbarDuration,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+    Future.delayed(_snackbarDuration).then(
+      (_) => setState(() => _isSnackbarShowed = false),
+    );
+  }
+
+  bool _hasChanges() =>
+      _materialNameController.text != _initialMaterialName ||
+      _amountController.text != _initialAmount.toString() ||
+      _priceController.text.replaceAll('€', '') != _initialPrice?.replaceAll('€', '') ||
+      _currentUnit != _initialUnit;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -64,13 +104,13 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
             Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width > 1100
-                      ? 200
-                      : MediaQuery.of(context).size.width / 10 * 1.8,
+                  width: MediaQuery.of(context).size.width > 1100 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
                   child: TextField(
                     controller: _materialNameController,
                     style: const TextStyle(fontSize: 16),
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
                       border: isEditing ? const OutlineInputBorder() : InputBorder.none,
                       contentPadding: const EdgeInsets.all(4),
                     ),
@@ -78,30 +118,43 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width > 1100
-                      ? 200
-                      : MediaQuery.of(context).size.width / 10 * 1.8,
+                  width: MediaQuery.of(context).size.width > 1100 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
                   child: TextField(
                     controller: _amountController,
                     style: const TextStyle(fontSize: 16),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(4),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
+                      border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+                      contentPadding: const EdgeInsets.all(4),
                     ),
+                    onChanged: (value) {
+                      if (int.tryParse(value) == null) {
+                        _amountController.text = _amountController.text.substring(0, _amountController.text.length - 1);
+                        return _showSnackBar('Bitte geben sie nur Zahlen ein');
+                      }
+
+                      TextSelection previousSelection = _amountController.selection;
+                      _amountController.text = value;
+                      _amountController.selection = previousSelection;
+                      setState(
+                        () => _consumable = _consumable.copyWith(
+                          amount: int.parse(_amountController.text),
+                        ),
+                      );
+                    },
                     readOnly: !isEditing,
                     keyboardType: TextInputType.number,
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width > 1100
-                      ? 200
-                      : MediaQuery.of(context).size.width / 10 * 1.8,
+                  width: MediaQuery.of(context).size.width > 1100 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: const Color.fromARGB(255, 240, 237, 237),
                       width: 1.0,
                     ),
-                    color: const Color.fromARGB(249, 254, 255, 253),
+                    color: isEditing ? Colors.grey[200] : const Color.fromARGB(249, 254, 255, 253),
                   ),
                   child: DropdownButton<Unit?>(
                     isExpanded: true,
@@ -127,18 +180,45 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width > 1100
-                      ? 200
-                      : MediaQuery.of(context).size.width / 10 * 1.8,
-                  child: TextField(
+                  width: MediaQuery.of(context).size.width > 1100 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))],
                     controller: _priceController,
                     style: const TextStyle(fontSize: 16),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(4),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
+                      border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+                      contentPadding: const EdgeInsets.all(4),
                     ),
                     readOnly: !isEditing,
-                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      if (value.contains(',')) {
+                        final list = value.split('');
+                        String newValue = '';
+                        for (var e in list) {
+                          if (e == ',') {
+                            newValue += '.';
+                          } else {
+                            newValue += e;
+                          }
+                        }
+                        value = newValue;
+                      }
+
+                      if (value.isNotEmpty && double.parse(value.replaceAll('€', '')) > 10000) {
+                        return _showSnackBar('Diese Zahl ist zu groß');
+                      }
+
+                      TextSelection previousSelection = _priceController.selection;
+                      _priceController.text = value;
+                      _priceController.selection = previousSelection;
+                      setState(() {
+                        _consumable =
+                            _consumable.copyWith(price: double.parse(_priceController.text.replaceAll('€', '')));
+                      });
+                    },
                   ),
                 ),
               ],
@@ -148,41 +228,64 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  InkWell(
-                    onTap: isEditing
+                  IconButton(
+                    onPressed: isEditing
                         ? () {
                             setState(() {
                               isEditing = false;
                               _materialNameController.text = widget.consumable.name;
                               _amountController.text = widget.consumable.amount.toString();
-                              _priceController.text = widget.consumable.price.toString();
+                              _priceController.text = '${widget.consumable.price}€'; // Ensure the price has € symbol
                             });
                           }
                         : () => Utilitis.askPopUp(
                               context,
                               message: 'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
                               onReject: () => Navigator.of(context).pop(),
-                              onAccept: widget.onDelete,
+                              onAccept: () async {
+                                Navigator.of(context).pop();
+                                widget.onDelete();
+                              },
                             ),
-                    child: Icon(isEditing ? Icons.cancel : Icons.delete, size: 25),
+                    icon: Icon(isEditing ? Icons.cancel : Icons.delete, size: 25),
                   ),
-                  InkWell(
-                    child: Icon(isEditing ? Icons.save : Icons.edit, size: 25),
-                    onTap: () {
+                  IconButton(
+                    icon: Icon(isEditing ? Icons.save : Icons.edit, size: 25),
+                    onPressed: () {
                       if (isEditing) {
+                        if (!_hasChanges()) {
+                          _showSnackBar('Keine Änderungen erkannt.');
+                          return;
+                        }
+
+                        String priceValue = _priceController.text;
+
+                        // Add the Euro symbol before sending to the server if not present
+                        if (!priceValue.endsWith('€')) {
+                          priceValue += '€';
+                        }
+
+                        // Parse the price as double before updating the server
+                        double parsedPrice = double.parse(priceValue.replaceAll('€', ''));
+
                         ConsumableVM updatedConsumable = ConsumableVM(
                           id: widget.consumable.id,
                           name: _materialNameController.text,
                           amount: int.parse(_amountController.text),
                           unit: _currentUnit ?? _consumable.unit,
-                          price: double.parse(_priceController.text),
+                          price: parsedPrice,
                         );
-                        ref
-                            .read(consumableProvider.notifier)
-                            .updateConsumable(updatedConsumable)
-                            .then((b) {
-                          // ignore: unused_result
-                          if (b) ref.refresh(consumableProvider);
+
+                        ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable).then((b) {
+                          if (b) {
+                            // ignore: unused_result
+                            ref.refresh(consumableProvider);
+                            // Ensure the Euro symbol is visible after the update
+                            setState(() {
+                              _priceController.text = priceValue; // Set the price with the € symbol
+                              isEditing = false;
+                            });
+                          }
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -193,9 +296,6 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                               ),
                             ),
                           );
-                        });
-                        setState(() {
-                          isEditing = false;
                         });
                       } else {
                         setState(() {
