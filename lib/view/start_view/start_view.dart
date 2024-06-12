@@ -50,6 +50,7 @@ class _StartViewState extends State<StartView> {
                           width: 240,
                           height: 40,
                           child: ElevatedButton(
+                            autofocus: true,
                             onPressed: () {
                               Navigator.pushReplacementNamed(
                                 context,

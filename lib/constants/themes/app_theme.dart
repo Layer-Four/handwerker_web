@@ -9,7 +9,7 @@ class AppTheme {
       ),
       canvasColor: AppColor.kWhite,
       cardColor: AppColor.kWhite,
-      focusColor: AppColor.kPrimaryButtonColor,
+      // focusColor: AppColor.kTextfieldBorder,
       bottomAppBarTheme: BottomAppBarTheme(color: AppColor.kPrimary),
       useMaterial3: null,
       fontFamily: 'poppins',

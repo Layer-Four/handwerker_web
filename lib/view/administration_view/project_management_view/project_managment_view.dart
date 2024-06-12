@@ -64,30 +64,21 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                         editingProjectIndex = index;
                       });
                     },
-                    child: CustomerCard(
-                      project[index],
-                      isFirst: index == 0,
-                      isLast: index == project.length,
-                    ),
+                    child: CustomerCard(project[index]),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AddButton(
-                  isOpen: isAddNewProject,
-                  onTap: () => setState(() => isAddNewProject = !isAddNewProject),
-                  hideAbleChild: AddNewProject.withDefaultVM(
-                    onSave: () {
-                      // Handle the save operation here
-                    },
-                    onCancel: () {
-                      setState(() => isAddNewProject = !isAddNewProject);
-                    },
-                    project: editingProjectIndex != -1
-                        ? project[editingProjectIndex]
-                        : null,
-                  ),
+              AddButton(
+                isOpen: isAddNewProject,
+                onTap: () => setState(() => isAddNewProject = !isAddNewProject),
+                hideAbleChild: AddNewProject.withDefaultVM(
+                  onSave: () {
+                    // Handle the save operation here
+                  },
+                  onCancel: () {
+                    setState(() => isAddNewProject = !isAddNewProject);
+                  },
+                  project: editingProjectIndex != -1 ? project[editingProjectIndex] : null,
                 ),
               ),
             ],

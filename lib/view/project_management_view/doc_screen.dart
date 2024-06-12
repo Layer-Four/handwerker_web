@@ -80,11 +80,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                         editingProjectIndex = index;
                       });
                     },
-                    child: CustomerCard(
-                      project[index],
-                      isFirst: index == 0,
-                      isLast: index == project.length,
-                    ),
+                    child: CustomerCard(project[index]),
                   ),
                 ),
               ),

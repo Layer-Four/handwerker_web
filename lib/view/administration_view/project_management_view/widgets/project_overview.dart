@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
-import 'project_card.dart';
+import '../../../project_reports_view/widgets/project_card.dart';
 
 // ignore: must_be_immutable
 class ProjectOverview extends StatefulWidget {
@@ -215,8 +215,6 @@ class _CharacterCardState extends State<ProjectOverview> {
             itemCount: project.length,
             itemBuilder: (_, index) => ProjectCard(
               project[index],
-              isFirst: index == 0,
-              isLast: index == project.length,
             ),
           ),
         ),

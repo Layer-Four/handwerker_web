@@ -1,7 +1,6 @@
-import 'dart:developer';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/themes/app_color.dart';
 import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
@@ -37,6 +36,14 @@ class _LoginViewState extends State<LoginView> {
                   child: Image.asset('assets/images/img_techtool.png'),
                 ),
                 const SizedBox(height: 60),
+                // TODO: TODO DELETE ME!!!
+                CupertinoButton(
+                    child: const Text('EmailView'),
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed(
+                        AppRoutes.reactOnPwResetView,
+                      );
+                    }),
                 const SizedBox(height: 15),
                 Form(
                   key: _formstate,
@@ -53,8 +60,7 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       const SizedBox(height: 3),
-                      _buildUsernameTextField(
-                          _emailCon, 'Bitte eine gültige Mandatenname eingeben'),
+                      _buildUsernameTextField(),
                       const SizedBox(height: 20),
                       const SizedBox(
                         width: 350,
@@ -78,8 +84,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget _buildUsernameTextField(TextEditingController controller, String errorMessage) =>
-      Container(
+  Widget _buildUsernameTextField() => Container(
         width: 355,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -100,11 +105,11 @@ class _LoginViewState extends State<LoginView> {
                 if (value!.isEmpty) {
                   return null;
                 } else if (value.length < 3) {
-                  return errorMessage;
+                  return 'Bitte eine gültige Mandatenname eingeben';
                 }
                 return null;
               },
-              controller: controller,
+              controller: _emailCon,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.transparent,
@@ -238,8 +243,13 @@ class _LoginViewState extends State<LoginView> {
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
       return;
     }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('leider hats nicht geklappt')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Center(
+          child: Text('leider hats nicht geklappt'),
+        ),
+      ),
+    );
   }
 
   Widget buildLoginButton(BuildContext context) => Center(
@@ -256,13 +266,7 @@ class _LoginViewState extends State<LoginView> {
                               password: _passCon.text,
                               userName: _emailCon.text,
                             )
-                            .then((value) {
-                          reactionOfLogin(value);
-                          SharedPreferences.getInstance().then((value) {
-                            final token = value.getString('TOKEN');
-                            log(token.toString());
-                          });
-                        });
+                            .then((value) => reactionOfLogin(value));
                       }
                       if (isOTP) {
                         Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);

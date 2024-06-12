@@ -40,44 +40,14 @@ class UserNotifier extends Notifier<UserVM> {
     try {
       final response = await _api.postloginUser(json);
       if (response.statusCode != 200) {
-        log('user not authorized');
-        return false;
+        throw Exception(
+          'something went wrong on loginUser: status-> ${response.statusCode}\n${response.data}',
+        );
       }
-      if (response.statusCode == 200) {
-        log(response.data.toString());
-        final data = (response.data as Map);
-        final userToken = data.values.first as String;
-        final newUser = state.copyWith(userToken: userToken);
-        _api.storeToken(userToken);
-
-        if (newUser != state) {
-          state = newUser;
-          return true;
-        }
-      } else {
-        log('Request not completed: ${response.statusCode} Backend returned : ${response.data}  \n as Message');
-        return false;
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-    return false;
-  }
-
-  /// TODO: This Api calls not Users!!! and is deprecated.
-  void loadUsers() async {
-    try {
-      final response = await _api.getProjectsDM;
-      if (response.statusCode == 200) {
-        final data = response.data;
-        final x = data.map((e) => UserVM.fromJson(data));
-        state = x;
-        return;
-      }
-      if (response.statusCode != 200) {
-        log('something went wrong by loadingUser ${response.data}');
-        return;
-      }
+      _api.storeToken(response.data['token']);
+      state = state.copyWith(userToken: response.data['token']);
+      log(state.userToken);
+      return true;
     } catch (e) {
       throw Exception(e);
     }

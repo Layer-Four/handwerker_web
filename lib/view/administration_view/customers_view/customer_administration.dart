@@ -63,11 +63,7 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                         editingProjectIndex = index;
                       });
                     },
-                    child: CustomerCard(
-                      project[index],
-                      isFirst: index == 0,
-                      isLast: index == project.length,
-                    ),
+                    child: CustomerCard(project[index]),
                   ),
                 ),
               ),

@@ -46,13 +46,7 @@ class _ProjectCardState extends State<ProjectCard> {
                     children: [
                       Expanded(
                         flex: 8,
-                        child: Text(
-                          widget.report.customer,
-                          //    textAlign: TextAlign.right,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
+                        child: Text(widget.report.customer),
                       ),
                       //  const Spacer(),
                       Expanded(
@@ -109,11 +103,7 @@ class _ProjectCardState extends State<ProjectCard> {
             ),
           ],
         ),
-        isContainerOpen
-            ? ProjectDetails(
-                widget.report,
-              )
-            : Container(),
+        isContainerOpen ? ProjectDetails(widget.report) : const SizedBox.shrink(),
       ],
     );
   }

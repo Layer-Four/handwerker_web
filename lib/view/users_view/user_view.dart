@@ -19,7 +19,7 @@ class EmployeeAdministration extends ConsumerStatefulWidget {
 }
 
 class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
-  bool _isOpen = false;
+  bool _isVisible = false;
   final List<UserRole> _roles = [];
   @override
   void initState() {
@@ -27,10 +27,9 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
     initAttributes();
   }
 
-  void initAttributes() => ref
-      .read(userAdministrationProvider.notifier)
-      .loadUserRoles()
-      .then((e) => setState(() => _roles.addAll(e)));
+  void initAttributes() => ref.read(userAdministrationProvider.notifier).loadUserRoles().then((e) {
+        setState(() => _roles.addAll(e));
+      });
 
   @override
   Widget build(BuildContext ctx) => SingleChildScrollView(
@@ -42,16 +41,16 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
               const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
               const UserRowHeadLine(),
               SizedBox(
-                height: 9 * 74,
+                height: 9 * 60,
                 child: ref.watch(userAdministrationProvider).isEmpty
                     ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')
                     : _userRowBuilder(),
               ),
               AddButton(
-                  isOpen: _isOpen,
-                  onTap: () => setState(() => _isOpen = !_isOpen),
+                  isOpen: _isVisible,
+                  onTap: () => setState(() => _isVisible = !_isVisible),
                   hideAbleChild: SizedBox(
-                    child: _isOpen ? AddNewEmployee(_roles) : const SizedBox.shrink(),
+                    child: _isVisible ? AddNewEmployee(_roles) : const SizedBox.shrink(),
                   )),
             ],
           ),
