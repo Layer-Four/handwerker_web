@@ -76,7 +76,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
   }
 
   void _showSnackBar(String message) {
-    final snackBar = SnackBar(content: Text(message));
+    final snackBar = SnackBar(content: Center(child: Text(message)));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 

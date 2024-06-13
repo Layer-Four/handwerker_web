@@ -20,10 +20,11 @@ class TimeEntry with _$TimeEntry {
     String? serviceTitle,
     required DateTime startTime,
     @Default(1) int type,
-    // @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
     String? userID,
   }) = _TimeEntry;
+
   factory TimeEntry.fromJson(Map<String, dynamic> json) => _$TimeEntryFromJson(json);
+  // @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
 
   const TimeEntry._();
   factory TimeEntry.fromTimeEntriesVM(TimeVMAdapter e) => TimeEntry(

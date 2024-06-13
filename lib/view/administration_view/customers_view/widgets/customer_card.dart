@@ -5,15 +5,12 @@ import '../../../../models/project_models/customer_projekt_model/custom_project.
 // ignore: must_be_immutable
 class CustomerCard extends StatefulWidget {
   final CustomeProject project;
-  final bool isFirst;
-  final bool isLast;
+
   bool isContainerOpen;
 
   CustomerCard(
     this.project, {
     super.key,
-    this.isFirst = false,
-    this.isLast = false,
     this.isContainerOpen = false,
   });
 
@@ -28,13 +25,8 @@ class _CustomerCardState extends State<CustomerCard> {
 
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border(
-          top: widget.isFirst ? BorderSide.none : const BorderSide(),
-          // left: const BorderSide(),
-          // right: const BorderSide(),
-          bottom: widget.isLast ? const BorderSide() : BorderSide.none,
-        ),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide()),
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),

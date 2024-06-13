@@ -50,7 +50,6 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
   }
 
   Future<bool> deleteUser(String userID) async {
-    log('user in State-> ${state.length}');
     try {
       final response = await _api.deleteUser(userID);
       if (response.statusCode != 200) {
@@ -85,7 +84,6 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       final List<UserDataShort> users = data.map((e) => UserDataShort.fromJson(e)).toList();
       final newState = <UserDataShort>{...state, ...users}.toList();
       state = newState;
-      log('user in State-> ${state.length}');
       return;
     } on DioException catch (e) {
       if (e.message != null && e.message!.contains('statuscode-> 500')) {

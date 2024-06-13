@@ -93,7 +93,8 @@ class UserRowCard extends ConsumerWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   showCloseIcon: true,
-                  content: Text(r ? 'Erfolgreich angepasst' : 'Leider ist etwas schief gegagen'),
+                  content: Center(
+                      child: Text(r ? 'Erfolgreich angepasst' : 'Leider ist etwas schief gegagen')),
                 ),
               );
               // Navigator.of(context).restorablePushReplacementNamed(AppRoutes.viewScreen);

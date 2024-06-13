@@ -11,6 +11,7 @@ _$ServiceVMImpl _$$ServiceVMImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       id: (json['id'] as num?)?.toInt(),
       hourlyRate: (json['hourlyRate'] as num).toDouble(),
+      serviceAmount: (json['serviceAmount'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$ServiceVMImplToJson(_$ServiceVMImpl instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$ServiceVMImplToJson(_$ServiceVMImpl instance) =>
       'name': instance.name,
       'id': instance.id,
       'hourlyRate': instance.hourlyRate,
+      'serviceAmount': instance.serviceAmount,
     };

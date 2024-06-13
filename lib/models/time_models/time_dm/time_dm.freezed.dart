@@ -31,8 +31,7 @@ mixin _$TimeEntry {
   int? get serviceID => throw _privateConstructorUsedError;
   String? get serviceTitle => throw _privateConstructorUsedError;
   DateTime get startTime => throw _privateConstructorUsedError;
-  int get type =>
-      throw _privateConstructorUsedError; // @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
+  int get type => throw _privateConstructorUsedError;
   String? get userID => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -299,7 +298,6 @@ class _$TimeEntryImpl extends _TimeEntry {
   @override
   @JsonKey()
   final int type;
-// @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
   @override
   final String? userID;
 
@@ -412,7 +410,7 @@ abstract class _TimeEntry extends TimeEntry {
   DateTime get startTime;
   @override
   int get type;
-  @override // @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
+  @override
   String? get userID;
   @override
   @JsonKey(ignore: true)

@@ -79,12 +79,13 @@ class Utilitis {
 
   static Widget waitingMessage(BuildContext context, String message) => Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(60.0),
               child: Text(
                 message,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
@@ -146,6 +147,21 @@ class Utilitis {
               ],
             ),
           ),
+        ),
+      );
+
+  static InputDecoration textFieldDecoration(String hintText) => InputDecoration(
+        filled: true,
+        fillColor: AppColor.kTextfieldColor,
+        hintText: hintText,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey, width: 0),
+          borderRadius: BorderRadius.circular(6),
         ),
       );
 }

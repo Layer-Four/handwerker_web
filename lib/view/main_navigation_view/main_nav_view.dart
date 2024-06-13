@@ -7,7 +7,7 @@ import '../administration_view/customers_view/customer_administration.dart';
 import '../administration_view/project_management_view/project_managment_view.dart';
 import '../administration_view/service_view/service_body_view.dart';
 import '../home_view/home_body.dart';
-import '../review_view/projekt_overview_view.dart';
+import '../project_reports_view/projekt_reports_view.dart';
 import '../time_entry_view/work_calendar_view.dart';
 import '../users_view/user_view.dart';
 import 'widgets/nav_button_widget.dart';
@@ -43,7 +43,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                               MainView.home => const HomeBody(),
                               MainView.timeEntry => const WorkCalendarView(),
                               MainView.projectCustomer => const ProjectOverviewView(),
-                              MainView.consumables => const ConsumableBody(),
+                              MainView.consumables => const ConsumableBodyView(),
                               MainView.customer => const CustomerBody(),
                               MainView.projectManagement => const ProjectManagementBody(),
                               MainView.performance => const ServiceBodyView(),

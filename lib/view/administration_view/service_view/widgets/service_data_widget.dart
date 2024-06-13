@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,12 +7,10 @@ import '../../../../provider/data_provider/service_provider/service_vm_provider.
 
 class ServiceDataWidget extends StatefulWidget {
   final ServiceVM service;
-  final VoidCallback onDelete;
 
   const ServiceDataWidget({
     super.key,
     required this.service,
-    required this.onDelete,
   });
 
   @override
@@ -25,13 +21,11 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
   late TextEditingController _titleController;
   late TextEditingController _priceController;
   late ServiceVM _service;
-
   bool isEditing = false;
 
   // Store initial values
   late String _initialTitle;
   late String _initialPrice;
-
   @override
   void initState() {
     super.initState();
@@ -51,8 +45,6 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
     super.dispose();
   }
 
-  bool _hasChanges() => _titleController.text != _initialTitle || _priceController.text != _initialPrice;
-
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -68,9 +60,7 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
   Widget build(BuildContext context) => Container(
         height: 75,
         decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(),
-          ),
+          border: Border(bottom: BorderSide()),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,7 +68,9 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
             Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width > 1000 ? 300 : MediaQuery.of(context).size.width / 10 * 3,
+                  width: MediaQuery.of(context).size.width > 1000
+                      ? 400
+                      : MediaQuery.of(context).size.width / 10 * 3,
                   child: TextField(
                     controller: _titleController,
                     style: const TextStyle(fontSize: 16),
@@ -90,16 +82,17 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width > 1000 ? 300 : MediaQuery.of(context).size.width / 10 * 3,
+                  width: MediaQuery.of(context).size.width > 1000
+                      ? 400
+                      : MediaQuery.of(context).size.width / 10 * 3,
                   child: TextField(
                     controller: _priceController,
-                    style: const TextStyle(fontSize: 16),
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.zero,
                     ),
                     readOnly: !isEditing,
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}€?$')),
                     ],
@@ -120,16 +113,16 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                       if (double.tryParse(value.replaceAll('€', '')) != null &&
                           double.parse(value.replaceAll('€', '')) > 10000) {
                         _showSnackBar('Diese Zahl ist zu groß');
-                        _priceController.text = value.substring(0, value.length - 1) + '€';
-                        _priceController.selection =
-                            TextSelection.fromPosition(TextPosition(offset: _priceController.text.length - 1));
+                        _priceController.text = '${value.substring(0, value.length - 1)}€';
+                        _priceController.selection = TextSelection.fromPosition(
+                            TextPosition(offset: _priceController.text.length - 1));
                         return;
                       }
 
                       if (!value.endsWith('€')) {
-                        _priceController.text = value + '€';
-                        _priceController.selection =
-                            TextSelection.fromPosition(TextPosition(offset: _priceController.text.length - 1));
+                        _priceController.text = '$value€';
+                        _priceController.selection = TextSelection.fromPosition(
+                            TextPosition(offset: _priceController.text.length - 1));
                       }
                     },
                   ),
@@ -152,32 +145,38 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                                 _priceController.text = _initialPrice;
                               });
                             }
-                          : () {
-                              log('Deleting service with ID: ${_service.id}');
-                              Utilitis.askPopUp(
-                                context,
-                                message: 'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
-                                onAccept: () async {
-                                  Navigator.of(context).pop(); // Close the dialog
-                                  widget.onDelete();
-                                },
-                                onReject: () => Navigator.of(context).pop(),
-                              );
-                            },
+                          : () => Utilitis.askPopUp(context,
+                              message: 'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
+                              onAccept: () {
+                                ref
+                                    .read(serviceVMProvider.notifier)
+                                    .deleteService(_service.id!)
+                                    .then((e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Center(
+                                        child: Text(
+                                          e
+                                              ? 'Leistung wurde erfolgreich gelöscht'
+                                              : 'Leider ist etwas schief gegangen versuchen sie es erneut',
+                                        ),
+                                      ),
+                                    ),
+                                  );
+
+                                  Navigator.of(context).pop();
+                                });
+                              },
+                              onReject: () => Navigator.of(context).pop()),
                     ),
                     IconButton(
                       icon: Icon(isEditing ? Icons.save : Icons.edit),
                       onPressed: () {
                         if (isEditing) {
-                          if (!_hasChanges()) {
-                            _showSnackBar('Keine Änderungen erkannt.');
-                            return;
-                          }
                           String priceValue = _priceController.text;
 
-                          // Ensure the Euro symbol is present before sending to the server
-                          if (!priceValue.endsWith('€')) {
-                            priceValue += '€';
+                          if (!_priceController.text.endsWith('€')) {
+                            _priceController.text += '€';
                           }
                           double parsedPrice = double.parse(priceValue.replaceAll('€', ''));
 
@@ -186,29 +185,32 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                             name: _titleController.text,
                             hourlyRate: parsedPrice,
                           );
-                          ref
-                              .read(serviceVMProvider.notifier)
-                              .updateService(updatedRow)
-                              .then((e) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Center(
-                                      child: Text(
-                                        e
-                                            ? 'Leistung wurde erfolgreich geändert'
-                                            : 'Leider hat es nicht Funktioniert\nversuche es erneut',
+                          if (updatedRow != _service) {
+                            // return;
+                            ref
+                                .read(serviceVMProvider.notifier)
+                                .updateService(updatedRow)
+                                .then((e) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Center(
+                                        child: Text(
+                                          e
+                                              ? 'Leistung wurde erfolgreich geändert'
+                                              : 'Leider hat es nicht Funktioniert\nversuche es erneut',
+                                        ),
                                       ),
-                                    ),
-                                  )));
+                                    )));
 
-                          setState(() {
-                            _service = _service.copyWith(
-                              hourlyRate: parsedPrice,
-                              name: _titleController.text,
-                            );
-                            // Update initial values to the new values after save
-                            _initialTitle = _titleController.text;
-                            _initialPrice = priceValue;
-                            isEditing = false;
-                          });
+                            setState(() {
+                              _service = _service.copyWith(
+                                hourlyRate: parsedPrice,
+                                name: _titleController.text,
+                              );
+                              // Update initial values to the new values after save
+                              _initialTitle = _titleController.text;
+                              _initialPrice = '$priceValue€';
+                              isEditing = false;
+                            });
+                          }
                         } else {
                           setState(() {
                             isEditing = true;

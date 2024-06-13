@@ -1,9 +1,8 @@
-import 'dart:developer';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/themes/app_color.dart';
-import '../../provider/settings_provider/user_provider.dart';
+import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
 
 class LoginView extends StatefulWidget {
@@ -18,9 +17,9 @@ class _LoginViewState extends State<LoginView> {
   bool isOTP = false;
   bool _isPasswordVisible = false;
 
-  TextEditingController emailCon = TextEditingController();
-  TextEditingController passCon = TextEditingController();
-  GlobalKey<FormState> formstate = GlobalKey<FormState>();
+  final TextEditingController _emailCon = TextEditingController();
+  final TextEditingController _passCon = TextEditingController();
+  final GlobalKey<FormState> _formstate = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -37,9 +36,17 @@ class _LoginViewState extends State<LoginView> {
                   child: Image.asset('assets/images/img_techtool.png'),
                 ),
                 const SizedBox(height: 60),
+                // TODO: TODO DELETE ME!!!
+                CupertinoButton(
+                    child: const Text('EmailView'),
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed(
+                        AppRoutes.reactOnPwResetView,
+                      );
+                    }),
                 const SizedBox(height: 15),
                 Form(
-                  key: formstate,
+                  key: _formstate,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,7 +60,7 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       const SizedBox(height: 3),
-                      _buildUsernameTextField(emailCon, 'Bitte eine gültige Mandatenname eingeben'),
+                      _buildUsernameTextField(),
                       const SizedBox(height: 20),
                       const SizedBox(
                         width: 350,
@@ -77,8 +84,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget _buildUsernameTextField(TextEditingController controller, String errorMessage) =>
-      Container(
+  Widget _buildUsernameTextField() => Container(
         width: 355,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -93,16 +99,17 @@ class _LoginViewState extends State<LoginView> {
             height: isFocused ? 44 : 40,
             child: TextFormField(
               autofocus: true,
+              keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               validator: (value) {
                 if (value!.isEmpty) {
                   return null;
                 } else if (value.length < 3) {
-                  return errorMessage;
+                  return 'Bitte eine gültige Mandatenname eingeben';
                 }
                 return null;
               },
-              controller: controller,
+              controller: _emailCon,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.transparent,
@@ -165,7 +172,7 @@ class _LoginViewState extends State<LoginView> {
                 return null;
               },
               obscureText: !_isPasswordVisible,
-              controller: passCon,
+              controller: _passCon,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.transparent,
@@ -231,13 +238,18 @@ class _LoginViewState extends State<LoginView> {
 
   void reactionOfLogin(bool isSuccess) async {
     if (isSuccess) {
-      emailCon.clear();
-      passCon.clear();
+      _emailCon.clear();
+      _passCon.clear();
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
       return;
     }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('leider hats nicht geklappt')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Center(
+          child: Text('leider hats nicht geklappt'),
+        ),
+      ),
+    );
   }
 
   Widget buildLoginButton(BuildContext context) => Center(
@@ -247,20 +259,14 @@ class _LoginViewState extends State<LoginView> {
           child: Consumer(
               builder: (context, ref, child) => ElevatedButton(
                     onPressed: () async {
-                      if (formstate.currentState!.validate()) {
+                      if (_formstate.currentState!.validate()) {
                         ref
                             .read(userProvider.notifier)
                             .loginUser(
-                              password: passCon.text,
-                              userName: emailCon.text,
+                              password: _passCon.text,
+                              userName: _emailCon.text,
                             )
-                            .then((value) {
-                          reactionOfLogin(value);
-                          SharedPreferences.getInstance().then((value) {
-                            final token = value.getString('TOKEN');
-                            log(token.toString());
-                          });
-                        });
+                            .then((value) => reactionOfLogin(value));
                       }
                       if (isOTP) {
                         Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
@@ -282,12 +288,13 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
   bool validateFields() {
-    if (formstate.currentState == null) {
+    if (_formstate.currentState == null) {
       return false;
     }
 
-    bool isValid =
-        formstate.currentState!.validate() && emailCon.text.isNotEmpty && passCon.text.isNotEmpty;
+    bool isValid = _formstate.currentState!.validate() &&
+        _emailCon.text.isNotEmpty &&
+        _passCon.text.isNotEmpty;
     if (!isValid) {
       showSnackBar('Bitte füllen Sie alle Felder korrekt aus.');
     }
@@ -296,7 +303,7 @@ class _LoginViewState extends State<LoginView> {
 
   void showSnackBar(String message) {
     final snackBar = SnackBar(
-      content: Text(message),
+      content: Center(child: Text(message)),
       duration: const Duration(seconds: 2),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);

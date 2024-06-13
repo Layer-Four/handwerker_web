@@ -6,6 +6,7 @@ class AppColor {
   static Color kWhite = Colors.white;
   static Color kBlack = Colors.black;
   static Color kTextfieldBorder = const Color.fromARGB(255, 220, 217, 217);
+  static Color kTextfieldColor = const Color.fromARGB(211, 245, 241, 241);
   static Color kWhiteWOpacity = const Color.fromARGB(192, 255, 255, 255);
   static Color kBlue = Colors.blue;
   static Color kRed = Colors.red;
