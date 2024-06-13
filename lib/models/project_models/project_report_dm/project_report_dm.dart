@@ -8,7 +8,8 @@ part 'project_report_dm.g.dart';
 @Freezed()
 class ProjectRepotsDM with _$ProjectRepotsDM {
   const factory ProjectRepotsDM({
-    required String customerName,
+    required String projectName,
+    required Project
     List<ConsumableVM>? materials,
     required int projectID,
     required String projectName,
