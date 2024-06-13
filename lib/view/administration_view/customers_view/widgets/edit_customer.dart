@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../constants/themes/app_color.dart';
+import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
@@ -60,7 +61,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
         child: Container(
-          width: MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width > 1000 ? 900 : MediaQuery.of(context).size.width,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
           child: Card(
             elevation: 9,
@@ -82,13 +83,13 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                               child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
                             ),
                             buildTextField(
-                              hintText: 'Jürgen',
+                              hintText: 'Vorname',
                               controller: _firstNameController,
                               context: context,
                             ),
                             const SizedBox(height: 5),
                             buildTextField(
-                              hintText: 'Mustermann',
+                              hintText: 'Nachname',
                               controller: _secondNameController,
                               context: context,
                             ),
@@ -102,8 +103,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                           children: [
                             const Padding(
                               padding: EdgeInsets.all(4),
-                              child:
-                                  Text('Addresse', style: TextStyle(fontWeight: FontWeight.bold)),
+                              child: Text('Addresse', style: TextStyle(fontWeight: FontWeight.bold)),
                             ),
                             Row(
                               children: [
@@ -111,7 +111,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                   //    height: 100,
                                   width: 300,
                                   child: buildTextField(
-                                    hintText: 'Mustermannstraße',
+                                    hintText: 'Straße',
                                     controller: _streetController,
                                     context: context,
                                   ),
@@ -121,7 +121,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                   //      height: 100,
                                   width: 100,
                                   child: buildTextField(
-                                    hintText: '3',
+                                    hintText: 'Nr',
                                     controller: _housenumberController,
                                     context: context,
                                   ),
@@ -135,7 +135,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                   //    height: 100,
                                   width: 300,
                                   child: buildTextField(
-                                    hintText: 'Berlin',
+                                    hintText: 'Ort',
                                     controller: _cityController,
                                     context: context,
                                   ),
@@ -145,7 +145,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                   //    height: 100,
                                   width: 100,
                                   child: buildTextField(
-                                    hintText: '11234',
+                                    hintText: 'plz',
                                     controller: _postNumberController,
                                     context: context,
                                   ),
@@ -254,26 +254,7 @@ Widget buildTextField({
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: TextField(
           controller: controller,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: AppColor.kTextfieldBorder,
-                ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 5,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: AppColor.kTextfieldBorder,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-            ),
-          ),
+          decoration: Utilitis.textFieldDecoration(hintText),
         ),
       ),
     );
