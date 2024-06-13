@@ -23,7 +23,7 @@ class ProjectOverviewView extends StatelessWidget {
                     : ListView.builder(
                         itemCount: ref.watch(projektReportProvider).length,
                         itemBuilder: (_, index) =>
-                            ProjectReviewCard(ref.watch(projektReportProvider)[index]),
+                            ProjectReviewCard(ref.watch(projektReportProvider)[index].projectsList),
                       ),
               ),
             ),

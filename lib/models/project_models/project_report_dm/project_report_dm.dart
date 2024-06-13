@@ -1,22 +1,24 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../consumable_models/consumable_vm/consumable_vm.dart';
-import '../../service_models/service_vm/service_vm.dart';
+import '../../consumable_models/project_consumable_model/project_consumable.dart';
+import '../../service_models/service_project/service_project.dart';
+import '../../time_models/project_time_model/project_time_entry.dart';
+import '../project_state_model/project_state.dart';
 part 'project_report_dm.freezed.dart';
 part 'project_report_dm.g.dart';
 
 @Freezed()
 class ProjectRepotsDM with _$ProjectRepotsDM {
   const factory ProjectRepotsDM({
+    @Default([]) List<ProjectConsumable> consumables,
+    DateTime? dateOfStart,
+    DateTime? dateOfTermination,
+    String? projectDescription,
     required String projectName,
-    required Project
-    List<ConsumableVM>? materials,
-    required int projectID,
-    required String projectName,
-    List<ServiceVM>? services,
-    String? state,
-    String? timeRange,
-    required int turnover,
+    double? projectRevenue,
+    ProjectState? projectState,
+    @Default([]) List<ProjectTimeEntry> reportsList,
+    @Default([]) List<ServiceProject> serviceList,
   }) = _ProjectRepotsDM;
   factory ProjectRepotsDM.fromJson(Map<String, dynamic> json) => _$ProjectRepotsDMFromJson(json);
   const ProjectRepotsDM._();

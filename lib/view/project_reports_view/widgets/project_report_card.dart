@@ -5,7 +5,7 @@ import 'project_report_overview.dart';
 
 // ignore: must_be_immutable
 class ProjectReviewCard extends StatefulWidget {
-  final ProjectRepotsDM report;
+  final List<ProjectRepotsDM> report;
 
   const ProjectReviewCard(this.report, {super.key});
 
@@ -35,7 +35,7 @@ class _ProjectReviewCardState extends State<ProjectReviewCard> {
                             Padding(
                               padding: const EdgeInsets.only(left: 12.0, right: 8),
                               child: Text(
-                                widget.report.customerName,
+                                'widget.report.projectName',
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context)
                                     .textTheme
@@ -78,7 +78,7 @@ class _ProjectReviewCardState extends State<ProjectReviewCard> {
               ],
             ),
           ),
-          isOpen ? ProjectOverview(report: widget.report) : const SizedBox.shrink(),
+          isOpen ? ProjectOverview(report: widget.report.first) : const SizedBox.shrink(),
           Container(
             width: MediaQuery.of(context).size.width * 0.8,
             decoration: const BoxDecoration(border: Border(bottom: BorderSide())),

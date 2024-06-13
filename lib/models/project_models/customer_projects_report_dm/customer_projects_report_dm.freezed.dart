@@ -21,10 +21,11 @@ CustomerProjectsReportDM _$CustomerProjectsReportDMFromJson(
 
 /// @nodoc
 mixin _$CustomerProjectsReportDM {
-  String? get customerName => throw _privateConstructorUsedError;
-  double get customerRevenue => throw _privateConstructorUsedError;
   CustomerCredentialDM get customerCredentials =>
       throw _privateConstructorUsedError;
+  String? get customerName =>
+      throw _privateConstructorUsedError; // @Default(0.0) double customerRevenue,
+  double? get customerRevenue => throw _privateConstructorUsedError;
   List<ProjectRepotsDM> get projectsList => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,9 +41,9 @@ abstract class $CustomerProjectsReportDMCopyWith<$Res> {
       _$CustomerProjectsReportDMCopyWithImpl<$Res, CustomerProjectsReportDM>;
   @useResult
   $Res call(
-      {String? customerName,
-      double customerRevenue,
-      CustomerCredentialDM customerCredentials,
+      {CustomerCredentialDM customerCredentials,
+      String? customerName,
+      double? customerRevenue,
       List<ProjectRepotsDM> projectsList});
 
   $CustomerCredentialDMCopyWith<$Res> get customerCredentials;
@@ -62,24 +63,24 @@ class _$CustomerProjectsReportDMCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? customerName = freezed,
-    Object? customerRevenue = null,
     Object? customerCredentials = null,
+    Object? customerName = freezed,
+    Object? customerRevenue = freezed,
     Object? projectsList = null,
   }) {
     return _then(_value.copyWith(
-      customerName: freezed == customerName
-          ? _value.customerName
-          : customerName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      customerRevenue: null == customerRevenue
-          ? _value.customerRevenue
-          : customerRevenue // ignore: cast_nullable_to_non_nullable
-              as double,
       customerCredentials: null == customerCredentials
           ? _value.customerCredentials
           : customerCredentials // ignore: cast_nullable_to_non_nullable
               as CustomerCredentialDM,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerRevenue: freezed == customerRevenue
+          ? _value.customerRevenue
+          : customerRevenue // ignore: cast_nullable_to_non_nullable
+              as double?,
       projectsList: null == projectsList
           ? _value.projectsList
           : projectsList // ignore: cast_nullable_to_non_nullable
@@ -107,9 +108,9 @@ abstract class _$$CustomerProjectsReportDMImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? customerName,
-      double customerRevenue,
-      CustomerCredentialDM customerCredentials,
+      {CustomerCredentialDM customerCredentials,
+      String? customerName,
+      double? customerRevenue,
       List<ProjectRepotsDM> projectsList});
 
   @override
@@ -129,24 +130,24 @@ class __$$CustomerProjectsReportDMImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? customerName = freezed,
-    Object? customerRevenue = null,
     Object? customerCredentials = null,
+    Object? customerName = freezed,
+    Object? customerRevenue = freezed,
     Object? projectsList = null,
   }) {
     return _then(_$CustomerProjectsReportDMImpl(
-      customerName: freezed == customerName
-          ? _value.customerName
-          : customerName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      customerRevenue: null == customerRevenue
-          ? _value.customerRevenue
-          : customerRevenue // ignore: cast_nullable_to_non_nullable
-              as double,
       customerCredentials: null == customerCredentials
           ? _value.customerCredentials
           : customerCredentials // ignore: cast_nullable_to_non_nullable
               as CustomerCredentialDM,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerRevenue: freezed == customerRevenue
+          ? _value.customerRevenue
+          : customerRevenue // ignore: cast_nullable_to_non_nullable
+              as double?,
       projectsList: null == projectsList
           ? _value._projectsList
           : projectsList // ignore: cast_nullable_to_non_nullable
@@ -159,9 +160,9 @@ class __$$CustomerProjectsReportDMImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CustomerProjectsReportDMImpl extends _CustomerProjectsReportDM {
   _$CustomerProjectsReportDMImpl(
-      {this.customerName,
-      this.customerRevenue = 0.0,
-      required this.customerCredentials,
+      {required this.customerCredentials,
+      this.customerName,
+      this.customerRevenue,
       final List<ProjectRepotsDM> projectsList = const []})
       : _projectsList = projectsList,
         super._();
@@ -170,12 +171,12 @@ class _$CustomerProjectsReportDMImpl extends _CustomerProjectsReportDM {
       _$$CustomerProjectsReportDMImplFromJson(json);
 
   @override
-  final String? customerName;
-  @override
-  @JsonKey()
-  final double customerRevenue;
-  @override
   final CustomerCredentialDM customerCredentials;
+  @override
+  final String? customerName;
+// @Default(0.0) double customerRevenue,
+  @override
+  final double? customerRevenue;
   final List<ProjectRepotsDM> _projectsList;
   @override
   @JsonKey()
@@ -187,7 +188,7 @@ class _$CustomerProjectsReportDMImpl extends _CustomerProjectsReportDM {
 
   @override
   String toString() {
-    return 'CustomerProjectsReportDM(customerName: $customerName, customerRevenue: $customerRevenue, customerCredentials: $customerCredentials, projectsList: $projectsList)';
+    return 'CustomerProjectsReportDM(customerCredentials: $customerCredentials, customerName: $customerName, customerRevenue: $customerRevenue, projectsList: $projectsList)';
   }
 
   @override
@@ -195,20 +196,24 @@ class _$CustomerProjectsReportDMImpl extends _CustomerProjectsReportDM {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CustomerProjectsReportDMImpl &&
+            (identical(other.customerCredentials, customerCredentials) ||
+                other.customerCredentials == customerCredentials) &&
             (identical(other.customerName, customerName) ||
                 other.customerName == customerName) &&
             (identical(other.customerRevenue, customerRevenue) ||
                 other.customerRevenue == customerRevenue) &&
-            (identical(other.customerCredentials, customerCredentials) ||
-                other.customerCredentials == customerCredentials) &&
             const DeepCollectionEquality()
                 .equals(other._projectsList, _projectsList));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, customerName, customerRevenue,
-      customerCredentials, const DeepCollectionEquality().hash(_projectsList));
+  int get hashCode => Object.hash(
+      runtimeType,
+      customerCredentials,
+      customerName,
+      customerRevenue,
+      const DeepCollectionEquality().hash(_projectsList));
 
   @JsonKey(ignore: true)
   @override
@@ -227,9 +232,9 @@ class _$CustomerProjectsReportDMImpl extends _CustomerProjectsReportDM {
 
 abstract class _CustomerProjectsReportDM extends CustomerProjectsReportDM {
   factory _CustomerProjectsReportDM(
-          {final String? customerName,
-          final double customerRevenue,
-          required final CustomerCredentialDM customerCredentials,
+          {required final CustomerCredentialDM customerCredentials,
+          final String? customerName,
+          final double? customerRevenue,
           final List<ProjectRepotsDM> projectsList}) =
       _$CustomerProjectsReportDMImpl;
   _CustomerProjectsReportDM._() : super._();
@@ -238,11 +243,11 @@ abstract class _CustomerProjectsReportDM extends CustomerProjectsReportDM {
       _$CustomerProjectsReportDMImpl.fromJson;
 
   @override
-  String? get customerName;
-  @override
-  double get customerRevenue;
-  @override
   CustomerCredentialDM get customerCredentials;
+  @override
+  String? get customerName;
+  @override // @Default(0.0) double customerRevenue,
+  double? get customerRevenue;
   @override
   List<ProjectRepotsDM> get projectsList;
   @override

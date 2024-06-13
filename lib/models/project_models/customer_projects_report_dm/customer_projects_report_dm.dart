@@ -8,9 +8,10 @@ part 'customer_projects_report_dm.g.dart';
 @freezed
 class CustomerProjectsReportDM with _$CustomerProjectsReportDM {
   factory CustomerProjectsReportDM({
-    String? customerName,
-    @Default(0.0) double customerRevenue,
     required CustomerCredentialDM customerCredentials,
+    String? customerName,
+    // @Default(0.0) double customerRevenue,
+    double? customerRevenue,
     @Default([]) List<ProjectRepotsDM> projectsList,
   }) = _CustomerProjectsReportDM;
 

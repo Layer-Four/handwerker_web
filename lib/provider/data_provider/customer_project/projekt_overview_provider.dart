@@ -4,15 +4,16 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/api/api.dart';
-import '../../../models/project_models/project_report_dm/project_report_dm.dart';
+import '../../../models/project_models/customer_projects_report_dm/customer_projects_report_dm.dart';
 
-final projektReportProvider = NotifierProvider<ProjectOverViewNotifier, List<ProjectRepotsDM>>(
-    () => ProjectOverViewNotifier());
+final projektReportProvider =
+    NotifierProvider<ProjectOverViewNotifier, List<CustomerProjectsReportDM>>(
+        () => ProjectOverViewNotifier());
 
-class ProjectOverViewNotifier extends Notifier<List<ProjectRepotsDM>> {
+class ProjectOverViewNotifier extends Notifier<List<CustomerProjectsReportDM>> {
   final Api _api = Api();
   @override
-  List<ProjectRepotsDM> build() {
+  List<CustomerProjectsReportDM> build() {
     loadCustomerProjectReports();
     return [];
   }
@@ -25,7 +26,13 @@ class ProjectOverViewNotifier extends Notifier<List<ProjectRepotsDM>> {
             'loadCustomerProjectOverview dismissed-> status: ${response.statusCode}\n${response.data}');
       }
       final List data = response.data.map((e) => e as Map).toList();
-      final List<ProjectRepotsDM> reports = data.map((e) => ProjectRepotsDM.fromJson(e)).toList();
+      final List<CustomerProjectsReportDM> reports =
+          // for (var e in data) {
+          //   final kunde = CustomerProjectsReportDM.fromJson(e);
+          //   log(kunde.toJson().toString());
+          //   // reports.add(CustomerProjectsReportDM.fromJson(e));
+          // }
+          data.map((e) => CustomerProjectsReportDM.fromJson(e)).toList();
 
       state = reports;
       return;

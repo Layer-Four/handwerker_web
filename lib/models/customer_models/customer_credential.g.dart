@@ -10,24 +10,24 @@ _$CustomerCredentialDMImpl _$$CustomerCredentialDMImplFromJson(
         Map<String, dynamic> json) =>
     _$CustomerCredentialDMImpl(
       contactPerson: json['contactPerson'] as String,
-      customerNumber: json['customerNumber'] as String?,
       customerCity: json['customerCity'] as String?,
+      customerEmail: json['customerEmail'] as String?,
+      customerNumber: json['customerNumber'] as String?,
+      customerPhone: json['customerPhone'] as String?,
       customerStreet: json['customerStreet'] as String?,
       customerStreetNr: json['customerStreetNr'] as String?,
       customerZipcode: json['customerZipcode'] as String?,
-      customerEmail: json['customerEmail'] as String?,
-      customerPhone: json['customerPhone'] as String?,
     );
 
 Map<String, dynamic> _$$CustomerCredentialDMImplToJson(
         _$CustomerCredentialDMImpl instance) =>
     <String, dynamic>{
       'contactPerson': instance.contactPerson,
-      'customerNumber': instance.customerNumber,
       'customerCity': instance.customerCity,
+      'customerEmail': instance.customerEmail,
+      'customerNumber': instance.customerNumber,
+      'customerPhone': instance.customerPhone,
       'customerStreet': instance.customerStreet,
       'customerStreetNr': instance.customerStreetNr,
       'customerZipcode': instance.customerZipcode,
-      'customerEmail': instance.customerEmail,
-      'customerPhone': instance.customerPhone,
     };
