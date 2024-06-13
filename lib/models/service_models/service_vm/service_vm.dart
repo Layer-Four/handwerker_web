@@ -8,7 +8,6 @@ class ServiceVM with _$ServiceVM {
     required String name,
     int? id,
     required double hourlyRate,
-    int? serviceAmount,
   }) = _ServiceVM;
 
   factory ServiceVM.fromJson(Map<String, dynamic> json) => _$ServiceVMFromJson(json);

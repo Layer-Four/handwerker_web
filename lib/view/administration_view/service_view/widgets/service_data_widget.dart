@@ -145,7 +145,6 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                                 _priceController.text = _initialPrice;
                               });
                             }
-                          // TODO: TODO CHECK IF ITS WORKS FINEö
                           : () => Utilitis.askPopUp(context,
                               message: 'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
                               onAccept: () {

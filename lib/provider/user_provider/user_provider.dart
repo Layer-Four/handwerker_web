@@ -49,7 +49,8 @@ class UserNotifier extends Notifier<UserVM> {
       log(state.userToken);
       return true;
     } catch (e) {
-      throw Exception(e);
+      log('Error on loginUser $e');
+      return false;
     }
   }
 

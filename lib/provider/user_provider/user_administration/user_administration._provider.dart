@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/api/api.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
 import '../../../models/users_models/user_role/user_role.dart';
-import '../user_provider.dart';
 
 final userAdministrationProvider = NotifierProvider<UserAdministrationNotifer, List<UserDataShort>>(
     () => UserAdministrationNotifer());
@@ -31,8 +29,6 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       'roles': [role.name],
     };
     try {
-      log(ref.watch(userProvider).userToken);
-      log(jsonEncode(newUser));
       final response = await _api.postCreateNewUser(newUser);
       if (response.statusCode != 200) {
         throw Exception('${response.statusCode} Invalid Api call ${response.data}');
