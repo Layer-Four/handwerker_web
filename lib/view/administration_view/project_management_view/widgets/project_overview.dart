@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
-import '../../../project_reports_view/widgets/project_card.dart';
+import '../../../../models/project_models/project_report_dm/project_report_dm.dart';
+import '../../../project_reports_view/widgets/project_report_details_widget.dart';
 
 // ignore: must_be_immutable
 class ProjectOverview extends StatefulWidget {
@@ -213,9 +214,9 @@ class _CharacterCardState extends State<ProjectOverview> {
           height: MediaQuery.of(context).size.height / 3,
           child: ListView.builder(
             itemCount: project.length,
-            itemBuilder: (_, index) => ProjectCard(
-              project[index],
-            ),
+            itemBuilder: (_, index) => ProjectReportDetaisWidget(ProjectRepotsDM(projectName: '')
+                // project[index],
+                ),
           ),
         ),
         const SizedBox(

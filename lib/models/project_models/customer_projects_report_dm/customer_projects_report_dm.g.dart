@@ -11,7 +11,7 @@ _$CustomerProjectsReportDMImpl _$$CustomerProjectsReportDMImplFromJson(
     _$CustomerProjectsReportDMImpl(
       customerCredentials: CustomerCredentialDM.fromJson(
           json['customerCredentials'] as Map<String, dynamic>),
-      customerName: json['customerName'] as String?,
+      customerName: json['customerName'] as String,
       customerRevenue: (json['customerRevenue'] as num?)?.toDouble(),
       projectsList: (json['projectsList'] as List<dynamic>?)
               ?.map((e) => ProjectRepotsDM.fromJson(e as Map<String, dynamic>))
