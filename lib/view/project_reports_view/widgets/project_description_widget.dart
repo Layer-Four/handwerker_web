@@ -5,30 +5,27 @@ class DescriptionFiedlWidget extends StatelessWidget {
   const DescriptionFiedlWidget(this.description, {super.key});
 
   @override
-  Widget build(BuildContext context) => Expanded(
-        flex: 1,
-        child: description == null
-            ? const SizedBox.shrink()
-            : Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Beschreibung',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.fromLTRB(5, 5, 5, 20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      child: Text(description!),
-                    ),
-                  ],
-                ),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            const Text(
+              'Beschreibung',
+              style: TextStyle(fontWeight: FontWeight.bold),
+              overflow: TextOverflow.ellipsis,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width > 850
+                  ? 200
+                  : MediaQuery.of(context).size.width * 0.1,
+              height: 100,
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
               ),
+              child: Text(description!),
+            ),
+          ],
+        ),
       );
 }

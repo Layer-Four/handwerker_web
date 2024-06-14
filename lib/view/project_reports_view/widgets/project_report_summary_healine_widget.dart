@@ -6,38 +6,27 @@ class ProjectSummaryHeadLineWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => const Row(
+  Widget build(BuildContext context) => Row(
         children: [
-          Expanded(
-            flex: 2,
-            child: Text(
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: const Text(
               'Leistung/Material',
-              //    textAlign: TextAlign.right,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          //  const Spacer(),
-          Expanded(
-              flex: 2,
-              child: Text(
+          SizedBox(
+              width: MediaQuery.of(context).size.width * 0.2,
+              child: const Text(
                 'Menge',
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               )),
-          //   const Spacer(),
-          Expanded(
-            flex: 2,
-            child: Text(
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: const Text(
               'Preis',
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-          //  const Spacer(),
-          Expanded(
-            flex: 1,
-            child: Text(
-              '',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../models/consumable_models/project_consumable_model/project_consumable.dart';
 import '../../../models/service_models/service_project/service_project.dart';
 
@@ -11,65 +10,52 @@ class ProjectUtilitisView extends StatelessWidget {
   Widget build(BuildContext context) {
     ServiceProject? service;
     ProjectConsumable? consumable;
-    if (utilits.runtimeType == ServiceProject) {
+    if (utilits.toString().contains('service')) {
       service = utilits as ServiceProject;
     } else {
       consumable = utilits as ProjectConsumable;
     }
-    assert(service == null && consumable != null || service != null && consumable == null);
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Row(
-            children: [
-              Icon(service == null ? Icons.construction : Icons.person),
-              const SizedBox(
-                width: 2,
-              ),
-              Text(
-                service == null ? consumable!.consumableName : service.serviceName,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-            flex: 2,
-            child: Text(
-              (service == null ? consumable!.consumableAmount : service.serviceAmount).toString(),
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 16),
-            )),
-        Expanded(
-          flex: 2,
-          child: Text(
-            '${(service == null ? consumable!.consumablePrice : service.servicePrice).toStringAsFixed(2)}€',
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 16),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Text(
-            '${calculateRevenue(utilits).toStringAsFixed(2)}€',
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 16,
+
+    assert((service == null && consumable != null) || (service != null && consumable == null));
+    return SizedBox(
+      height: 40,
+      width: MediaQuery.of(context).size.width * 0.6,
+      child: Row(
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: Row(
+              children: [
+                Icon(service == null ? Icons.construction : Icons.person),
+                Text(service != null ? service.serviceName : consumable!.consumableName),
+                // overflow: TextOverflow.ellipsis,
+              ],
             ),
           ),
-        ),
-      ],
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: Text(
+              (service == null ? consumable!.consumableAmount : service.serviceAmount).toString(),
+            ),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: Text(
+              '${(service == null ? consumable!.consumablePrice : service.servicePrice).toStringAsFixed(2)}€ (${calculateRevenue().toStringAsFixed(2)}€)',
+              overflow: TextOverflow.clip,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  double calculateRevenue(Object unit) {
-    if (unit.runtimeType == ServiceProject) {
-      unit as ServiceProject;
+  double calculateRevenue() {
+    if (utilits.toString().contains('service')) {
+      final unit = utilits as ServiceProject;
       return unit.servicePrice * unit.serviceAmount;
     }
-    unit as ProjectConsumable;
+    final unit = utilits as ProjectConsumable;
     return unit.consumablePrice * unit.consumableAmount;
   }
 }
