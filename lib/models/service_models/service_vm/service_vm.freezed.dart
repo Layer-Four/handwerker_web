@@ -23,7 +23,6 @@ mixin _$ServiceVM {
   String get name => throw _privateConstructorUsedError;
   int? get id => throw _privateConstructorUsedError;
   double get hourlyRate => throw _privateConstructorUsedError;
-  int? get serviceAmount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +35,7 @@ abstract class $ServiceVMCopyWith<$Res> {
   factory $ServiceVMCopyWith(ServiceVM value, $Res Function(ServiceVM) then) =
       _$ServiceVMCopyWithImpl<$Res, ServiceVM>;
   @useResult
-  $Res call({String name, int? id, double hourlyRate, int? serviceAmount});
+  $Res call({String name, int? id, double hourlyRate});
 }
 
 /// @nodoc
@@ -55,7 +54,6 @@ class _$ServiceVMCopyWithImpl<$Res, $Val extends ServiceVM>
     Object? name = null,
     Object? id = freezed,
     Object? hourlyRate = null,
-    Object? serviceAmount = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -70,10 +68,6 @@ class _$ServiceVMCopyWithImpl<$Res, $Val extends ServiceVM>
           ? _value.hourlyRate
           : hourlyRate // ignore: cast_nullable_to_non_nullable
               as double,
-      serviceAmount: freezed == serviceAmount
-          ? _value.serviceAmount
-          : serviceAmount // ignore: cast_nullable_to_non_nullable
-              as int?,
     ) as $Val);
   }
 }
@@ -86,7 +80,7 @@ abstract class _$$ServiceVMImplCopyWith<$Res>
       __$$ServiceVMImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int? id, double hourlyRate, int? serviceAmount});
+  $Res call({String name, int? id, double hourlyRate});
 }
 
 /// @nodoc
@@ -103,7 +97,6 @@ class __$$ServiceVMImplCopyWithImpl<$Res>
     Object? name = null,
     Object? id = freezed,
     Object? hourlyRate = null,
-    Object? serviceAmount = freezed,
   }) {
     return _then(_$ServiceVMImpl(
       name: null == name
@@ -118,10 +111,6 @@ class __$$ServiceVMImplCopyWithImpl<$Res>
           ? _value.hourlyRate
           : hourlyRate // ignore: cast_nullable_to_non_nullable
               as double,
-      serviceAmount: freezed == serviceAmount
-          ? _value.serviceAmount
-          : serviceAmount // ignore: cast_nullable_to_non_nullable
-              as int?,
     ));
   }
 }
@@ -130,10 +119,7 @@ class __$$ServiceVMImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ServiceVMImpl implements _ServiceVM {
   const _$ServiceVMImpl(
-      {required this.name,
-      this.id,
-      required this.hourlyRate,
-      this.serviceAmount});
+      {required this.name, this.id, required this.hourlyRate});
 
   factory _$ServiceVMImpl.fromJson(Map<String, dynamic> json) =>
       _$$ServiceVMImplFromJson(json);
@@ -144,12 +130,10 @@ class _$ServiceVMImpl implements _ServiceVM {
   final int? id;
   @override
   final double hourlyRate;
-  @override
-  final int? serviceAmount;
 
   @override
   String toString() {
-    return 'ServiceVM(name: $name, id: $id, hourlyRate: $hourlyRate, serviceAmount: $serviceAmount)';
+    return 'ServiceVM(name: $name, id: $id, hourlyRate: $hourlyRate)';
   }
 
   @override
@@ -160,15 +144,12 @@ class _$ServiceVMImpl implements _ServiceVM {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.hourlyRate, hourlyRate) ||
-                other.hourlyRate == hourlyRate) &&
-            (identical(other.serviceAmount, serviceAmount) ||
-                other.serviceAmount == serviceAmount));
+                other.hourlyRate == hourlyRate));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, id, hourlyRate, serviceAmount);
+  int get hashCode => Object.hash(runtimeType, name, id, hourlyRate);
 
   @JsonKey(ignore: true)
   @override
@@ -188,8 +169,7 @@ abstract class _ServiceVM implements ServiceVM {
   const factory _ServiceVM(
       {required final String name,
       final int? id,
-      required final double hourlyRate,
-      final int? serviceAmount}) = _$ServiceVMImpl;
+      required final double hourlyRate}) = _$ServiceVMImpl;
 
   factory _ServiceVM.fromJson(Map<String, dynamic> json) =
       _$ServiceVMImpl.fromJson;
@@ -200,8 +180,6 @@ abstract class _ServiceVM implements ServiceVM {
   int? get id;
   @override
   double get hourlyRate;
-  @override
-  int? get serviceAmount;
   @override
   @JsonKey(ignore: true)
   _$$ServiceVMImplCopyWith<_$ServiceVMImpl> get copyWith =>

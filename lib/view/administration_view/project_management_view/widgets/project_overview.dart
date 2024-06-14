@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
-import '../../../project_reports_view/widgets/project_card.dart';
+import '../../../shared_widgets/project_card_for_project_magment.dart';
 
 // ignore: must_be_immutable
 class ProjectOverview extends StatefulWidget {

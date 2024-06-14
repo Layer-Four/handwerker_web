@@ -9,7 +9,7 @@ part 'customer_projects_report_dm.g.dart';
 class CustomerProjectsReportDM with _$CustomerProjectsReportDM {
   factory CustomerProjectsReportDM({
     required CustomerCredentialDM customerCredentials,
-    String? customerName,
+    required String customerName,
     // @Default(0.0) double customerRevenue,
     double? customerRevenue,
     @Default([]) List<ProjectRepotsDM> projectsList,

@@ -164,4 +164,12 @@ class Utilitis {
           borderRadius: BorderRadius.circular(6),
         ),
       );
+
+  static Color getStatusColor(String? status) => switch (status) {
+        ('Abgeschlossen') => AppColor.kGreen,
+        ('Gestartet') => AppColor.kPrimaryButtonColor,
+        ('Pausiert') => AppColor.kRed,
+        ('Geplant') => AppColor.kYellow,
+        (_) => Colors.black
+      };
 }
