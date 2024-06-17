@@ -1,10 +1,14 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
+import 'dart:typed_data';
 import 'dart:ui_web' as ui;
+
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pdf_widget;
 
 import '../../view/shared_widgets/symetric_button_widget.dart';
 import '../themes/app_color.dart';
@@ -22,32 +26,11 @@ class Utilitis {
       };
 
   static void writePDFAndDownload(Map<String, dynamic> newUser) async {
-    final pdf = pw.Document();
-    pdf.addPage(
-      pw.Page(
-        build: (context) => pw.Column(
-          children: [
-            pw.Header(title: 'Techtool'),
-            pw.SizedBox(height: 8),
-            pw.Text('Anmeldedaten für den neuen Nutzer:'),
-            pw.SizedBox(height: 8),
-            pw.Text('${newUser['userName']}'),
-            pw.SizedBox(height: 8),
-            // Nutzername: ${newUser['userName']}\n
-            pw.Text('Generiertes Passwort: '),
-            pw.SizedBox(height: 8),
-            pw.Text('${newUser['password']}'),
-
-            // pw.Container(child:pw.Align(alignment: ) ,)
-          ],
-        ),
-      ),
-    );
-    final XFile file = XFile.fromData(await pdf.save());
-    html.AnchorElement anchorElement =
-        html.AnchorElement(href: ui.AssetManager().getAssetUrl(file.path));
-    anchorElement.download = "AnmeldeDaten ${newUser['userName']}.pdf";
-    anchorElement.click();
+    final byteList = await _createPDF(newUser);
+    final file = XFile.fromData(byteList);
+    html.AnchorElement anchorE = html.AnchorElement(href: ui.AssetManager().getAssetUrl(file.path));
+    anchorE.download = "AnmeldeDaten ${newUser['userName']}.pdf";
+    anchorE.click();
   }
 
   static HeaderStyle buildCustomHeadStyle(BuildContext context) => HeaderStyle(
@@ -172,4 +155,64 @@ class Utilitis {
         ('Geplant') => AppColor.kYellow,
         (_) => Colors.black
       };
+
+  /// This private Method create the Layout for the Pdf with the intinal User data.
+  /// Call this method with a [Map] with [Key] 'userName' and [Key] password.
+  /// return a [Future] ByteList.
+  static Future<Uint8List> _createPDF(Map<String, dynamic> newUser) async {
+    final pdf = pdf_widget.Document(version: PdfVersion.pdf_1_4, compress: true);
+    final image = pdf_widget.Image(
+        pdf_widget.MemoryImage(
+            (await rootBundle.load('assets/images/img_techtool.png')).buffer.asUint8List()),
+        height: 20);
+    pdf.addPage(
+      pdf_widget.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (context) => pdf_widget.SizedBox(
+            width: double.infinity,
+            child: pdf_widget.FittedBox(
+              child: pdf_widget.Column(
+                children: [
+                  // pdf_widget.Header(title: 'Techtool'),
+                  pdf_widget.Container(
+                    alignment: pdf_widget.Alignment.centerRight,
+                    width: 300,
+                    child: image,
+                  ),
+                  pdf_widget.SizedBox(height: 8),
+                  pdf_widget.Container(
+                    width: 300,
+                    height: 1.5,
+                    margin: const pdf_widget.EdgeInsets.symmetric(vertical: 5),
+                    color: PdfColors.black,
+                  ),
+                  pdf_widget.SizedBox(
+                    width: 300,
+                    child: pdf_widget.Text('Anmeldedaten für den neuen Nutzer:'),
+                  ),
+                  pdf_widget.SizedBox(height: 8),
+                  pdf_widget.SizedBox(
+                    width: 300,
+                    child: pdf_widget.Text('${newUser['userName']}'),
+                  ),
+                  pdf_widget.SizedBox(height: 8),
+                  // // Nutzername: ${newUser['userName']}\n
+                  pdf_widget.SizedBox(
+                    width: 300,
+                    child: pdf_widget.Text('Generiertes Passwort: '),
+                  ),
+                  pdf_widget.SizedBox(height: 8),
+                  pdf_widget.SizedBox(
+                    width: 300,
+                    child: pdf_widget.Text('${newUser['password']}'),
+                  ),
+
+                  // pw.Container(child:pw.Align(alignment: ) ,)
+                ],
+              ),
+            )),
+      ),
+    );
+    return pdf.save();
+  }
 }
