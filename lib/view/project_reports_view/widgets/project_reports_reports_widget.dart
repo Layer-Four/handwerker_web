@@ -59,9 +59,8 @@ class ProjectReportsShowWidget extends StatelessWidget {
                                     log(reports[i].imagePathList[k]);
                                     log('https://r-wa-happ-be.azurewebsites.net/api/${reports[i].imagePathList[k]}');
                                     return Image.network(
-                                      'https://r-wa-happ-be.azurewebsites.net/api/${reports[i].imagePathList[k]}',
+                                      reports[i].imagePathList[k],
                                       fit: BoxFit.contain,
-                                      // width: MediaQuery.of(context).size.width * 0.18,
                                     );
                                   }),
                         ),
