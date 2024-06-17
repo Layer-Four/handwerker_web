@@ -160,7 +160,8 @@ class Utilitis {
   /// Call this method with a [Map] with [Key] 'userName' and [Key] password.
   /// return a [Future] ByteList.
   static Future<Uint8List> _createPDF(Map<String, dynamic> newUser) async {
-    final pdf = pdf_widget.Document(version: PdfVersion.pdf_1_4, compress: true);
+    final pdf = pdf_widget.Document(
+        version: PdfVersion.pdf_1_4, compress: true, title: 'Anmeldedaten: ${newUser['userName']}');
     final image = pdf_widget.Image(
         pdf_widget.MemoryImage(
             (await rootBundle.load('assets/images/img_techtool.png')).buffer.asUint8List()),
@@ -173,7 +174,6 @@ class Utilitis {
             child: pdf_widget.FittedBox(
               child: pdf_widget.Column(
                 children: [
-                  // pdf_widget.Header(title: 'Techtool'),
                   pdf_widget.Container(
                     alignment: pdf_widget.Alignment.centerRight,
                     width: 300,
@@ -196,7 +196,6 @@ class Utilitis {
                     child: pdf_widget.Text('${newUser['userName']}'),
                   ),
                   pdf_widget.SizedBox(height: 8),
-                  // // Nutzername: ${newUser['userName']}\n
                   pdf_widget.SizedBox(
                     width: 300,
                     child: pdf_widget.Text('Generiertes Passwort: '),
@@ -206,8 +205,6 @@ class Utilitis {
                     width: 300,
                     child: pdf_widget.Text('${newUser['password']}'),
                   ),
-
-                  // pw.Container(child:pw.Align(alignment: ) ,)
                 ],
               ),
             )),
