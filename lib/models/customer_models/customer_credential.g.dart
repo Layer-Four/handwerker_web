@@ -9,7 +9,7 @@ part of 'customer_credential.dart';
 _$CustomerCredentialDMImpl _$$CustomerCredentialDMImplFromJson(
         Map<String, dynamic> json) =>
     _$CustomerCredentialDMImpl(
-      contactPerson: json['contactPerson'] as String,
+      contactName: json['contactName'] as String,
       customerCity: json['customerCity'] as String?,
       customerEmail: json['customerEmail'] as String?,
       customerNumber: json['customerNumber'] as String?,
@@ -22,7 +22,7 @@ _$CustomerCredentialDMImpl _$$CustomerCredentialDMImplFromJson(
 Map<String, dynamic> _$$CustomerCredentialDMImplToJson(
         _$CustomerCredentialDMImpl instance) =>
     <String, dynamic>{
-      'contactPerson': instance.contactPerson,
+      'contactName': instance.contactName,
       'customerCity': instance.customerCity,
       'customerEmail': instance.customerEmail,
       'customerNumber': instance.customerNumber,

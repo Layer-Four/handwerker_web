@@ -235,7 +235,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             .createUser(role: _selectedRole!, name: _nameController.text)
                             .then((value) {
                           // ignore: unused_result
-                          ref.refresh(userAdministrationProvider);
+                          // ref.refresh(userAdministrationProvider);
 
                           if (value.keys.contains('error')) {
                             ScaffoldMessenger.of(context).showSnackBar(

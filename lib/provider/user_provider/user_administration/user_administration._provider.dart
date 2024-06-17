@@ -33,6 +33,7 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       if (response.statusCode != 200) {
         throw Exception('${response.statusCode} Invalid Api call ${response.data}');
       }
+      loadUserEntries();
       final data = response.data;
       log(data.toString());
       return data;
@@ -60,16 +61,15 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       }
       final List<UserDataShort> newState = [];
       state.map((e) => {if (e.id != userID) newState.add(e)}).toList();
-      // log('länge state-> ${state.length} länge zwischneliste-> ${newState.length}');
       state = newState;
       return true;
     } on DioException catch (e) {
       log('DioException ${e.message}');
+      throw Exception(e.message);
     } catch (e) {
       log('General Exception on deleteUser \n$e');
-      throw Exception(e);
+      return false;
     }
-    return false;
   }
 
   Future<void> loadUserEntries() async {
