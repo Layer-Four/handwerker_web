@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../../../provider/customer_provider/customer_provider.dart';
 import '../../shared_widgets/search_line_header.dart';
 import '../../users_view/widgets/add_button_widget.dart';
 import 'widgets/customer_card.dart';
@@ -21,6 +22,7 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
 
   @override
   Widget build(BuildContext context) {
+    final allCustomer = ref.watch(customerProvider);
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
