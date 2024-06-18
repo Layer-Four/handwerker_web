@@ -7,11 +7,11 @@ import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_administration/user_administration._provider.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
 
-class UserRowCard extends ConsumerWidget {
+class UserDataWidget extends ConsumerWidget {
   final List<UserRole> possibleRoles;
   final UserDataShort user;
 
-  const UserRowCard(
+  const UserDataWidget(
     this.user,
     this.possibleRoles, {
     super.key,
@@ -115,8 +115,22 @@ class UserRowCard extends ConsumerWidget {
               Utilitis.askPopUp(
                 context,
                 message: 'Sind sie sicher, dass sie diesen Mitarbeitenden löschen wollen?',
-                onAccept: () => _deleteUser(context, user, ref),
                 onReject: () => Navigator.of(context).pop(),
+                onAccept: () =>
+                    ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Center(
+                        child: Text(
+                          e
+                              ? 'Mitarbeitenden erfolgreich gelöscht'
+                              : 'Mitarbeitenden konnte nicht gelöscht werden',
+                        ),
+                      ),
+                    ),
+                  );
+                }),
               );
             },
             borderRadius: BorderRadius.circular(6),
@@ -204,24 +218,4 @@ class UserRowCard extends ConsumerWidget {
                   ),
                 ),
               ));
-
-  void _deleteUser(BuildContext context, UserDataShort user, WidgetRef ref) {
-    ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
-      e
-          ? {
-              ref.refresh(userAdministrationProvider),
-              Navigator.of(context).pop(),
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Center(child: Text('Mitarbeitenden erfolgreich gelöscht'))),
-              )
-            }
-          : {
-              Navigator.of(context).pop(),
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Center(child: Text('Mitarbeitenden konnte nicht gelöscht werden'))),
-              ),
-            };
-    });
-  }
 }

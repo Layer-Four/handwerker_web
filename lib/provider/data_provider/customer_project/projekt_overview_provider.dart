@@ -26,13 +26,7 @@ class ProjectOverViewNotifier extends Notifier<List<CustomerProjectsReportDM>> {
             'loadCustomerProjectOverview dismissed-> status: ${response.statusCode}\n${response.data}');
       }
       final List data = response.data.map((e) => e as Map).toList();
-      final List<CustomerProjectsReportDM> reports =
-          // for (var e in data) {
-          //   final kunde = CustomerProjectsReportDM.fromJson(e);
-          //   log(kunde.toJson().toString());
-          //   // reports.add(CustomerProjectsReportDM.fromJson(e));
-          // }
-          data.map((e) => CustomerProjectsReportDM.fromJson(e)).toList();
+      final reports = data.map((e) => CustomerProjectsReportDM.fromJson(e)).toList();
 
       state = reports;
       return;

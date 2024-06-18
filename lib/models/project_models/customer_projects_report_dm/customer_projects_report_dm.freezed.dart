@@ -23,7 +23,7 @@ CustomerProjectsReportDM _$CustomerProjectsReportDMFromJson(
 mixin _$CustomerProjectsReportDM {
   CustomerCredentialDM get customerCredentials =>
       throw _privateConstructorUsedError;
-  String? get customerName =>
+  String get customerName =>
       throw _privateConstructorUsedError; // @Default(0.0) double customerRevenue,
   double? get customerRevenue => throw _privateConstructorUsedError;
   List<ProjectRepotsDM> get projectsList => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $CustomerProjectsReportDMCopyWith<$Res> {
   @useResult
   $Res call(
       {CustomerCredentialDM customerCredentials,
-      String? customerName,
+      String customerName,
       double? customerRevenue,
       List<ProjectRepotsDM> projectsList});
 
@@ -64,7 +64,7 @@ class _$CustomerProjectsReportDMCopyWithImpl<$Res,
   @override
   $Res call({
     Object? customerCredentials = null,
-    Object? customerName = freezed,
+    Object? customerName = null,
     Object? customerRevenue = freezed,
     Object? projectsList = null,
   }) {
@@ -73,10 +73,10 @@ class _$CustomerProjectsReportDMCopyWithImpl<$Res,
           ? _value.customerCredentials
           : customerCredentials // ignore: cast_nullable_to_non_nullable
               as CustomerCredentialDM,
-      customerName: freezed == customerName
+      customerName: null == customerName
           ? _value.customerName
           : customerName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       customerRevenue: freezed == customerRevenue
           ? _value.customerRevenue
           : customerRevenue // ignore: cast_nullable_to_non_nullable
@@ -109,7 +109,7 @@ abstract class _$$CustomerProjectsReportDMImplCopyWith<$Res>
   @useResult
   $Res call(
       {CustomerCredentialDM customerCredentials,
-      String? customerName,
+      String customerName,
       double? customerRevenue,
       List<ProjectRepotsDM> projectsList});
 
@@ -131,7 +131,7 @@ class __$$CustomerProjectsReportDMImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? customerCredentials = null,
-    Object? customerName = freezed,
+    Object? customerName = null,
     Object? customerRevenue = freezed,
     Object? projectsList = null,
   }) {
@@ -140,10 +140,10 @@ class __$$CustomerProjectsReportDMImplCopyWithImpl<$Res>
           ? _value.customerCredentials
           : customerCredentials // ignore: cast_nullable_to_non_nullable
               as CustomerCredentialDM,
-      customerName: freezed == customerName
+      customerName: null == customerName
           ? _value.customerName
           : customerName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       customerRevenue: freezed == customerRevenue
           ? _value.customerRevenue
           : customerRevenue // ignore: cast_nullable_to_non_nullable
@@ -161,7 +161,7 @@ class __$$CustomerProjectsReportDMImplCopyWithImpl<$Res>
 class _$CustomerProjectsReportDMImpl extends _CustomerProjectsReportDM {
   _$CustomerProjectsReportDMImpl(
       {required this.customerCredentials,
-      this.customerName,
+      required this.customerName,
       this.customerRevenue,
       final List<ProjectRepotsDM> projectsList = const []})
       : _projectsList = projectsList,
@@ -173,7 +173,7 @@ class _$CustomerProjectsReportDMImpl extends _CustomerProjectsReportDM {
   @override
   final CustomerCredentialDM customerCredentials;
   @override
-  final String? customerName;
+  final String customerName;
 // @Default(0.0) double customerRevenue,
   @override
   final double? customerRevenue;
@@ -233,7 +233,7 @@ class _$CustomerProjectsReportDMImpl extends _CustomerProjectsReportDM {
 abstract class _CustomerProjectsReportDM extends CustomerProjectsReportDM {
   factory _CustomerProjectsReportDM(
           {required final CustomerCredentialDM customerCredentials,
-          final String? customerName,
+          required final String customerName,
           final double? customerRevenue,
           final List<ProjectRepotsDM> projectsList}) =
       _$CustomerProjectsReportDMImpl;
@@ -245,7 +245,7 @@ abstract class _CustomerProjectsReportDM extends CustomerProjectsReportDM {
   @override
   CustomerCredentialDM get customerCredentials;
   @override
-  String? get customerName;
+  String get customerName;
   @override // @Default(0.0) double customerRevenue,
   double? get customerRevenue;
   @override

@@ -44,7 +44,14 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                 height: 9 * 60,
                 child: ref.watch(userAdministrationProvider).isEmpty
                     ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')
-                    : _userRowBuilder(),
+                    : ListView.builder(
+                        itemCount: ref.watch(userAdministrationProvider).length,
+                        itemBuilder: (_, index) => UserDataWidget(
+                          ref.watch(userAdministrationProvider)[index],
+                          _roles,
+                          key: ValueKey(ref.watch(userAdministrationProvider)[index]),
+                        ),
+                      ),
               ),
               AddButton(
                   isOpen: _isVisible,
@@ -54,14 +61,6 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                   )),
             ],
           ),
-        ),
-      );
-
-  Widget _userRowBuilder() => ListView.builder(
-        itemCount: ref.watch(userAdministrationProvider).length,
-        itemBuilder: (_, index) => UserRowCard(
-          ref.watch(userAdministrationProvider)[index],
-          _roles,
         ),
       );
 }

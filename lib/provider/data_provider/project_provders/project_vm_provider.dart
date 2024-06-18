@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/constants/api/api.dart';
 import '/models/project_models/project_vm/project_vm.dart';
@@ -17,23 +18,16 @@ class ProjectVMNotifer extends AsyncNotifier<List<ProjectVM>?> {
     try {
       final response = await _api.getProjectsDM;
       if (response.statusCode != 200) {
-        if (response.statusCode == 401) {
-          // TODO: implement logout logic!
-          log('request dismissed unauthorized');
-          return;
-        }
-        log('request dismissed statuscode: ${response.statusCode}');
-        return;
+        throw Exception('Error on loadProject status: ${response.statusCode}\n${response.data}');
       }
       final List data = response.data;
       final projects = data.map<ProjectVM>((e) => ProjectVM.fromJson(e)).toList();
       state = AsyncValue.data(projects);
       return;
-      // } on DioException catch (e) {
-      // throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw Exception(e.toString());
     } catch (e) {
-      throw Exception(e);
-      // log(e.toString());
+      log('Exception on loadProject:\n$e');
     }
   }
 }

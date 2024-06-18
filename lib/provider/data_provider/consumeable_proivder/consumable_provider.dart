@@ -72,7 +72,8 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       throw Exception(e);
     } catch (e) {
       log('Exception: $e');
-      throw Exception(e);
+      return result;
+      // throw Exception(e);
     }
   }
 

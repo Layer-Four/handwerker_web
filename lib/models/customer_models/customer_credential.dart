@@ -6,7 +6,7 @@ part 'customer_credential.g.dart';
 @freezed
 class CustomerCredentialDM with _$CustomerCredentialDM {
   const factory CustomerCredentialDM({
-    required String contactPerson,
+    required String contactName,
     String? customerCity,
     String? customerEmail,
     String? customerNumber,
