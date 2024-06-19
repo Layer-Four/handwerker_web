@@ -4,14 +4,13 @@ class ProjectReportHeader extends StatelessWidget {
   const ProjectReportHeader({super.key});
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Row(
           children: [
             SizedBox(
-              width:
-                  // MediaQuery.of(context).size.width > 1000
-                  //     ? 700                  :
-                  MediaQuery.of(context).size.width * 0.55,
+              width: MediaQuery.of(context).size.width > 1255
+                  ? MediaQuery.of(context).size.width * 0.6
+                  : MediaQuery.of(context).size.width * 0.5,
               child: Text(
                 'Kunde',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(

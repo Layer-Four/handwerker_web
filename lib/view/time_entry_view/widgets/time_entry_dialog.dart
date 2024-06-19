@@ -1,15 +1,14 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// TODO: Please load all Datas from Api instance
-import 'package:http/http.dart' as http;
-import '../../../../constants/api/api.dart';
 import '../../../../models/service_models/service_vm/service_vm.dart';
-import '../../../../models/time_models/time_dm/time_dm.dart';
 import '../../../../models/users_models/user_data_short/user_short.dart';
 import '../../../../provider/data_provider/service_provider/service_vm_provider.dart';
 import '../../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
+import '../../../constants/api/api.dart';
 import '../../../constants/themes/app_color.dart';
+import '../../../models/customer_models/customer_short_model/customer_short_dm.dart';
+import '../../../models/project_models/project_vm/project_vm.dart';
+import '../../../models/time_models/time_vm/time_vm.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
@@ -31,15 +30,17 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
   ServiceVM? _choosenService;
   UserDataShort? _selectedUser;
   bool _initUser = false;
-  Project? _project;
-  late TimeEntry _entry;
-  List<Project>? _projectsForCustomer;
-  int? _selectedCustomerId;
+  ProjectVM? _project;
+  late TimeVMAdapter _entry;
+  List<ProjectVM> _projectsFormCustomer = [];
+  List<CustomerShortDM> _customers = [];
+  CustomerShortDM? _selectedCustomers;
 
   @override
   void initState() {
     super.initState();
-    _entry = TimeEntry(
+    loadCustomer();
+    _entry = TimeVMAdapter(
       date: DateTime.now(),
       startTime: DateTime.now(),
       endTime: DateTime.now(),
@@ -54,6 +55,12 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
     _startController.text = '${selectedTime!.hour}:$minute';
   }
 
+  void loadCustomer() {
+    ref.read(timeVMProvider.notifier).getAllCustomer().then(
+          (e) => setState(() => _customers = e),
+        );
+  }
+
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -62,8 +69,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             children: [
               _dayInputRow(),
               _timeInputRow(),
-              _buildCustomerField(),
-              _buildProjectField(_projectsForCustomer ?? []), // Pass projects here
+              _buildCustomerDropDown(),
+              _buildProjectField(), // Pass projects here
               _buildServiceDropdown(),
               _buildDescription(),
               _buildSelectUser(),
@@ -94,7 +101,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               _users = snapshot.data;
               _selectedUser = _users!.first;
               _initUser = true;
-              _entry = _entry.copyWith(userID: _selectedUser!.id);
+              _entry = _entry.copyWith(userId: _selectedUser!.id);
             }
           }
           return Padding(
@@ -130,7 +137,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         .toList(),
                     onChanged: (e) => setState(() {
                       _selectedUser = e!;
-                      _entry = _entry.copyWith(userID: e.id);
+                      _entry = _entry.copyWith(userId: e.id);
                     }),
                     onTap: () => (_users == null) ? loadUser() : null,
                   ),
@@ -141,21 +148,58 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         },
       );
 
-  Widget _buildCustomerField() => FutureBuilder<List<Customer>>(
-        future: fetchCustomers(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator.adaptive();
-          }
-          if (snapshot.hasError) {
-            return const Text('Error fetching customers');
-          }
-          final customers = snapshot.data!;
-          return _buildCustomerDropdown(customers);
-        },
+  Widget _buildCustomerDropDown() => GestureDetector(
+        onTap: (() => _customers.isEmpty ? loadCustomer() : null),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  'Kunde',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+              ),
+              Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColor.kTextfieldBorder),
+                ),
+                child: DropdownButton(
+                  underline: const SizedBox(),
+                  isExpanded: true,
+                  value: _selectedCustomers,
+                  items: _customers
+                      .map(
+                        (customer) => DropdownMenuItem(
+                          value: customer,
+                          child: Text(customer.companyName),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (customer) {
+                    ref.read(timeVMProvider.notifier).getProjectForCustomer(customer!.id).then((e) {
+                      setState(() {
+                        _selectedCustomers = customer;
+                        _projectsFormCustomer = e.toSet().toList();
+                        _entry = _entry.copyWith(
+                          customerId: customer.id,
+                          customerName: customer.companyName,
+                        );
+                      });
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       );
 
-  Widget _buildCustomerDropdown(List<Customer> customers) => Padding(
+  Widget _buildProjectField() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,7 +207,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Text(
-                'Kunde',
+                'Projekt',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
@@ -173,27 +217,25 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: AppColor.kTextfieldBorder),
               ),
-              child: DropdownButton<int>(
+              child: DropdownButton(
                 underline: const SizedBox(),
                 isExpanded: true,
-                value: _selectedCustomerId,
-                items: customers
+                value: _project,
+                items: _projectsFormCustomer
                     .map(
-                      (customer) => DropdownMenuItem<int>(
-                        value: customer.id,
-                        child: Text(customer.companyName ?? 'Unknown Company'),
+                      (project) => DropdownMenuItem(
+                        value: project,
+                        child: Text(project.title ?? 'Kein Title'),
                       ),
                     )
                     .toList(),
-                onChanged: (customerId) {
+                onChanged: (project) {
                   setState(() {
-                    _selectedCustomerId = customerId;
-                    final selectedCustomer = customers.firstWhere(
-                      (customer) => customer.id == customerId,
-                      orElse: () => Customer(companyName: null, id: -1),
+                    _project = project;
+                    _entry = _entry.copyWith(
+                      projectId: project!.id,
+                      projectTitle: project.title,
                     );
-                    // Call _fetchProjectsForCustomer with the selected customer ID
-                    _fetchProjectsForCustomer(selectedCustomer.id);
                   });
                 },
               ),
@@ -201,92 +243,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           ],
         ),
       );
-
-  Widget _buildProjectField(List<Project> projects) {
-    if (_project == null && projects.isNotEmpty) {
-      _project = projects.first;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Text(
-              'Projekt',
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-          ),
-          Container(
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColor.kTextfieldBorder),
-            ),
-            child: DropdownButton<Project>(
-              underline: const SizedBox(),
-              isExpanded: true,
-              value: _project,
-              items: projects
-                  .map(
-                    (project) => DropdownMenuItem<Project>(
-                      value: project,
-                      child: Text(project.title ?? 'Default Title'),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (project) {
-                setState(() {
-                  _project = project;
-                  _entry = _entry.copyWith(projectID: project!.id);
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<List<Customer>> fetchCustomers() async {
-    try {
-      final response =
-          await http.get(Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/customer/list'));
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonList = json.decode(response.body);
-        return jsonList.map((json) => Customer.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to load customers');
-      }
-    } catch (e) {
-      throw Exception('Failed to load customers: $e');
-    }
-  }
-
-  Future<void> _fetchProjectsForCustomer(int customerId) async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://r-wa-happ-be.azurewebsites.net/api/project/list?customerId=$customerId'));
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonList = json.decode(response.body);
-        final projects = jsonList.map((json) => Project.fromJson(json)).toList();
-
-        // Ensure uniqueness using a Set
-        final uniqueProjects = projects.toSet().toList();
-
-        setState(() {
-          _projectsForCustomer = uniqueProjects;
-          _project = projects.isNotEmpty ? projects.first : null;
-        });
-      } else {
-        throw Exception('Failed to load projects for customer');
-      }
-    } catch (e) {
-      throw Exception('Failed to load projects for customer: $e');
-    }
-  }
 
   Padding _buildDescription() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -375,8 +331,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 onChanged: (e) => setState(() {
                   _choosenService = e;
                   _entry = _entry.copyWith(
-                    // serviceTitle: e!.name,
-                    serviceID: e!.id,
+                    serviceTitle: e!.name,
+                    serviceId: e.id,
                   );
                 }),
               ),
@@ -675,6 +631,8 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           text: 'Eintrag erstellen',
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
           onPressed: () {
+            // TODO: check if _selectetCustomer in _entry!!
+
             ref.read(timeVMProvider.notifier).saveTimeEntry(_entry).then((e) {
               Navigator.of(context).pop();
               return ScaffoldMessenger.of(context).showSnackBar(

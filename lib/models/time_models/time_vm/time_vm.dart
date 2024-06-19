@@ -22,6 +22,7 @@ class TimeVMAdapter with _$TimeVMAdapter {
     int? serviceId,
     String? serviceTitle,
     String? customerName,
+    int? customerId,
     @Default(TimeEntryType.workOrder) TimeEntryType type,
 
     // required int id,
@@ -58,12 +59,11 @@ class TimeVMAdapter with _$TimeVMAdapter {
         id: e.id,
         pauseEnd: e.pauseEnd,
         pauseStart: e.pauseStart,
-        projectId: e.projectID,
-        serviceId: e.serviceID,
-        serviceTitle: e.serviceTitle,
+        projectId: e.projectId,
+        serviceId: e.userServiceId,
         startTime: e.startTime,
         type: TimeEntryTypeExtention.getType(e.type),
-        userId: e.userID,
+        userId: e.userId,
       );
 }
 

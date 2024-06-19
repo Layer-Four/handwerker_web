@@ -17,6 +17,7 @@ _$CustomerCredentialDMImpl _$$CustomerCredentialDMImplFromJson(
       customerStreet: json['customerStreet'] as String?,
       customerStreetNr: json['customerStreetNr'] as String?,
       customerZipcode: json['customerZipcode'] as String?,
+      country: json['country'] as String?,
     );
 
 Map<String, dynamic> _$$CustomerCredentialDMImplToJson(
@@ -30,4 +31,5 @@ Map<String, dynamic> _$$CustomerCredentialDMImplToJson(
       'customerStreet': instance.customerStreet,
       'customerStreetNr': instance.customerStreetNr,
       'customerZipcode': instance.customerZipcode,
+      'country': instance.country,
     };

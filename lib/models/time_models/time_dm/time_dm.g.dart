@@ -19,12 +19,12 @@ _$TimeEntryImpl _$$TimeEntryImplFromJson(Map<String, dynamic> json) =>
       pauseStart: json['pauseStart'] == null
           ? null
           : DateTime.parse(json['pauseStart'] as String),
-      projectID: (json['projectID'] as num?)?.toInt(),
-      serviceID: (json['serviceID'] as num?)?.toInt(),
-      serviceTitle: json['serviceTitle'] as String?,
+      projectId: (json['projectId'] as num?)?.toInt(),
+      userServiceId: (json['userServiceId'] as num?)?.toInt(),
       startTime: DateTime.parse(json['startTime'] as String),
       type: (json['type'] as num?)?.toInt() ?? 1,
-      userID: json['userID'] as String?,
+      userId: json['userId'] as String?,
+      customerId: (json['customerId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$TimeEntryImplToJson(_$TimeEntryImpl instance) =>
@@ -36,10 +36,10 @@ Map<String, dynamic> _$$TimeEntryImplToJson(_$TimeEntryImpl instance) =>
       'id': instance.id,
       'pauseEnd': instance.pauseEnd?.toIso8601String(),
       'pauseStart': instance.pauseStart?.toIso8601String(),
-      'projectID': instance.projectID,
-      'serviceID': instance.serviceID,
-      'serviceTitle': instance.serviceTitle,
+      'projectId': instance.projectId,
+      'userServiceId': instance.userServiceId,
       'startTime': instance.startTime.toIso8601String(),
       'type': instance.type,
-      'userID': instance.userID,
+      'userId': instance.userId,
+      'customerId': instance.customerId,
     };

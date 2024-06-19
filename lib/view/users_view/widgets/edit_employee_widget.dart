@@ -142,39 +142,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                               .bodyMedium!
                               .copyWith(color: AppColor.kWhite),
                       text: 'Drucken',
-                      onPressed: () async {
-                        // pw.Document pdf = pw.Document();
-                        // pdf.addPage(
-                        //   pw.Page(
-                        //     build: (context) => pw.Column(
-                        //       children: [
-                        //         pw.Header(title: 'Techtool'),
-                        //         pw.SizedBox(height: 8),
-                        //         pw.Text('Anmeldedaten für den neuen Nutzer:'),
-                        //         pw.SizedBox(height: 8),
-                        //         pw.Text('${_newUser!['userName']}'),
-                        //         pw.SizedBox(height: 8),
-                        //         // Nutzername: ${newUser['userName']}\n
-                        //         pw.Text('Generiertes Passwort: '),
-                        //         pw.SizedBox(height: 8),
-                        //         pw.Text('${_newUser!['password']}'),
-
-                        //         // pw.Container(child:pw.Align(alignment: ) ,)
-                        //       ],
-                        //     ),
-                        //   ),
-                        // );
-                        // // TODO: on PDF safe beginn error
-                        // pdf.save().then((pdf) {
-                        //   final XFile file = XFile.fromData(pdf);
-                        //   // final XFile file = XFile.fromData(await pdf.save());
-                        //   html.AnchorElement anchorElement =
-                        //       html.AnchorElement(href: ui.AssetManager().getAssetUrl(file.path));
-                        //   anchorElement.download = "AnmeldeDaten ${_newUser!['userName']}.pdf";
-                        //   anchorElement.click();
-                        // });
-                        Utilitis.writePDFAndDownload(_newUser!);
-                      },
+                      onPressed: () async => Utilitis.writePDFAndDownload(_newUser!),
                     ),
                   ),
                 ],

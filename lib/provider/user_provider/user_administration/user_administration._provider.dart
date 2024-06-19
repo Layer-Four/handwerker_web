@@ -35,7 +35,6 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       }
       loadUserEntries();
       final data = response.data;
-      log(data.toString());
       return data;
     } on DioException catch (e) {
       if (e.toString().contains('400')) {
@@ -46,7 +45,8 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       if (e.toString().contains('400')) {
         return {'error': 'duplicated user'};
       }
-      throw Exception(e);
+      log('Error on createUser $e');
+      return {};
     }
   }
 
@@ -54,7 +54,9 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
     try {
       final response = await _api.deleteUser(userID);
       if (response.statusCode != 200) {
-        throw Exception("can't delete User. status -> ${response.statusCode} : ${response.data}");
+        throw Exception(
+          'Error on deleteUser, status-> ${response.statusCode}\n ${response.data}',
+        );
       }
       if (response.data.contains('User deleted successfully.')) {
         loadUserEntries();
@@ -64,10 +66,9 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       state = newState;
       return true;
     } on DioException catch (e) {
-      log('DioException ${e.message}');
-      throw Exception(e.message);
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
-      log('General Exception on deleteUser \n$e');
+      log('Error on deleteUser $e');
       return false;
     }
   }
@@ -77,7 +78,7 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       final response = await _api.getUserDataShort;
       if (response.statusCode != 200) {
         throw Exception(
-          'Something went wrong on Request:\n statuscode-> ${response.statusCode} \n${response.data}',
+          'Error on loadUserEntries, status-> ${response.statusCode}\n ${response.data}',
         );
       }
       final List data = response.data.map((e) => e).toList();
@@ -86,26 +87,28 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       state = newState;
       return;
     } on DioException catch (e) {
-      if (e.message != null && e.message!.contains('statuscode-> 500')) {
-        log('$e');
-        throw Exception(e);
-      }
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
-      throw Exception(e);
+      log('Error on loadUserEntries $e');
+      return;
     }
-    return;
   }
 
   Future<List<UserRole>> loadUserRoles() async {
     try {
       final response = await _api.getUserRoles;
       if (response.statusCode != 200) {
-        throw Exception('${response.statusCode} Invalid statusCode check Api call');
+        throw Exception(
+          'Error on loadUserRoles, status-> ${response.statusCode}\n ${response.data}',
+        );
       }
       final List data = response.data.map((e) => e).toList();
       return data.map((data) => UserRole.fromJson(data)).toList();
+    } on DioException catch (e) {
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
-      throw Exception(e);
+      log('Error on loadUserRoles $e');
+      return [];
     }
   }
 
@@ -114,11 +117,15 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       final response = await _api.putResetPassword({'userName': name});
       if (response.statusCode != 200) {
         throw Exception(
-            'Something went wrong on Request:\n ${response.statusCode} \n${response.data}');
+          'Error on resetPassword, status-> ${response.statusCode}\n ${response.data}',
+        );
       }
       return response.data;
+    } on DioException catch (e) {
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
-      throw Exception(e);
+      log('Error on resetPassword $e');
+      return {};
     }
   }
 
@@ -129,18 +136,19 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
     json.update('roles', (e) => e = roles);
     json.removeWhere((key, value) => key == 'id');
     json.addAll(userId);
-    log(json.toString());
-
     try {
       final response = await _api.putUpdateUser(json);
       if (response.statusCode != 200) {
         throw Exception(
-            'something went wrong on update User-> ${response.statusCode}\n${response.data}');
+          'Error on updateUser, status-> ${response.statusCode}\n ${response.data}',
+        );
       }
       loadUserEntries();
       return true;
+    } on DioException catch (e) {
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
-      log(e.toString());
+      log('Error on updateUser $e');
       return false;
     }
   }

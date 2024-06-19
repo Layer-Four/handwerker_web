@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/utilitis/utilitis.dart';
 import '../../provider/data_provider/customer_project/projekt_overview_provider.dart';
 import '../shared_widgets/search_line_header.dart';
-import 'widgets/project_customer_overview_wiedget.dart';
+import 'widgets/project_customer_overview_widget.dart';
 import 'widgets/project_report_header.dart';
 
 class ProjectOverviewView extends StatelessWidget {

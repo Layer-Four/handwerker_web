@@ -5,35 +5,35 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/project_entry_models/project_entry_vm/project_entry_vm.dart';
 
-class Customer {
-  final String? companyName;
-  final int id;
+// class Customer {
+//   final String? companyName;
+//   final int id;
 
-  Customer({this.companyName, required this.id});
+//   Customer({this.companyName, required this.id});
 
-  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
-        companyName:
-            json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
-        id: json['id'] != null ? json['id'] as int : -1,
-      );
-}
+//   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+//         companyName:
+//             json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
+//         id: json['id'] != null ? json['id'] as int : -1,
+//       );
+// }
 
-// Project class
-class Project {
-  final String? title;
-  final int id;
-  final int customerId; // Add customerId property
+// // Project class
+// class Project {
+//   final String? title;
+//   final int id;
+//   final int customerId; // Add customerId property
 
-  Project({this.title, required this.id, required this.customerId}); // Update constructor
+//   Project({this.title, required this.id, required this.customerId}); // Update constructor
 
-  factory Project.fromJson(Map<String, dynamic> json) => Project(
-        title: json['title'] != null ? json['title'] as String : 'Default Title',
-        id: json['id'] != null ? json['id'] as int : -1,
-        customerId: json['customerId'] != null
-            ? json['customerId'] as int
-            : -1, // Parse customerId from JSON
-      );
-}
+//   factory Project.fromJson(Map<String, dynamic> json) => Project(
+//         title: json['title'] != null ? json['title'] as String : 'Default Title',
+//         id: json['id'] != null ? json['id'] as int : -1,
+//         customerId: json['customerId'] != null
+//             ? json['customerId'] as int
+//             : -1, // Parse customerId from JSON
+//       );
+// }
 
 class Api {
   // Routes
@@ -56,6 +56,7 @@ class Api {
   final String _getListCustomer = '/customer/list';
   final String _getListProject = '/project/list';
   final String _getProjects = '/project/list';
+  final String _getProjectByCustomer = '/project/list?customerId=';
   final String _getProjectsConsumable = '/userProjectMaterial/read/1';
   final String _getService = '/service/list';
   final String _getTimeTacks = '/timetracking/read/3';
@@ -129,9 +130,9 @@ class Api {
   Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
   Future<Response> get getUserDataShort => _api.get(_getListUsersShort);
   Future<Response> get getUserDocumentationEntry => _api.get(_getUserProjectDocumentation);
-
+  Future<Response> getUserServiceByID(String id) => _api.get('$_getUserServiceListByID$id');
+  Future<Response> getProjectByCustomerID(int id) => _api.get('$_getProjectByCustomer$id');
   Future<Response> get getUserRoles => _api.get(_getUserRole);
-
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
   Future<Response> postCreateProjectEntry(ProjectEntryVM data) =>
       _api.post(_postCreateProjectEntry, data: data.toJson());
@@ -147,7 +148,6 @@ class Api {
   Future<Response> deleteUser(String userID) => _api.delete('$_deleteUser/$userID');
   Future<Response> getDokuforProjectURL(int projectID) =>
       _api.get('/project/$projectID/documentations');
-  Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
   Future<Response> postCreateMaterial(Map<String, dynamic> data) =>
       _api.post(_postcreateCardMaterial, data: data);
   Future<Response> postCreateNewUser(Map<String, dynamic> user) =>

@@ -22,71 +22,63 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
   int editingProjectIndex = -1;
 
   @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    // final projekts = ref.watch(projektOverviewProvider);
-    // for (var e in projekts) {
-    //   log(jsonEncode(e));
-    // }
-
-    return Container(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SearchLineHeader(title: 'Projektverwaltung'),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Name',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: screenWidth > 1000 ? double.infinity : null,
-                height: 9 * 74,
-                child: ListView.builder(
-                  itemCount: project.length,
-                  itemBuilder: (_, index) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isAddNewProject = !isAddNewProject;
-                        editingProjectIndex = index;
-                      });
-                    },
-                    child: CustomerCard(project[index]),
+  Widget build(BuildContext context) => Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SearchLineHeader(title: 'Projektverwaltung'),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Name',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              AddButton(
-                isOpen: isAddNewProject,
-                onTap: () => setState(() => isAddNewProject = !isAddNewProject),
-                hideAbleChild: AddNewProject.withDefaultVM(
-                  onSave: () {
-                    // Handle the save operation here
-                  },
-                  onCancel: () {
-                    setState(() => isAddNewProject = !isAddNewProject);
-                  },
-                  project: editingProjectIndex != -1 ? project[editingProjectIndex] : null,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width > 1000 ? double.infinity : null,
+                  height: 9 * 74,
+                  child: ListView.builder(
+                    itemCount: project.length,
+                    itemBuilder: (_, index) => GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isAddNewProject = !isAddNewProject;
+                          editingProjectIndex = index;
+                        });
+                      },
+                      child: CustomerCard(project[index]),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                AddButton(
+                  isOpen: isAddNewProject,
+                  onTap: () => setState(() => isAddNewProject = !isAddNewProject),
+                  hideAbleChild: AddNewProject.withDefaultVM(
+                    onSave: () {
+                      // Handle the save operation here
+                    },
+                    onCancel: () {
+                      setState(() => isAddNewProject = !isAddNewProject);
+                    },
+                    project: editingProjectIndex != -1 ? project[editingProjectIndex] : null,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 final List<CustomeProject> project = [

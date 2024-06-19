@@ -41,13 +41,15 @@ class UserNotifier extends Notifier<UserVM> {
       final response = await _api.postloginUser(json);
       if (response.statusCode != 200) {
         throw Exception(
-          'something went wrong on loginUser: status-> ${response.statusCode}\n${response.data}',
+          'Error on loginUser, status-> ${response.statusCode}\n ${response.data}',
         );
       }
       _api.storeToken(response.data['token']);
       state = state.copyWith(userToken: response.data['token']);
       log(state.userToken);
       return true;
+    } on DioException catch (e) {
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
       log('Error on loginUser $e');
       return false;
@@ -64,15 +66,14 @@ class UserNotifier extends Notifier<UserVM> {
       final response = await _api.putSetNewPassword(json);
       if (response.statusCode != 200) {
         throw Exception(
-            'something went wrong by setNewPassword: status-> ${response.statusCode}\n${response.data}');
+          'Error on setNewPassword status: ${response.statusCode}\n${response.data}',
+        );
       }
-      log(response.data);
       return true;
     } on DioException catch (e) {
-      log('${e.message}');
-      return false;
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
-      log(e.toString());
+      log('Error on setNewPassword $e');
       return false;
     }
   }

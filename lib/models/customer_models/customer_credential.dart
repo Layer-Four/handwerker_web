@@ -14,6 +14,7 @@ class CustomerCredentialDM with _$CustomerCredentialDM {
     String? customerStreet,
     String? customerStreetNr,
     String? customerZipcode,
+    String? country,
   }) = _CustomerCredentialDM;
 
   factory CustomerCredentialDM.fromJson(Map<String, dynamic> json) =>

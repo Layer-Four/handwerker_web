@@ -29,7 +29,7 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       final response = await _api.getMaterialsList;
       if (response.statusCode != 200) {
         throw Exception(
-          'Error on loading Material, status-> ${response.statusCode}\n ${response.data}',
+          'Error on loadConsumables, status-> ${response.statusCode}\n ${response.data}',
         );
       }
       final List data = response.data.map((e) => e).toList();
@@ -44,6 +44,8 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
         }
       }
       state = result;
+    } on DioException catch (e) {
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
       log('Error on loadConsumables: $e');
     }
@@ -68,12 +70,10 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       _units.addAll([...newUnits]);
       return result;
     } on DioException catch (e) {
-      log('DioException: $e');
-      throw Exception(e);
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
       log('Exception: $e');
       return result;
-      // throw Exception(e);
     }
   }
 
@@ -82,14 +82,16 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       final response = await _api.deleteConsumable(id);
       if (response.statusCode != 200) {
         throw Exception(
-          'Failed to delete Consumable from the server: ${response.statusCode}\n${response.data}',
+          'Error when attempting to deleteConsumable: ${response.statusCode}\n${response.data}',
         );
       }
       state = state.where((item) => item.id != id).toList();
       return true;
+    } on DioException catch (e) {
+      throw Exception('DioException: ${e.message}');
     } catch (e) {
-      throw Exception('Error when attempting to delete the item: $e');
-      // return false;
+      log('Error when attempting deleteConsumable: $e');
+      return false;
     }
   }
 
@@ -117,7 +119,6 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       state = [...state, newConsumabelList];
       return true;
     } on DioException catch (error) {
-      log(error.message ?? 'DioException -> ${jsonEncode(error)}');
       throw Exception(error.message ?? 'DioException -> ${jsonEncode(error)}');
     } catch (error) {
       log('Error on createService: $error');
@@ -135,10 +136,8 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
     };
     try {
       final data = json;
-      log(jsonEncode(data));
       final response = await _api.putUpdateConsumableEntry(data);
       if (response.statusCode != 200) {
-        log('Update response: ${response.data}');
         throw Exception(
           'Exception on updateConsumable status-> ${response.statusCode}\n${response.data}',
         );
@@ -147,7 +146,7 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
     } on DioException catch (e) {
       throw Exception('DioException: status ${e.response?.statusCode}\n${e.message}');
     } catch (e) {
-      log('ERROR ON ConsumableProvider-> $e');
+      log('Error on  updateConsumable-> $e');
       return false;
     }
   }
