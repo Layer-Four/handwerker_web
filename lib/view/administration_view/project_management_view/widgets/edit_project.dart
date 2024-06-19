@@ -5,8 +5,10 @@ import 'package:intl/intl.dart';
 
 import '../../../../constants/api/api.dart';
 import '../../../../constants/themes/app_color.dart';
+import '../../../../models/customer_models/customer_short_model/customer_short_dm.dart';
 import '../../../../models/project_entry_models/project_entry_vm/project_entry_vm.dart';
 import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../../../../models/project_models/project_vm/project_vm.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
 class AddNewProject extends StatefulWidget {
@@ -54,7 +56,7 @@ class _AddNewProjectState extends State<AddNewProject> {
   String? selectedProject;
   String? selectedCustomer;
   String? selectedStatus;
-  List<Customer> customerOptions = [];
+  List<CustomerShortDM> customerOptions = [];
   List<String> statusOptions = ['Offen', 'Geschlossen', 'In Bearbeitung', 'On Hold'];
   final Map<String, int> statusOptionsMap = {
     'Offen': 3,
@@ -62,7 +64,7 @@ class _AddNewProjectState extends State<AddNewProject> {
     'In Bearbeitung': 6,
     'On Hold': 7,
   };
-  List<Project> projectOptions = [];
+  List<ProjectVM> projectOptions = [];
   bool isLoadingCustomers = true;
   bool isLoadingProjects = true;
 
@@ -81,7 +83,7 @@ class _AddNewProjectState extends State<AddNewProject> {
       final response = await Api().getListProject;
       final List<dynamic> data = response.data;
       setState(() {
-        projectOptions = data.map((json) => Project.fromJson(json)).toList();
+        projectOptions = data.map((json) => ProjectVM.fromJson(json)).toList();
         isLoadingProjects = false;
       });
     } catch (e) {
@@ -100,7 +102,7 @@ class _AddNewProjectState extends State<AddNewProject> {
       final response = await Api().getListCustomer;
       final List<dynamic> data = response.data;
       setState(() {
-        customerOptions = data.map((json) => Customer.fromJson(json)).toList();
+        customerOptions = data.map((json) => CustomerShortDM.fromJson(json)).toList();
         isLoadingCustomers = false;
       });
     } catch (e) {
@@ -113,9 +115,9 @@ class _AddNewProjectState extends State<AddNewProject> {
 
   Future<void> _saveProjectEntry() async {
     // Find the selected Customer object based on the selected company name
-    Customer selectedCustomerObject = customerOptions.firstWhere(
+    CustomerShortDM selectedCustomerObject = customerOptions.firstWhere(
       (customer) => customer.companyName == selectedCustomer,
-      orElse: () => Customer(companyName: 'Unknown', id: -1),
+      orElse: () => CustomerShortDM(companyName: 'Unknown', id: -1),
     );
     //String accessToken = "";
 
@@ -259,7 +261,7 @@ class _AddNewProjectState extends State<AddNewProject> {
                             ? const Center(child: CircularProgressIndicator())
                             : buildDropdown(
                                 options: customerOptions
-                                    .map((customer) => customer.companyName ?? '')
+                                    .map((customer) => customer.companyName)
                                     .toList(),
                                 selectedValue: selectedCustomer,
                                 onChanged: (value) {

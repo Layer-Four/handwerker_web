@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/project_models/customer_projekt_model/custom_project.dart';
@@ -70,9 +68,7 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
               AddButton(
                 isOpen: isAddConsumableOpen,
                 onTap: () {
-                  log(isAddConsumableOpen.toString());
                   setState(() => isAddConsumableOpen = !isAddConsumableOpen);
-                  log(isAddConsumableOpen.toString());
                 },
                 hideAbleChild: AddNewConsumable(
                   onSave: () {},

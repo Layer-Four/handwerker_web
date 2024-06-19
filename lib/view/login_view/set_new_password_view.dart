@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/themes/app_color.dart';
@@ -210,7 +208,6 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                                 TextSelection previousSelection = _oTPController.selection;
                                 _oTPController.text = value;
                                 _oTPController.selection = previousSelection;
-                                log(_oTPController.text);
                               },
                             ),
                           )),
@@ -521,9 +518,7 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                             height: 44,
                             child: ElevatedButton(
                               onPressed: () {
-                                log('otpControlller -> ${_oTPController.text}\npasswordController->${_newPwController.text}\nnewpasswordController->${_newPwRepeatController.text}');
                                 if (_formKey.currentState!.validate()) {
-                                  // Check if the new password matches the confirmation password
                                   if (_newPwController.text == _newPwRepeatController.text) {
                                     ref
                                         .read(userProvider.notifier)

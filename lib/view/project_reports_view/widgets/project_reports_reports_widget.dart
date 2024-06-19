@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import '../../../models/time_models/project_time_model/project_time_entry.dart';
 
 class ProjectReportsShowWidget extends StatelessWidget {
@@ -55,14 +52,10 @@ class ProjectReportsShowWidget extends StatelessWidget {
                               ? const SizedBox.shrink()
                               : ListView.builder(
                                   itemCount: reports[i].imagePathList.length,
-                                  itemBuilder: (_, k) {
-                                    log(reports[i].imagePathList[k]);
-                                    log('https://r-wa-happ-be.azurewebsites.net/api/${reports[i].imagePathList[k]}');
-                                    return Image.network(
-                                      reports[i].imagePathList[k],
-                                      fit: BoxFit.contain,
-                                    );
-                                  }),
+                                  itemBuilder: (_, k) => Image.network(
+                                        reports[i].imagePathList[k],
+                                        fit: BoxFit.contain,
+                                      )),
                         ),
                       ],
                     ),
