@@ -181,7 +181,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                       )
                       .toList(),
                   onChanged: (customer) {
-                    // TODO: Check Shwooptisity
                     ref.read(timeVMProvider.notifier).getProjectForCustomer(customer!.id).then((e) {
                       setState(() {
                         _selectedCustomers = customer;
