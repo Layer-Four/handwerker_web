@@ -28,6 +28,7 @@ mixin _$CustomerCredentialDM {
   String? get customerStreet => throw _privateConstructorUsedError;
   String? get customerStreetNr => throw _privateConstructorUsedError;
   String? get customerZipcode => throw _privateConstructorUsedError;
+  String? get country => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +50,8 @@ abstract class $CustomerCredentialDMCopyWith<$Res> {
       String? customerPhone,
       String? customerStreet,
       String? customerStreetNr,
-      String? customerZipcode});
+      String? customerZipcode,
+      String? country});
 }
 
 /// @nodoc
@@ -74,6 +76,7 @@ class _$CustomerCredentialDMCopyWithImpl<$Res,
     Object? customerStreet = freezed,
     Object? customerStreetNr = freezed,
     Object? customerZipcode = freezed,
+    Object? country = freezed,
   }) {
     return _then(_value.copyWith(
       contactName: null == contactName
@@ -108,6 +111,10 @@ class _$CustomerCredentialDMCopyWithImpl<$Res,
           ? _value.customerZipcode
           : customerZipcode // ignore: cast_nullable_to_non_nullable
               as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -128,7 +135,8 @@ abstract class _$$CustomerCredentialDMImplCopyWith<$Res>
       String? customerPhone,
       String? customerStreet,
       String? customerStreetNr,
-      String? customerZipcode});
+      String? customerZipcode,
+      String? country});
 }
 
 /// @nodoc
@@ -150,6 +158,7 @@ class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
     Object? customerStreet = freezed,
     Object? customerStreetNr = freezed,
     Object? customerZipcode = freezed,
+    Object? country = freezed,
   }) {
     return _then(_$CustomerCredentialDMImpl(
       contactName: null == contactName
@@ -184,6 +193,10 @@ class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
           ? _value.customerZipcode
           : customerZipcode // ignore: cast_nullable_to_non_nullable
               as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -199,7 +212,8 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
       this.customerPhone,
       this.customerStreet,
       this.customerStreetNr,
-      this.customerZipcode})
+      this.customerZipcode,
+      this.country})
       : super._();
 
   factory _$CustomerCredentialDMImpl.fromJson(Map<String, dynamic> json) =>
@@ -221,10 +235,12 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
   final String? customerStreetNr;
   @override
   final String? customerZipcode;
+  @override
+  final String? country;
 
   @override
   String toString() {
-    return 'CustomerCredentialDM(contactName: $contactName, customerCity: $customerCity, customerEmail: $customerEmail, customerNumber: $customerNumber, customerPhone: $customerPhone, customerStreet: $customerStreet, customerStreetNr: $customerStreetNr, customerZipcode: $customerZipcode)';
+    return 'CustomerCredentialDM(contactName: $contactName, customerCity: $customerCity, customerEmail: $customerEmail, customerNumber: $customerNumber, customerPhone: $customerPhone, customerStreet: $customerStreet, customerStreetNr: $customerStreetNr, customerZipcode: $customerZipcode, country: $country)';
   }
 
   @override
@@ -247,7 +263,8 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
             (identical(other.customerStreetNr, customerStreetNr) ||
                 other.customerStreetNr == customerStreetNr) &&
             (identical(other.customerZipcode, customerZipcode) ||
-                other.customerZipcode == customerZipcode));
+                other.customerZipcode == customerZipcode) &&
+            (identical(other.country, country) || other.country == country));
   }
 
   @JsonKey(ignore: true)
@@ -261,7 +278,8 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
       customerPhone,
       customerStreet,
       customerStreetNr,
-      customerZipcode);
+      customerZipcode,
+      country);
 
   @JsonKey(ignore: true)
   @override
@@ -288,7 +306,8 @@ abstract class _CustomerCredentialDM extends CustomerCredentialDM {
       final String? customerPhone,
       final String? customerStreet,
       final String? customerStreetNr,
-      final String? customerZipcode}) = _$CustomerCredentialDMImpl;
+      final String? customerZipcode,
+      final String? country}) = _$CustomerCredentialDMImpl;
   const _CustomerCredentialDM._() : super._();
 
   factory _CustomerCredentialDM.fromJson(Map<String, dynamic> json) =
@@ -310,6 +329,8 @@ abstract class _CustomerCredentialDM extends CustomerCredentialDM {
   String? get customerStreetNr;
   @override
   String? get customerZipcode;
+  @override
+  String? get country;
   @override
   @JsonKey(ignore: true)
   _$$CustomerCredentialDMImplCopyWith<_$CustomerCredentialDMImpl>
