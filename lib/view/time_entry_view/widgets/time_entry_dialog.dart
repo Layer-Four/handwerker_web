@@ -287,7 +287,9 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 ),
                 onChanged: (value) {
                   setState(() {
+                    TextSelection previousSelection = _descriptionController.selection;
                     _descriptionController.text = value;
+                    _descriptionController.selection = previousSelection;
                     _entry = _entry.copyWith(description: _descriptionController.text);
                   });
                 },
