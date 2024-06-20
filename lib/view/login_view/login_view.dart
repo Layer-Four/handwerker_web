@@ -236,17 +236,22 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  void reactionOfLogin(bool isSuccess) async {
+  void reactionOfLogin(bool isSuccess) {
     if (isSuccess) {
       _emailCon.clear();
       _passCon.clear();
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
       return;
     }
+    _emailCon.clear();
+    _passCon.clear();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Center(
-          child: Text('leider hats nicht geklappt'),
+          child: Text(
+            'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

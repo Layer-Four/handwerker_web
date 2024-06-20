@@ -16,6 +16,7 @@ class TimeEntry with _$TimeEntry {
     DateTime? pauseEnd,
     DateTime? pauseStart,
     int? projectId,
+    int? serviceId,
     int? userServiceId,
     required DateTime startTime,
     @Default(1) int type,
@@ -28,17 +29,18 @@ class TimeEntry with _$TimeEntry {
 
   const TimeEntry._();
   factory TimeEntry.fromTimeEntriesVM(TimeVMAdapter e) => TimeEntry(
-      date: e.date,
-      description: e.description,
-      duration: e.duration,
-      endTime: e.endTime,
-      id: e.id,
-      pauseEnd: e.pauseEnd,
-      pauseStart: e.pauseStart,
-      projectId: e.projectId,
-      userServiceId: e.serviceId,
-      startTime: e.startTime,
-      type: e.type.index,
-      userId: e.userId,
-      customerId: e.customerId);
+        date: e.date,
+        description: e.description,
+        duration: e.duration,
+        endTime: e.endTime,
+        id: e.id,
+        pauseEnd: e.pauseEnd,
+        pauseStart: e.pauseStart,
+        projectId: e.projectId,
+        serviceId: e.serviceId,
+        startTime: e.startTime,
+        type: e.type.index,
+        userId: e.userId,
+        customerId: e.customerId,
+      );
 }

@@ -49,6 +49,10 @@ class UserNotifier extends Notifier<UserVM> {
       log(state.userToken);
       return true;
     } on DioException catch (e) {
+      if (e.response!.statusCode == 401) {
+        log('DioException: ${e.response?.statusMessage} ');
+        return false;
+      }
       throw Exception('DioException: ${e.message}');
     } catch (e) {
       log('Error on loginUser $e');

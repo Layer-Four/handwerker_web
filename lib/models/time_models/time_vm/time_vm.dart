@@ -60,7 +60,7 @@ class TimeVMAdapter with _$TimeVMAdapter {
         pauseEnd: e.pauseEnd,
         pauseStart: e.pauseStart,
         projectId: e.projectId,
-        serviceId: e.userServiceId,
+        serviceId: e.serviceId,
         startTime: e.startTime,
         type: TimeEntryTypeExtention.getType(e.type),
         userId: e.userId,
