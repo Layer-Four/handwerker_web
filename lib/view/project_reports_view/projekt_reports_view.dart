@@ -10,7 +10,7 @@ class ProjectOverviewView extends StatelessWidget {
   const ProjectOverviewView({super.key});
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         child: Column(
           children: [
