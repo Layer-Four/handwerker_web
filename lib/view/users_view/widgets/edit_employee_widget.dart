@@ -6,9 +6,6 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_administration/user_administration._provider.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
-// import 'package:pdf/widgets.dart' as pw;
-// import 'dart:ui_web' as ui;
-// import 'dart:html' as html;
 
 class AddNewEmployee extends ConsumerStatefulWidget {
   final double overflowWidth;
@@ -151,13 +148,11 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: QrImageView(
-                // data: 'Nutzername: ${_nameController.text}\nEinmal Passwort: Xcy24KjIq0abkAd',
                 data: '${_newUser!['userName']} ${_newUser!['password']}',
                 version: QrVersions.auto,
                 size: MediaQuery.of(context).size.width >= overflowWith
                     ? 250
                     : ((constrains.maxWidth / 10) * 3.4),
-                // gapless: false,
                 embeddedImageStyle: const QrEmbeddedImageStyle(
                   size: Size(80, 80),
                 ),
@@ -237,9 +232,6 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             .read(userAdministrationProvider.notifier)
                             .createUser(role: _selectedRole!, name: _nameController.text)
                             .then((value) {
-                          // ignore: unused_result
-                          // ref.refresh(userAdministrationProvider);
-
                           if (value.keys.contains('error')) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

@@ -9,12 +9,12 @@ class HomeBody extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         child: Center(
           child: Stack(
-            alignment: Alignment.center, // Align the text in the center of the image
+            alignment: Alignment.center,
             children: [
-              Image.asset('assets/images/dashboardpreview.png'), // Your image
+              Image.asset('assets/images/dashboardpreview.png'),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                color: Colors.black54, // Semi-transparent background for the text
+                color: Colors.black54,
                 child: const Text(
                   'PREVIEW',
                   style: TextStyle(

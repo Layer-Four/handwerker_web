@@ -70,7 +70,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               _dayInputRow(),
               _timeInputRow(),
               _buildCustomerDropDown(),
-              _buildProjectField(), // Pass projects here
+              _buildProjectField(),
               _buildServiceDropdown(),
               _buildDescription(),
               _buildSelectUser(),
@@ -649,4 +649,3 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
 }
-// class

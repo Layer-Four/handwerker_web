@@ -33,7 +33,6 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
       return;
     }
 
-    // Add validation for minimum username length
     if (username.length < 3) {
       _showSnackBar('Der Benutzername muss mindestens 3 Zeichen lang sein.');
       setState(() {

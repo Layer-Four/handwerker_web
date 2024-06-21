@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import '../../../models/project_models/customer_projects_report_dm/customer_projects_report_dm.dart';
 import 'project_report_overview.dart';
 
-// ignore: must_be_immutable
 class ProjectCustomerOverviewWidget extends StatefulWidget {
   final CustomerProjectsReportDM customerProject;
 
@@ -28,13 +25,9 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: () {
-              log('size of Customer and Revenue row ${MediaQuery.of(context).size.width}');
-              setState(() => isOpen = !isOpen);
-            },
+            onTap: () => setState(() => isOpen = !isOpen),
             child: SizedBox(
               height: 55,
-              // width: MediaQuery.of(context).size.width * 0.8,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

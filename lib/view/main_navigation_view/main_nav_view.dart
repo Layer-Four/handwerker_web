@@ -48,7 +48,6 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                               MainView.projectManagement => const ProjectManagementBody(),
                               MainView.performance => const ServiceBodyView(),
                               MainView.users => const EmployeeAdministration(),
-                              // _ => const TimeEntryBody(),
                             },
                           ),
                         ],
@@ -58,7 +57,6 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
 
   Widget _buildStandartNavBar(BuildContext context, BoxConstraints constrains) => Container(
         width: 250,
-        // width: constrains.maxWidth > 1100 ? 220 : (MediaQuery.of(context).size.width / 100) * 20,
         color: const Color.fromARGB(255, 208, 207, 207),
         child: SingleChildScrollView(
           child: Column(
@@ -84,14 +82,14 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                 title: 'Zeiteintrag',
                 nextView: MainView.timeEntry,
                 subcategoriestitles: ['Zeiteintrag'],
-                subcategoryMainViews: [MainView.timeEntry],
+                subcategoryViews: [MainView.timeEntry],
               ),
               const NavButtonWidget(
                 icon: Icons.signal_cellular_alt_sharp,
                 title: 'Berichte',
                 nextView: MainView.projectCustomer,
                 subcategoriestitles: ['Kunden/Projekte'],
-                subcategoryMainViews: [MainView.projectCustomer],
+                subcategoryViews: [MainView.projectCustomer],
               ),
               const NavButtonWidget(
                 title: 'Verwaltung',
@@ -104,7 +102,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                   'Leistungen',
                 ],
                 height: 200,
-                subcategoryMainViews: [
+                subcategoryViews: [
                   MainView.consumables,
                   MainView.customer,
                   MainView.projectManagement,
@@ -116,7 +114,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                 nextView: MainView.users,
                 icon: Icons.people_outline,
                 subcategoriestitles: ['Rechte'],
-                subcategoryMainViews: [MainView.users],
+                subcategoryViews: [MainView.users],
               ),
               SizedBox(
                 height: (constrains.maxHeight / 10) * 1.5,
@@ -165,14 +163,14 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                         title: 'Zeiteintrag',
                         nextView: MainView.timeEntry,
                         subcategoriestitles: ['Zeiteintrag'],
-                        subcategoryMainViews: [MainView.timeEntry],
+                        subcategoryViews: [MainView.timeEntry],
                       ),
                       const NavButtonWidget(
                         title: 'Berichte',
                         nextView: MainView.projectCustomer,
                         icon: Icons.signal_cellular_alt_sharp,
                         subcategoriestitles: ['Kunden/Projekte'],
-                        subcategoryMainViews: [MainView.projectCustomer],
+                        subcategoryViews: [MainView.projectCustomer],
                       ),
                       const NavButtonWidget(
                         icon: Icons.folder_open,
@@ -180,7 +178,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                         nextView: MainView.consumables,
                         height: 200,
                         subcategoriestitles: ['Material', 'Kunden', 'Projekte', 'Leistungen'],
-                        subcategoryMainViews: [
+                        subcategoryViews: [
                           MainView.consumables,
                           MainView.customer,
                           MainView.projectManagement,
@@ -192,7 +190,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                         nextView: MainView.users,
                         icon: Icons.people_outline,
                         subcategoriestitles: ['Rechte'],
-                        subcategoryMainViews: [MainView.users],
+                        subcategoryViews: [MainView.users],
                       ),
                       SizedBox(
                         height: (constrains.maxHeight / 10) * 1.5,

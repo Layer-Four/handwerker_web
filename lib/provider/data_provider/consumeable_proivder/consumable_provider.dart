@@ -59,7 +59,6 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
         throw Exception(
             'Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
       }
-      // final List data = response.data.map((e) => e).toList();
       final List data = response.data as List;
       for (var e in data) {
         final entry = Unit.fromJson(e as Map<String, dynamic>);
@@ -98,19 +97,15 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
   Future<bool> createConsumable(ConsumableVM consumable) async {
     try {
       final response = await _api.postCreateMaterial({
-        // Assuming your API expects a JSON body containing material details
         'name': consumable.name,
         'amount': consumable.amount,
-        'materialUnitID': consumable.unit?.id, // use unit.id
+        'materialUnitID': consumable.unit?.id,
         'price': consumable.price,
       });
 
       if (response.statusCode != 200) {
         throw Exception('Wrong Response occurred, status -> ${response.statusCode}');
       }
-
-      // final id = response.data['id'] as int; // Extract ID
-      // final List data = response.data.map((e) => e).toList();
       final unitID = response.data['materialUnitID'];
       final searchedUnit = _units.firstWhere((e) => e.id == unitID);
 

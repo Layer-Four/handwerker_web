@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/project_models/project_report_dm/project_report_dm.dart';
 import 'project_report_summary_widget.dart';
 
-// ignore: must_be_immutable
 class SingelProjectOverviewWidget extends StatefulWidget {
   final ProjectRepotsDM report;
 
@@ -28,13 +25,7 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
   Widget build(BuildContext context) => Column(
         children: [
           GestureDetector(
-            onTap: () {
-              log('size project data row ${MediaQuery.of(context).size.width}');
-              setState(() => isContainerOpen = !isContainerOpen);
-            },
-            // child: Row(
-            //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
+            onTap: () => setState(() => isContainerOpen = !isContainerOpen),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -71,8 +62,6 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
                     child: Icon(isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down))
               ],
             ),
-            //   ],
-            // ),
           ),
           isContainerOpen ? ProjectReportSummary(_project) : const SizedBox.shrink(),
           Divider(

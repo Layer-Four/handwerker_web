@@ -28,7 +28,6 @@ class ProjectUtilitisView extends StatelessWidget {
               children: [
                 Icon(service == null ? Icons.construction : Icons.person),
                 Text(service != null ? service.serviceName : consumable!.consumableName),
-                // overflow: TextOverflow.ellipsis,
               ],
             ),
           ),

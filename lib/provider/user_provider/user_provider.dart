@@ -7,8 +7,6 @@ import '../../models/users_models/user_vm/user_vm.dart';
 
 final userProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
 
-// final authProvider = ChangeNotifierProvider<User>((ref) => User());
-
 class UserNotifier extends Notifier<UserVM> {
   final Api _api = Api();
 

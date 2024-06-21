@@ -47,7 +47,6 @@ class ProjectReportsShowWidget extends StatelessWidget {
                         ),
                         SizedBox(
                           height: 150,
-                          // height: MediaQuery.of(context).size.width * 0.25,
                           width: MediaQuery.of(context).size.width * 0.20,
                           child: reports[i].imagePathList.isEmpty
                               ? const SizedBox.shrink()
@@ -71,7 +70,6 @@ class ProjectReportsShowWidget extends StatelessWidget {
                                                 child: Image.network(
                                                   'https://rsahapp.blob.core.windows.net/${reports[i].imagePathList[k]}',
                                                   fit: BoxFit.contain,
-                                                  // height: 150,
                                                 ),
                                               ),
                                             ),

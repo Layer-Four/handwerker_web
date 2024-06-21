@@ -115,8 +115,6 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
         );
       }
       final List data = response.data.map((e) => e).toList();
-      // final projectFromCustomer = data.map((e) => ProjectVM.fromJson(e)).toList();
-
       return data.map((e) => ProjectVM.fromJson(e)).toList();
     } on DioException catch (e) {
       throw Exception('DioException: ${e.message}');

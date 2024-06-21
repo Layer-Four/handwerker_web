@@ -6,18 +6,13 @@ class ProjectReportOverviewHeadWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) =>
-      // SizedBox(
-      // width: MediaQuery.of(context).size.width * 0.8,
-      // child:
-      Row(
+  Widget build(BuildContext context) => Row(
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.24,
             child: Text(
               'Projekt',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              // style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(
@@ -35,6 +30,5 @@ class ProjectReportOverviewHeadWidget extends StatelessWidget {
             ),
           ),
         ],
-        // ),
       );
 }

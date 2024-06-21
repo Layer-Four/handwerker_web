@@ -10,7 +10,6 @@ class CustomerProjectsReportDM with _$CustomerProjectsReportDM {
   factory CustomerProjectsReportDM({
     required CustomerCredentialDM customerCredentials,
     required String customerName,
-    // @Default(0.0) double customerRevenue,
     double? customerRevenue,
     @Default([]) List<ProjectRepotsDM> projectsList,
   }) = _CustomerProjectsReportDM;

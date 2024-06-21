@@ -10,9 +10,6 @@ class Unit with _$Unit {
   }) = _Unit;
 
   factory Unit.fromJson(Map<String, dynamic> json) => _$UnitFromJson(json);
-  // Unit(
-  //       id: json['id'],
-  //       name: json['name'],
-  //     );
+
   const Unit._();
 }
