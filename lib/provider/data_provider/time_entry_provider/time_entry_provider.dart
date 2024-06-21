@@ -70,12 +70,9 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
           'Error on saveTimeEntry, status-> ${response.statusCode}\n ${response.data}',
         );
       }
-      final jsonResponse = response.data;
-      final data = jsonResponse.map((e) => TimeVMAdapter.fromJson(e)).toList();
-      if (state.isNotEmpty) {
-        final newstate = <TimeVMAdapter>[...state, data];
-        state = newstate;
-      }
+      // final jsonResponse = response.data;
+      // jsonResponse.map((e) => TimeVMAdapter.fromJson(e)).toList();
+
       return true;
     } on DioException catch (e) {
       throw Exception('DioException: ${e.message}');
