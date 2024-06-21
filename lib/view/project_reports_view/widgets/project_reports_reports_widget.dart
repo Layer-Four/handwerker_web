@@ -13,7 +13,7 @@ class ProjectReportsShowWidget extends StatelessWidget {
           children: [
             _buildHeadline(context),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.8 - 55,
+              height: MediaQuery.of(context).size.height * 0.75 - 55,
               child: ListView.builder(
                 itemCount: reports.length,
                 itemBuilder: (context, i) => Column(
@@ -52,9 +52,29 @@ class ProjectReportsShowWidget extends StatelessWidget {
                               ? const SizedBox.shrink()
                               : ListView.builder(
                                   itemCount: reports[i].imagePathList.length,
-                                  itemBuilder: (_, k) => Image.network(
-                                        reports[i].imagePathList[k],
-                                        fit: BoxFit.contain,
+                                  itemBuilder: (_, k) => Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                                        child: GestureDetector(
+                                          child: Image.network(
+                                            'https://rsahapp.blob.core.windows.net/${reports[i].imagePathList[k]}',
+                                            height: 130,
+                                          ),
+                                          onTap: () => showDialog(
+                                            barrierColor: const Color.fromARGB(40, 0, 0, 0),
+                                            context: context,
+                                            builder: (context) => Container(
+                                              margin: const EdgeInsets.symmetric(
+                                                  horizontal: 90, vertical: 105),
+                                              child: GestureDetector(
+                                                onTap: () => Navigator.of(context).pop(),
+                                                child: Image.network(
+                                                  'https://rsahapp.blob.core.windows.net/${reports[i].imagePathList[k]}',
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       )),
                         ),
                       ],

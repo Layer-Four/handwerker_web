@@ -60,7 +60,6 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
                 child: _isWeekView ? const CustomWeekView() : const CustomDayView(),
               ),
             ),
-            // CustonWeekView(),
           ],
         ),
       ),
@@ -88,7 +87,6 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
       setState(() => _isWorkOrder = isFilterWorkOrder);
       return;
     }
-    // final timeEntrys = _allEvents.where((e) => e.event!.type == TimeEntryType.timeEntry).toList();
     _eventCtr.addAll(_allEvents.where((e) => e.event!.type == TimeEntryType.timeEntry).toList());
     setState(() => _isWorkOrder = isFilterWorkOrder);
     return;

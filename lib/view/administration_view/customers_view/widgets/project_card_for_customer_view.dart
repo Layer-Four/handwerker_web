@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
 import '../../../shared_widgets/project_details_for_customer_view.dart';
 
-// ignore: must_be_immutable
 class ProjectCardForCustomerView extends StatefulWidget {
   final CustomeProject report;
 
-  const ProjectCardForCustomerView(
-    this.report, {
-    super.key,
-  });
+  const ProjectCardForCustomerView(this.report, {super.key});
 
   @override
   State<ProjectCardForCustomerView> createState() => _ProjectCardForCustomerViewState();
@@ -27,7 +23,6 @@ class _ProjectCardForCustomerViewState extends State<ProjectCardForCustomerView>
           children: [
             SizedBox(width: screenWidthInPercent * 2),
             Container(
-              // width: double.infinity,
               width: screenWidthInPercent * 70,
               decoration: const BoxDecoration(
                 border: Border(bottom: BorderSide()),
@@ -48,7 +43,6 @@ class _ProjectCardForCustomerViewState extends State<ProjectCardForCustomerView>
                         flex: 8,
                         child: Text(widget.report.customer),
                       ),
-                      //  const Spacer(),
                       Expanded(
                         flex: 8,
                         child: widget.report.status
@@ -69,7 +63,6 @@ class _ProjectCardForCustomerViewState extends State<ProjectCardForCustomerView>
                                 ),
                               ),
                       ),
-                      //   const Spacer(),
                       Expanded(
                         flex: 8,
                         child: Text(
@@ -80,7 +73,6 @@ class _ProjectCardForCustomerViewState extends State<ProjectCardForCustomerView>
                           ),
                         ),
                       ),
-                      //  const Spacer(),
                       Expanded(
                         flex: 8,
                         child: Text(

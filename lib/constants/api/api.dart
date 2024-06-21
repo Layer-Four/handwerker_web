@@ -77,7 +77,7 @@ class Api {
   final String _putDocumentationDay = '/userProjectDay/update';
   final String _putProjectMaterial = '/userProjectMaterial/update';
   final String _putProjectWebMaterial = '/material/update';
-  final String _putResetPassword = '/user/password/reset';
+  final String _putResetPasswordForMobileUser = '/user/password/reset/for/';
   final String _putSetNewPassword = '/user/password/change';
   final String _putUpdateService = '/service/update';
   final String _putUpdateUser = '/user/update';
@@ -168,8 +168,8 @@ class Api {
 
   Future<Response> postUpdateProjectConsumableEntry(data) =>
       _api.post(_putProjectMaterial, data: data);
-  Future<Response> putResetPassword(Map<String, dynamic> json) =>
-      _api.put(_putResetPassword, data: json);
+  Future<Response> putResetPassword(String userName) =>
+      _api.put(_putResetPasswordForMobileUser + userName + '/marten.meissner@layer-four.de');
   Future<Response> putSetNewPassword(Map<String, dynamic> json) =>
       _api.put(_putSetNewPassword, data: json);
   Future<Response> putUpdateService(Map<String, dynamic> json) =>

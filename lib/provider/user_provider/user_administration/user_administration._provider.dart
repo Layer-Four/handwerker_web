@@ -114,7 +114,7 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
 
   Future<Map> resetPassword(String name) async {
     try {
-      final response = await _api.putResetPassword({'userName': name});
+      final response = await _api.putResetPassword(name);
       if (response.statusCode != 200) {
         throw Exception(
           'Error on resetPassword, status-> ${response.statusCode}\n ${response.data}',

@@ -258,7 +258,6 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                               .then((e) {
                             e
                                 ? {
-                                    // ref.refresh(consumableProvider),
                                     _nameController.clear(),
                                     _amountController.clear(),
                                     _priceController.clear(),

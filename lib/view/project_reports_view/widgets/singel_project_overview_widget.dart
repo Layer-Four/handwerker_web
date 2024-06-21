@@ -3,7 +3,6 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/project_models/project_report_dm/project_report_dm.dart';
 import 'project_report_summary_widget.dart';
 
-// ignore: must_be_immutable
 class SingelProjectOverviewWidget extends StatefulWidget {
   final ProjectRepotsDM report;
 
@@ -25,61 +24,52 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          Row(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.80,
-                decoration: const BoxDecoration(
-                  border: Border(bottom: BorderSide()),
+          GestureDetector(
+            onTap: () => setState(() => isContainerOpen = !isContainerOpen),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.24,
+                  child: Text(_project.projectName),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: GestureDetector(
-                    onTap: () => setState(() => isContainerOpen = !isContainerOpen),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.20,
-                              child: Text(_project.projectName),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.15,
-                              child: Text(_project.projectState?.value ?? '',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                        color:
-                                            Utilitis.getStatusColor(_project.projectState?.value),
-                                      )),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.20,
-                              child: Text(
-                                _buildValidTimeString(),
-                              ),
-                            ),
-                            Text(
-                              '${_project.projectRevenue?.toStringAsFixed(2) ?? 0} €',
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.05,
-                          child:
-                              Icon(isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down),
-                        )
-                      ],
-                    ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.18,
+                  child: Text(_project.projectState?.value ?? '',
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: Utilitis.getStatusColor(_project.projectState?.value),
+                          )),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.17,
+                  child: Text(
+                    _buildValidTimeString(),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width > 1000
+                      ? MediaQuery.of(context).size.width * 0.10
+                      : MediaQuery.of(context).size.width * 0.2,
+                  child: Text(
+                    '${_project.projectRevenue?.toStringAsFixed(2) ?? 0} €',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    width: MediaQuery.of(context).size.width * 0.05,
+                    child: Icon(isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down))
+              ],
+            ),
           ),
           isContainerOpen ? ProjectReportSummary(_project) : const SizedBox.shrink(),
+          Divider(
+            height: 5,
+            color: Colors.black,
+            thickness: 1.5,
+            endIndent: MediaQuery.of(context).size.width * 0.1,
+          )
         ],
       );
 

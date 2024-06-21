@@ -36,12 +36,10 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
   void initState() {
     super.initState();
     if (widget.project != null) {
-      // Assuming 'customer' is a field in CustomeProject
       _firstNameController.text = widget.project!.customer;
     }
   }
 
-  //dispose of controllers
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -54,7 +52,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
     _customerNumberController.dispose();
     _telephoneController.dispose();
     _contactController.dispose();
-    super.dispose(); // Always call super.dispose() last
+    super.dispose();
   }
 
   @override
@@ -108,7 +106,6 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                             Row(
                               children: [
                                 SizedBox(
-                                  //    height: 100,
                                   width: 300,
                                   child: buildTextField(
                                     hintText: 'Mustermannstraße',
@@ -118,7 +115,6 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                 ),
                                 const SizedBox(width: 2),
                                 SizedBox(
-                                  //      height: 100,
                                   width: 100,
                                   child: buildTextField(
                                     hintText: '3',
@@ -132,7 +128,6 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                             Row(
                               children: [
                                 SizedBox(
-                                  //    height: 100,
                                   width: 300,
                                   child: buildTextField(
                                     hintText: 'Berlin',
@@ -142,7 +137,6 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                 ),
                                 const SizedBox(width: 2),
                                 SizedBox(
-                                  //    height: 100,
                                   width: 100,
                                   child: buildTextField(
                                     hintText: '11234',
@@ -221,7 +215,6 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                           textStyle: TextStyle(color: AppColor.kPrimaryButtonColor),
                           onPressed: () {
                             widget.onCancel();
-                            // dispose();
                           },
                         ),
                       ),
@@ -248,8 +241,6 @@ Widget buildTextField({
   required BuildContext context,
 }) =>
     SizedBox(
-      // height: 100,
-      //width: 200,
       child: Padding(
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: TextField(

@@ -70,7 +70,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               _dayInputRow(),
               _timeInputRow(),
               _buildCustomerDropDown(),
-              _buildProjectField(), // Pass projects here
+              _buildProjectField(),
               _buildServiceDropdown(),
               _buildDescription(),
               _buildSelectUser(),
@@ -287,7 +287,9 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 ),
                 onChanged: (value) {
                   setState(() {
+                    TextSelection previousSelection = _descriptionController.selection;
                     _descriptionController.text = value;
+                    _descriptionController.selection = previousSelection;
                     _entry = _entry.copyWith(description: _descriptionController.text);
                   });
                 },
@@ -647,4 +649,3 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
 }
-// class

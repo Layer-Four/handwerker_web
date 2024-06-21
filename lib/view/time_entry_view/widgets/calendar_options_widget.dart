@@ -37,7 +37,6 @@ class CalendarOptionsRow extends StatelessWidget {
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
-                // width: 100,
                 height: 30,
                 child: SymmetricButton(
                   elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
@@ -58,7 +57,6 @@ class CalendarOptionsRow extends StatelessWidget {
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
-                // width: 100,
                 height: 30,
                 child: SymmetricButton(
                   text: 'Zeiteintrag',
@@ -97,7 +95,6 @@ class CalendarOptionsRow extends StatelessWidget {
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
-                // width: 100,
                 height: 30,
                 child: SymmetricButton(
                   text: 'Woche',
@@ -109,7 +106,6 @@ class CalendarOptionsRow extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                // width: 100,
                 height: 30,
                 child: SymmetricButton(
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),

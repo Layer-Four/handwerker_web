@@ -69,7 +69,6 @@ class UserDataWidget extends ConsumerWidget {
       Container(
         padding: const EdgeInsets.only(left: 8, right: 8),
         decoration: BoxDecoration(
-          // border: Border.all(),
           borderRadius: BorderRadius.circular(6),
           color: Colors.grey[100],
         ),
@@ -97,7 +96,6 @@ class UserDataWidget extends ConsumerWidget {
                       child: Text(r ? 'Erfolgreich angepasst' : 'Leider ist etwas schief gegagen')),
                 ),
               );
-              // Navigator.of(context).restorablePushReplacementNamed(AppRoutes.viewScreen);
             });
           },
         ),

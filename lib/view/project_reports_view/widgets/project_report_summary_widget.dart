@@ -19,11 +19,14 @@ class ProjectReportSummary extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          project.projectDescription != null
-              ? DescriptionFiedlWidget(project.projectDescription)
-              : const SizedBox(),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.65,
+            width: MediaQuery.of(context).size.width * 0.24,
+            child: project.projectDescription != null
+                ? DescriptionFiedlWidget(project.projectDescription)
+                : const SizedBox(),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.55,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,

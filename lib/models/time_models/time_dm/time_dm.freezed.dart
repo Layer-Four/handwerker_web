@@ -28,6 +28,7 @@ mixin _$TimeEntry {
   DateTime? get pauseEnd => throw _privateConstructorUsedError;
   DateTime? get pauseStart => throw _privateConstructorUsedError;
   int? get projectId => throw _privateConstructorUsedError;
+  int? get serviceId => throw _privateConstructorUsedError;
   int? get userServiceId => throw _privateConstructorUsedError;
   DateTime get startTime => throw _privateConstructorUsedError;
   int get type => throw _privateConstructorUsedError;
@@ -54,6 +55,7 @@ abstract class $TimeEntryCopyWith<$Res> {
       DateTime? pauseEnd,
       DateTime? pauseStart,
       int? projectId,
+      int? serviceId,
       int? userServiceId,
       DateTime startTime,
       int type,
@@ -82,6 +84,7 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
     Object? pauseEnd = freezed,
     Object? pauseStart = freezed,
     Object? projectId = freezed,
+    Object? serviceId = freezed,
     Object? userServiceId = freezed,
     Object? startTime = null,
     Object? type = null,
@@ -120,6 +123,10 @@ class _$TimeEntryCopyWithImpl<$Res, $Val extends TimeEntry>
       projectId: freezed == projectId
           ? _value.projectId
           : projectId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      serviceId: freezed == serviceId
+          ? _value.serviceId
+          : serviceId // ignore: cast_nullable_to_non_nullable
               as int?,
       userServiceId: freezed == userServiceId
           ? _value.userServiceId
@@ -162,6 +169,7 @@ abstract class _$$TimeEntryImplCopyWith<$Res>
       DateTime? pauseEnd,
       DateTime? pauseStart,
       int? projectId,
+      int? serviceId,
       int? userServiceId,
       DateTime startTime,
       int type,
@@ -188,6 +196,7 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
     Object? pauseEnd = freezed,
     Object? pauseStart = freezed,
     Object? projectId = freezed,
+    Object? serviceId = freezed,
     Object? userServiceId = freezed,
     Object? startTime = null,
     Object? type = null,
@@ -227,6 +236,10 @@ class __$$TimeEntryImplCopyWithImpl<$Res>
           ? _value.projectId
           : projectId // ignore: cast_nullable_to_non_nullable
               as int?,
+      serviceId: freezed == serviceId
+          ? _value.serviceId
+          : serviceId // ignore: cast_nullable_to_non_nullable
+              as int?,
       userServiceId: freezed == userServiceId
           ? _value.userServiceId
           : userServiceId // ignore: cast_nullable_to_non_nullable
@@ -263,6 +276,7 @@ class _$TimeEntryImpl extends _TimeEntry {
       this.pauseEnd,
       this.pauseStart,
       this.projectId,
+      this.serviceId,
       this.userServiceId,
       required this.startTime,
       this.type = 1,
@@ -290,6 +304,8 @@ class _$TimeEntryImpl extends _TimeEntry {
   @override
   final int? projectId;
   @override
+  final int? serviceId;
+  @override
   final int? userServiceId;
   @override
   final DateTime startTime;
@@ -303,7 +319,7 @@ class _$TimeEntryImpl extends _TimeEntry {
 
   @override
   String toString() {
-    return 'TimeEntry(date: $date, description: $description, duration: $duration, endTime: $endTime, id: $id, pauseEnd: $pauseEnd, pauseStart: $pauseStart, projectId: $projectId, userServiceId: $userServiceId, startTime: $startTime, type: $type, userId: $userId, customerId: $customerId)';
+    return 'TimeEntry(date: $date, description: $description, duration: $duration, endTime: $endTime, id: $id, pauseEnd: $pauseEnd, pauseStart: $pauseStart, projectId: $projectId, serviceId: $serviceId, userServiceId: $userServiceId, startTime: $startTime, type: $type, userId: $userId, customerId: $customerId)';
   }
 
   @override
@@ -324,6 +340,8 @@ class _$TimeEntryImpl extends _TimeEntry {
                 other.pauseStart == pauseStart) &&
             (identical(other.projectId, projectId) ||
                 other.projectId == projectId) &&
+            (identical(other.serviceId, serviceId) ||
+                other.serviceId == serviceId) &&
             (identical(other.userServiceId, userServiceId) ||
                 other.userServiceId == userServiceId) &&
             (identical(other.startTime, startTime) ||
@@ -346,6 +364,7 @@ class _$TimeEntryImpl extends _TimeEntry {
       pauseEnd,
       pauseStart,
       projectId,
+      serviceId,
       userServiceId,
       startTime,
       type,
@@ -376,6 +395,7 @@ abstract class _TimeEntry extends TimeEntry {
       final DateTime? pauseEnd,
       final DateTime? pauseStart,
       final int? projectId,
+      final int? serviceId,
       final int? userServiceId,
       required final DateTime startTime,
       final int type,
@@ -402,6 +422,8 @@ abstract class _TimeEntry extends TimeEntry {
   DateTime? get pauseStart;
   @override
   int? get projectId;
+  @override
+  int? get serviceId;
   @override
   int? get userServiceId;
   @override

@@ -331,7 +331,7 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: const BorderSide(
-                                  color: Colors.transparent, // Default state border color
+                                  color: Colors.transparent,
                                   width: 1,
                                 ),
                               ),
@@ -545,7 +545,6 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                                           : null;
                                     });
                                   } else {
-                                    // Show error if passwords don't match
                                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                       content: Text(
                                         'Die Passwörter stimmen nicht überein. Bitte versuche es erneut.',

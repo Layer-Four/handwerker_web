@@ -15,9 +15,6 @@ class ProjectManagementBody extends ConsumerStatefulWidget {
 }
 
 class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
-  //Call fetch infos here
-
-  //  const Text('Berichte', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
   bool isAddNewProject = false;
   int editingProjectIndex = -1;
 

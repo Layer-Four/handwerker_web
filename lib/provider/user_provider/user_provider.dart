@@ -7,8 +7,6 @@ import '../../models/users_models/user_vm/user_vm.dart';
 
 final userProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier());
 
-// final authProvider = ChangeNotifierProvider<User>((ref) => User());
-
 class UserNotifier extends Notifier<UserVM> {
   final Api _api = Api();
 
@@ -49,6 +47,10 @@ class UserNotifier extends Notifier<UserVM> {
       log(state.userToken);
       return true;
     } on DioException catch (e) {
+      if (e.response!.statusCode == 401) {
+        log('DioException: ${e.response?.statusMessage} ');
+        return false;
+      }
       throw Exception('DioException: ${e.message}');
     } catch (e) {
       log('Error on loginUser $e');

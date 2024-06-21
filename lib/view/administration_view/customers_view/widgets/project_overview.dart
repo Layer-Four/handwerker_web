@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
 import 'project_card_for_customer_view.dart';
 
-// ignore: must_be_immutable
 class ProjectOverview extends StatefulWidget {
   final CustomeProject project;
 
@@ -145,81 +144,72 @@ class _CharacterCardState extends State<ProjectOverview> {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenWidthInPercent = (MediaQuery.of(context).size.width / 100);
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(width: screenWidthInPercent * 2),
-            // ignore: sized_box_for_whitespace
-            Container(
-              width: screenWidthInPercent * 70,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    const Expanded(
-                      flex: 8,
-                      child: Text(
-                        'Projekt',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  Widget build(BuildContext context) => Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: MediaQuery.of(context).size.width * 0.20),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.70,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        flex: 8,
+                        child: Text(
+                          'Projekt',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    const Expanded(
-                      flex: 8,
-                      child: Text(
-                        'Status',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        //    textAlign: TextAlign.right,
+                      const Expanded(
+                        flex: 8,
+                        child: Text(
+                          'Status',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    //     const Spacer(),
-                    const Expanded(
-                      flex: 8,
-                      child: Text(
-                        'Zeitraum',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      const Expanded(
+                        flex: 8,
+                        child: Text(
+                          'Zeitraum',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    //        const Spacer(),
-                    const Expanded(
-                      flex: 8,
-                      child: Text(
-                        '',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.right,
-                      ), //Placeholder so the spacers space accordingly.
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(),
-                    )
-                  ],
+                      const Expanded(
+                        flex: 8,
+                        child: Text(
+                          '',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            //   const Spacer(),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        SizedBox(
-          width: screenWidth > 600 ? double.infinity : null,
-          height: MediaQuery.of(context).size.height / 3,
-          child: ListView.builder(
-            itemCount: project.length,
-            itemBuilder: (_, index) => ProjectCardForCustomerView(project[index]),
+            ],
           ),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-      ],
-    );
-  }
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width > 600 ? double.infinity : null,
+            height: MediaQuery.of(context).size.height / 3,
+            child: ListView.builder(
+              itemCount: project.length,
+              itemBuilder: (_, index) => ProjectCardForCustomerView(project[index]),
+            ),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+        ],
+      );
 }
