@@ -11,7 +11,6 @@ import 'widgets/user_data_widget.dart';
 import 'widgets/user_row_headline_widget.dart';
 
 class EmployeeAdministration extends ConsumerStatefulWidget {
-  //StatelessWidget
   const EmployeeAdministration({super.key});
 
   @override

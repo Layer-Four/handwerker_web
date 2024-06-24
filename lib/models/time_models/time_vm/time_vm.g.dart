@@ -26,6 +26,7 @@ _$TimeVMAdapterImpl _$$TimeVMAdapterImplFromJson(Map<String, dynamic> json) =>
       serviceId: (json['serviceId'] as num?)?.toInt(),
       serviceTitle: json['serviceTitle'] as String?,
       customerName: json['customerName'] as String?,
+      customerId: (json['customerId'] as num?)?.toInt(),
       type: $enumDecodeNullable(_$TimeEntryTypeEnumMap, json['type']) ??
           TimeEntryType.workOrder,
     );
@@ -46,6 +47,7 @@ Map<String, dynamic> _$$TimeVMAdapterImplToJson(_$TimeVMAdapterImpl instance) =>
       'serviceId': instance.serviceId,
       'serviceTitle': instance.serviceTitle,
       'customerName': instance.customerName,
+      'customerId': instance.customerId,
       'type': _$TimeEntryTypeEnumMap[instance.type]!,
     };
 

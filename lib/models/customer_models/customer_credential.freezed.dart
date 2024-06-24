@@ -29,17 +29,16 @@ mixin _$CustomerCredentialDM {
   String? get customerStreet => throw _privateConstructorUsedError;
   String? get customerStreetNr => throw _privateConstructorUsedError;
   String? get customerZipcode => throw _privateConstructorUsedError;
+  String? get country => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $CustomerCredentialDMCopyWith<CustomerCredentialDM> get copyWith =>
-      throw _privateConstructorUsedError;
+  $CustomerCredentialDMCopyWith<CustomerCredentialDM> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $CustomerCredentialDMCopyWith<$Res> {
-  factory $CustomerCredentialDMCopyWith(CustomerCredentialDM value,
-          $Res Function(CustomerCredentialDM) then) =
+  factory $CustomerCredentialDMCopyWith(CustomerCredentialDM value, $Res Function(CustomerCredentialDM) then) =
       _$CustomerCredentialDMCopyWithImpl<$Res, CustomerCredentialDM>;
   @useResult
   $Res call(
@@ -51,12 +50,12 @@ abstract class $CustomerCredentialDMCopyWith<$Res> {
       String? customerPhone,
       String? customerStreet,
       String? customerStreetNr,
-      String? customerZipcode});
+      String? customerZipcode,
+      String? country});
 }
 
 /// @nodoc
-class _$CustomerCredentialDMCopyWithImpl<$Res,
-        $Val extends CustomerCredentialDM>
+class _$CustomerCredentialDMCopyWithImpl<$Res, $Val extends CustomerCredentialDM>
     implements $CustomerCredentialDMCopyWith<$Res> {
   _$CustomerCredentialDMCopyWithImpl(this._value, this._then);
 
@@ -77,6 +76,7 @@ class _$CustomerCredentialDMCopyWithImpl<$Res,
     Object? customerStreet = freezed,
     Object? customerStreetNr = freezed,
     Object? customerZipcode = freezed,
+    Object? country = freezed,
   }) {
     return _then(_value.copyWith(
       contactName: null == contactName
@@ -115,15 +115,18 @@ class _$CustomerCredentialDMCopyWithImpl<$Res,
           ? _value.customerZipcode
           : customerZipcode // ignore: cast_nullable_to_non_nullable
               as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$CustomerCredentialDMImplCopyWith<$Res>
-    implements $CustomerCredentialDMCopyWith<$Res> {
-  factory _$$CustomerCredentialDMImplCopyWith(_$CustomerCredentialDMImpl value,
-          $Res Function(_$CustomerCredentialDMImpl) then) =
+abstract class _$$CustomerCredentialDMImplCopyWith<$Res> implements $CustomerCredentialDMCopyWith<$Res> {
+  factory _$$CustomerCredentialDMImplCopyWith(
+          _$CustomerCredentialDMImpl value, $Res Function(_$CustomerCredentialDMImpl) then) =
       __$$CustomerCredentialDMImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -136,15 +139,16 @@ abstract class _$$CustomerCredentialDMImplCopyWith<$Res>
       String? customerPhone,
       String? customerStreet,
       String? customerStreetNr,
-      String? customerZipcode});
+      String? customerZipcode,
+      String? country});
 }
 
 /// @nodoc
 class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
     extends _$CustomerCredentialDMCopyWithImpl<$Res, _$CustomerCredentialDMImpl>
     implements _$$CustomerCredentialDMImplCopyWith<$Res> {
-  __$$CustomerCredentialDMImplCopyWithImpl(_$CustomerCredentialDMImpl _value,
-      $Res Function(_$CustomerCredentialDMImpl) _then)
+  __$$CustomerCredentialDMImplCopyWithImpl(
+      _$CustomerCredentialDMImpl _value, $Res Function(_$CustomerCredentialDMImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -159,6 +163,7 @@ class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
     Object? customerStreet = freezed,
     Object? customerStreetNr = freezed,
     Object? customerZipcode = freezed,
+    Object? country = freezed,
   }) {
     return _then(_$CustomerCredentialDMImpl(
       contactName: null == contactName
@@ -197,6 +202,10 @@ class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
           ? _value.customerZipcode
           : customerZipcode // ignore: cast_nullable_to_non_nullable
               as String?,
+      country: freezed == country
+          ? _value.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -213,11 +222,11 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
       this.customerPhone,
       this.customerStreet,
       this.customerStreetNr,
-      this.customerZipcode})
+      this.customerZipcode,
+      this.country})
       : super._();
 
-  factory _$CustomerCredentialDMImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CustomerCredentialDMImplFromJson(json);
+  factory _$CustomerCredentialDMImpl.fromJson(Map<String, dynamic> json) => _$$CustomerCredentialDMImplFromJson(json);
 
   @override
   final String contactName;
@@ -237,10 +246,12 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
   final String? customerStreetNr;
   @override
   final String? customerZipcode;
+  @override
+  final String? country;
 
   @override
   String toString() {
-    return 'CustomerCredentialDM(contactName: $contactName, companyName: $companyName, customerCity: $customerCity, customerEmail: $customerEmail, customerNumber: $customerNumber, customerPhone: $customerPhone, customerStreet: $customerStreet, customerStreetNr: $customerStreetNr, customerZipcode: $customerZipcode)';
+    return 'CustomerCredentialDM(contactName: $contactName, customerCity: $customerCity, customerEmail: $customerEmail, customerNumber: $customerNumber, customerPhone: $customerPhone, customerStreet: $customerStreet, customerStreetNr: $customerStreetNr, customerZipcode: $customerZipcode, country: $country)';
   }
 
   @override
@@ -248,47 +259,28 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CustomerCredentialDMImpl &&
-            (identical(other.contactName, contactName) ||
-                other.contactName == contactName) &&
-            (identical(other.companyName, companyName) ||
-                other.companyName == companyName) &&
-            (identical(other.customerCity, customerCity) ||
-                other.customerCity == customerCity) &&
-            (identical(other.customerEmail, customerEmail) ||
-                other.customerEmail == customerEmail) &&
-            (identical(other.customerNumber, customerNumber) ||
-                other.customerNumber == customerNumber) &&
-            (identical(other.customerPhone, customerPhone) ||
-                other.customerPhone == customerPhone) &&
-            (identical(other.customerStreet, customerStreet) ||
-                other.customerStreet == customerStreet) &&
-            (identical(other.customerStreetNr, customerStreetNr) ||
-                other.customerStreetNr == customerStreetNr) &&
-            (identical(other.customerZipcode, customerZipcode) ||
-                other.customerZipcode == customerZipcode));
+            (identical(other.contactName, contactName) || other.contactName == contactName) &&
+            (identical(other.companyName, companyName) || other.companyName == companyName) &&
+            (identical(other.customerCity, customerCity) || other.customerCity == customerCity) &&
+            (identical(other.customerEmail, customerEmail) || other.customerEmail == customerEmail) &&
+            (identical(other.customerNumber, customerNumber) || other.customerNumber == customerNumber) &&
+            (identical(other.customerPhone, customerPhone) || other.customerPhone == customerPhone) &&
+            (identical(other.customerStreet, customerStreet) || other.customerStreet == customerStreet) &&
+            (identical(other.customerStreetNr, customerStreetNr) || other.customerStreetNr == customerStreetNr) &&
+            (identical(other.customerZipcode, customerZipcode) || other.customerZipcode == customerZipcode) &&
+            (identical(other.country, country) || other.country == country));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      contactName,
-      companyName,
-      customerCity,
-      customerEmail,
-      customerNumber,
-      customerPhone,
-      customerStreet,
-      customerStreetNr,
-      customerZipcode);
+  int get hashCode => Object.hash(runtimeType, contactName, companyName, customerCity, customerEmail, customerNumber,
+      customerPhone, customerStreet, customerStreetNr, customerZipcode, country);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CustomerCredentialDMImplCopyWith<_$CustomerCredentialDMImpl>
-      get copyWith =>
-          __$$CustomerCredentialDMImplCopyWithImpl<_$CustomerCredentialDMImpl>(
-              this, _$identity);
+  _$$CustomerCredentialDMImplCopyWith<_$CustomerCredentialDMImpl> get copyWith =>
+      __$$CustomerCredentialDMImplCopyWithImpl<_$CustomerCredentialDMImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -308,11 +300,11 @@ abstract class _CustomerCredentialDM extends CustomerCredentialDM {
       final String? customerPhone,
       final String? customerStreet,
       final String? customerStreetNr,
-      final String? customerZipcode}) = _$CustomerCredentialDMImpl;
+      final String? customerZipcode,
+      final String? country}) = _$CustomerCredentialDMImpl;
   const _CustomerCredentialDM._() : super._();
 
-  factory _CustomerCredentialDM.fromJson(Map<String, dynamic> json) =
-      _$CustomerCredentialDMImpl.fromJson;
+  factory _CustomerCredentialDM.fromJson(Map<String, dynamic> json) = _$CustomerCredentialDMImpl.fromJson;
 
   @override
   String get contactName;
@@ -333,7 +325,8 @@ abstract class _CustomerCredentialDM extends CustomerCredentialDM {
   @override
   String? get customerZipcode;
   @override
+  String? get country;
+  @override
   @JsonKey(ignore: true)
-  _$$CustomerCredentialDMImplCopyWith<_$CustomerCredentialDMImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$CustomerCredentialDMImplCopyWith<_$CustomerCredentialDMImpl> get copyWith => throw _privateConstructorUsedError;
 }

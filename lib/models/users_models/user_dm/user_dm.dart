@@ -46,7 +46,6 @@ class UserDriverLicence {
   final DateTime? banFrom;
   final DateTime? banTo;
   final int userDataID;
-  // ? sowas wie Führerscheinklasse?
   final int driverLicenceCategoryId;
   static DriverLicenceCategory getDriverLicenseCategory({int? userDataID}) =>
       const DriverLicenceCategory(type: ' Führerscheinklasse');

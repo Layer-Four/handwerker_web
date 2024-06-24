@@ -15,12 +15,13 @@ class TimeEntry with _$TimeEntry {
     int? id,
     DateTime? pauseEnd,
     DateTime? pauseStart,
-    int? projectID,
-    int? serviceID,
-    String? serviceTitle,
+    int? projectId,
+    int? serviceId,
+    int? userServiceId,
     required DateTime startTime,
     @Default(1) int type,
-    String? userID,
+    String? userId,
+    int? customerId,
   }) = _TimeEntry;
 
   factory TimeEntry.fromJson(Map<String, dynamic> json) => _$TimeEntryFromJson(json);
@@ -35,11 +36,11 @@ class TimeEntry with _$TimeEntry {
         id: e.id,
         pauseEnd: e.pauseEnd,
         pauseStart: e.pauseStart,
-        projectID: e.projectId,
-        serviceID: e.serviceId,
-        serviceTitle: e.serviceTitle,
+        projectId: e.projectId,
+        serviceId: e.serviceId,
         startTime: e.startTime,
         type: e.type.index,
-        userID: e.userId,
+        userId: e.userId,
+        customerId: e.customerId,
       );
 }

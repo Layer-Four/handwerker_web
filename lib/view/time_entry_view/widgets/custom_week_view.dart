@@ -41,7 +41,6 @@ class CustomWeekView extends StatelessWidget {
         headerStyle: Utilitis.buildCustomHeadStyle(context),
         minDay: DateTime.now().add(const Duration(days: -(365 * 4))),
         maxDay: DateTime.now().add(const Duration(days: 365 * 10)),
-        // eventArranger: const SideEventArranger(),
         eventTileBuilder: (date, events, boundary, startDuration, endDuration) => ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: events.length,

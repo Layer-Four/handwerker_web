@@ -13,13 +13,11 @@ class ProjectReportScreen extends StatefulWidget {
 class _ProjectReportScreenState extends State<ProjectReportScreen> {
   @override
   Widget build(BuildContext context) {
-    // Assuming `projectReports` is a list of `ProjectReport` objects in `CustomeProject`
     final projectReports = widget.project.projectReports;
     final screenWidthInPercent = (MediaQuery.of(context).size.width / 100);
 
     return Container(
       width: screenWidthInPercent * 70,
-      //  margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -33,7 +31,6 @@ class _ProjectReportScreenState extends State<ProjectReportScreen> {
         ],
       ),
       child: SingleChildScrollView(
-        // Use SingleChildScrollView to allow for variable length content
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: projectReports.map((report) => buildReportWidget(report)).toList(),
@@ -42,7 +39,6 @@ class _ProjectReportScreenState extends State<ProjectReportScreen> {
     );
   }
 
-  // int numberOfRows = (report.imagePaths.length / 2).ceil();
   Widget buildReportWidget(ProjectReport report) => Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
@@ -121,25 +117,19 @@ class _ProjectReportScreenState extends State<ProjectReportScreen> {
                         const SizedBox(height: 10),
                         GridView.builder(
                           shrinkWrap: true,
-                          // Use this to prevent the GridView from expanding infinitely.
                           physics: const NeverScrollableScrollPhysics(),
-                          // Use this to disable scroll within the GridView.
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, // Two images per row.
-                            crossAxisSpacing: 15, // Desired spacing between images horizontally.
-                            mainAxisSpacing: 20, // Desired spacing between rows.
-                            childAspectRatio: 2, // Aspect ratio of each item (width / height).
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 20,
+                            childAspectRatio: 2,
                           ),
                           itemCount: report.imagePaths.length,
                           itemBuilder: (context, index) => ClipRect(
                             child: SizedBox(
-                              width: 200, // Desired width of each image.
-                              height: 100, // Desired height of each image.
-                              child: Image.asset(
-                                report.imagePaths[index],
-                                fit: BoxFit
-                                    .cover, // This ensures the image covers the container, cropping if necessary.
-                              ),
+                              width: 200,
+                              height: 100,
+                              child: Image.asset(report.imagePaths[index], fit: BoxFit.cover),
                             ),
                           ),
                         ),
@@ -147,8 +137,7 @@ class _ProjectReportScreenState extends State<ProjectReportScreen> {
                     ),
                   ),
                 ]),
-
-            const Divider(height: 30, thickness: 2), // Optional: Adds a divider between reports
+            const Divider(height: 30, thickness: 2),
           ],
         ),
       );

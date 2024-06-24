@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/themes/app_color.dart';
@@ -210,7 +208,6 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                                 TextSelection previousSelection = _oTPController.selection;
                                 _oTPController.text = value;
                                 _oTPController.selection = previousSelection;
-                                log(_oTPController.text);
                               },
                             ),
                           )),
@@ -334,7 +331,7 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: const BorderSide(
-                                  color: Colors.transparent, // Default state border color
+                                  color: Colors.transparent,
                                   width: 1,
                                 ),
                               ),
@@ -521,9 +518,7 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                             height: 44,
                             child: ElevatedButton(
                               onPressed: () {
-                                log('otpControlller -> ${_oTPController.text}\npasswordController->${_newPwController.text}\nnewpasswordController->${_newPwRepeatController.text}');
                                 if (_formKey.currentState!.validate()) {
-                                  // Check if the new password matches the confirmation password
                                   if (_newPwController.text == _newPwRepeatController.text) {
                                     ref
                                         .read(userProvider.notifier)
@@ -550,7 +545,6 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                                           : null;
                                     });
                                   } else {
-                                    // Show error if passwords don't match
                                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                       content: Text(
                                         'Die Passwörter stimmen nicht überein. Bitte versuche es erneut.',

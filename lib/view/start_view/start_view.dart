@@ -42,7 +42,7 @@ class _StartViewState extends State<StartView> {
                     ),
                   ),
                   Flexible(
-                    flex: 1, // Adjust flex value as needed
+                    flex: 1,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

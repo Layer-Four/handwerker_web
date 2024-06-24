@@ -56,7 +56,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
     _customerNumberController.dispose();
     _telephoneController.dispose();
     _contactController.dispose();
-    super.dispose(); // Always call super.dispose() last
+    super.dispose();
   }
 
   void _showSnackBar(String message) {

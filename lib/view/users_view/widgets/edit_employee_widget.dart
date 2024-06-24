@@ -6,9 +6,6 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_administration/user_administration._provider.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
-// import 'package:pdf/widgets.dart' as pw;
-// import 'dart:ui_web' as ui;
-// import 'dart:html' as html;
 
 class AddNewEmployee extends ConsumerStatefulWidget {
   final double overflowWidth;
@@ -142,39 +139,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                               .bodyMedium!
                               .copyWith(color: AppColor.kWhite),
                       text: 'Drucken',
-                      onPressed: () async {
-                        // pw.Document pdf = pw.Document();
-                        // pdf.addPage(
-                        //   pw.Page(
-                        //     build: (context) => pw.Column(
-                        //       children: [
-                        //         pw.Header(title: 'Techtool'),
-                        //         pw.SizedBox(height: 8),
-                        //         pw.Text('Anmeldedaten für den neuen Nutzer:'),
-                        //         pw.SizedBox(height: 8),
-                        //         pw.Text('${_newUser!['userName']}'),
-                        //         pw.SizedBox(height: 8),
-                        //         // Nutzername: ${newUser['userName']}\n
-                        //         pw.Text('Generiertes Passwort: '),
-                        //         pw.SizedBox(height: 8),
-                        //         pw.Text('${_newUser!['password']}'),
-
-                        //         // pw.Container(child:pw.Align(alignment: ) ,)
-                        //       ],
-                        //     ),
-                        //   ),
-                        // );
-                        // // TODO: on PDF safe beginn error
-                        // pdf.save().then((pdf) {
-                        //   final XFile file = XFile.fromData(pdf);
-                        //   // final XFile file = XFile.fromData(await pdf.save());
-                        //   html.AnchorElement anchorElement =
-                        //       html.AnchorElement(href: ui.AssetManager().getAssetUrl(file.path));
-                        //   anchorElement.download = "AnmeldeDaten ${_newUser!['userName']}.pdf";
-                        //   anchorElement.click();
-                        // });
-                        Utilitis.writePDFAndDownload(_newUser!);
-                      },
+                      onPressed: () async => Utilitis.writePDFAndDownload(_newUser!),
                     ),
                   ),
                 ],
@@ -183,13 +148,11 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: QrImageView(
-                // data: 'Nutzername: ${_nameController.text}\nEinmal Passwort: Xcy24KjIq0abkAd',
                 data: '${_newUser!['userName']} ${_newUser!['password']}',
                 version: QrVersions.auto,
                 size: MediaQuery.of(context).size.width >= overflowWith
                     ? 250
                     : ((constrains.maxWidth / 10) * 3.4),
-                // gapless: false,
                 embeddedImageStyle: const QrEmbeddedImageStyle(
                   size: Size(80, 80),
                 ),
@@ -269,9 +232,6 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             .read(userAdministrationProvider.notifier)
                             .createUser(role: _selectedRole!, name: _nameController.text)
                             .then((value) {
-                          // ignore: unused_result
-                          // ref.refresh(userAdministrationProvider);
-
                           if (value.keys.contains('error')) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

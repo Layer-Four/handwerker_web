@@ -22,21 +22,8 @@ class TimeVMAdapter with _$TimeVMAdapter {
     int? serviceId,
     String? serviceTitle,
     String? customerName,
+    int? customerId,
     @Default(TimeEntryType.workOrder) TimeEntryType type,
-
-    // required int id,
-    // required String userId,
-    // int? projectId,
-    // int? serviceId,
-    // int? duration,
-    // String? serviceTitle,
-    // required DateTime date,
-    // required DateTime startTime,
-    // required DateTime endTime,
-    // DateTime? pauseEnd,
-    // DateTime? pauseStart,
-    // String? description,
-    // String? useForColor,
   }) = _TimeVMAdapter;
 
   factory TimeVMAdapter.fromJson(Map<String, dynamic> json) => _$TimeVMAdapterFromJson(json);
@@ -58,12 +45,11 @@ class TimeVMAdapter with _$TimeVMAdapter {
         id: e.id,
         pauseEnd: e.pauseEnd,
         pauseStart: e.pauseStart,
-        projectId: e.projectID,
-        serviceId: e.serviceID,
-        serviceTitle: e.serviceTitle,
+        projectId: e.projectId,
+        serviceId: e.serviceId,
         startTime: e.startTime,
         type: TimeEntryTypeExtention.getType(e.type),
-        userId: e.userID,
+        userId: e.userId,
       );
 }
 

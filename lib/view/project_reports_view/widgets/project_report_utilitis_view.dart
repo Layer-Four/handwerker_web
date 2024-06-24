@@ -19,27 +19,28 @@ class ProjectUtilitisView extends StatelessWidget {
     assert((service == null && consumable != null) || (service != null && consumable == null));
     return SizedBox(
       height: 40,
-      width: MediaQuery.of(context).size.width * 0.6,
+      width: MediaQuery.of(context).size.width * 0.5,
       child: Row(
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.2,
+            width: MediaQuery.of(context).size.width * 0.18,
             child: Row(
               children: [
                 Icon(service == null ? Icons.construction : Icons.person),
                 Text(service != null ? service.serviceName : consumable!.consumableName),
-                // overflow: TextOverflow.ellipsis,
               ],
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.2,
+            width: MediaQuery.of(context).size.width * 0.17,
             child: Text(
               (service == null ? consumable!.consumableAmount : service.serviceAmount).toString(),
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.2,
+            width: MediaQuery.of(context).size.width > 1000
+                ? MediaQuery.of(context).size.width * 0.10
+                : MediaQuery.of(context).size.width * 0.2,
             child: Text(
               '${(service == null ? consumable!.consumablePrice : service.servicePrice).toStringAsFixed(2)}€ (${calculateRevenue().toStringAsFixed(2)}€)',
               overflow: TextOverflow.clip,
