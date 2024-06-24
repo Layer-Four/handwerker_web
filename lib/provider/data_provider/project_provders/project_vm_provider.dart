@@ -25,7 +25,7 @@ class ProjectVMNotifer extends AsyncNotifier<List<ProjectVM>?> {
       state = AsyncValue.data(projects);
       return;
     } on DioException catch (e) {
-      throw Exception(e.message);
+      log('DioException ${e.message}');
     } catch (e) {
       log('Exception on loadProject:\n$e');
     }

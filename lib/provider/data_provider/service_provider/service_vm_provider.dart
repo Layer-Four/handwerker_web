@@ -28,7 +28,7 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
       final services = data.map<ServiceVM>((e) => ServiceVM.fromJson(e)).toList();
       state = services;
     } on DioException catch (e) {
-      throw Exception(e.message);
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on loadSerivce: $e');
     }
@@ -48,11 +48,11 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
       data.map((e) => result.add(UserDataShort.fromJson(e)));
       return result;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on getListUserService: $e');
-      return [];
     }
+    return [];
   }
 
   Future<bool> deleteService(int serviceID) async {
@@ -66,11 +66,11 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
       loadServices();
       return true;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on deleteService: $e');
-      return false;
     }
+    return false;
   }
 
   Future<bool> createService(ServiceVM service) async {
@@ -84,11 +84,11 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
       loadServices();
       return true;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on loadSerivce: $e');
-      return false;
     }
+    return false;
   }
 
   Future<bool> updateService(ServiceVM service) async {
@@ -102,10 +102,10 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
       loadServices();
       return true;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on updateService: $e');
-      return false;
     }
+    return false;
   }
 }

@@ -31,7 +31,7 @@ class ProjectOverViewNotifier extends Notifier<List<CustomerProjectsReportDM>> {
       state = reports;
       return;
     } on DioException catch (e) {
-      throw Exception(e.message);
+      log('DioException ${e.message}');
     } catch (e) {
       log('Exception was thrown ad loadCustomerProjectReports ad projectReportProvider->\n$e');
       return;

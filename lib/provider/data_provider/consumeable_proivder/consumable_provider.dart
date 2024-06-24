@@ -45,7 +45,7 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       }
       state = result;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Error on loadConsumables: $e');
     }
@@ -69,7 +69,8 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       _units.addAll([...newUnits]);
       return result;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
+      return [];
     } catch (e) {
       log('Exception: $e');
       return result;
@@ -87,7 +88,8 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       state = state.where((item) => item.id != id).toList();
       return true;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
+      return false;
     } catch (e) {
       log('Error when attempting deleteConsumable: $e');
       return false;
@@ -114,7 +116,8 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       state = [...state, newConsumabelList];
       return true;
     } on DioException catch (error) {
-      throw Exception(error.message ?? 'DioException -> ${jsonEncode(error)}');
+      log(error.message ?? 'DioException -> ${jsonEncode(error)}');
+      return false;
     } catch (error) {
       log('Error on createService: $error');
       return false;
@@ -139,7 +142,8 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       }
       return true;
     } on DioException catch (e) {
-      throw Exception('DioException: status ${e.response?.statusCode}\n${e.message}');
+      log('DioException: status ${e.response?.statusCode}\n${e.message}');
+      return false;
     } catch (e) {
       log('Error on  updateConsumable-> $e');
       return false;
