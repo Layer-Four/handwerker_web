@@ -7,6 +7,7 @@ part 'customer_credential.g.dart';
 class CustomerCredentialDM with _$CustomerCredentialDM {
   const factory CustomerCredentialDM({
     required String contactName,
+    String? companyName,
     String? customerCity,
     String? customerEmail,
     String? customerNumber,
@@ -17,8 +18,7 @@ class CustomerCredentialDM with _$CustomerCredentialDM {
     String? country,
   }) = _CustomerCredentialDM;
 
-  factory CustomerCredentialDM.fromJson(Map<String, dynamic> json) =>
-      _$CustomerCredentialDMFromJson(json);
+  factory CustomerCredentialDM.fromJson(Map<String, dynamic> json) => _$CustomerCredentialDMFromJson(json);
 
   const CustomerCredentialDM._();
 }

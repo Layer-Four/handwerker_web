@@ -140,7 +140,7 @@ class _AddNewProjectState extends State<AddNewProject> {
       // Call the API to create the project entry
       log('Data sent: ${newProjectEntry.toJson()}');
 
-      await Api().postCreateProjectEntry(newProjectEntry);
+      await Api().postCreateProjectEntry(newProjectEntry.toJson());
 
       // Call the onSave callback provided by the parent widget
       widget.onSave();
@@ -260,9 +260,7 @@ class _AddNewProjectState extends State<AddNewProject> {
                         isLoadingCustomers
                             ? const Center(child: CircularProgressIndicator())
                             : buildDropdown(
-                                options: customerOptions
-                                    .map((customer) => customer.companyName)
-                                    .toList(),
+                                options: customerOptions.map((customer) => customer.companyName).toList(),
                                 selectedValue: selectedCustomer,
                                 onChanged: (value) {
                                   setState(() {
@@ -331,13 +329,9 @@ class _AddNewProjectState extends State<AddNewProject> {
                         ),
                       ),
                       const SizedBox(height: 5),
-                      buildDateField(
-                          controller: _dateStartController,
-                          hintText: 'Startdatum',
-                          context: context),
+                      buildDateField(controller: _dateStartController, hintText: 'Startdatum', context: context),
                       const SizedBox(height: 5),
-                      buildDateField(
-                          controller: _dateEndController, hintText: 'Enddatum', context: context),
+                      buildDateField(controller: _dateEndController, hintText: 'Enddatum', context: context),
                       const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
