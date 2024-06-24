@@ -68,9 +68,7 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
             Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width > 1000
-                      ? 400
-                      : MediaQuery.of(context).size.width / 10 * 3,
+                  width: MediaQuery.of(context).size.width > 1000 ? 400 : MediaQuery.of(context).size.width / 10 * 3,
                   child: TextField(
                     controller: _titleController,
                     style: const TextStyle(fontSize: 16),
@@ -82,9 +80,7 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width > 1000
-                      ? 400
-                      : MediaQuery.of(context).size.width / 10 * 3,
+                  width: MediaQuery.of(context).size.width > 1000 ? 400 : MediaQuery.of(context).size.width / 10 * 3,
                   child: TextField(
                     controller: _priceController,
                     decoration: const InputDecoration(
@@ -114,15 +110,15 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                           double.parse(value.replaceAll('€', '')) > 10000) {
                         _showSnackBar('Diese Zahl ist zu groß');
                         _priceController.text = '${value.substring(0, value.length - 1)}€';
-                        _priceController.selection = TextSelection.fromPosition(
-                            TextPosition(offset: _priceController.text.length - 1));
+                        _priceController.selection =
+                            TextSelection.fromPosition(TextPosition(offset: _priceController.text.length - 1));
                         return;
                       }
 
                       if (!value.endsWith('€')) {
                         _priceController.text = '$value€';
-                        _priceController.selection = TextSelection.fromPosition(
-                            TextPosition(offset: _priceController.text.length - 1));
+                        _priceController.selection =
+                            TextSelection.fromPosition(TextPosition(offset: _priceController.text.length - 1));
                       }
                     },
                   ),
@@ -148,10 +144,7 @@ class _ServiceDataWidgetState extends State<ServiceDataWidget> {
                           : () => Utilitis.askPopUp(context,
                               message: 'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
                               onAccept: () {
-                                ref
-                                    .read(serviceVMProvider.notifier)
-                                    .deleteService(_service.id!)
-                                    .then((e) {
+                                ref.read(serviceVMProvider.notifier).deleteService(_service.id!).then((e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Center(

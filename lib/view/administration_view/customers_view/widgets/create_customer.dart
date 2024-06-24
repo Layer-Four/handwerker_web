@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/themes/app_color.dart';
-import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../../../../constants/utilitis/utilitis.dart';
+import '../../../../models/customer_models/customer_create_model/create_customer_model.dart';
+import '../../../../provider/customer_provider/customer_provider.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
-class AddNewConsumable extends StatefulWidget {
-  final VoidCallback onSave;
+class CreateCustomerWidget extends StatefulWidget {
+  final VoidCallback? onSave;
   final VoidCallback onCancel;
-  final CustomeProject? project;
 
-  const AddNewConsumable({
+  const CreateCustomerWidget({
     super.key,
-    required this.onSave,
+    this.onSave,
     required this.onCancel,
-    this.project,
   });
 
   @override
-  State<AddNewConsumable> createState() => _AddNewConsumableState();
+  State<CreateCustomerWidget> createState() => _CreateCustomerWidgetState();
 }
 
-class _AddNewConsumableState extends State<AddNewConsumable> {
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _secondNameController = TextEditingController();
+class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
+  bool _isSnackbarShowed = false;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _companyNameController = TextEditingController();
   final TextEditingController _streetController = TextEditingController();
   final TextEditingController _housenumberController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
@@ -32,18 +35,19 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
   final TextEditingController _telephoneController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
 
+  late CreateCustomerDM _createCustomer;
+
   @override
   void initState() {
     super.initState();
-    if (widget.project != null) {
-      _firstNameController.text = widget.project!.customer;
-    }
+    _createCustomer = const CreateCustomerDM();
   }
 
+  // Dispose of controllers
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _secondNameController.dispose();
+    _nameController.dispose();
+    _companyNameController.dispose();
     _streetController.dispose();
     _housenumberController.dispose();
     _cityController.dispose();
@@ -55,10 +59,23 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
     super.dispose();
   }
 
+  void _showSnackBar(String message) {
+    if (_isSnackbarShowed) return;
+    setState(() => _isSnackbarShowed = true);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(child: Text(message)),
+      ),
+    );
+    Future.delayed(const Duration(seconds: 1)).then(
+      (_) => setState(() => _isSnackbarShowed = false),
+    );
+  }
+
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
         child: Container(
-          width: MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width > 1000 ? 900 : MediaQuery.of(context).size.width,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
           child: Card(
             elevation: 9,
@@ -80,14 +97,14 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                               child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
                             ),
                             buildTextField(
-                              hintText: 'Jürgen',
-                              controller: _firstNameController,
+                              hintText: 'Kundenname',
+                              controller: _nameController,
                               context: context,
                             ),
                             const SizedBox(height: 5),
                             buildTextField(
-                              hintText: 'Mustermann',
-                              controller: _secondNameController,
+                              hintText: 'Unternehmenname',
+                              controller: _companyNameController,
                               context: context,
                             ),
                           ],
@@ -100,15 +117,14 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                           children: [
                             const Padding(
                               padding: EdgeInsets.all(4),
-                              child:
-                                  Text('Addresse', style: TextStyle(fontWeight: FontWeight.bold)),
+                              child: Text('Adresse', style: TextStyle(fontWeight: FontWeight.bold)),
                             ),
                             Row(
                               children: [
                                 SizedBox(
                                   width: 300,
                                   child: buildTextField(
-                                    hintText: 'Mustermannstraße',
+                                    hintText: 'Straße',
                                     controller: _streetController,
                                     context: context,
                                   ),
@@ -117,7 +133,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                 SizedBox(
                                   width: 100,
                                   child: buildTextField(
-                                    hintText: '3',
+                                    hintText: 'Nr',
                                     controller: _housenumberController,
                                     context: context,
                                   ),
@@ -130,7 +146,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                 SizedBox(
                                   width: 300,
                                   child: buildTextField(
-                                    hintText: 'Berlin',
+                                    hintText: 'Ort',
                                     controller: _cityController,
                                     context: context,
                                   ),
@@ -139,7 +155,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                 SizedBox(
                                   width: 100,
                                   child: buildTextField(
-                                    hintText: '11234',
+                                    hintText: 'PLZ',
                                     controller: _postNumberController,
                                     context: context,
                                   ),
@@ -173,7 +189,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                             const SizedBox(height: 10),
                             buildTextField(
                               hintText: 'Telefon',
-                              controller: _customerNumberController,
+                              controller: _telephoneController,
                               context: context,
                             ),
                           ],
@@ -190,7 +206,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                             ),
                             buildTextField(
                               hintText: 'Kundennummer',
-                              controller: _telephoneController,
+                              controller: _customerNumberController,
                               context: context,
                             ),
                             const SizedBox(height: 10),
@@ -204,67 +220,91 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: SymmetricButton(
-                          color: const Color.fromARGB(255, 241, 241, 241),
-                          text: 'Verwerfen',
-                          textStyle: TextStyle(color: AppColor.kPrimaryButtonColor),
-                          onPressed: () {
-                            widget.onCancel();
-                          },
+                  Consumer(
+                    builder: (context, ref, _) => Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: SymmetricButton(
+                            text: 'Verwerfen',
+                            textStyle:
+                                Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
+                            color: AppColor.kWhite,
+                            onPressed: () {
+                              widget.onCancel();
+                            },
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: SymmetricButton(
-                          text: 'Speichern',
-                          onPressed: widget.onSave,
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: SymmetricButton(
+                            text: 'Speichern',
+                            onPressed: () {
+                              if (_streetController.text.isEmpty &&
+                                  _cityController.text.isEmpty &&
+                                  _companyNameController.text.isEmpty &&
+                                  _contactController.text.isEmpty &&
+                                  _customerNumberController.text.isEmpty &&
+                                  _telephoneController.text.isEmpty &&
+                                  _postNumberController.text.isEmpty) {
+                                _showSnackBar('Bitte füllen Sie alle Felder aus.');
+                                return;
+                              }
+
+                              _createCustomer = _createCustomer.copyWith(
+                                city: _cityController.text,
+                                street: _streetController.text,
+                                companyName: _companyNameController.text,
+                                contactMail: _emailController.text,
+                                contactPhone: _telephoneController.text,
+                                streetNr: _housenumberController.text,
+                                zipcode: _postNumberController.text,
+                                contactName: _nameController.text,
+                                externalId: _customerNumberController.text,
+                              );
+
+                              ref.read(customerProvider.notifier).createCustomer(_createCustomer).then((success) {
+                                if (success) {
+                                  _nameController.clear();
+                                  _companyNameController.clear();
+                                  _cityController.clear();
+                                  _contactController.clear();
+                                  _emailController.clear();
+                                  _customerNumberController.clear();
+                                  _postNumberController.clear();
+                                  _telephoneController.clear();
+                                  _streetController.clear();
+                                  _housenumberController.clear();
+                                } else {
+                                  _showSnackBar('Speichern fehlgeschlagen');
+                                }
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
           ),
         ),
       );
-}
 
-Widget buildTextField({
-  required String hintText,
-  required TextEditingController controller,
-  required BuildContext context,
-}) =>
-    SizedBox(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8),
-        child: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: AppColor.kTextfieldBorder,
-                ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 5,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: AppColor.kTextfieldBorder,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-            ),
+  Widget buildTextField({
+    required String hintText,
+    required TextEditingController controller,
+    required BuildContext context,
+  }) =>
+      SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8, right: 8),
+          child: TextField(
+            controller: controller,
+            decoration: Utilitis.textFieldDecoration(hintText),
           ),
         ),
-      ),
-    );
+      );
+}
