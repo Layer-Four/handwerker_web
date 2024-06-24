@@ -51,11 +51,11 @@ class UserNotifier extends Notifier<UserVM> {
         log('DioException: ${e.response?.statusMessage} ');
         return false;
       }
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Error on loginUser $e');
-      return false;
     }
+    return false;
   }
 
   Future<bool> setNewPassword(String username, String oTP, String newPassword) async {
@@ -73,10 +73,10 @@ class UserNotifier extends Notifier<UserVM> {
       }
       return true;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Error on setNewPassword $e');
-      return false;
     }
+    return false;
   }
 }

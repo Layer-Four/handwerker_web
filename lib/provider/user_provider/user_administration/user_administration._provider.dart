@@ -40,14 +40,12 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       if (e.toString().contains('400')) {
         return {'error': 'duplicated user'};
       }
-      throw Exception('DioException-> ${e.message}');
+      log('DioException: status ${e.response?.statusCode}\n${e.message}');
     } catch (e) {
-      if (e.toString().contains('400')) {
-        return {'error': 'duplicated user'};
-      }
+      if (e.toString().contains('400')) {}
       log('Error on createUser $e');
-      return {};
     }
+    return {'error': 'duplicated user'};
   }
 
   Future<bool> deleteUser(String userID) async {
@@ -66,11 +64,11 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       state = newState;
       return true;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Error on deleteUser $e');
-      return false;
     }
+    return false;
   }
 
   Future<void> loadUserEntries() async {
@@ -87,10 +85,9 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       state = newState;
       return;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Error on loadUserEntries $e');
-      return;
     }
   }
 
@@ -105,11 +102,11 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       final List data = response.data.map((e) => e).toList();
       return data.map((data) => UserRole.fromJson(data)).toList();
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Error on loadUserRoles $e');
-      return [];
     }
+    return [];
   }
 
   Future<Map> resetPassword(String name) async {
@@ -122,11 +119,11 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       }
       return response.data;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Error on resetPassword $e');
-      return {};
     }
+    return {};
   }
 
   Future<bool> updateUser(UserDataShort user) async {
@@ -146,10 +143,10 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
       loadUserEntries();
       return true;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Error on updateUser $e');
-      return false;
     }
+    return false;
   }
 }

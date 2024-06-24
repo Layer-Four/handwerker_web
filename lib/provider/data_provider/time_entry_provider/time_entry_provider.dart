@@ -47,11 +47,11 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
       ).toList();
       return result;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on loadEvents: $e');
-      return [];
     }
+    return [];
   }
 
   Future<bool> saveTimeEntry(TimeVMAdapter entry) async {
@@ -75,11 +75,11 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
 
       return true;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on saveTimeEntry: $e');
-      return false;
     }
+    return false;
   }
 
   Future<List<UserDataShort>> getListUserService() async {
@@ -96,11 +96,11 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
       data.map((e) => result.add(UserDataShort.fromJson(e))).toList();
       return result;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on getListUserService: $e');
-      return [];
     }
+    return [];
   }
 
   Future<List<ProjectVM>> getProjectForCustomer(int customerId) async {
@@ -114,11 +114,11 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
       final List data = response.data.map((e) => e).toList();
       return data.map((e) => ProjectVM.fromJson(e)).toList();
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on getProjectForCustomer: $e');
-      return [];
     }
+    return [];
   }
 
   Future<List<ServiceVM>> loadServiceByUserID(String userId) async {
@@ -133,11 +133,11 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
       final serviceFromUser = data.map((e) => ServiceVM.fromJson(e)).toList();
       return serviceFromUser;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on getProjectForCustomer: $e');
-      return [];
     }
+    return [];
   }
 
   Future<List<CustomerShortDM>> getAllCustomer() async {
@@ -152,10 +152,10 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
       response.data.map((e) => result.add(CustomerShortDM.fromJson(e))).toList();
       return result;
     } on DioException catch (e) {
-      throw Exception('DioException: ${e.message}');
+      log('DioException: ${e.message}');
     } catch (e) {
       log('Exception on getAllCustomer: $e');
-      return [];
     }
+    return [];
   }
 }

@@ -26,46 +26,49 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
         children: [
           GestureDetector(
             onTap: () => setState(() => isContainerOpen = !isContainerOpen),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.24,
-                  child: Text(_project.projectName),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.18,
-                  child: Text(_project.projectState?.value ?? '',
+            child: SizedBox(
+              height: 30,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.24,
+                    child: Text(_project.projectName),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.18,
+                    child: Text(_project.projectState?.value ?? '',
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Utilitis.getStatusColor(_project.projectState?.value),
+                            )),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.17,
+                    child: Text(
+                      _buildValidTimeString(),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width > 1000
+                        ? MediaQuery.of(context).size.width * 0.10
+                        : MediaQuery.of(context).size.width * 0.2,
+                    child: Text(
+                      '${_project.projectRevenue?.toStringAsFixed(2) ?? 0} €',
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Utilitis.getStatusColor(_project.projectState?.value),
-                          )),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.17,
-                  child: Text(
-                    _buildValidTimeString(),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width > 1000
-                      ? MediaQuery.of(context).size.width * 0.10
-                      : MediaQuery.of(context).size.width * 0.2,
-                  child: Text(
-                    '${_project.projectRevenue?.toStringAsFixed(2) ?? 0} €',
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Container(
-                    alignment: Alignment.centerRight,
-                    width: MediaQuery.of(context).size.width * 0.05,
-                    child: Icon(isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down))
-              ],
+                  Container(
+                      alignment: Alignment.centerRight,
+                      width: MediaQuery.of(context).size.width * 0.05,
+                      child: Icon(isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down))
+                ],
+              ),
             ),
           ),
           isContainerOpen ? ProjectReportSummary(_project) : const SizedBox.shrink(),
           Divider(
-            height: 5,
+            height: 10,
             color: Colors.black,
             thickness: 1.5,
             endIndent: MediaQuery.of(context).size.width * 0.1,
