@@ -6,6 +6,7 @@ part 'create_customer_model.g.dart';
 @freezed
 class CreateCustomerDM with _$CreateCustomerDM {
   const factory CreateCustomerDM({
+    String? id,
     String? externalId,
     String? companyName,
     String? contactName,

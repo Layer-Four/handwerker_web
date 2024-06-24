@@ -1,20 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../../../../provider/customer_provider/customer_provider.dart';
 import 'project_card_for_customer_view.dart';
 
 // ignore: must_be_immutable
-class ProjectOverview extends StatefulWidget {
-  final CustomeProject project;
+class CustomerOverview extends StatefulWidget {
+  final CustomeProject customer;
 
-  const ProjectOverview({super.key, required this.project});
+  const CustomerOverview({super.key, required this.customer});
 
   @override
-  State<ProjectOverview> createState() => _CharacterCardState();
+  State<CustomerOverview> createState() => _CharacterCardState();
 }
 
-class _CharacterCardState extends State<ProjectOverview> {
+class _CharacterCardState extends State<CustomerOverview> {
   final List<CustomeProject> project = [
     const CustomeProject(
       'Layer Four GmbH',
@@ -114,31 +116,19 @@ class _CharacterCardState extends State<ProjectOverview> {
           'Außenanlagen',
           'Gestaltung der Außenanlagen',
           '08.04.2026',
-          [
-            'assets/images/construction1.png',
-            'assets/images/construction2.png',
-            'assets/images/construction2.png'
-          ],
+          ['assets/images/construction1.png', 'assets/images/construction2.png', 'assets/images/construction2.png'],
         ),
         ProjectReport(
           'Außenanlagen',
           'Gestaltung der Außenanlagen',
           '08.04.2026',
-          [
-            'assets/images/construction1.png',
-            'assets/images/construction2.png',
-            'assets/images/construction2.png'
-          ],
+          ['assets/images/construction1.png', 'assets/images/construction2.png', 'assets/images/construction2.png'],
         ),
         ProjectReport(
           'Außenanlagen',
           'Gestaltung der Außenanlagen',
           '08.04.2026',
-          [
-            'assets/images/construction1.png',
-            'assets/images/construction2.png',
-            'assets/images/construction2.png'
-          ],
+          ['assets/images/construction1.png', 'assets/images/construction2.png', 'assets/images/construction2.png'],
         ),
       ],
     ),
@@ -202,18 +192,19 @@ class _CharacterCardState extends State<ProjectOverview> {
                 ),
               ),
             ),
-            //   const Spacer(),
           ],
         ),
         const SizedBox(
           height: 10,
         ),
-        SizedBox(
-          width: screenWidth > 600 ? double.infinity : null,
-          height: MediaQuery.of(context).size.height / 3,
-          child: ListView.builder(
-            itemCount: project.length,
-            itemBuilder: (_, index) => ProjectCardForCustomerView(project[index]),
+        Consumer(
+          builder: (context, ref, _) => SizedBox(
+            width: screenWidth > 600 ? double.infinity : null,
+            height: MediaQuery.of(context).size.height / 3,
+            child: ListView.builder(
+              itemCount: ref.watch(customerProvider).length,
+              itemBuilder: (_, index) => ProjectCardForCustomerView(project[index]),
+            ),
           ),
         ),
         const SizedBox(

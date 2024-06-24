@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../../constants/themes/app_color.dart';
 import '../../../../constants/utilitis/utilitis.dart';
+import '../../../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../../models/customer_models/customer_create_model/create_customer_model.dart';
-import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../../../../models/customer_models/customer_credential.dart';
 import '../../../../provider/customer_provider/customer_provider.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
-class AddNewConsumable extends StatefulWidget {
-  final VoidCallback onSave;
-  final VoidCallback onCancel;
-  final CustomeProject? project;
+class UpdateCustomerWidget extends StatefulWidget {
+  final CustomerOvervewDM customer;
+  final ValueChanged<CustomerOvervewDM>? onSave;
+  final VoidCallback? onCancel;
 
-  const AddNewConsumable({
+  const UpdateCustomerWidget({
     super.key,
-    required this.onSave,
-    required this.onCancel,
-    this.project,
+    required this.customer,
+    this.onSave,
+    this.onCancel,
   });
 
   @override
-  State<AddNewConsumable> createState() => _AddNewConsumableState();
+  State<UpdateCustomerWidget> createState() => _UpdateCustomerWidgetState();
 }
 
-class _AddNewConsumableState extends State<AddNewConsumable> {
+class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
   bool _isSnackbarShowed = false;
 
   final TextEditingController _nameController = TextEditingController();
@@ -38,18 +38,24 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
   final TextEditingController _telephoneController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
 
-  late CreateCustomerDM _createCustomer;
+  late final CustomerOvervewDM _initialCustomer;
 
   @override
   void initState() {
     super.initState();
-    _createCustomer = const CreateCustomerDM();
-    if (widget.project != null) {
-      _nameController.text = widget.project!.customer;
-    }
+    _initialCustomer = widget.customer;
+    _nameController.text = _initialCustomer.customerCredentials.contactName;
+    _companyNameController.text = _initialCustomer.customerCredentials.companyName ?? '';
+    _streetController.text = _initialCustomer.customerCredentials.customerStreet ?? '';
+    _housenumberController.text = _initialCustomer.customerCredentials.customerStreetNr ?? '';
+    _cityController.text = _initialCustomer.customerCredentials.customerCity ?? '';
+    _postNumberController.text = _initialCustomer.customerCredentials.customerZipcode ?? '';
+    _emailController.text = _initialCustomer.customerCredentials.customerEmail ?? '';
+    _customerNumberController.text = _initialCustomer.customerCredentials.customerNumber ?? '';
+    _telephoneController.text = _initialCustomer.customerCredentials.customerPhone ?? '';
+    _contactController.text = _initialCustomer.customerCredentials.contactName;
   }
 
-  // Dispose of controllers
   @override
   void dispose() {
     _nameController.dispose();
@@ -62,7 +68,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
     _customerNumberController.dispose();
     _telephoneController.dispose();
     _contactController.dispose();
-    super.dispose(); // Always call super.dispose() last
+    super.dispose();
   }
 
   void _showSnackBar(String message) {
@@ -234,17 +240,17 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                           padding: const EdgeInsets.all(16.0),
                           child: SymmetricButton(
                             text: 'Verwerfen',
-                            textStyle: TextStyle(color: AppColor.kPrimaryButtonColor),
-                            onPressed: () {
-                              widget.onCancel();
-                            },
+                            textStyle:
+                                Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
+                            color: AppColor.kWhite,
+                            onPressed: widget.onCancel,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: SymmetricButton(
-                            text: 'Speichern',
-                            onPressed: () {
+                            text: 'Ändern',
+                            onPressed: () async {
                               if (_streetController.text.isEmpty &&
                                   _cityController.text.isEmpty &&
                                   _companyNameController.text.isEmpty &&
@@ -256,7 +262,7 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                 return;
                               }
 
-                              _createCustomer = _createCustomer.copyWith(
+                              final x = CreateCustomerDM(
                                 city: _cityController.text,
                                 street: _streetController.text,
                                 companyName: _companyNameController.text,
@@ -268,28 +274,47 @@ class _AddNewConsumableState extends State<AddNewConsumable> {
                                 externalId: _customerNumberController.text,
                               );
 
-                              ref.read(customerProvider.notifier).createCustomer(_createCustomer).then((success) {
+                              try {
+                                final success = await ref
+                                    .read(customerProvider.notifier)
+                                    .updateCustomer(x, _initialCustomer.customerID!);
                                 if (success) {
-                                  _nameController.clear();
-                                  _companyNameController.clear();
-                                  _cityController.clear();
-                                  _contactController.clear();
-                                  _emailController.clear();
-                                  _customerNumberController.clear();
-                                  _postNumberController.clear();
-                                  _telephoneController.clear();
-                                  _streetController.clear();
-                                  _housenumberController.clear();
+                                  if (widget.onSave != null) {
+                                    // Create updated CustomerOvervewDM
+                                    final updatedCustomer = CustomerOvervewDM(
+                                      customerID: _initialCustomer.customerID,
+                                      customerCredentials: CustomerCredentialDM(
+                                        contactName: _nameController.text,
+                                        companyName: _companyNameController.text,
+                                        customerStreet: _streetController.text,
+                                        customerStreetNr: _housenumberController.text,
+                                        customerCity: _cityController.text,
+                                        customerZipcode: _postNumberController.text,
+                                        customerEmail: _emailController.text,
+                                        customerNumber: _customerNumberController.text,
+                                        customerPhone: _telephoneController.text,
+                                      ),
+                                      numOfProjects: _initialCustomer.numOfProjects,
+                                      totalCostMaterial: _initialCustomer.totalCostMaterial,
+                                      totalTimeTracked: _initialCustomer.totalTimeTracked,
+                                      turnover: _initialCustomer.turnover,
+                                    );
+
+                                    widget.onSave!(updatedCustomer);
+                                  }
                                 } else {
                                   _showSnackBar('Speichern fehlgeschlagen');
                                 }
-                              });
+                              } catch (e) {
+                                _showSnackBar('Ein Fehler ist aufgetreten');
+                                // log'Error: $e';
+                              }
                             },
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

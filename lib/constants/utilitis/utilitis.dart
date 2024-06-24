@@ -1,6 +1,5 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
-import 'dart:typed_data';
 import 'dart:ui_web' as ui;
 
 import 'package:calendar_view/calendar_view.dart';
@@ -160,11 +159,10 @@ class Utilitis {
   /// Call this method with a [Map] with [Key] 'userName' and [Key] password.
   /// return a [Future] ByteList.
   static Future<Uint8List> _createPDF(Map<String, dynamic> newUser) async {
-    final pdf = pdf_widget.Document(
-        version: PdfVersion.pdf_1_4, compress: true, title: 'Anmeldedaten: ${newUser['userName']}');
+    final pdf =
+        pdf_widget.Document(version: PdfVersion.pdf_1_4, compress: true, title: 'Anmeldedaten: ${newUser['userName']}');
     final image = pdf_widget.Image(
-        pdf_widget.MemoryImage(
-            (await rootBundle.load('assets/images/img_techtool.png')).buffer.asUint8List()),
+        pdf_widget.MemoryImage((await rootBundle.load('assets/images/img_techtool.png')).buffer.asUint8List()),
         height: 20);
     pdf.addPage(
       pdf_widget.Page(

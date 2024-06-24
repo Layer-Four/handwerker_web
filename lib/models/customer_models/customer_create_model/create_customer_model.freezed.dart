@@ -20,6 +20,7 @@ CreateCustomerDM _$CreateCustomerDMFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CreateCustomerDM {
+  String? get id => throw _privateConstructorUsedError;
   String? get externalId => throw _privateConstructorUsedError;
   String? get companyName => throw _privateConstructorUsedError;
   String? get contactName => throw _privateConstructorUsedError;
@@ -33,18 +34,17 @@ mixin _$CreateCustomerDM {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $CreateCustomerDMCopyWith<CreateCustomerDM> get copyWith =>
-      throw _privateConstructorUsedError;
+  $CreateCustomerDMCopyWith<CreateCustomerDM> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $CreateCustomerDMCopyWith<$Res> {
-  factory $CreateCustomerDMCopyWith(
-          CreateCustomerDM value, $Res Function(CreateCustomerDM) then) =
+  factory $CreateCustomerDMCopyWith(CreateCustomerDM value, $Res Function(CreateCustomerDM) then) =
       _$CreateCustomerDMCopyWithImpl<$Res, CreateCustomerDM>;
   @useResult
   $Res call(
-      {String? externalId,
+      {String? id,
+      String? externalId,
       String? companyName,
       String? contactName,
       String? contactPhone,
@@ -57,8 +57,7 @@ abstract class $CreateCustomerDMCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CreateCustomerDMCopyWithImpl<$Res, $Val extends CreateCustomerDM>
-    implements $CreateCustomerDMCopyWith<$Res> {
+class _$CreateCustomerDMCopyWithImpl<$Res, $Val extends CreateCustomerDM> implements $CreateCustomerDMCopyWith<$Res> {
   _$CreateCustomerDMCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
@@ -69,6 +68,7 @@ class _$CreateCustomerDMCopyWithImpl<$Res, $Val extends CreateCustomerDM>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? externalId = freezed,
     Object? companyName = freezed,
     Object? contactName = freezed,
@@ -81,6 +81,10 @@ class _$CreateCustomerDMCopyWithImpl<$Res, $Val extends CreateCustomerDM>
     Object? country = null,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       externalId: freezed == externalId
           ? _value.externalId
           : externalId // ignore: cast_nullable_to_non_nullable
@@ -126,15 +130,14 @@ class _$CreateCustomerDMCopyWithImpl<$Res, $Val extends CreateCustomerDM>
 }
 
 /// @nodoc
-abstract class _$$CreateCustomerDMImplCopyWith<$Res>
-    implements $CreateCustomerDMCopyWith<$Res> {
-  factory _$$CreateCustomerDMImplCopyWith(_$CreateCustomerDMImpl value,
-          $Res Function(_$CreateCustomerDMImpl) then) =
+abstract class _$$CreateCustomerDMImplCopyWith<$Res> implements $CreateCustomerDMCopyWith<$Res> {
+  factory _$$CreateCustomerDMImplCopyWith(_$CreateCustomerDMImpl value, $Res Function(_$CreateCustomerDMImpl) then) =
       __$$CreateCustomerDMImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {String? externalId,
+      {String? id,
+      String? externalId,
       String? companyName,
       String? contactName,
       String? contactPhone,
@@ -147,16 +150,15 @@ abstract class _$$CreateCustomerDMImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CreateCustomerDMImplCopyWithImpl<$Res>
-    extends _$CreateCustomerDMCopyWithImpl<$Res, _$CreateCustomerDMImpl>
+class __$$CreateCustomerDMImplCopyWithImpl<$Res> extends _$CreateCustomerDMCopyWithImpl<$Res, _$CreateCustomerDMImpl>
     implements _$$CreateCustomerDMImplCopyWith<$Res> {
-  __$$CreateCustomerDMImplCopyWithImpl(_$CreateCustomerDMImpl _value,
-      $Res Function(_$CreateCustomerDMImpl) _then)
+  __$$CreateCustomerDMImplCopyWithImpl(_$CreateCustomerDMImpl _value, $Res Function(_$CreateCustomerDMImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? externalId = freezed,
     Object? companyName = freezed,
     Object? contactName = freezed,
@@ -169,6 +171,10 @@ class __$$CreateCustomerDMImplCopyWithImpl<$Res>
     Object? country = null,
   }) {
     return _then(_$CreateCustomerDMImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       externalId: freezed == externalId
           ? _value.externalId
           : externalId // ignore: cast_nullable_to_non_nullable
@@ -217,7 +223,8 @@ class __$$CreateCustomerDMImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CreateCustomerDMImpl extends _CreateCustomerDM {
   const _$CreateCustomerDMImpl(
-      {this.externalId,
+      {this.id,
+      this.externalId,
       this.companyName,
       this.contactName,
       this.contactPhone,
@@ -229,9 +236,10 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
       this.country = 'Deutschland'})
       : super._();
 
-  factory _$CreateCustomerDMImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CreateCustomerDMImplFromJson(json);
+  factory _$CreateCustomerDMImpl.fromJson(Map<String, dynamic> json) => _$$CreateCustomerDMImplFromJson(json);
 
+  @override
+  final String? id;
   @override
   final String? externalId;
   @override
@@ -256,7 +264,7 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
 
   @override
   String toString() {
-    return 'CreateCustomerDM(externalId: $externalId, companyName: $companyName, contactName: $contactName, contactPhone: $contactPhone, contactMail: $contactMail, street: $street, streetNr: $streetNr, zipcode: $zipcode, city: $city, country: $country)';
+    return 'CreateCustomerDM(id: $id, externalId: $externalId, companyName: $companyName, contactName: $contactName, contactPhone: $contactPhone, contactMail: $contactMail, street: $street, streetNr: $streetNr, zipcode: $zipcode, city: $city, country: $country)';
   }
 
   @override
@@ -264,19 +272,14 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CreateCustomerDMImpl &&
-            (identical(other.externalId, externalId) ||
-                other.externalId == externalId) &&
-            (identical(other.companyName, companyName) ||
-                other.companyName == companyName) &&
-            (identical(other.contactName, contactName) ||
-                other.contactName == contactName) &&
-            (identical(other.contactPhone, contactPhone) ||
-                other.contactPhone == contactPhone) &&
-            (identical(other.contactMail, contactMail) ||
-                other.contactMail == contactMail) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.externalId, externalId) || other.externalId == externalId) &&
+            (identical(other.companyName, companyName) || other.companyName == companyName) &&
+            (identical(other.contactName, contactName) || other.contactName == contactName) &&
+            (identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone) &&
+            (identical(other.contactMail, contactMail) || other.contactMail == contactMail) &&
             (identical(other.street, street) || other.street == street) &&
-            (identical(other.streetNr, streetNr) ||
-                other.streetNr == streetNr) &&
+            (identical(other.streetNr, streetNr) || other.streetNr == streetNr) &&
             (identical(other.zipcode, zipcode) || other.zipcode == zipcode) &&
             (identical(other.city, city) || other.city == city) &&
             (identical(other.country, country) || other.country == country));
@@ -284,25 +287,14 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      externalId,
-      companyName,
-      contactName,
-      contactPhone,
-      contactMail,
-      street,
-      streetNr,
-      zipcode,
-      city,
-      country);
+  int get hashCode => Object.hash(runtimeType, id, externalId, companyName, contactName, contactPhone, contactMail,
+      street, streetNr, zipcode, city, country);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CreateCustomerDMImplCopyWith<_$CreateCustomerDMImpl> get copyWith =>
-      __$$CreateCustomerDMImplCopyWithImpl<_$CreateCustomerDMImpl>(
-          this, _$identity);
+      __$$CreateCustomerDMImplCopyWithImpl<_$CreateCustomerDMImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -314,7 +306,8 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
 
 abstract class _CreateCustomerDM extends CreateCustomerDM {
   const factory _CreateCustomerDM(
-      {final String? externalId,
+      {final String? id,
+      final String? externalId,
       final String? companyName,
       final String? contactName,
       final String? contactPhone,
@@ -326,9 +319,10 @@ abstract class _CreateCustomerDM extends CreateCustomerDM {
       final String country}) = _$CreateCustomerDMImpl;
   const _CreateCustomerDM._() : super._();
 
-  factory _CreateCustomerDM.fromJson(Map<String, dynamic> json) =
-      _$CreateCustomerDMImpl.fromJson;
+  factory _CreateCustomerDM.fromJson(Map<String, dynamic> json) = _$CreateCustomerDMImpl.fromJson;
 
+  @override
+  String? get id;
   @override
   String? get externalId;
   @override
@@ -351,6 +345,5 @@ abstract class _CreateCustomerDM extends CreateCustomerDM {
   String get country;
   @override
   @JsonKey(ignore: true)
-  _$$CreateCustomerDMImplCopyWith<_$CreateCustomerDMImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CreateCustomerDMImplCopyWith<_$CreateCustomerDMImpl> get copyWith => throw _privateConstructorUsedError;
 }
