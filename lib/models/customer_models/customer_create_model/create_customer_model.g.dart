@@ -9,7 +9,7 @@ part of 'create_customer_model.dart';
 _$CreateCustomerDMImpl _$$CreateCustomerDMImplFromJson(
         Map<String, dynamic> json) =>
     _$CreateCustomerDMImpl(
-      id: json['id'] as String?,
+      id: const IdConverter().fromJson(json['id']),
       externalId: json['externalId'] as String?,
       companyName: json['companyName'] as String?,
       contactName: json['contactName'] as String?,
@@ -25,7 +25,7 @@ _$CreateCustomerDMImpl _$$CreateCustomerDMImplFromJson(
 Map<String, dynamic> _$$CreateCustomerDMImplToJson(
         _$CreateCustomerDMImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'id': const IdConverter().toJson(instance.id),
       'externalId': instance.externalId,
       'companyName': instance.companyName,
       'contactName': instance.contactName,

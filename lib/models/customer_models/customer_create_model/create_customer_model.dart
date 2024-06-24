@@ -1,12 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
+import 'id_converter.dart';
 part 'create_customer_model.freezed.dart';
 part 'create_customer_model.g.dart';
 
 @freezed
 class CreateCustomerDM with _$CreateCustomerDM {
   const factory CreateCustomerDM({
-    String? id,
+    @IdConverter() String? id,
     String? externalId,
     String? companyName,
     String? contactName,

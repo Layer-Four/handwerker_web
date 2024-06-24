@@ -23,8 +23,7 @@ CustomerProjectsReportDM _$CustomerProjectsReportDMFromJson(
 mixin _$CustomerProjectsReportDM {
   CustomerCredentialDM get customerCredentials =>
       throw _privateConstructorUsedError;
-  String get customerName =>
-      throw _privateConstructorUsedError; // @Default(0.0) double customerRevenue,
+  String get customerName => throw _privateConstructorUsedError;
   double? get customerRevenue => throw _privateConstructorUsedError;
   List<ProjectRepotsDM> get projectsList => throw _privateConstructorUsedError;
 
@@ -174,7 +173,6 @@ class _$CustomerProjectsReportDMImpl extends _CustomerProjectsReportDM {
   final CustomerCredentialDM customerCredentials;
   @override
   final String customerName;
-// @Default(0.0) double customerRevenue,
   @override
   final double? customerRevenue;
   final List<ProjectRepotsDM> _projectsList;
@@ -246,7 +244,7 @@ abstract class _CustomerProjectsReportDM extends CustomerProjectsReportDM {
   CustomerCredentialDM get customerCredentials;
   @override
   String get customerName;
-  @override // @Default(0.0) double customerRevenue,
+  @override
   double? get customerRevenue;
   @override
   List<ProjectRepotsDM> get projectsList;

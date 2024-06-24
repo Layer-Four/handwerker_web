@@ -266,6 +266,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
 
                               ref.read(customerProvider.notifier).createCustomer(_createCustomer).then((success) {
                                 if (success) {
+                                  _showSnackBar('Customer erfolgreich hinzufügt');
                                   _nameController.clear();
                                   _companyNameController.clear();
                                   _cityController.clear();

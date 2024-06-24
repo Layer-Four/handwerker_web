@@ -35,6 +35,7 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const SizedBox(height: 40),
                 GestureDetector(
@@ -56,52 +57,54 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                           ),
                         ),
                         const Spacer(),
-                        const Icon(Icons.edit_document),
+                        _iconButton(
+                          icon: Icons.delete,
+                          onPressed: () => Utilitis.askPopUp(
+                            context,
+                            message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
+                            onAccept: () {
+                              ref
+                                  .read(customerProvider.notifier)
+                                  .deleteCustomer(widget.customer.customerID!)
+                                  .then((success) {
+                                if (success) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Center(
+                                        child: Text('Kunde wurde erfolgreich gelöscht'),
+                                      ),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                  widget.onDelete();
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Center(
+                                        child: Text('Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.'),
+                                      ),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                                Navigator.of(context).pop(); // Dismiss the dialog
+                              });
+                            },
+                            onReject: () {
+                              Navigator.of(context).pop(); // Dismiss the dialog on reject
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  onTap: () => setState(() => _showCustomerDetails = !_showCustomerDetails),
                 ),
                 Consumer(
                   builder: (context, ref, child) => Row(
                     children: [
-                      TextButton(
-                        onPressed: () => Utilitis.askPopUp(
-                          context,
-                          message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
-                          onAccept: () {
-                            ref
-                                .read(customerProvider.notifier)
-                                .deleteCustomer(widget.customer.customerID!)
-                                .then((success) {
-                              if (success) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Center(
-                                      child: Text('Kunde wurde erfolgreich gelöscht'),
-                                    ),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                                widget.onDelete();
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Center(
-                                      child: Text('Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.'),
-                                    ),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              }
-                              Navigator.of(context).pop(); // Dismiss the dialog
-                            });
-                          },
-                          onReject: () {
-                            Navigator.of(context).pop(); // Dismiss the dialog on reject
-                          },
-                        ),
-                        child: const Icon(Icons.delete),
+                      _iconButton(
+                        icon: Icons.edit,
+                        onPressed: () => setState(() => _showCustomerDetails = !_showCustomerDetails),
                       ),
                     ],
                   ),
@@ -124,28 +127,17 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
     );
   }
 
+  Widget _iconButton({required IconData icon, required VoidCallback onPressed}) => IconButton(
+        onPressed: onPressed,
+        icon: Icon(
+          icon,
+        ),
+      );
+
   SizedBox _customerDetailsWindow() => SizedBox(
         height: 400,
         child: Row(
           children: [
-            Container(
-              width: 170,
-              height: 100,
-              decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadiusDirectional.circular(6),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Projekte: ${widget.customer.numOfProjects}'),
-                  Text('Materialkosten: ${widget.customer.totalCostMaterial ?? '0'}'),
-                  Text('Gesamtzeit: ${_calculateTotalTimeInHours(widget.customer.totalTimeTracked)}'),
-                  Text('Umsatz: ${widget.customer.turnover ?? '0'}'),
-                ],
-              ),
-            ),
             UpdateCustomerWidget(
               onCancel: () {},
               customer: widget.customer,
