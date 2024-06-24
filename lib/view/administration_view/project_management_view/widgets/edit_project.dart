@@ -260,7 +260,7 @@ class _AddNewProjectState extends State<AddNewProject> {
                         isLoadingCustomers
                             ? const Center(child: CircularProgressIndicator())
                             : buildDropdown(
-                                options: customerOptions.map((customer) => customer.companyName ?? '').toList(),
+                                options: customerOptions.map((customer) => customer.companyName).toList(),
                                 selectedValue: selectedCustomer,
                                 onChanged: (value) {
                                   setState(() {
