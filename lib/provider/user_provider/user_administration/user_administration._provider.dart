@@ -117,6 +117,7 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
           'Error on resetPassword, status-> ${response.statusCode}\n ${response.data}',
         );
       }
+
       return response.data;
     } on DioException catch (e) {
       if (e.response!.statusCode == 400) {
@@ -128,7 +129,7 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
     } catch (e) {
       log('Error on resetPassword $e');
     }
-    return {};
+    return {'Error': ''};
   }
 
   Future<bool> updateUser(UserDataShort user) async {
