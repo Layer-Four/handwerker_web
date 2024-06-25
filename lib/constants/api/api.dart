@@ -2,38 +2,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// class Customer {
-//   final String? companyName;
-//   final int id;
-
-//   Customer({this.companyName, required this.id});
-
-//   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
-//         companyName:
-//             json['companyName'] != null ? json['companyName'] as String : 'Unknown Company',
-//         id: json['id'] != null ? json['id'] as int : -1,
-//       );
-// }
-
-// // Project class
-// class Project {
-//   final String? title;
-//   final int id;
-//   final int customerId; // Add customerId property
-
-//   Project({this.title, required this.id, required this.customerId}); // Update constructor
-
-//   factory Project.fromJson(Map<String, dynamic> json) => Project(
-//         title: json['title'] != null ? json['title'] as String : 'Default Title',
-//         id: json['id'] != null ? json['id'] as int : -1,
-//         customerId: json['customerId'] != null
-//             ? json['customerId'] as int
-//             : -1, // Parse customerId from JSON
-//       );
-// }
-
 class Api {
-  // Routes
   final Dio _api = Dio();
   final _storage = SharedPreferences.getInstance();
   final _baseOption = BaseOptions(baseUrl: _baseUrl);
@@ -78,7 +47,7 @@ class Api {
   final String _putDocumentationDay = '/userProjectDay/update';
   final String _putProjectMaterial = '/userProjectMaterial/update';
   final String _putProjectWebMaterial = '/material/update';
-  final String _putResetPasswordForMobileUser = '/user/password/reset/for/';
+  final String _putResetPassword = '/user/password/reset';
   final String _putSetNewPassword = '/user/password/change';
   final String _putUpdateService = '/service/update';
   final String _putUpdateUser = '/user/update';
@@ -99,13 +68,13 @@ class Api {
         }
         handler.next(options);
       },
-      onError: (DioException error, ErrorInterceptorHandler handler) async {
-        if (error.response?.statusCode == 401) {
-          // Handle token refresh logic here if needed
-          log('401 Unauthorized: ${error.response?.data}');
-        }
-        handler.next(error);
-      },
+      // onError: (DioException error, ErrorInterceptorHandler handler) async {
+      //   if (error.response?.statusCode == 401) {
+      //     // Handle token refresh logic here if needed
+      //     log('401 Unauthorized: ${error.response?.data}');
+      //   }
+      //   handler.next(error);
+      // },
       onResponse: (Response response, ResponseInterceptorHandler handler) {
         if (response.statusCode == 401) {
           log('401 Unauthorized response: ${response.data}');
@@ -136,11 +105,15 @@ class Api {
   Future<Response> getProjectByCustomerID(int id) => _api.get('$_getProjectByCustomer$id');
   Future<Response> get getUserRoles => _api.get(_getUserRole);
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
-  Future<Response> postCreateCustomer(Map<String, dynamic> json) => _api.post(_postCreateCustomer, data: json);
-  Future<Response> postCreateProjectEntry(Map<String, dynamic> data) => _api.post(_postCreateProjectEntry, data: data);
-  Future<Response> putUpdateCustomer(Map<String, dynamic> json) => _api.put(_putUpdateCustomer, data: json);
+  Future<Response> postCreateCustomer(Map<String, dynamic> json) =>
+      _api.post(_postCreateCustomer, data: json);
+  Future<Response> postCreateProjectEntry(Map<String, dynamic> data) =>
+      _api.post(_postCreateProjectEntry, data: data);
+  Future<Response> putUpdateCustomer(Map<String, dynamic> json) =>
+      _api.put(_putUpdateCustomer, data: json);
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
-  Future<Response> deleteConsumable(int serviceID) => _api.delete('$_deleteServiceMaterial/$serviceID');
+  Future<Response> deleteConsumable(int serviceID) =>
+      _api.delete('$_deleteServiceMaterial/$serviceID');
   Future<Response> deleteCustomer(int customerID) => _api.delete('$_deleteCustomer/$customerID');
   void deleteToken() => _storage.then((value) {
         if (value.getString('TOKEN')?.isNotEmpty ?? false) {
@@ -149,28 +122,38 @@ class Api {
         return;
       });
   Future<Response> deleteUser(String userID) => _api.delete('$_deleteUser/$userID');
-  Future<Response> getDokuforProjectURL(int projectID) => _api.get('/project/$projectID/documentations');
-  Future<Response> postCreateMaterial(Map<String, dynamic> data) => _api.post(_postcreateCardMaterial, data: data);
-  Future<Response> postCreateNewUser(Map<String, dynamic> user) => _api.post(_postNewUser, data: user);
-  Future<Response> postCreateService(Map<String, dynamic> json) => _api.post(_postCreateService, data: json);
+  Future<Response> getDokuforProjectURL(int projectID) =>
+      _api.get('/project/$projectID/documentations');
+  Future<Response> postCreateMaterial(Map<String, dynamic> data) =>
+      _api.post(_postcreateCardMaterial, data: data);
+  Future<Response> postCreateNewUser(Map<String, dynamic> user) =>
+      _api.post(_postNewUser, data: user);
+  Future<Response> postCreateService(Map<String, dynamic> json) =>
+      _api.post(_postCreateService, data: json);
   Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
 
-  Future<Response> postloginUser(Map<String, dynamic> json) => _api.post(_postloginUser, data: json);
+  Future<Response> postloginUser(Map<String, dynamic> json) =>
+      _api.post(_postloginUser, data: json);
 
-  Future<Response> postProjectConsumable(Map<String, dynamic> json) => _api.post(_postProjectConsumabele, data: json);
+  Future<Response> postProjectConsumable(Map<String, dynamic> json) =>
+      _api.post(_postProjectConsumabele, data: json);
   Future<Response> postTimeEnty(Map<String, dynamic> json) => _api.post(_postTimeEntry, data: json);
-  Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) => _api.put(_putProjectWebMaterial, data: json);
+  Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) =>
+      _api.put(_putProjectWebMaterial, data: json);
 
   Future<Response> postUpdateDocumentationEntry(Map<String, dynamic> data) =>
       _api.post(_putDocumentationDay, data: data);
 
   Future<Response> postUpdateProjectConsumableEntry(Map<String, dynamic> data) =>
       _api.post(_putProjectMaterial, data: data);
-  Future<Response> putResetPassword(String userName) =>
-      _api.put(_putResetPasswordForMobileUser + userName + '/marten.meissner@layer-four.de');
-  Future<Response> putSetNewPassword(Map<String, dynamic> json) => _api.put(_putSetNewPassword, data: json);
-  Future<Response> putUpdateService(Map<String, dynamic> json) => _api.put(_putUpdateService, data: json);
+  Future<Response> putResetPassword(Map<String, dynamic> json) =>
+      _api.put(_putResetPassword, data: json);
+  Future<Response> putSetNewPassword(Map<String, dynamic> json) =>
+      _api.put(_putSetNewPassword, data: json);
+  Future<Response> putUpdateService(Map<String, dynamic> json) =>
+      _api.put(_putUpdateService, data: json);
 
   Future<Response> putUpdateUser(Map<String, dynamic> json) => _api.put(_putUpdateUser, data: json);
-  void storeToken(String token) async => await _storage.then((value) => value.setString('TOKEN', token));
+  void storeToken(String token) async =>
+      await _storage.then((value) => value.setString('TOKEN', token));
 }
