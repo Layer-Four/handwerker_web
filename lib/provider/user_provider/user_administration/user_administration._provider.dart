@@ -109,21 +109,27 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
     return [];
   }
 
-  Future<Map> resetPassword(String name) async {
+  Future<Map<String, dynamic>> resetPassword(String name) async {
     try {
-      final response = await _api.putResetPassword(name);
+      final response = await _api.putResetPassword({'userName': name});
       if (response.statusCode != 200) {
         throw Exception(
           'Error on resetPassword, status-> ${response.statusCode}\n ${response.data}',
         );
       }
+
       return response.data;
     } on DioException catch (e) {
+      if (e.response!.statusCode == 400) {
+        log(e.response!.data.toString());
+        final map = await resetPassword(name);
+        return map;
+      }
       log('DioException: ${e.message}');
     } catch (e) {
       log('Error on resetPassword $e');
     }
-    return {};
+    return {'Error': ''};
   }
 
   Future<bool> updateUser(UserDataShort user) async {
