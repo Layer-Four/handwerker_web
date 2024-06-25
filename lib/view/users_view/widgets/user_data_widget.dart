@@ -154,6 +154,7 @@ class UserDataWidget extends ConsumerWidget {
                         .read(userAdministrationProvider.notifier)
                         .resetPassword(user.userName)
                         .then((e) {
+                      Navigator.of(context).pop();
                       _showNewPasswordPopUp(context, e);
                     }),
                 onReject: () => Navigator.of(context).pop());
@@ -209,6 +210,13 @@ class UserDataWidget extends ConsumerWidget {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                              child: SymmetricButton(
+                                text: 'Als PDF Herunterladen',
+                                onPressed: () => Utilitis.writePDFAndDownload(e),
+                              ),
+                            )
                           ],
                         ),
                       ),

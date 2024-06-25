@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/themes/app_color.dart';
@@ -16,6 +15,7 @@ class _LoginViewState extends State<LoginView> {
   bool isFocused = false;
   bool isOTP = false;
   bool _isPasswordVisible = false;
+  bool _isLoaded = false;
 
   final TextEditingController _emailCon = TextEditingController();
   final TextEditingController _passCon = TextEditingController();
@@ -213,13 +213,13 @@ class _LoginViewState extends State<LoginView> {
         child: Align(
           alignment: Alignment.topRight,
           child: GestureDetector(
-            child: const Text(
+            child: Text(
               'Passwort vergessen?',
               style: TextStyle(
-                color: Colors.orange,
+                color: AppColor.kPrimaryButtonColor,
                 fontWeight: FontWeight.w700,
                 decoration: TextDecoration.underline,
-                decorationColor: Colors.orange,
+                decorationColor: AppColor.kPrimaryButtonColor,
                 decorationThickness: 2.0,
               ),
             ),
@@ -235,7 +235,7 @@ class _LoginViewState extends State<LoginView> {
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
       return;
     }
-    _emailCon.clear();
+    // _emailCon.clear();
     _passCon.clear();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -250,39 +250,49 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Widget buildLoginButton(BuildContext context) => Center(
-        child: SizedBox(
-          width: 340,
-          height: 44,
-          child: Consumer(
-              builder: (context, ref, child) => ElevatedButton(
-                    onPressed: () async {
-                      if (_formstate.currentState!.validate()) {
-                        ref
-                            .read(userProvider.notifier)
-                            .loginUser(
-                              password: _passCon.text,
-                              userName: _emailCon.text,
-                            )
-                            .then((value) => reactionOfLogin(value));
-                      }
-                      if (isOTP) {
-                        Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      backgroundColor: AppColor.kPrimaryButtonColor,
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Anmelden',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )),
-        ),
+        child: _isLoaded
+            ? const SizedBox(
+                // width: 40,
+                // height: 40,
+                child: CircularProgressIndicator(),
+              )
+            : SizedBox(
+                width: 340,
+                height: 44,
+                child: Consumer(
+                    builder: (context, ref, child) => ElevatedButton(
+                          onPressed: () async {
+                            setState(() => _isLoaded = true);
+                            if (_formstate.currentState!.validate()) {
+                              ref
+                                  .read(userProvider.notifier)
+                                  .loginUser(
+                                    password: _passCon.text,
+                                    userName: _emailCon.text,
+                                  )
+                                  .then((value) {
+                                setState(() => _isLoaded = false);
+                                reactionOfLogin(value);
+                              });
+                            }
+                            if (isOTP) {
+                              Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            backgroundColor: AppColor.kPrimaryButtonColor,
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Anmelden',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        )),
+              ),
       );
   bool validateFields() {
     if (_formstate.currentState == null) {

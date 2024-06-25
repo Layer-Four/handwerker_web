@@ -24,7 +24,7 @@ class Utilitis {
         _ => throw Exception('There was a unkown Weekday maybe😅')
       };
 
-  static void writePDFAndDownload(Map<String, dynamic> newUser) async {
+  static void writePDFAndDownload(Map<dynamic, dynamic> newUser) async {
     final byteList = await _createPDF(newUser);
     final file = XFile.fromData(byteList);
     html.AnchorElement anchorE = html.AnchorElement(href: ui.AssetManager().getAssetUrl(file.path));
@@ -158,11 +158,12 @@ class Utilitis {
   /// This private Method create the Layout for the Pdf with the intinal User data.
   /// Call this method with a [Map] with [Key] 'userName' and [Key] password.
   /// return a [Future] ByteList.
-  static Future<Uint8List> _createPDF(Map<String, dynamic> newUser) async {
-    final pdf =
-        pdf_widget.Document(version: PdfVersion.pdf_1_4, compress: true, title: 'Anmeldedaten: ${newUser['userName']}');
+  static Future<Uint8List> _createPDF(Map<dynamic, dynamic> newUser) async {
+    final pdf = pdf_widget.Document(
+        version: PdfVersion.pdf_1_4, compress: true, title: 'Anmeldedaten: ${newUser['userName']}');
     final image = pdf_widget.Image(
-        pdf_widget.MemoryImage((await rootBundle.load('assets/images/img_techtool.png')).buffer.asUint8List()),
+        pdf_widget.MemoryImage(
+            (await rootBundle.load('assets/images/img_techtool.png')).buffer.asUint8List()),
         height: 20);
     pdf.addPage(
       pdf_widget.Page(
