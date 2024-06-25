@@ -28,9 +28,7 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchLineHeader(title: 'Kundenverwaltung'),
-              const SizedBox(
-                height: 60,
-              ),
+              const SizedBox(height: 60),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
@@ -38,16 +36,14 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                   children: [
                     Text(
                       'Name',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               SizedBox(
                 width: MediaQuery.of(context).size.width > 600 ? double.infinity : null,
                 height: 9 * 60,
@@ -55,12 +51,15 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                     ? Utilitis.waitingMessage(context, 'Lade Kundendaten')
                     : ListView.builder(
                         itemCount: ref.watch(customerProvider).length,
-                        itemBuilder: (_, index) => CustomerCard(
-                          key: ValueKey(index),
-                          ref.watch(customerProvider)[index],
-                          onDelete: () {},
-                          onUpdate: (CustomerOvervewDM value) {},
-                        ),
+                        itemBuilder: (_, index) {
+                          final customer = ref.watch(customerProvider)[index];
+                          return CustomerCard(
+                            key: ValueKey(index),
+                            customer: customer,
+                            onDelete: () {},
+                            onUpdate: (CustomerOvervewDM value) {},
+                          );
+                        },
                       ),
               ),
               AddButton(
@@ -73,7 +72,7 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                     setState(() => isAddConsumableOpen = !isAddConsumableOpen);
                   },
                 ),
-              )
+              ),
             ],
           ),
         ),
