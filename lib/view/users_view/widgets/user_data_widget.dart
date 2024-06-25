@@ -155,6 +155,15 @@ class UserDataWidget extends ConsumerWidget {
                         .resetPassword(user.userName)
                         .then((e) {
                       Navigator.of(context).pop();
+                      if (e.containsKey('Error')) {
+                        return ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Center(
+                              child: Text('Anfrage wurde abgewiesen'),
+                            ),
+                          ),
+                        );
+                      }
                       _showNewPasswordPopUp(context, e);
                     }),
                 onReject: () => Navigator.of(context).pop());
