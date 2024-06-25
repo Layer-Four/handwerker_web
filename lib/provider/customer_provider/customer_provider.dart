@@ -45,39 +45,47 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
     final userToken = ref.watch(userProvider).userToken;
     log('User Token: $userToken');
     log('Customer Data: ${jsonEncode(customer)}');
+
     try {
       final response = await _api.postCreateCustomer(customer.toJson());
-      if (response.statusCode != 200) {
-        throw Exception('Exception occurred on addCustomer, status: ${response.statusCode}\n${response.data}');
+
+      if (response.statusCode == 200) {
+        // Successful creation
+        log('Create Customer Response: ${response.data}');
+
+        // Process the response and update local state
+        final createdCustomer = CreateCustomerDM.fromJson(response.data);
+        final credential = CustomerCredentialDM(
+          contactName: createdCustomer.contactName ?? '',
+          companyName: createdCustomer.companyName,
+          customerCity: createdCustomer.city,
+          customerEmail: createdCustomer.contactMail,
+          customerNumber: createdCustomer.externalId,
+          customerPhone: createdCustomer.contactPhone,
+          customerStreet: createdCustomer.street,
+          customerStreetNr: createdCustomer.streetNr,
+          customerZipcode: createdCustomer.zipcode,
+        );
+
+        // Update local state
+        state = [...state, CustomerOvervewDM(customerCredentials: credential)];
+
+        return true; // Indicate success
+      } else {
+        // Log failure response
+        log('Failed to create customer. Status: ${response.statusCode}, Data: ${response.data}');
+        return false; // Indicate failure
       }
-      log('Create Customer Response: ${response.data}');
-      await loadAllCustomers();
-      final createdCustomer = CreateCustomerDM.fromJson(response.data);
-      final credential = CustomerCredentialDM(
-        contactName: createdCustomer.contactName ?? '',
-        companyName: createdCustomer.companyName,
-        customerCity: createdCustomer.city,
-        customerEmail: createdCustomer.contactMail,
-        customerNumber: createdCustomer.externalId,
-        customerPhone: createdCustomer.contactPhone,
-        customerStreet: createdCustomer.street,
-        customerStreetNr: createdCustomer.streetNr,
-        customerZipcode: createdCustomer.zipcode,
-      );
-      state = [...state, CustomerOvervewDM(customerCredentials: credential)];
-      return true;
-    } on DioException catch (e) {
-      log('DioException occurred: ${e.message} \nStatus: ${e.response?.statusCode}\n${e.response?.data}');
-      return false;
     } catch (e) {
-      log('Exception: $e');
-      return false;
+      // Log and catch any exceptions
+      log('Exception during createCustomer: $e');
+      return false; // Indicate failure
     }
   }
 
   Future<bool> updateCustomer(CreateCustomerDM customerCredential, int id) async {
     final json = {
-      'id': id,
+      'id': id.toString(),
       'externalId': customerCredential.externalId,
       'CompanyName': customerCredential.companyName,
       'ContactName': customerCredential.contactName,

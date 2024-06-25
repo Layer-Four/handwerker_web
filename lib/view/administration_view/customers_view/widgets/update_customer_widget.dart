@@ -249,7 +249,7 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: SymmetricButton(
-                            text: 'Ändern',
+                            text: 'Speichern',
                             onPressed: () async {
                               if (_streetController.text.isEmpty &&
                                   _cityController.text.isEmpty &&

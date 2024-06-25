@@ -76,18 +76,17 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
   Widget build(BuildContext context) => SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width > 1000 ? 900 : MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6.0),
           child: Card(
             elevation: 9,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(6.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
+                      Flexible(
                         flex: 2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +109,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                           ],
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         flex: 2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,8 +120,8 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                             ),
                             Row(
                               children: [
-                                SizedBox(
-                                  width: 300,
+                                Flexible(
+                                  flex: 3,
                                   child: buildTextField(
                                     hintText: 'Straße',
                                     controller: _streetController,
@@ -130,8 +129,8 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                   ),
                                 ),
                                 const SizedBox(width: 2),
-                                SizedBox(
-                                  width: 100,
+                                Flexible(
+                                  flex: 1,
                                   child: buildTextField(
                                     hintText: 'Nr',
                                     controller: _housenumberController,
@@ -143,8 +142,8 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                             const SizedBox(height: 10),
                             Row(
                               children: [
-                                SizedBox(
-                                  width: 300,
+                                Flexible(
+                                  flex: 3,
                                   child: buildTextField(
                                     hintText: 'Ort',
                                     controller: _cityController,
@@ -152,8 +151,8 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                   ),
                                 ),
                                 const SizedBox(width: 2),
-                                SizedBox(
-                                  width: 100,
+                                Flexible(
+                                  flex: 1,
                                   child: buildTextField(
                                     hintText: 'PLZ',
                                     controller: _postNumberController,
@@ -169,7 +168,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                   ),
                   Row(
                     children: [
-                      Expanded(
+                      Flexible(
                         flex: 2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,7 +194,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                           ],
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         flex: 2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,6 +265,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
 
                               ref.read(customerProvider.notifier).createCustomer(_createCustomer).then((success) {
                                 if (success) {
+                                  _showSnackBar('Kunde erfolgreich hinzufügt');
                                   _nameController.clear();
                                   _companyNameController.clear();
                                   _cityController.clear();
