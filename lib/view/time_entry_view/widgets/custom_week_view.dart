@@ -44,16 +44,22 @@ class CustomWeekView extends StatelessWidget {
         eventTileBuilder: (date, events, boundary, startDuration, endDuration) => ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: events.length,
-            itemBuilder: (context, i) => Container(
-                  margin: const EdgeInsets.all(2),
-                  color: events[i].color,
-                  height: boundary.size.height,
-                  width: boundary.width / events.length + 2,
-                  child: Text(
-                    events[i].title,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                )),
+            itemBuilder: (context, i) {
+              final objekt = events[i].event as TimeVMAdapter;
+              final user = objekt.user?.userName ?? 'Kein Nutzer gefunden';
+              return Container(
+                margin: const EdgeInsets.all(2),
+                color: events[i].color,
+                height: boundary.size.height,
+                width: boundary.width / events.length + 2,
+                child: Text(
+                  '$user\n${events[i].title}',
+                  // '${events[i].title}\n$user',
+                  style: TextStyle(color: Colors.white),
+                  overflow: TextOverflow.clip,
+                ),
+              );
+            }),
         onEventTap: (events, date) => showDialog(
             barrierColor: const Color.fromARGB(20, 0, 0, 0),
             context: context,

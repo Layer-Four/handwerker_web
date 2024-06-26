@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../time_dm/time_dm.dart';
+import '../../project_models/project_vm/project_vm.dart';
+import '../../service_models/service_vm/service_vm.dart';
+import '../../users_models/user_data_short/user_short.dart';
 
 part 'time_vm.freezed.dart';
 part 'time_vm.g.dart';
@@ -8,7 +10,7 @@ part 'time_vm.g.dart';
 @freezed
 class TimeVMAdapter with _$TimeVMAdapter {
   const factory TimeVMAdapter({
-    String? userId,
+    UserDataShort? user,
     required DateTime startTime,
     required DateTime endTime,
     DateTime? pauseEnd,
@@ -17,10 +19,8 @@ class TimeVMAdapter with _$TimeVMAdapter {
     required DateTime date,
     String? description,
     int? duration,
-    int? projectId,
-    String? projectTitle,
-    int? serviceId,
-    String? serviceTitle,
+    ProjectVM? project,
+    ServiceVM? service,
     String? customerName,
     int? customerId,
     @Default(TimeEntryType.workOrder) TimeEntryType type,
@@ -36,26 +36,14 @@ class TimeVMAdapter with _$TimeVMAdapter {
     if (minutes < 10) return '$hours:0$minutes';
     return '$hours:$minutes';
   }
-
-  factory TimeVMAdapter.fromTimeEntriesVM(TimeEntry e) => TimeVMAdapter(
-        date: e.date,
-        description: e.description,
-        duration: e.duration,
-        endTime: e.endTime,
-        id: e.id,
-        pauseEnd: e.pauseEnd,
-        pauseStart: e.pauseStart,
-        projectId: e.projectId,
-        serviceId: e.serviceId,
-        startTime: e.startTime,
-        type: TimeEntryTypeExtention.getType(e.type),
-        userId: e.userId,
-      );
 }
 
 enum TimeEntryType {
-  timeEntry,
-  workOrder,
+  timeEntry(0),
+  workOrder(1);
+
+  final int i;
+  const TimeEntryType(this.i);
 }
 
 extension TimeEntryTypeExtention on TimeEntryType {

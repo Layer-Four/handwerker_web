@@ -7,7 +7,7 @@ class ProjectReportOverviewHeadWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
         child: Row(
           children: [
             SizedBox(

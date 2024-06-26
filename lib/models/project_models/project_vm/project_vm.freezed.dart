@@ -20,7 +20,7 @@ ProjectVM _$ProjectVMFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProjectVM {
-  int get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   int? get customerId => throw _privateConstructorUsedError;
 
@@ -35,7 +35,7 @@ abstract class $ProjectVMCopyWith<$Res> {
   factory $ProjectVMCopyWith(ProjectVM value, $Res Function(ProjectVM) then) =
       _$ProjectVMCopyWithImpl<$Res, ProjectVM>;
   @useResult
-  $Res call({int id, String? title, int? customerId});
+  $Res call({int? id, String? title, int? customerId});
 }
 
 /// @nodoc
@@ -51,15 +51,15 @@ class _$ProjectVMCopyWithImpl<$Res, $Val extends ProjectVM>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? title = freezed,
     Object? customerId = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -80,7 +80,7 @@ abstract class _$$ProjectVMImplCopyWith<$Res>
       __$$ProjectVMImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String? title, int? customerId});
+  $Res call({int? id, String? title, int? customerId});
 }
 
 /// @nodoc
@@ -94,15 +94,15 @@ class __$$ProjectVMImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? title = freezed,
     Object? customerId = freezed,
   }) {
     return _then(_$ProjectVMImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -118,13 +118,13 @@ class __$$ProjectVMImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ProjectVMImpl implements _ProjectVM {
-  const _$ProjectVMImpl({required this.id, this.title, this.customerId});
+  const _$ProjectVMImpl({this.id, this.title, this.customerId});
 
   factory _$ProjectVMImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProjectVMImplFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
   final String? title;
   @override
@@ -166,7 +166,7 @@ class _$ProjectVMImpl implements _ProjectVM {
 
 abstract class _ProjectVM implements ProjectVM {
   const factory _ProjectVM(
-      {required final int id,
+      {final int? id,
       final String? title,
       final int? customerId}) = _$ProjectVMImpl;
 
@@ -174,7 +174,7 @@ abstract class _ProjectVM implements ProjectVM {
       _$ProjectVMImpl.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override
   String? get title;
   @override

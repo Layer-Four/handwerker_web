@@ -27,6 +27,24 @@ class _CustomDayViewState extends ConsumerState<CustomDayView> {
             'KW ${date.getWeekDifference(DateTime(date.year)) + 1}/ ${date.day}.${date.month}.${date.year}',
         timeLineWidth: 60,
         headerStyle: Utilitis.buildCustomHeadStyle(context),
+        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: events.length,
+            itemBuilder: (context, i) {
+              final objekt = events[i].event as TimeVMAdapter;
+              final user = objekt.user?.userName ?? 'Kein Nutzer gefunden';
+              return Container(
+                margin: const EdgeInsets.all(2),
+                color: events[i].color,
+                height: boundary.size.height,
+                width: boundary.width / events.length + 2,
+                child: Text(
+                  // '$user\n${events[i].title}',
+                  '${events[i].title}\n$user',
+                  overflow: TextOverflow.clip,
+                ),
+              );
+            }),
       );
 
   Future<dynamic> _showEventInofs(BuildContext context, List<CalendarEventData<Object?>> events) =>

@@ -26,8 +26,8 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
         children: [
           GestureDetector(
             onTap: () => setState(() => isContainerOpen = !isContainerOpen),
-            child: SizedBox(
-              height: 30,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -69,8 +69,8 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
           isContainerOpen ? ProjectReportSummary(_project) : const SizedBox.shrink(),
           Divider(
             height: 10,
-            color: Colors.black,
-            thickness: 1.5,
+            // color: Colors.black,
+            thickness: 1.0,
             endIndent: MediaQuery.of(context).size.width * 0.1,
           )
         ],

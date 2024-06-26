@@ -223,7 +223,7 @@ class _LoginViewState extends State<LoginView> {
                 decorationThickness: 2.0,
               ),
             ),
-            onTap: () => Navigator.of(context).pushNamed(AppRoutes.forgotPassword),
+            onTap: () => Navigator.of(context).pushReplacementNamed(AppRoutes.forgotPassword),
           ),
         ),
       );
@@ -252,8 +252,6 @@ class _LoginViewState extends State<LoginView> {
   Widget buildLoginButton(BuildContext context) => Center(
         child: _isLoaded
             ? const SizedBox(
-                // width: 40,
-                // height: 40,
                 child: CircularProgressIndicator(),
               )
             : SizedBox(

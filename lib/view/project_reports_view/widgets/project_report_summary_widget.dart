@@ -33,12 +33,9 @@ class ProjectReportSummary extends StatelessWidget {
               children: [
                 const ProjectSummaryHeadLineWidget(),
                 Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   alignment: Alignment.centerLeft,
-                  height: project.projectDescription != null
-                      ? 100
-                      : utilitis.length > 4
-                          ? 100
-                          : utilitis.length * 40,
+                  height: utilitis.isEmpty ? 40 : 160,
                   child: ListView.builder(
                     itemCount: utilitis.length,
                     itemBuilder: (ctx, i) => ProjectUtilitisView(utilitis[i]),
@@ -48,7 +45,8 @@ class ProjectReportSummary extends StatelessWidget {
                     ? const SizedBox.shrink()
                     : Container(
                         width: MediaQuery.of(context).size.width * 0.5,
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        margin: const EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                         decoration: BoxDecoration(border: Border.all()),
                         child: GestureDetector(
                           onTap: () {
