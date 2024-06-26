@@ -5,7 +5,7 @@ part 'service_vm.g.dart';
 @freezed
 class ServiceVM with _$ServiceVM {
   const factory ServiceVM({
-    required String name,
+    String? name,
     int? id,
     double? hourlyRate,
   }) = _ServiceVM;

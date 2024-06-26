@@ -10,18 +10,24 @@ import '../../../models/service_models/service_vm/service_vm.dart';
 import '../../../models/time_models/time_dm/time_dm.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
+import '../../user_provider/user_administration/user_administration._provider.dart';
 
-// TODO: refactor Time Provider to CalendarEventData or a TimeEntryState Object?
-final timeVMProvider = NotifierProvider<TimeVMNotifier, List<TimeVMAdapter>>(
+final timeVMProvider = NotifierProvider<TimeVMNotifier, List<CalendarEventData>>(
   () => TimeVMNotifier(),
 );
 
-class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
+class TimeVMNotifier extends Notifier<List<CalendarEventData>> {
   final Api _api = Api();
   @override
-  List<TimeVMAdapter> build() => [];
+  List<CalendarEventData> build() {
+    loadEvents();
+    return [];
+  }
 
   Future<List<CalendarEventData<TimeVMAdapter>>> loadEvents() async {
+    if (ref.watch(userAdministrationProvider).isEmpty) return [];
+    List<UserDataShort> workers = ref.watch(userAdministrationProvider);
+
     try {
       final res = await _api.getAllTimeEntrys;
       if (res.statusCode != 200) {
@@ -30,21 +36,43 @@ class TimeVMNotifier extends Notifier<List<TimeVMAdapter>> {
         );
       }
       final List data = res.data.map((e) => e).toList();
-      final List<CalendarEventData<TimeVMAdapter>> result = data.map(
-        (e) {
-          final object = TimeVMAdapter.fromTimeEntriesVM(TimeEntry.fromJson(e));
-          state.add(object);
-          String title = object.customerName ?? 'Kein Kunde';
-          return CalendarEventData(
-            title: title,
-            date: object.date,
-            description: object.description,
-            startTime: object.startTime,
-            endTime: object.endTime,
-            event: object,
-          );
-        },
-      ).toList();
+      final List<CalendarEventData<TimeVMAdapter>> result = [];
+
+      for (Map<String, dynamic> e in data) {
+        UserDataShort? user;
+        if (workers.map((j) => j.id).toList().contains(e['userId'])) {
+          user = workers.firstWhere((k) => k.id == e['userId']);
+        }
+        final project = ProjectVM(id: e['projectId'], title: e['projectTitle']);
+        final service = ServiceVM(name: e['serviceTitle'], id: e['serviceId']);
+        final object = TimeVMAdapter(
+          date: DateTime.parse(e['date']),
+          user: user,
+          description: e['description'],
+          duration: e['duration'],
+          startTime: DateTime.parse(e['startTime']),
+          endTime: DateTime.parse(e['endTime']),
+          pauseEnd: e['pauseEnd'] == null ? null : DateTime.tryParse(e['pauseEnd']),
+          pauseStart: e['pauseStart'] == null ? null : DateTime.tryParse(e['pauseStart']),
+          id: e['id'],
+          project: project,
+          service: service,
+          customerName: e['customerName'],
+          type: TimeEntryType.values[e['type']],
+        );
+        if (object.customerName == null) {
+          log(object.toJson().toString());
+        }
+        result.add(CalendarEventData(
+          title: object.customerName ?? 'Kein Kunde',
+          date: object.date,
+          description: object.description,
+          startTime: object.startTime,
+          endTime: object.endTime,
+          event: object,
+        ));
+      }
+      state = result;
       return result;
     } on DioException catch (e) {
       log('DioException: ${e.message}');

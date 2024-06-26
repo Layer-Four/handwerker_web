@@ -79,4 +79,25 @@ class UserNotifier extends Notifier<UserVM> {
     }
     return false;
   }
+
+  Future<bool> requestResetPassword(String username) async {
+    try {
+      final json = {'mandantID': 1, 'userName': username};
+      final response = await _api.postResetPasswordRequest(json);
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Error on requestResetPassword status: ${response.statusCode}\n${response.data}',
+        );
+      }
+      log(response.data.toString());
+      if (response.data != null) {
+        return true;
+      }
+    } on DioException catch (e) {
+      log('DioException: ${e.message}');
+    } catch (e) {
+      log('Error on requestResetPassword $e');
+    }
+    return false;
+  }
 }

@@ -81,7 +81,8 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Center(
-                                    child: Text('Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.'),
+                                    child: Text(
+                                        'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.'),
                                   ),
                                   duration: Duration(seconds: 2),
                                 ),
@@ -139,6 +140,4 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
           ],
         ),
       );
-
-  String _calculateTotalTimeInHours(int duration) => '';
 }

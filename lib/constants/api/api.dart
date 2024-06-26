@@ -1,11 +1,9 @@
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
   final Dio _api = Dio();
   final _storage = SharedPreferences.getInstance();
-  final _baseOption = BaseOptions(baseUrl: _baseUrl);
   // Adresses
   static const String _baseUrl = 'https://r-wa-happ-be.azurewebsites.net/api';
   // delete Adress
@@ -41,6 +39,7 @@ class Api {
   final String _postDocumentationDay = '/userProjectDay/create';
   final String _postloginUser = '/user/login';
   final String _postNewUser = '/user/create';
+  final String _postResetPasswordRequest = '/user/password/request/';
   final String _postTimeEntry = '/timetracking/create';
   final String _postProjectConsumabele = '/userProjectMaterial/create';
   // put Adress
@@ -55,7 +54,7 @@ class Api {
   final String _putUpdateCustomer = '/customer/update';
 
   Api() {
-    _api.options = _baseOption;
+    _api.options = BaseOptions(baseUrl: _baseUrl);
     _api.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
         String? token = await getToken;
@@ -75,13 +74,13 @@ class Api {
       //   }
       //   handler.next(error);
       // },
-      onResponse: (Response response, ResponseInterceptorHandler handler) {
-        if (response.statusCode == 401) {
-          log('401 Unauthorized response: ${response.data}');
-          throw Exception('nicht Autorisiert');
-        }
-        handler.next(response);
-      },
+      // onResponse: (Response response, ResponseInterceptorHandler handler) {
+      //   if (response.statusCode == 401) {
+      //     log('401 Unauthorized response: ${response.data}');
+      //     throw Exception('nicht Autorisiert');
+      //   }
+      //   handler.next(response);
+      // },
     ));
   }
   Future<Response> get getAllProjects => _api.get(_getAllProjects);
@@ -137,6 +136,9 @@ class Api {
 
   Future<Response> postProjectConsumable(Map<String, dynamic> json) =>
       _api.post(_postProjectConsumabele, data: json);
+  Future<Response> postResetPasswordRequest(Map<String, dynamic> json) =>
+      _api.post('$_postResetPasswordRequest/marten.meissner@layer-four.de', data: json);
+
   Future<Response> postTimeEnty(Map<String, dynamic> json) => _api.post(_postTimeEntry, data: json);
   Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) =>
       _api.put(_putProjectWebMaterial, data: json);
