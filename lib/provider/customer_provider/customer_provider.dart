@@ -85,7 +85,7 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
 
   Future<bool> updateCustomer(CreateCustomerDM customerCredential, int id) async {
     final json = {
-      'id': id.toString(),
+      'id': id,
       'externalId': customerCredential.externalId,
       'CompanyName': customerCredential.companyName,
       'ContactName': customerCredential.contactName,

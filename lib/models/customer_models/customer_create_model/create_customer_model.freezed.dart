@@ -20,8 +20,7 @@ CreateCustomerDM _$CreateCustomerDMFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CreateCustomerDM {
-  @IdConverter()
-  String? get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   String? get externalId => throw _privateConstructorUsedError;
   String? get companyName => throw _privateConstructorUsedError;
   String? get contactName => throw _privateConstructorUsedError;
@@ -46,7 +45,7 @@ abstract class $CreateCustomerDMCopyWith<$Res> {
       _$CreateCustomerDMCopyWithImpl<$Res, CreateCustomerDM>;
   @useResult
   $Res call(
-      {@IdConverter() String? id,
+      {int? id,
       String? externalId,
       String? companyName,
       String? contactName,
@@ -88,7 +87,7 @@ class _$CreateCustomerDMCopyWithImpl<$Res, $Val extends CreateCustomerDM>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       externalId: freezed == externalId
           ? _value.externalId
           : externalId // ignore: cast_nullable_to_non_nullable
@@ -142,7 +141,7 @@ abstract class _$$CreateCustomerDMImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@IdConverter() String? id,
+      {int? id,
       String? externalId,
       String? companyName,
       String? contactName,
@@ -182,7 +181,7 @@ class __$$CreateCustomerDMImplCopyWithImpl<$Res>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       externalId: freezed == externalId
           ? _value.externalId
           : externalId // ignore: cast_nullable_to_non_nullable
@@ -231,7 +230,7 @@ class __$$CreateCustomerDMImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CreateCustomerDMImpl extends _CreateCustomerDM {
   const _$CreateCustomerDMImpl(
-      {@IdConverter() this.id,
+      {this.id,
       this.externalId,
       this.companyName,
       this.contactName,
@@ -248,8 +247,7 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
       _$$CreateCustomerDMImplFromJson(json);
 
   @override
-  @IdConverter()
-  final String? id;
+  final int? id;
   @override
   final String? externalId;
   @override
@@ -334,7 +332,7 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
 
 abstract class _CreateCustomerDM extends CreateCustomerDM {
   const factory _CreateCustomerDM(
-      {@IdConverter() final String? id,
+      {final int? id,
       final String? externalId,
       final String? companyName,
       final String? contactName,
@@ -351,8 +349,7 @@ abstract class _CreateCustomerDM extends CreateCustomerDM {
       _$CreateCustomerDMImpl.fromJson;
 
   @override
-  @IdConverter()
-  String? get id;
+  int? get id;
   @override
   String? get externalId;
   @override
