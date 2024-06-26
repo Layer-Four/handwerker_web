@@ -39,8 +39,8 @@ class _CustomDayViewState extends ConsumerState<CustomDayView> {
                 height: boundary.size.height,
                 width: boundary.width / events.length + 2,
                 child: Text(
-                  // '$user\n${events[i].title}',
-                  '${events[i].title}\n$user',
+                  // '$user/\n${events[i].title}',
+                  '${events[i].title}/\n$user',
                   overflow: TextOverflow.clip,
                 ),
               );

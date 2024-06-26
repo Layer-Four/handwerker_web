@@ -53,9 +53,9 @@ class CustomWeekView extends StatelessWidget {
                 height: boundary.size.height,
                 width: boundary.width / events.length + 2,
                 child: Text(
-                  '$user\n${events[i].title}',
-                  // '${events[i].title}\n$user',
-                  style: TextStyle(color: Colors.white),
+                  '$user/\n${events[i].title}',
+                  // '${events[i].title}/\n$user',
+                  style: const TextStyle(color: Colors.white),
                   overflow: TextOverflow.clip,
                 ),
               );
