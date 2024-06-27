@@ -31,6 +31,9 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
       final List data = response.data as List;
       final List<CustomerOvervewDM> result =
           data.map((e) => CustomerOvervewDM.fromJson(e as Map<String, dynamic>)).toList();
+      result.sort((a, b) =>
+          a.customerCredentials.contactName.toLowerCase().compareTo(b.customerCredentials.contactName.toLowerCase()));
+
       state = result;
     } on DioException catch (e) {
       log('DioException: $e');
