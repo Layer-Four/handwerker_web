@@ -22,6 +22,7 @@ CustomerCredentialDM _$CustomerCredentialDMFromJson(Map<String, dynamic> json) {
 mixin _$CustomerCredentialDM {
   String get contactName => throw _privateConstructorUsedError;
   String? get companyName => throw _privateConstructorUsedError;
+  String? get customerName => throw _privateConstructorUsedError;
   String? get customerCity => throw _privateConstructorUsedError;
   String? get customerEmail => throw _privateConstructorUsedError;
   String? get customerNumber => throw _privateConstructorUsedError;
@@ -46,6 +47,7 @@ abstract class $CustomerCredentialDMCopyWith<$Res> {
   $Res call(
       {String contactName,
       String? companyName,
+      String? customerName,
       String? customerCity,
       String? customerEmail,
       String? customerNumber,
@@ -72,6 +74,7 @@ class _$CustomerCredentialDMCopyWithImpl<$Res,
   $Res call({
     Object? contactName = null,
     Object? companyName = freezed,
+    Object? customerName = freezed,
     Object? customerCity = freezed,
     Object? customerEmail = freezed,
     Object? customerNumber = freezed,
@@ -89,6 +92,10 @@ class _$CustomerCredentialDMCopyWithImpl<$Res,
       companyName: freezed == companyName
           ? _value.companyName
           : companyName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
               as String?,
       customerCity: freezed == customerCity
           ? _value.customerCity
@@ -137,6 +144,7 @@ abstract class _$$CustomerCredentialDMImplCopyWith<$Res>
   $Res call(
       {String contactName,
       String? companyName,
+      String? customerName,
       String? customerCity,
       String? customerEmail,
       String? customerNumber,
@@ -160,6 +168,7 @@ class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
   $Res call({
     Object? contactName = null,
     Object? companyName = freezed,
+    Object? customerName = freezed,
     Object? customerCity = freezed,
     Object? customerEmail = freezed,
     Object? customerNumber = freezed,
@@ -177,6 +186,10 @@ class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
       companyName: freezed == companyName
           ? _value.companyName
           : companyName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
               as String?,
       customerCity: freezed == customerCity
           ? _value.customerCity
@@ -220,6 +233,7 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
   const _$CustomerCredentialDMImpl(
       {required this.contactName,
       this.companyName,
+      this.customerName,
       this.customerCity,
       this.customerEmail,
       this.customerNumber,
@@ -237,6 +251,8 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
   final String contactName;
   @override
   final String? companyName;
+  @override
+  final String? customerName;
   @override
   final String? customerCity;
   @override
@@ -256,7 +272,7 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
 
   @override
   String toString() {
-    return 'CustomerCredentialDM(contactName: $contactName, companyName: $companyName, customerCity: $customerCity, customerEmail: $customerEmail, customerNumber: $customerNumber, customerPhone: $customerPhone, customerStreet: $customerStreet, customerStreetNr: $customerStreetNr, customerZipcode: $customerZipcode, country: $country)';
+    return 'CustomerCredentialDM(contactName: $contactName, companyName: $companyName, customerName: $customerName, customerCity: $customerCity, customerEmail: $customerEmail, customerNumber: $customerNumber, customerPhone: $customerPhone, customerStreet: $customerStreet, customerStreetNr: $customerStreetNr, customerZipcode: $customerZipcode, country: $country)';
   }
 
   @override
@@ -268,6 +284,8 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
                 other.contactName == contactName) &&
             (identical(other.companyName, companyName) ||
                 other.companyName == companyName) &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
             (identical(other.customerCity, customerCity) ||
                 other.customerCity == customerCity) &&
             (identical(other.customerEmail, customerEmail) ||
@@ -291,6 +309,7 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
       runtimeType,
       contactName,
       companyName,
+      customerName,
       customerCity,
       customerEmail,
       customerNumber,
@@ -320,6 +339,7 @@ abstract class _CustomerCredentialDM extends CustomerCredentialDM {
   const factory _CustomerCredentialDM(
       {required final String contactName,
       final String? companyName,
+      final String? customerName,
       final String? customerCity,
       final String? customerEmail,
       final String? customerNumber,
@@ -337,6 +357,8 @@ abstract class _CustomerCredentialDM extends CustomerCredentialDM {
   String get contactName;
   @override
   String? get companyName;
+  @override
+  String? get customerName;
   @override
   String? get customerCity;
   @override
