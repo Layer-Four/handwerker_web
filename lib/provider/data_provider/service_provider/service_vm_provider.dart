@@ -16,26 +16,6 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
     return [];
   }
 
-  // void loadServices() async {
-  //   try {
-  //     final response = await _api.getExecuteableServices;
-  //     if (response.statusCode != 200) {
-  //       throw Exception(
-  //         'Error on loadServices, status-> ${response.statusCode}\n${response.data}',
-  //       );
-  //     }
-  //     final data = response.data;
-  //     final services = data.map<ServiceVM>((e) => ServiceVM.fromJson(e)).toList();
-
-  //     services.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
-
-  //     state = services;
-  //   } on DioException catch (e) {
-  //     log('DioException: ${e.message}');
-  //   } catch (e) {
-  //     log('Exception on loadSerivce: $e');
-  //   }
-  // }
   void loadServices() async {
     try {
       final response = await _api.getExecuteableServices;
