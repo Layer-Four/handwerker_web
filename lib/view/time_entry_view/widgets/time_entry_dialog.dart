@@ -6,6 +6,7 @@ import '../../../../provider/data_provider/service_provider/service_vm_provider.
 import '../../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '../../../constants/api/api.dart';
 import '../../../constants/themes/app_color.dart';
+import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/customer_models/customer_short_model/customer_short_dm.dart';
 import '../../../models/project_models/project_vm/project_vm.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
@@ -55,11 +56,9 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
     _startController.text = '${selectedTime!.hour}:$minute';
   }
 
-  void loadCustomer() {
-    ref.read(timeVMProvider.notifier).getAllCustomer().then(
-          (e) => setState(() => _customers = e),
-        );
-  }
+  void loadCustomer() => ref.read(timeVMProvider.notifier).getAllCustomer().then(
+        (e) => setState(() => _customers = e),
+      );
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -337,37 +336,6 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
         ),
       );
 
-  /// Split the [String] values from the TextEdingController with the given
-  /// format and build [DateTime] objects with the Compination from
-  /// _dayPickerController and _startController.
-  /// than do  the same translation with _dayPickerController and _endController
-  /// and return the different between this [DateTime] object in minutes.
-  void _calculateDuration() {
-    final dateAsList = _dayPickerController.text.split('.').map((e) => int.parse(e)).toList();
-    final start = DateTime(
-      dateAsList[2],
-      dateAsList[1],
-      dateAsList[0],
-      int.parse(_startController.text.split(':').first),
-      int.parse(_startController.text.split(':').last),
-    );
-    final end = DateTime(
-      start.year,
-      start.month,
-      start.day,
-      int.parse(_endController.text.split(':').first),
-      int.parse(_endController.text.split(':').last),
-    );
-    final sum = ((end.millisecondsSinceEpoch - start.millisecondsSinceEpoch) / 1000) ~/ 60;
-    setState(() {
-      _entry = _entry.copyWith(duration: sum);
-    });
-    final hours = sum ~/ 60;
-    final minutes = sum % 60;
-    // TODO: exclude pause?
-    _durationController.text = '$hours:${minutes < 10 ? '0$minutes' : minutes} h.';
-  }
-
   _dayInputRow() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
@@ -605,7 +573,10 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                           final minute = time.minute < 10 ? '0${time.minute}' : '${time.minute}';
                           _endController.text = '${time.hour}:$minute';
                         });
-                        _calculateDuration();
+                        final sum = Utilitis.calculateDuration(
+                            _dayPickerController.text, _startController.text, _endController.text);
+
+                        _durationController.text = Utilitis.buildDurationInHourers(sum);
                       }
                     },
                   ),

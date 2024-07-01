@@ -53,8 +53,7 @@ class CustomWeekView extends StatelessWidget {
                 height: boundary.size.height,
                 width: boundary.width / events.length + 2,
                 child: Text(
-                  '$user/\n${events[i].title}',
-                  // '${events[i].title}/\n$user',
+                  '${events[i].title}/\n$user',
                   style: const TextStyle(color: Colors.white),
                   overflow: TextOverflow.clip,
                 ),
@@ -64,15 +63,15 @@ class CustomWeekView extends StatelessWidget {
             barrierColor: const Color.fromARGB(20, 0, 0, 0),
             context: context,
             builder: (context) {
-              final e = events.map((e) => e.event as TimeVMAdapter).toList();
+              final k = events.map((e) => e.event as TimeVMAdapter).toList();
               return Dialog(
                 child: Container(
                   width: MediaQuery.of(context).size.width > 900
-                      ? 500
-                      : MediaQuery.of(context).size.width / 10 * 8,
+                      ? 700
+                      : MediaQuery.of(context).size.width * 0.85,
                   height: MediaQuery.of(context).size.height > 800
-                      ? 350
-                      : MediaQuery.of(context).size.height / 10 * 8,
+                      ? 400
+                      : MediaQuery.of(context).size.height * 0.8,
                   decoration: BoxDecoration(
                     border: Border.all(color: AppColor.kTextfieldBorder),
                     borderRadius: BorderRadius.circular(6),
@@ -81,8 +80,8 @@ class CustomWeekView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                     clipBehavior: Clip.antiAlias,
                     child: ListView.builder(
-                      itemCount: e.length,
-                      itemBuilder: (context, i) => InfoTableWidget(entry: e[i]),
+                      itemCount: k.length,
+                      itemBuilder: (context, i) => InfoTableWidget(entry: k[i]),
                     ),
                   ),
                 ),

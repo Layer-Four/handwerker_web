@@ -292,4 +292,37 @@ class Utilitis {
     );
     return pdf.save();
   }
+
+  /// Split the [String] values from the TextEdingController with the given
+  /// format and build [DateTime] objects with the Compination from
+  /// _dayPickerController and _startController.
+  /// than do  the same translation with _dayPickerController and _endController
+  /// and return the different between this [DateTime] object in minutes.
+  static int calculateDuration(String date, String startV, String endV) {
+    final dateAsList = date.split('.').map((e) => int.parse(e)).toList();
+    final start = DateTime(
+      dateAsList[2],
+      dateAsList[1],
+      dateAsList[0],
+      int.parse(startV.split(':').first),
+      int.parse(startV.split(':').last),
+    );
+    final end = DateTime(
+      start.year,
+      start.month,
+      start.day,
+      int.parse(endV.split(':').first),
+      int.parse(endV.split(':').last),
+    );
+    return ((end.millisecondsSinceEpoch - start.millisecondsSinceEpoch) / 1000) ~/ 60;
+  }
+
+  static String buildDurationInHourers(int? duration) {
+    if (duration == null) return '0 min.';
+    final hours = duration ~/ 60;
+
+    final minutes = duration % 60;
+    // TODO: exclude pause?
+    return '$hours:${minutes < 10 ? '0$minutes' : minutes} h.';
+  }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/themes/app_color.dart';
 import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
+import '../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import 'info_tale_widget.dart';
 
 class CustomDayView extends ConsumerStatefulWidget {
@@ -34,13 +35,14 @@ class _CustomDayViewState extends ConsumerState<CustomDayView> {
               final objekt = events[i].event as TimeVMAdapter;
               final user = objekt.user?.userName ?? 'Kein Nutzer gefunden';
               return Container(
+                key: ValueKey(ref.watch(timeVMProvider)[i]),
                 margin: const EdgeInsets.all(2),
                 color: events[i].color,
                 height: boundary.size.height,
                 width: boundary.width / events.length + 2,
                 child: Text(
-                  // '$user/\n${events[i].title}',
                   '${events[i].title}/\n$user',
+                  style: const TextStyle(color: Colors.white),
                   overflow: TextOverflow.clip,
                 ),
               );
@@ -58,10 +60,10 @@ class _CustomDayViewState extends ConsumerState<CustomDayView> {
             return Dialog(
               child: Container(
                 width: MediaQuery.of(context).size.width > 900
-                    ? 500
-                    : MediaQuery.of(context).size.width / 10 * 8,
+                    ? 700
+                    : MediaQuery.of(context).size.width / 10 * 85,
                 height: MediaQuery.of(context).size.height > 800
-                    ? 350
+                    ? 400
                     : MediaQuery.of(context).size.height / 10 * 8,
                 decoration: BoxDecoration(
                   border: Border.all(color: AppColor.kTextfieldBorder),
