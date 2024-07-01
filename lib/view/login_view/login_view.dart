@@ -47,8 +47,7 @@ class _LoginViewState extends State<LoginView> {
                         width: 350,
                         child: Align(
                           alignment: Alignment.bottomLeft,
-                          child:
-                              Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ),
                       const SizedBox(height: 3),
@@ -64,9 +63,9 @@ class _LoginViewState extends State<LoginView> {
                       const SizedBox(height: 3),
                       buildPasswordTextField(),
                       const SizedBox(height: 5),
-                      buildForgotPassword(context),
+                      buildForgotPassword(),
                       const SizedBox(height: 20),
-                      buildLoginButton(context),
+                      buildLoginButton(),
                     ],
                   ),
                 ),
@@ -96,7 +95,8 @@ class _LoginViewState extends State<LoginView> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return null;
-                } else if (value.length < 3) {
+                } else if (value.isNotEmpty && value.length < 3) {
+                  // setState(() => _isLoaded = false);
                   return 'Bitte eine gültige Mandatenname eingeben';
                 }
                 return null;
@@ -208,7 +208,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget buildForgotPassword(BuildContext context) => SizedBox(
+  Widget buildForgotPassword() => SizedBox(
         width: 350,
         child: Align(
           alignment: Alignment.topRight,
@@ -249,7 +249,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget buildLoginButton(BuildContext context) => Center(
+  Widget buildLoginButton() => Center(
         child: _isLoaded
             ? const SizedBox(
                 child: CircularProgressIndicator(),
@@ -260,8 +260,8 @@ class _LoginViewState extends State<LoginView> {
                 child: Consumer(
                     builder: (context, ref, child) => ElevatedButton(
                           onPressed: () async {
-                            setState(() => _isLoaded = true);
                             if (_formstate.currentState!.validate()) {
+                              setState(() => _isLoaded = true);
                               ref
                                   .read(userProvider.notifier)
                                   .loginUser(
@@ -297,9 +297,7 @@ class _LoginViewState extends State<LoginView> {
       return false;
     }
 
-    bool isValid = _formstate.currentState!.validate() &&
-        _emailCon.text.isNotEmpty &&
-        _passCon.text.isNotEmpty;
+    bool isValid = _formstate.currentState!.validate() && _emailCon.text.isNotEmpty && _passCon.text.isNotEmpty;
     if (!isValid) {
       showSnackBar('Bitte füllen Sie alle Felder korrekt aus.');
     }
