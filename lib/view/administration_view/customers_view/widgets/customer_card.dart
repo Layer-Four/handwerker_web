@@ -48,7 +48,7 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                     const SizedBox(width: 10),
                     Tooltip(
                       message:
-                          'Kunde: ${widget.customer.customerCredentials.contactName}\nKontaktname: ${widget.customer.customerCredentials.contactName}\nTelefonnummer: ${widget.customer.customerCredentials.customerPhone}\nE-Mail: ${widget.customer.customerCredentials.customerEmail}\nAdresse: \n${widget.customer.fullAdressFormated}',
+                          'Kunde: ${widget.customer.customerCredentials.customerName}\nKontaktname: ${widget.customer.customerCredentials.contactName}\nTelefonnummer: ${widget.customer.customerCredentials.customerPhone}\nE-Mail: ${widget.customer.customerCredentials.customerEmail}\nAdresse: \n${widget.customer.fullAdressFormated}',
                       textStyle: const TextStyle(fontSize: 20, color: Colors.white),
                       child: Text(
                         widget.customer.customerCredentials.contactName,

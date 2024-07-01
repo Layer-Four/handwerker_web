@@ -8,6 +8,7 @@ class CustomerCredentialDM with _$CustomerCredentialDM {
   const factory CustomerCredentialDM({
     required String contactName,
     String? companyName,
+    String? customerName,
     String? customerCity,
     String? customerEmail,
     String? customerNumber,

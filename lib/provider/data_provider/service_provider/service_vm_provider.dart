@@ -25,12 +25,17 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
         );
       }
       final data = response.data;
-      final services = data.map<ServiceVM>((e) => ServiceVM.fromJson(e)).toList();
+      final List<ServiceVM> services =
+          data.map<ServiceVM>((e) => ServiceVM.fromJson(e as Map<String, dynamic>)).toList();
+
+      // services.sort((a, b) => a.name.compareTo(b.name));
+      services.sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''));
+
       state = services;
     } on DioException catch (e) {
       log('DioException: ${e.message}');
     } catch (e) {
-      log('Exception on loadSerivce: $e');
+      log('Exception on loadService: $e');
     }
   }
 

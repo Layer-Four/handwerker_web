@@ -6,10 +6,9 @@ import '../../../constants/api/api.dart';
 import '../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../models/consumable_models/unit/unit.dart';
 
-final consumableProvider =
-    NotifierProvider<ConsumeableNotifier, List<ConsumableVM>>(() => ConsumeableNotifier());
+final consumableProvider = NotifierProvider<ConsumableNotifier, List<ConsumableVM>>(() => ConsumableNotifier());
 
-class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
+class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
   final List<Unit> _units = [];
   final Api _api = Api();
 
@@ -43,6 +42,14 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
           result.add(ConsumableVM.fromJson(e));
         }
       }
+
+      // Sort the result alphabetically by `name`
+      // result.sort((a, b) => a.name.compareTo(b.name));
+      result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+
+      // Debugging: Print the sorted list to verify order
+      log('Sorted Consumables: ${result.map((e) => e.name).toList()}');
+
       state = result;
     } on DioException catch (e) {
       log('DioException: ${e.message}');
@@ -56,8 +63,7 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
     try {
       final response = await _api.getAllUnits;
       if (response.statusCode != 200) {
-        throw Exception(
-            'Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
+        throw Exception('Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
       }
       final List data = response.data as List;
       for (var e in data) {
@@ -111,9 +117,9 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       final unitID = response.data['materialUnitID'];
       final searchedUnit = _units.firstWhere((e) => e.id == unitID);
 
-      final newConsumabelList = ConsumableVM.wihUnitAndJson(response.data, searchedUnit);
+      final newConsumable = ConsumableVM.wihUnitAndJson(response.data, searchedUnit);
 
-      state = [...state, newConsumabelList];
+      state = [...state, newConsumable];
       return true;
     } on DioException catch (error) {
       log(error.message ?? 'DioException -> ${jsonEncode(error)}');
@@ -124,13 +130,13 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
     }
   }
 
-  Future<bool> updateConsumable(ConsumableVM consumble) async {
+  Future<bool> updateConsumable(ConsumableVM consumable) async {
     final json = {
-      'amount': consumble.amount,
-      'name': consumble.name,
-      'id': consumble.id,
-      'price': consumble.price,
-      'materialUnitID': consumble.unit?.id,
+      'amount': consumable.amount,
+      'name': consumable.name,
+      'id': consumable.id,
+      'price': consumable.price,
+      'materialUnitID': consumable.unit?.id,
     };
     try {
       final data = json;
@@ -145,7 +151,7 @@ class ConsumeableNotifier extends Notifier<List<ConsumableVM>> {
       log('DioException: status ${e.response?.statusCode}\n${e.message}');
       return false;
     } catch (e) {
-      log('Error on  updateConsumable-> $e');
+      log('Error on updateConsumable-> $e');
       return false;
     }
   }
