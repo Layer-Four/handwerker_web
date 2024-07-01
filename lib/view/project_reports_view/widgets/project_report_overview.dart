@@ -16,7 +16,7 @@ class ProjectReportOverview extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 10.0),
             child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.35,
+              height: MediaQuery.of(context).size.height * 0.4,
               child: ListView.builder(
                 itemCount: projects.length,
                 itemBuilder: (_, i) => SingelProjectOverviewWidget(projects[i]),

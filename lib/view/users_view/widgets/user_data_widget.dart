@@ -52,7 +52,7 @@ class UserDataWidget extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _deleteButton(context, ref),
+                _deleteUserButton(context, ref),
                 _passwordResetButton(context, ref),
               ],
             ),
@@ -101,7 +101,7 @@ class UserDataWidget extends ConsumerWidget {
         ),
       );
 
-  Widget _deleteButton(BuildContext context, WidgetRef ref) => Padding(
+  Widget _deleteUserButton(BuildContext context, WidgetRef ref) => Padding(
         padding: const EdgeInsets.only(right: 16.0),
         child: Container(
           width: 80,
@@ -117,16 +117,11 @@ class UserDataWidget extends ConsumerWidget {
                 onAccept: () =>
                     ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
                   Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Center(
-                        child: Text(
-                          e
-                              ? 'Mitarbeitenden erfolgreich gelöscht'
-                              : 'Mitarbeitenden konnte nicht gelöscht werden',
-                        ),
-                      ),
-                    ),
+                  Utilitis.showSnackBar(
+                    context,
+                    e
+                        ? 'Mitarbeitenden erfolgreich gelöscht'
+                        : 'Mitarbeitenden konnte nicht gelöscht werden',
                   );
                 }),
               );
@@ -156,15 +151,9 @@ class UserDataWidget extends ConsumerWidget {
                         .then((e) {
                       Navigator.of(context).pop();
                       if (e.containsKey('Error')) {
-                        return ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Center(
-                              child: Text('Anfrage wurde abgewiesen'),
-                            ),
-                          ),
-                        );
+                        return Utilitis.showSnackBar(context, 'Anfrage wurde abgewiesen');
                       }
-                      _showNewPasswordPopUp(context, e);
+                      Utilitis.showNewPasswordPopUp(context, e);
                     }),
                 onReject: () => Navigator.of(context).pop());
           },
@@ -174,62 +163,4 @@ class UserDataWidget extends ConsumerWidget {
           textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kWhite),
         ),
       );
-
-  Future<dynamic> _showNewPasswordPopUp(BuildContext context, Map<String, dynamic> e) => showDialog(
-      context: context,
-      builder: (context) => Dialog(
-            backgroundColor: Colors.white,
-            child: SizedBox(
-              height: 250,
-              width: 250,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Mitarbeiter:',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            '   ${e['userName']}',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Passwort:',
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            '     ${e['password']}',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                          child: SymmetricButton(
-                            text: 'Als PDF Herunterladen',
-                            onPressed: () => Utilitis.writePDFAndDownload(e),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ));
 }

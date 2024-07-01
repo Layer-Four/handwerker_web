@@ -21,6 +21,7 @@ class ProjectReportsShowWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.10,
@@ -88,12 +89,14 @@ class ProjectReportsShowWidget extends StatelessWidget {
         ),
       );
 
-  SizedBox _buildHeadline(BuildContext context) => SizedBox(
+  Widget _buildHeadline(BuildContext context) => Container(
       height: 30,
+      color: Colors.grey[300],
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+          Container(
+            color: Colors.grey,
             width: MediaQuery.of(context).size.width * 0.10,
             child: Text(
               'Datum',
@@ -101,7 +104,8 @@ class ProjectReportsShowWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(
+          Container(
+            color: Colors.grey,
             width: MediaQuery.of(context).size.width * 0.45,
             child: Text(
               'Berichte',
@@ -109,10 +113,11 @@ class ProjectReportsShowWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(
+          Container(
+            color: Colors.grey,
             width: MediaQuery.of(context).size.width * 0.20,
             child: Text(
-              'Fotors',
+              'Fotos',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),

@@ -13,69 +13,6 @@ import '../../view/shared_widgets/symetric_button_widget.dart';
 import '../themes/app_color.dart';
 
 class Utilitis {
-  static String getWeekDayString(int weekday) => switch (weekday) {
-        1 => 'MO',
-        2 => 'DI',
-        3 => 'MI',
-        4 => 'Do',
-        5 => 'Fr',
-        6 => 'Sa',
-        7 => 'So',
-        _ => throw Exception('There was a unkown Weekday maybe😅')
-      };
-
-  static void writePDFAndDownload(Map<String, dynamic> newUser) async {
-    final byteList = await _createPDF(newUser);
-    final file = XFile.fromData(byteList);
-    html.AnchorElement anchorE = html.AnchorElement(href: ui.AssetManager().getAssetUrl(file.path));
-    anchorE.download = "AnmeldeDaten ${newUser['userName']}.pdf";
-    anchorE.click();
-  }
-
-  static HeaderStyle buildCustomHeadStyle(BuildContext context) => HeaderStyle(
-        leftIcon: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
-          child: Icon(
-            Icons.arrow_left_outlined,
-            size: 45,
-            color: AppColor.kPrimaryButtonColor,
-          ),
-        ),
-        rightIcon: Container(
-          padding: const EdgeInsets.symmetric(vertical: 6),
-          alignment: Alignment.centerLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Icon(
-                Icons.arrow_right_outlined,
-                size: 45,
-                color: AppColor.kPrimaryButtonColor,
-              ),
-            ],
-          ),
-        ),
-        headerTextStyle: Theme.of(context).textTheme.titleLarge,
-        decoration: const BoxDecoration(color: Colors.white),
-      );
-
-  static Widget waitingMessage(BuildContext context, String message) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(60.0),
-              child: Text(
-                message,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ),
-            const CircularProgressIndicator(),
-          ],
-        ),
-      );
-
   static Future<dynamic> askPopUp(
     BuildContext context, {
     required String message,
@@ -132,6 +69,133 @@ class Utilitis {
         ),
       );
 
+  static HeaderStyle buildCustomHeadStyle(BuildContext context) => HeaderStyle(
+        leftIcon: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
+          child: Icon(
+            Icons.arrow_left_outlined,
+            size: 45,
+            color: AppColor.kPrimaryButtonColor,
+          ),
+        ),
+        rightIcon: Container(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          alignment: Alignment.centerLeft,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(
+                Icons.arrow_right_outlined,
+                size: 45,
+                color: AppColor.kPrimaryButtonColor,
+              ),
+            ],
+          ),
+        ),
+        headerTextStyle: Theme.of(context).textTheme.titleLarge,
+        decoration: const BoxDecoration(color: Colors.white),
+      );
+
+  static Color getStatusColor(String? status) => switch (status) {
+        ('Abgeschlossen') => AppColor.kGreen,
+        ('Gestartet') => AppColor.kPrimaryButtonColor,
+        ('Pausiert') => AppColor.kRed,
+        ('Geplant') => AppColor.kYellow,
+        (_) => Colors.black
+      };
+
+  static String getWeekDayString(int weekday) => switch (weekday) {
+        1 => 'MO',
+        2 => 'DI',
+        3 => 'MI',
+        4 => 'Do',
+        5 => 'Fr',
+        6 => 'Sa',
+        7 => 'So',
+        _ => throw Exception('There was a unkown Weekday maybe😅')
+      };
+
+  static Future<dynamic> showNewPasswordPopUp(
+    BuildContext context,
+    Map<String, dynamic> e, {
+    Function()? onAccept,
+    String? onAcceptTitel,
+  }) =>
+      showDialog(
+        context: context,
+        builder: (context) => Dialog(
+          backgroundColor: Colors.white,
+          child: SizedBox(
+            height: 400,
+            width: 400,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Mitarbeiter:',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          '   ${e['userName']}',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Passwort:',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          '     ${e['password']}',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                        child: SymmetricButton(
+                          text: 'Als PDF Herunterladen',
+                          onPressed: () => writePDFAndDownload(e),
+                        ),
+                      ),
+                      onAccept == null
+                          ? const SizedBox.shrink()
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                              child: SymmetricButton(
+                                text: onAcceptTitel ?? '',
+                                onPressed: onAccept,
+                              ),
+                            )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  static void showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Center(child: Text(message, textAlign: TextAlign.center)),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   static InputDecoration textFieldDecoration(String hintText) => InputDecoration(
         filled: true,
         fillColor: AppColor.kTextfieldColor,
@@ -147,13 +211,30 @@ class Utilitis {
         ),
       );
 
-  static Color getStatusColor(String? status) => switch (status) {
-        ('Abgeschlossen') => AppColor.kGreen,
-        ('Gestartet') => AppColor.kPrimaryButtonColor,
-        ('Pausiert') => AppColor.kRed,
-        ('Geplant') => AppColor.kYellow,
-        (_) => Colors.black
-      };
+  static Widget waitingMessage(BuildContext context, String message) => Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(60.0),
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+            const CircularProgressIndicator(),
+          ],
+        ),
+      );
+
+  static void writePDFAndDownload(Map<String, dynamic> newUser) async {
+    final byteList = await _createPDF(newUser);
+    final file = XFile.fromData(byteList);
+    html.AnchorElement anchorE = html.AnchorElement(href: ui.AssetManager().getAssetUrl(file.path));
+    anchorE.download = "AnmeldeDaten ${newUser['userName']}.pdf";
+    anchorE.click();
+  }
 
   /// This private Method create the Layout for the Pdf with the intinal User data.
   /// Call this method with a [Map] with [Key] 'userName' and [Key] password.

@@ -101,7 +101,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
               _users = snapshot.data;
               _selectedUser = _users!.first;
               _initUser = true;
-              _entry = _entry.copyWith(userId: _selectedUser!.id);
+              _entry = _entry.copyWith(user: _selectedUser);
             }
           }
           return Padding(
@@ -137,7 +137,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         .toList(),
                     onChanged: (e) => setState(() {
                       _selectedUser = e!;
-                      _entry = _entry.copyWith(userId: e.id);
+                      _entry = _entry.copyWith(user: e);
                     }),
                     onTap: () => (_users == null) ? loadUser() : null,
                   ),
@@ -232,10 +232,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 onChanged: (project) {
                   setState(() {
                     _project = project;
-                    _entry = _entry.copyWith(
-                      projectId: project!.id,
-                      projectTitle: project.title,
-                    );
+                    _entry = _entry.copyWith(project: project);
                   });
                 },
               ),
@@ -332,10 +329,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     .toList(),
                 onChanged: (e) => setState(() {
                   _choosenService = e;
-                  _entry = _entry.copyWith(
-                    serviceTitle: e!.name,
-                    serviceId: e.id,
-                  );
+                  _entry = _entry.copyWith(service: e);
                 }),
               ),
             ),

@@ -28,7 +28,10 @@ class TimeEntry with _$TimeEntry {
   // @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
 
   const TimeEntry._();
-  factory TimeEntry.fromTimeEntriesVM(TimeVMAdapter e) => TimeEntry(
+  factory TimeEntry.fromTimeEntriesVM(
+    TimeVMAdapter e,
+  ) =>
+      TimeEntry(
         date: e.date,
         description: e.description,
         duration: e.duration,
@@ -36,11 +39,11 @@ class TimeEntry with _$TimeEntry {
         id: e.id,
         pauseEnd: e.pauseEnd,
         pauseStart: e.pauseStart,
-        projectId: e.projectId,
-        serviceId: e.serviceId,
+        projectId: e.project?.id,
+        serviceId: e.service?.id,
         startTime: e.startTime,
         type: e.type.index,
-        userId: e.userId,
+        userId: e.user?.id,
         customerId: e.customerId,
       );
 }
