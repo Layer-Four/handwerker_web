@@ -28,7 +28,7 @@ class ServiceNotifer extends Notifier<List<ServiceVM>> {
       final List<ServiceVM> services =
           data.map<ServiceVM>((e) => ServiceVM.fromJson(e as Map<String, dynamic>)).toList();
 
-      services.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      services.sort((a, b) => a.name.compareTo(b.name));
 
       state = services;
     } on DioException catch (e) {
