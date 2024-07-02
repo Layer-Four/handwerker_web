@@ -141,7 +141,7 @@ class _LoginViewState extends State<LoginView> {
                 }
                 return null;
               },
-              onFieldSubmitted: (_) => _submitLogin(), // Remove ref parameter
+              onFieldSubmitted: (_) => _submitLogin(),
               controller: _emailCon,
               decoration: InputDecoration(
                 filled: true,
@@ -195,7 +195,7 @@ class _LoginViewState extends State<LoginView> {
             duration: const Duration(milliseconds: 300),
             height: isFocused ? 44 : 40,
             child: TextFormField(
-              textInputAction: TextInputAction.done, // Set to done for password field
+              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value!.isEmpty) {
                   return null;
@@ -204,7 +204,7 @@ class _LoginViewState extends State<LoginView> {
                 }
                 return null;
               },
-              onFieldSubmitted: (_) => _submitLogin(), // Remove ref parameter
+              onFieldSubmitted: (_) => _submitLogin(),
               obscureText: !_isPasswordVisible,
               controller: _passCon,
               decoration: InputDecoration(
