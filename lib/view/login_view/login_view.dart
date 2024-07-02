@@ -15,61 +15,102 @@ class _LoginViewState extends State<LoginView> {
   bool isFocused = false;
   bool isOTP = false;
   bool _isPasswordVisible = false;
-  bool _isLoaded = false;
+  final bool _isLoaded = false;
 
   final TextEditingController _emailCon = TextEditingController();
   final TextEditingController _passCon = TextEditingController();
   final GlobalKey<FormState> _formstate = GlobalKey<FormState>();
+  late WidgetRef _ref;
+
+  @override
+  void dispose() {
+    _emailCon.dispose();
+    _passCon.dispose();
+    super.dispose();
+  }
+
+  void reactionOfLogin(bool isSuccess) {
+    if (isSuccess) {
+      _emailCon.clear();
+      _passCon.clear();
+      Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
+      return;
+    }
+    _passCon.clear();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Center(
+          child: Text(
+            'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _submitLogin() async {
+    if (_formstate.currentState!.validate()) {
+      bool isSuccess = await _ref.read(userProvider.notifier).loginUser(
+            password: _passCon.text,
+            userName: _emailCon.text,
+          );
+      reactionOfLogin(isSuccess);
+    }
+    if (isOTP) {
+      Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Padding(
           padding: const EdgeInsets.only(top: 60),
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 90),
-                SizedBox(
-                  height: 44,
-                  child: Image.asset('assets/images/img_techtool.png'),
-                ),
-                const SizedBox(height: 60),
-                const SizedBox(height: 15),
-                Form(
-                  key: _formstate,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 350,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
+            child: Consumer(
+              builder: (context, ref, child) {
+                _ref = ref;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 60),
+                    const SizedBox(height: 15),
+                    Form(
+                      key: _formstate,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            width: 350,
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          _buildUsernameTextField(),
+                          const SizedBox(height: 20),
+                          const SizedBox(
+                            width: 350,
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          _buildPasswordTextField(),
+                          const SizedBox(height: 5),
+                          _buildForgotPassword(),
+                          const SizedBox(height: 20),
+                          _buildLoginButton(),
+                        ],
                       ),
-                      const SizedBox(height: 3),
-                      _buildUsernameTextField(),
-                      const SizedBox(height: 20),
-                      const SizedBox(
-                        width: 350,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      buildPasswordTextField(),
-                      const SizedBox(height: 5),
-                      buildForgotPassword(),
-                      const SizedBox(height: 20),
-                      buildLoginButton(),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ),
@@ -96,11 +137,11 @@ class _LoginViewState extends State<LoginView> {
                 if (value!.isEmpty) {
                   return null;
                 } else if (value.isNotEmpty && value.length < 3) {
-                  // setState(() => _isLoaded = false);
                   return 'Bitte eine gültige Mandatenname eingeben';
                 }
                 return null;
               },
+              onFieldSubmitted: (_) => _submitLogin(), // Remove ref parameter
               controller: _emailCon,
               decoration: InputDecoration(
                 filled: true,
@@ -140,7 +181,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget buildPasswordTextField() => Container(
+  Widget _buildPasswordTextField() => Container(
         width: 350,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -154,7 +195,7 @@ class _LoginViewState extends State<LoginView> {
             duration: const Duration(milliseconds: 300),
             height: isFocused ? 44 : 40,
             child: TextFormField(
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done, // Set to done for password field
               validator: (value) {
                 if (value!.isEmpty) {
                   return null;
@@ -163,6 +204,7 @@ class _LoginViewState extends State<LoginView> {
                 }
                 return null;
               },
+              onFieldSubmitted: (_) => _submitLogin(), // Remove ref parameter
               obscureText: !_isPasswordVisible,
               controller: _passCon,
               decoration: InputDecoration(
@@ -208,7 +250,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget buildForgotPassword() => SizedBox(
+  Widget _buildForgotPassword() => SizedBox(
         width: 350,
         child: Align(
           alignment: Alignment.topRight,
@@ -228,28 +270,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  void reactionOfLogin(bool isSuccess) {
-    if (isSuccess) {
-      _emailCon.clear();
-      _passCon.clear();
-      Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
-      return;
-    }
-    // _emailCon.clear();
-    _passCon.clear();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Center(
-          child: Text(
-            'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildLoginButton() => Center(
+  Widget _buildLoginButton() => Center(
         child: _isLoaded
             ? const SizedBox(
                 child: CircularProgressIndicator(),
@@ -258,40 +279,28 @@ class _LoginViewState extends State<LoginView> {
                 width: 340,
                 height: 44,
                 child: Consumer(
-                    builder: (context, ref, child) => ElevatedButton(
-                          onPressed: () async {
-                            if (_formstate.currentState!.validate()) {
-                              setState(() => _isLoaded = true);
-                              ref
-                                  .read(userProvider.notifier)
-                                  .loginUser(
-                                    password: _passCon.text,
-                                    userName: _emailCon.text,
-                                  )
-                                  .then((value) {
-                                setState(() => _isLoaded = false);
-                                reactionOfLogin(value);
-                              });
-                            }
-                            if (isOTP) {
-                              Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            backgroundColor: AppColor.kPrimaryButtonColor,
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Anmelden',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        )),
+                  builder: (context, ref, child) {
+                    _ref = ref; // Assign ref to the member variable
+                    return ElevatedButton(
+                      onPressed: () => _submitLogin(),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        backgroundColor: AppColor.kPrimaryButtonColor,
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Anmelden',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
       );
+
   bool validateFields() {
     if (_formstate.currentState == null) {
       return false;
