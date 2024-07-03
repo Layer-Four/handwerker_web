@@ -1,21 +1,13 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/themes/app_color.dart';
 import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
-import '../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import 'info_tale_widget.dart';
 
-class CustomDayView extends ConsumerStatefulWidget {
+class CustomDayView extends StatelessWidget {
   const CustomDayView({super.key});
-
-  @override
-  ConsumerState<CustomDayView> createState() => _CustomDayViewState();
-}
-
-class _CustomDayViewState extends ConsumerState<CustomDayView> {
   @override
   Widget build(BuildContext context) => DayView(
         controller: CalendarControllerProvider.of(context).controller,
@@ -35,7 +27,7 @@ class _CustomDayViewState extends ConsumerState<CustomDayView> {
               final objekt = events[i].event as TimeVMAdapter;
               final user = objekt.user?.userName ?? 'Kein Nutzer gefunden';
               return Container(
-                key: ValueKey(ref.watch(timeVMProvider)[i]),
+                key: ValueKey(objekt.id),
                 margin: const EdgeInsets.all(2),
                 color: events[i].color,
                 height: boundary.size.height,

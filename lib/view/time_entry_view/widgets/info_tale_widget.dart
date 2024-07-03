@@ -17,62 +17,95 @@ class InfoTableWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    child: Text(
-                      'Mitarbeitender: ',
-                      style: Theme.of(context).textTheme.labelLarge,
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      child: Text(
+                        'Mitarbeitender: ',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
                     ),
-                  ),
-                  Text(entry.user?.userName ?? 'Mitarbeitenden ist nicht mehr in der Datenbank'),
-                ],
+                    Text(entry.user?.userName ?? 'Mitarbeitenden ist nicht mehr in der Datenbank'),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    child: Text(
-                      'Am:',
-                      style: Theme.of(context).textTheme.labelLarge,
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      child: Text(
+                        'Kunde:',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
                     ),
-                  ),
-                  Text('${entry.date.day}.${entry.date.month}.${entry.date.year}'),
-                ],
+                    Text(
+                        '${entry.customerName ?? 'Kein Kunde gefunden'} / ${entry.project?.title ?? 'Kein Projekt gefunden'}'),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  SizedBox(
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    SizedBox(
                       width: 120,
                       child: Text(
-                        'Von: ',
+                        'Am:',
                         style: Theme.of(context).textTheme.labelLarge,
-                      )),
-                  Text(' ${entry.startTime.hour}:${entry.startTime.minute}'),
-                ],
+                      ),
+                    ),
+                    Text('${entry.date.day}.${entry.date.month}.${entry.date.year}'),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  SizedBox(
-                      width: 120,
-                      child: Text(
-                        'Bis: ',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      )),
-                  Text(' ${entry.endTime.hour}:${entry.endTime.minute}'),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    SizedBox(
+                        width: 120,
+                        child: Text(
+                          'Von: ',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        )),
+                    Text(
+                        ' ${entry.startTime.hour < 10 ? '0${entry.startTime.hour}' : entry.startTime.hour}:${entry.startTime.minute < 10 ? '0${entry.startTime.minute}' : entry.startTime.minute} Uhr'),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  SizedBox(
-                      width: 120,
-                      child: Text(
-                        'Dauer: ',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      )),
-                  Text('${Utilitis.buildDurationInHourers(entry.duration)} min'),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    SizedBox(
+                        width: 120,
+                        child: Text(
+                          'Bis: ',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        )),
+                    Text(
+                        ' ${entry.endTime.hour < 10 ? '0${entry.endTime.hour}' : entry.endTime.hour}:${entry.endTime.minute < 10 ? '0${entry.endTime.minute}' : entry.endTime.minute} Uhr'),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    SizedBox(
+                        width: 120,
+                        child: Text(
+                          'Dauer: ',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        )),
+                    Text(Utilitis.buildDurationInHourers(entry.duration)),
+                  ],
+                ),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +122,7 @@ class InfoTableWidget extends StatelessWidget {
                         ? 500
                         : MediaQuery.of(context).size.width * 0.50,
                     child: Text(
-                      '${entry.description}',
+                      entry.description ?? '',
                       overflow: TextOverflow.clip,
                     ),
                   ),

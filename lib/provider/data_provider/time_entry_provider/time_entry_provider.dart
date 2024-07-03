@@ -89,7 +89,7 @@ class TimeVMNotifier extends Notifier<List<CalendarEventData>> {
     json.removeWhere((key, value) => key == 'type');
     json.removeWhere((key, value) => key == 'id');
     json.removeWhere((key, value) => key == 'userServiceId');
-    json.removeWhere((key, value) => key == 'customerId');
+    // json.removeWhere((key, value) => key == 'customerId');
     log(jsonEncode(json));
     try {
       final response = await _api.postTimeEnty(json);
@@ -98,9 +98,8 @@ class TimeVMNotifier extends Notifier<List<CalendarEventData>> {
           'Error on saveTimeEntry, status-> ${response.statusCode}\n ${response.data}',
         );
       }
-      // final jsonResponse = response.data;
-      // jsonResponse.map((e) => TimeVMAdapter.fromJson(e)).toList();
 
+      loadEvents();
       return true;
     } on DioException catch (e) {
       log('DioException: ${e.message}');

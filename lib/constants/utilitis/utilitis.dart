@@ -10,9 +10,40 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf_widget;
 
 import '../../view/shared_widgets/symetric_button_widget.dart';
+import '../../view/time_entry_view/widgets/time_spinner.dart';
 import '../themes/app_color.dart';
 
 class Utilitis {
+  static Future<String?> showTimeSpinner(BuildContext context, DateTime initalTime) async {
+    final result = await showDialog(
+      context: context,
+      builder: (context) => Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.3,
+            vertical: MediaQuery.of(context).size.height * 0.2,
+          ),
+          child: TimeSpinnerWidget(initalTime: initalTime)),
+    );
+    if (result.runtimeType != String) {
+      return null;
+    }
+    return result;
+  }
+
+  static void showErrorMessage(BuildContext context, String errorMessage) => showDialog(
+        context: context,
+        builder: (context) => GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: AlertDialog(
+            backgroundColor: Colors.white,
+            content: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24),
+              child: Text(errorMessage),
+            ),
+          ),
+        ),
+      );
+
   static Future<dynamic> askPopUp(
     BuildContext context, {
     required String message,
@@ -298,24 +329,6 @@ class Utilitis {
   /// _dayPickerController and _startController.
   /// than do  the same translation with _dayPickerController and _endController
   /// and return the different between this [DateTime] object in minutes.
-  static int calculateDuration(String date, String startV, String endV) {
-    final dateAsList = date.split('.').map((e) => int.parse(e)).toList();
-    final start = DateTime(
-      dateAsList[2],
-      dateAsList[1],
-      dateAsList[0],
-      int.parse(startV.split(':').first),
-      int.parse(startV.split(':').last),
-    );
-    final end = DateTime(
-      start.year,
-      start.month,
-      start.day,
-      int.parse(endV.split(':').first),
-      int.parse(endV.split(':').last),
-    );
-    return ((end.millisecondsSinceEpoch - start.millisecondsSinceEpoch) / 1000) ~/ 60;
-  }
 
   static String buildDurationInHourers(int? duration) {
     if (duration == null) return '0 min.';

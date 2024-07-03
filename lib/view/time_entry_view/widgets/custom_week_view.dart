@@ -48,6 +48,7 @@ class CustomWeekView extends StatelessWidget {
               final objekt = events[i].event as TimeVMAdapter;
               final user = objekt.user?.userName ?? 'Kein Nutzer gefunden';
               return Container(
+                key: ValueKey(objekt.id),
                 margin: const EdgeInsets.all(2),
                 color: events[i].color,
                 height: boundary.size.height,

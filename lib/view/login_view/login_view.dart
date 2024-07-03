@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/themes/app_color.dart';
+import '../../constants/utilitis/utilitis.dart';
 import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
 
-class LoginView extends StatefulWidget {
+class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  ConsumerState<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends ConsumerState<LoginView> {
   bool isFocused = false;
   bool isOTP = false;
   bool _isPasswordVisible = false;
@@ -155,6 +156,9 @@ class _LoginViewState extends State<LoginView> {
             height: isFocused ? 44 : 40,
             child: TextFormField(
               textInputAction: TextInputAction.next,
+              onFieldSubmitted: (_) {
+                _submit();
+              },
               validator: (value) {
                 if (value!.isEmpty) {
                   return null;
@@ -237,15 +241,9 @@ class _LoginViewState extends State<LoginView> {
     }
     // _emailCon.clear();
     _passCon.clear();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Center(
-          child: Text(
-            'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+    Utilitis.showSnackBar(
+      context,
+      'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
     );
   }
 
@@ -259,24 +257,7 @@ class _LoginViewState extends State<LoginView> {
                 height: 44,
                 child: Consumer(
                     builder: (context, ref, child) => ElevatedButton(
-                          onPressed: () async {
-                            setState(() => _isLoaded = true);
-                            if (_formstate.currentState!.validate()) {
-                              ref
-                                  .read(userProvider.notifier)
-                                  .loginUser(
-                                    password: _passCon.text,
-                                    userName: _emailCon.text,
-                                  )
-                                  .then((value) {
-                                setState(() => _isLoaded = false);
-                                reactionOfLogin(value);
-                              });
-                            }
-                            if (isOTP) {
-                              Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
-                            }
-                          },
+                          onPressed: () => _submit(),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -301,16 +282,27 @@ class _LoginViewState extends State<LoginView> {
         _emailCon.text.isNotEmpty &&
         _passCon.text.isNotEmpty;
     if (!isValid) {
-      showSnackBar('Bitte füllen Sie alle Felder korrekt aus.');
+      Utilitis.showSnackBar(context, 'Bitte füllen Sie alle Felder korrekt aus.');
     }
     return isValid;
   }
 
-  void showSnackBar(String message) {
-    final snackBar = SnackBar(
-      content: Center(child: Text(message)),
-      duration: const Duration(seconds: 2),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  void _submit() {
+    setState(() => _isLoaded = true);
+    if (_formstate.currentState!.validate()) {
+      ref
+          .read(userProvider.notifier)
+          .loginUser(
+            password: _passCon.text,
+            userName: _emailCon.text,
+          )
+          .then((value) {
+        setState(() => _isLoaded = false);
+        reactionOfLogin(value);
+      });
+    }
+    if (isOTP) {
+      Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
+    }
   }
 }

@@ -109,7 +109,7 @@ class CalendarOptionsRow extends StatelessWidget {
                 height: 30,
                 child: SymmetricButton(
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  text: 'Neuer Termin',
+                  text: 'Neuer Termin +',
                   onPressed: () => showDialog(
                       context: context,
                       builder: (context) => Dialog(
@@ -119,7 +119,7 @@ class CalendarOptionsRow extends StatelessWidget {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              height: MediaQuery.of(context).size.height - 400,
+                              height: MediaQuery.of(context).size.height - 200,
                               width: 500,
                               child: const TimeEntryDialog(),
                             ),
