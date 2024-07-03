@@ -49,6 +49,7 @@ class CalendarOptionsRow extends StatelessWidget {
                   onPressed: onTapWorkOrder,
                 ),
               ),
+              const Padding(padding: EdgeInsets.all(8)),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: isWorkOrder == null || isWorkOrder!
@@ -87,6 +88,7 @@ class CalendarOptionsRow extends StatelessWidget {
                   color: isWeekViewChoosed ? null : AppColor.kWhite,
                 ),
               ),
+              const Padding(padding: EdgeInsets.all(8)),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: !isWeekViewChoosed

@@ -57,8 +57,8 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                       ),
                     ),
                     const Spacer(),
-                    _iconButton(
-                      icon: Icons.delete,
+                    IconButton(
+                      icon: const Icon(Icons.delete),
                       onPressed: () => Utilitis.askPopUp(
                         context,
                         message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
@@ -68,25 +68,11 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                               .deleteCustomer(widget.customer.customerID!)
                               .then((success) {
                             if (success) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Center(
-                                    child: Text('Kunde wurde erfolgreich gelöscht'),
-                                  ),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
+                              Utilitis.showSnackBar(context, 'Kunde wurde erfolgreich gelöscht');
                               widget.onDelete();
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Center(
-                                    child: Text(
-                                        'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.'),
-                                  ),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
+                              Utilitis.showSnackBar(context,
+                                  'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
                             }
                             Navigator.of(context).pop(); // Dismiss the dialog
                           });
@@ -96,8 +82,8 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                         },
                       ),
                     ),
-                    _iconButton(
-                      icon: Icons.edit,
+                    IconButton(
+                      icon: const Icon(Icons.edit),
                       onPressed: () => setState(() => _showCustomerDetails = !_showCustomerDetails),
                     ),
                   ],
@@ -115,13 +101,6 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
               _showCustomerDetails ? _customerDetailsWindow() : const SizedBox.shrink(),
             ],
           ),
-        ),
-      );
-
-  Widget _iconButton({required IconData icon, required VoidCallback onPressed}) => IconButton(
-        onPressed: onPressed,
-        icon: Icon(
-          icon,
         ),
       );
 

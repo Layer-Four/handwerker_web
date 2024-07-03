@@ -115,7 +115,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Menge', style: Theme.of(context).textTheme.labelLarge),
+                            Text(
+                              'Menge',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
                             const SizedBox(height: 15),
                             TextField(
                               controller: _amountController,
@@ -150,7 +156,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Einheit', style: Theme.of(context).textTheme.labelLarge),
+                            Text(
+                              'Einheit',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
                             const SizedBox(height: 15),
                             DropdownButton<Unit>(
                               borderRadius: BorderRadius.circular(6),
@@ -180,7 +192,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Preis', style: Theme.of(context).textTheme.labelLarge),
+                            Text(
+                              'Preis',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
                             const SizedBox(height: 15),
                             TextFormField(
                               inputFormatters: [

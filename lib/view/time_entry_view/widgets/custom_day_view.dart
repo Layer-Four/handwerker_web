@@ -17,7 +17,7 @@ class CustomDayView extends StatelessWidget {
             LiveTimeIndicatorSettings(color: AppColor.kPrimaryButtonColor, height: 2),
         onEventTap: (events, date) => _showEventInofs(context, events),
         dateStringBuilder: (date, {secondaryDate}) =>
-            'KW ${date.getWeekDifference(DateTime(date.year)) + 1}/ ${date.day}.${date.month}.${date.year}',
+            '${Utilitis.getWeekDayStringLong(date.weekday)} ${date.day}.${date.month}.${date.year}',
         timeLineWidth: 60,
         headerStyle: Utilitis.buildCustomHeadStyle(context),
         eventTileBuilder: (date, events, boundary, startDuration, endDuration) => ListView.builder(

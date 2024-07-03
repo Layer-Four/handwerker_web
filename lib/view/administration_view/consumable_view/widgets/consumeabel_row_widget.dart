@@ -233,7 +233,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(right: MediaQuery.of(context).size.width > 800 ? 32 : 8),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -257,15 +257,16 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                                 widget.onDelete();
                               },
                             ),
-                    icon: Icon(isEditing ? Icons.cancel : Icons.delete, size: 25),
+                    icon: Icon(isEditing ? Icons.cancel : Icons.delete),
                   ),
                   IconButton(
-                    icon: Icon(isEditing ? Icons.save : Icons.edit, size: 25),
+                    icon: Icon(
+                      isEditing ? Icons.save : Icons.edit,
+                    ),
                     onPressed: () {
                       if (isEditing) {
                         if (!_hasChanges()) {
-                          _showSnackBar('Keine Änderungen erkannt.');
-                          return;
+                          return _showSnackBar('Keine Änderungen erkannt.');
                         }
 
                         String priceValue = _priceController.text;

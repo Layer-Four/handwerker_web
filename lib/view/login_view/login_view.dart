@@ -50,8 +50,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         width: 350,
                         child: Align(
                           alignment: Alignment.bottomLeft,
-                          child:
-                              Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text('Nutzernamen', style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ),
                       _buildUsernameTextField(),
@@ -83,7 +82,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
     _passCon.clear();
     return Utilitis.showSnackBar(
       context,
-      'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
+      'Nutzername oder Passwort sind falsch',
+      // 'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
     );
   }
 
@@ -120,7 +120,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 if (value!.isEmpty) {
                   return null;
                 } else if (value.isNotEmpty && value.length < 3) {
-                  return 'Bitte eine gültige Mandatenname eingeben';
+                  return 'Bitte eine gültige Nutzernamen eingeben';
                 }
                 return null;
               },

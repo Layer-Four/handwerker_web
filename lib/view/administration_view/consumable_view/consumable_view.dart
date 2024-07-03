@@ -33,7 +33,8 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
     initUnitsConsumable();
   }
 
-  void initUnitsConsumable() async => ref.read(consumableProvider.notifier).loadUnits().then((value) {
+  void initUnitsConsumable() async =>
+      ref.read(consumableProvider.notifier).loadUnits().then((value) {
         setState(() => _units.addAll(value));
       });
 
@@ -73,12 +74,15 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
                         consumable: consumables[i],
                         units: _units,
                         onDelete: () {
-                          ref.read(consumableProvider.notifier).deleteConsumable(consumables[i].id!).then((e) {
+                          ref
+                              .read(consumableProvider.notifier)
+                              .deleteConsumable(consumables[i].id!)
+                              .then((e) {
                             _showSnackBar(e
                                 ? 'Eintrag erfolgreich gelöscht'
-                                : 'Es ist ein Fehler aufgetreten wärend dem Löschen');
+                                : 'Es ist ein Fehler aufgetreten während dem Löschen');
                           });
-                          Navigator.of(context).pop();
+                          // Navigator.of(context).pop();
                         },
                       ),
                     ),
@@ -103,7 +107,9 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
         child: Row(
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 200
+                  : MediaQuery.of(context).size.width / 10 * 1.8,
               child: Text(
                 'Material',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -113,7 +119,9 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
               ),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 200
+                  : MediaQuery.of(context).size.width / 10 * 1.8,
               child: Text(
                 'Menge',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -123,7 +131,9 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
               ),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 200
+                  : MediaQuery.of(context).size.width / 10 * 1.8,
               child: Text(
                 'Einheit',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -133,7 +143,9 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
               ),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width > 1000 ? 200 : MediaQuery.of(context).size.width / 10 * 1.8,
+              width: MediaQuery.of(context).size.width > 1000
+                  ? 200
+                  : MediaQuery.of(context).size.width / 10 * 1.8,
               child: Text(
                 'Preis/€',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(

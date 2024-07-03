@@ -67,7 +67,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                       child: Align(
                         alignment: Alignment.bottomLeft,
                         child: Text(
-                          'Mandantennamme',
+                          'Nutzername',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -87,7 +87,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                           height: 40,
                           child: TextFormField(
                             textInputAction: TextInputAction.next,
-                            validator: (value) => value!.length < 6 ? 'Required' : null,
+                            validator: (value) => value!.length < 6 ? 'Inkorrekte Eingabe' : null,
                             obscureText: !obscureText,
                             controller: _userNameController,
                             decoration: const InputDecoration(
@@ -107,7 +107,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                               onPressed: () {
                                 if (_userNameController.text.isEmpty) {
                                   return Utilitis.showSnackBar(
-                                      context, 'Geben sie eine Gültigen Namen ein');
+                                      context, 'Geben sie einen gültigen Namen ein');
                                 }
                                 setState(() => isLoading = true);
                                 ref
@@ -138,7 +138,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                       )
                                     : const Text(
-                                        'Layer Four kontaktieren',
+                                        'Admin kontaktieren',
                                         style: TextStyle(color: Colors.white),
                                       ),
                               ),
