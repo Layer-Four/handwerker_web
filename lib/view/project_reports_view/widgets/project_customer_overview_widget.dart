@@ -21,20 +21,20 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
   }
 
   @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () => setState(() => isOpen = !isOpen),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () => setState(() => isOpen = !isOpen),
               child: Material(
                 elevation: 3,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(1),
                   ),
-                  height: 60,
+                  height: 69,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -77,10 +77,10 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
                 ),
               ),
             ),
-          ),
-          isOpen
-              ? ProjectReportOverview(projects: _customProject.projectsList)
-              : const SizedBox.shrink(),
-        ],
+            isOpen
+                ? ProjectReportOverview(projects: _customProject.projectsList)
+                : const SizedBox.shrink(),
+          ],
+        ),
       );
 }

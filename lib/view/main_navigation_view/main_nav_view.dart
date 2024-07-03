@@ -29,13 +29,15 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                   builder: (context, constrains) => Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          Container(
+                            color: const Color.fromARGB(255, 245, 245, 245),
                             height: constrains.maxHeight,
                             child: constrains.maxWidth <= 1000
                                 ? _buildpopUpNav(context, constrains)
                                 : _buildStandartNavBar(context, constrains),
                           ),
-                          SizedBox(
+                          Container(
+                            color: const Color.fromARGB(255, 255, 250, 250),
                             width: constrains.maxWidth <= 1000
                                 ? constrains.maxWidth - 50
                                 : ((constrains.maxWidth - 250)),

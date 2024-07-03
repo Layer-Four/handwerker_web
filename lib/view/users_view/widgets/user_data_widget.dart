@@ -18,45 +18,55 @@ class UserDataWidget extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Container(
-        height: 75,
-        width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide()),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 100 * 20,
-                  child: Text(
-                    user.userName,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.fade,
+  Widget build(BuildContext context, WidgetRef ref) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4.0),
+        child: Material(
+          elevation: 3,
+          child: SizedBox(
+            height: 69,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width > 1200
+                            ? 300
+                            : MediaQuery.of(context).size.width * 0.20,
+                        child: Text(
+                          user.userName,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          overflow: TextOverflow.fade,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: MediaQuery.of(context).size.width > 950
+                            ? 150
+                            : MediaQuery.of(context).size.width * 0.20,
+                        child: buildDropdown(
+                          roleFromUser: user.roles,
+                          userRoles: possibleRoles,
+                          context: context,
+                          ref: ref,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(
-                  height: 40,
-                  width: MediaQuery.of(context).size.width / 100 * 20,
-                  child: buildDropdown(
-                    roleFromUser: user.roles,
-                    userRoles: possibleRoles,
-                    context: context,
-                    ref: ref,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      _deleteUserButton(context, ref),
+                      _passwordResetButton(context, ref),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _deleteUserButton(context, ref),
-                _passwordResetButton(context, ref),
-              ],
-            ),
-          ],
+          ),
         ),
       );
 
@@ -103,11 +113,8 @@ class UserDataWidget extends ConsumerWidget {
 
   Widget _deleteUserButton(BuildContext context, WidgetRef ref) => Padding(
         padding: const EdgeInsets.only(right: 16.0),
-        child: Container(
+        child: SizedBox(
           width: 80,
-          decoration: BoxDecoration(
-              border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
-              borderRadius: BorderRadius.circular(6)),
           child: SymmetricButton(
             onPressed: () {
               Utilitis.askPopUp(
@@ -126,12 +133,14 @@ class UserDataWidget extends ConsumerWidget {
                 }),
               );
             },
-            borderRadius: BorderRadius.circular(6),
             color: AppColor.kWhite,
             text: 'Löschen',
             overflow: TextOverflow.clip,
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-            textStyle: Theme.of(context).textTheme.labelMedium,
+            textStyle: Theme.of(context)
+                .textTheme
+                .labelMedium
+                ?.copyWith(color: AppColor.kPrimaryButtonColor),
           ),
         ),
       );

@@ -18,6 +18,7 @@ class AddButton extends StatelessWidget {
   Widget build(context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          isOpen ? hideAbleChild : const SizedBox.shrink(),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: SizedBox(
@@ -37,7 +38,6 @@ class AddButton extends StatelessWidget {
               ),
             ),
           ),
-          isOpen ? hideAbleChild : const SizedBox.shrink(),
         ],
       );
 }

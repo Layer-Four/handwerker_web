@@ -53,57 +53,64 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final consumables = ref.watch(consumableProvider);
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SearchLineHeader(title: 'Material Management'),
-            buildHeaderRow(),
-            _units.isEmpty
-                ? Utilitis.waitingMessage(context, 'Lade Material')
-                : SizedBox(
-                    height: 9 * 60,
-                    child: ListView.builder(
-                      itemCount: consumables.length,
-                      itemBuilder: (context, i) => ConsumebaleDataRow(
-                        key: ValueKey(consumables[i]),
-                        consumable: consumables[i],
-                        units: _units,
-                        onDelete: () {
-                          ref
-                              .read(consumableProvider.notifier)
-                              .deleteConsumable(consumables[i].id!)
-                              .then((e) {
-                            _showSnackBar(e
-                                ? 'Eintrag erfolgreich gelöscht'
-                                : 'Es ist ein Fehler aufgetreten während dem Löschen');
-                          });
-                          // Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                  ),
-            AddButton(
+  Widget build(BuildContext context) => Stack(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SearchLineHeader(title: 'Material Management'),
+                    buildHeaderRow(),
+                    _units.isEmpty
+                        ? Utilitis.waitingMessage(context, 'Lade Material')
+                        : SizedBox(
+                            height: 11 * 60,
+                            child: ListView.builder(
+                              itemCount: ref.watch(consumableProvider).length,
+                              itemBuilder: (context, i) => ConsumebaleDataRow(
+                                key: ValueKey(ref.watch(consumableProvider)[i]),
+                                consumable: ref.watch(consumableProvider)[i],
+                                units: _units,
+                                onDelete: () {
+                                  ref
+                                      .read(consumableProvider.notifier)
+                                      .deleteConsumable(ref.watch(consumableProvider)[i].id!)
+                                      .then((e) {
+                                    _showSnackBar(e
+                                        ? 'Eintrag erfolgreich gelöscht'
+                                        : 'Es ist ein Fehler aufgetreten während dem Löschen');
+                                  });
+                                  // Navigator.of(context).pop();
+                                },
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 10,
+            bottom: 50,
+            child: AddButton(
               onTap: () => setState(() => _isOpen = !_isOpen),
               isOpen: _isOpen,
               hideAbleChild: CreateMaterialCard(
-                  units: _units,
-                  onReject: () {
-                    setState(() => _isOpen = !_isOpen);
-                  }),
+                units: _units,
+                onReject: () => setState(() => _isOpen = !_isOpen),
+              ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
+          ),
+        ],
+      );
 
   Widget buildHeaderRow() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.only(top: 40, bottom: 24),
         child: Row(
           children: [
             SizedBox(

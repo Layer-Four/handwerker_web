@@ -9,20 +9,23 @@ class ProjectReportOverview extends StatelessWidget {
   const ProjectReportOverview({super.key, required this.projects});
 
   @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const ProjectReportOverviewHeadWidget(),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 10.0),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: ListView.builder(
-                itemCount: projects.length,
-                itemBuilder: (_, i) => SingelProjectOverviewWidget(projects[i]),
+  Widget build(BuildContext context) => Container(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const ProjectReportOverviewHeadWidget(),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 10.0),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: ListView.builder(
+                  itemCount: projects.length,
+                  itemBuilder: (_, i) => SingelProjectOverviewWidget(projects[i]),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 }

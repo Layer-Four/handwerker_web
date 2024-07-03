@@ -11,13 +11,13 @@ class ProjectOverviewView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
             const SearchLineHeader(title: 'Berichte'),
             const ProjectReportHeader(),
             SizedBox(
-              height: 9 * 60,
+              height: 11 * 60,
               child: Consumer(
                 builder: (context, ref, child) => ref.watch(projektReportProvider).isEmpty
                     ? Utilitis.waitingMessage(context, 'Lade Berichte')

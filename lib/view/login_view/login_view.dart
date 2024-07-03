@@ -50,7 +50,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         width: 350,
                         child: Align(
                           alignment: Alignment.bottomLeft,
-                          child: Text('Nutzernamen', style: TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text('Nutzername', style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ),
                       _buildUsernameTextField(),
