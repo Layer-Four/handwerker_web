@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/themes/app_color.dart';
+import '../../constants/utilitis/utilitis.dart';
 import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
 
@@ -28,24 +29,61 @@ class _LoginViewState extends ConsumerState<LoginView> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 46,
+                  child: Image.asset('assets/images/img_techtool.png'),
+                ),
+                const SizedBox(height: 75),
+                Form(
+                  key: _formstate,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 350,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child:
+                              Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      _buildUsernameTextField(),
+                      const SizedBox(
+                        width: 350,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      _buildPasswordTextField(),
+                      _buildForgotPassword(),
+                      _buildLoginButton(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
   void reactionOfLogin(bool isSuccess) {
     setState(() => _isLoaded = false);
     if (isSuccess) {
-      _emailCon.clear();
-      _passCon.clear();
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
       return;
     }
     _passCon.clear();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Center(
-          child: Text(
-            'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+    return Utilitis.showSnackBar(
+      context,
+      'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
     );
   }
 
@@ -58,61 +96,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
           );
       reactionOfLogin(isSuccess);
     }
-    if (isOTP) {
-      Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
-    }
   }
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(top: 60),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 60),
-                const SizedBox(height: 15),
-                Form(
-                  key: _formstate,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 350,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      _buildUsernameTextField(),
-                      const SizedBox(height: 20),
-                      const SizedBox(
-                        width: 350,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      _buildPasswordTextField(),
-                      const SizedBox(height: 5),
-                      _buildForgotPassword(),
-                      const SizedBox(height: 20),
-                      _buildLoginButton(),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-
   Widget _buildUsernameTextField() => Container(
+        margin: const EdgeInsets.only(top: 3, bottom: 20),
         width: 355,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -145,8 +132,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 contentPadding: const EdgeInsets.all(10),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Color.fromARGB(255, 224, 142, 60),
+                  borderSide: BorderSide(
+                    color: AppColor.kPrimaryButtonColor,
                     width: 2,
                   ),
                 ),
@@ -178,15 +165,14 @@ class _LoginViewState extends ConsumerState<LoginView> {
       );
 
   Widget _buildPasswordTextField() => Container(
+        margin: const EdgeInsets.only(top: 3, bottom: 5),
         width: 350,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: const Color.fromARGB(255, 231, 226, 226),
+          color: AppColor.kTextfieldBorder,
         ),
         child: Focus(
-          onFocusChange: (hasFocus) {
-            setState(() => isFocused = hasFocus);
-          },
+          onFocusChange: (hasFocus) => setState(() => isFocused = hasFocus),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             height: isFocused ? 44 : 40,
@@ -214,8 +200,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 contentPadding: const EdgeInsets.all(10),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Color.fromARGB(255, 224, 142, 60),
+                  borderSide: BorderSide(
+                    color: AppColor.kPrimaryButtonColor,
                     width: 2,
                   ),
                 ),
@@ -266,30 +252,33 @@ class _LoginViewState extends ConsumerState<LoginView> {
         ),
       );
 
-  Widget _buildLoginButton() => Center(
-        child: _isLoaded
-            ? const SizedBox(
-                child: CircularProgressIndicator(),
-              )
-            : SizedBox(
-                width: 340,
-                height: 44,
-                child: ElevatedButton(
-                  onPressed: () => _submitLogin(),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+  Widget _buildLoginButton() => Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Center(
+          child: _isLoaded
+              ? const SizedBox(
+                  child: CircularProgressIndicator(),
+                )
+              : SizedBox(
+                  width: 340,
+                  height: 44,
+                  child: ElevatedButton(
+                    onPressed: () => _submitLogin(),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      backgroundColor: AppColor.kPrimaryButtonColor,
                     ),
-                    backgroundColor: AppColor.kPrimaryButtonColor,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Anmelden',
-                      style: TextStyle(color: Colors.white),
+                    child: const Center(
+                      child: Text(
+                        'Anmelden',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
-              ),
+        ),
       );
 
   bool validateFields() {
@@ -297,18 +286,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
       return false;
     }
 
-    bool isValid = _formstate.currentState!.validate() && _emailCon.text.isNotEmpty && _passCon.text.isNotEmpty;
+    bool isValid = _formstate.currentState!.validate() &&
+        _emailCon.text.isNotEmpty &&
+        _passCon.text.isNotEmpty;
     if (!isValid) {
-      showSnackBar('Bitte füllen Sie alle Felder korrekt aus.');
+      Utilitis.showSnackBar(context, 'Bitte füllen Sie alle Felder korrekt aus.');
     }
     return isValid;
-  }
-
-  void showSnackBar(String message) {
-    final snackBar = SnackBar(
-      content: Center(child: Text(message)),
-      duration: const Duration(seconds: 2),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

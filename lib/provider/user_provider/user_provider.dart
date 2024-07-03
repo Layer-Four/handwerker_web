@@ -25,8 +25,6 @@ class UserNotifier extends Notifier<UserVM> {
     _api.deleteToken();
   }
 
-  Future<String?> getToken() async => await _api.getToken;
-
   Future<bool> loginUser({
     required String password,
     required String userName,

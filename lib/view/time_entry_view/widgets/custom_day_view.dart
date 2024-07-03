@@ -1,20 +1,13 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/themes/app_color.dart';
 import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
 import 'info_tale_widget.dart';
 
-class CustomDayView extends ConsumerStatefulWidget {
+class CustomDayView extends StatelessWidget {
   const CustomDayView({super.key});
-
-  @override
-  ConsumerState<CustomDayView> createState() => _CustomDayViewState();
-}
-
-class _CustomDayViewState extends ConsumerState<CustomDayView> {
   @override
   Widget build(BuildContext context) => DayView(
         controller: CalendarControllerProvider.of(context).controller,
@@ -34,13 +27,14 @@ class _CustomDayViewState extends ConsumerState<CustomDayView> {
               final objekt = events[i].event as TimeVMAdapter;
               final user = objekt.user?.userName ?? 'Kein Nutzer gefunden';
               return Container(
+                key: ValueKey(objekt.id),
                 margin: const EdgeInsets.all(2),
                 color: events[i].color,
                 height: boundary.size.height,
                 width: boundary.width / events.length + 2,
                 child: Text(
-                  // '$user/\n${events[i].title}',
                   '${events[i].title}/\n$user',
+                  style: const TextStyle(color: Colors.white),
                   overflow: TextOverflow.clip,
                 ),
               );
@@ -49,6 +43,7 @@ class _CustomDayViewState extends ConsumerState<CustomDayView> {
 
   Future<dynamic> _showEventInofs(BuildContext context, List<CalendarEventData<Object?>> events) =>
       showDialog(
+          barrierColor: const Color.fromARGB(20, 0, 0, 0),
           context: context,
           builder: (context) {
             final e = events.map((e) => e.event as TimeVMAdapter).toList();
@@ -58,10 +53,10 @@ class _CustomDayViewState extends ConsumerState<CustomDayView> {
             return Dialog(
               child: Container(
                 width: MediaQuery.of(context).size.width > 900
-                    ? 500
-                    : MediaQuery.of(context).size.width / 10 * 8,
+                    ? 700
+                    : MediaQuery.of(context).size.width / 10 * 85,
                 height: MediaQuery.of(context).size.height > 800
-                    ? 350
+                    ? 400
                     : MediaQuery.of(context).size.height / 10 * 8,
                 decoration: BoxDecoration(
                   border: Border.all(color: AppColor.kTextfieldBorder),
