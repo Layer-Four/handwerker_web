@@ -4,14 +4,14 @@ import '../../constants/themes/app_color.dart';
 import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
 
-class LoginView extends StatefulWidget {
+class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  ConsumerState<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends ConsumerState<LoginView> {
   bool isFocused = false;
   bool isOTP = false;
   bool _isPasswordVisible = false;
@@ -22,6 +22,48 @@ class _LoginViewState extends State<LoginView> {
   final GlobalKey<FormState> _formstate = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    _emailCon.dispose();
+    _passCon.dispose();
+    super.dispose();
+  }
+
+  void reactionOfLogin(bool isSuccess) {
+    setState(() => _isLoaded = false);
+    if (isSuccess) {
+      _emailCon.clear();
+      _passCon.clear();
+      Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
+      return;
+    }
+    _passCon.clear();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Center(
+          child: Text(
+            'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _submitLogin() async {
+    if (_formstate.currentState!.validate()) {
+      setState(() => _isLoaded = true);
+      bool isSuccess = await ref.read(userProvider.notifier).loginUser(
+            password: _passCon.text,
+            userName: _emailCon.text,
+          );
+      reactionOfLogin(isSuccess);
+    }
+    if (isOTP) {
+      Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) => Scaffold(
         body: Padding(
           padding: const EdgeInsets.only(top: 60),
@@ -30,11 +72,6 @@ class _LoginViewState extends State<LoginView> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 90),
-                SizedBox(
-                  height: 44,
-                  child: Image.asset('assets/images/img_techtool.png'),
-                ),
                 const SizedBox(height: 60),
                 const SizedBox(height: 15),
                 Form(
@@ -47,8 +84,7 @@ class _LoginViewState extends State<LoginView> {
                         width: 350,
                         child: Align(
                           alignment: Alignment.bottomLeft,
-                          child:
-                              Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ),
                       const SizedBox(height: 3),
@@ -62,11 +98,11 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       const SizedBox(height: 3),
-                      buildPasswordTextField(),
+                      _buildPasswordTextField(),
                       const SizedBox(height: 5),
-                      buildForgotPassword(context),
+                      _buildForgotPassword(),
                       const SizedBox(height: 20),
-                      buildLoginButton(context),
+                      _buildLoginButton(),
                     ],
                   ),
                 ),
@@ -96,11 +132,12 @@ class _LoginViewState extends State<LoginView> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return null;
-                } else if (value.length < 3) {
+                } else if (value.isNotEmpty && value.length < 3) {
                   return 'Bitte eine gültige Mandatenname eingeben';
                 }
                 return null;
               },
+              onFieldSubmitted: (_) => _submitLogin(),
               controller: _emailCon,
               decoration: InputDecoration(
                 filled: true,
@@ -140,7 +177,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget buildPasswordTextField() => Container(
+  Widget _buildPasswordTextField() => Container(
         width: 350,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -154,7 +191,7 @@ class _LoginViewState extends State<LoginView> {
             duration: const Duration(milliseconds: 300),
             height: isFocused ? 44 : 40,
             child: TextFormField(
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value!.isEmpty) {
                   return null;
@@ -163,6 +200,7 @@ class _LoginViewState extends State<LoginView> {
                 }
                 return null;
               },
+              onFieldSubmitted: (_) => _submitLogin(),
               obscureText: !_isPasswordVisible,
               controller: _passCon,
               decoration: InputDecoration(
@@ -208,7 +246,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget buildForgotPassword(BuildContext context) => SizedBox(
+  Widget _buildForgotPassword() => SizedBox(
         width: 350,
         child: Align(
           alignment: Alignment.topRight,
@@ -228,28 +266,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  void reactionOfLogin(bool isSuccess) {
-    if (isSuccess) {
-      _emailCon.clear();
-      _passCon.clear();
-      Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
-      return;
-    }
-    // _emailCon.clear();
-    _passCon.clear();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Center(
-          child: Text(
-            'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildLoginButton(BuildContext context) => Center(
+  Widget _buildLoginButton() => Center(
         child: _isLoaded
             ? const SizedBox(
                 child: CircularProgressIndicator(),
@@ -257,49 +274,30 @@ class _LoginViewState extends State<LoginView> {
             : SizedBox(
                 width: 340,
                 height: 44,
-                child: Consumer(
-                    builder: (context, ref, child) => ElevatedButton(
-                          onPressed: () async {
-                            setState(() => _isLoaded = true);
-                            if (_formstate.currentState!.validate()) {
-                              ref
-                                  .read(userProvider.notifier)
-                                  .loginUser(
-                                    password: _passCon.text,
-                                    userName: _emailCon.text,
-                                  )
-                                  .then((value) {
-                                setState(() => _isLoaded = false);
-                                reactionOfLogin(value);
-                              });
-                            }
-                            if (isOTP) {
-                              Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            backgroundColor: AppColor.kPrimaryButtonColor,
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Anmelden',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        )),
+                child: ElevatedButton(
+                  onPressed: () => _submitLogin(),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    backgroundColor: AppColor.kPrimaryButtonColor,
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Anmelden',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
       );
+
   bool validateFields() {
     if (_formstate.currentState == null) {
       return false;
     }
 
-    bool isValid = _formstate.currentState!.validate() &&
-        _emailCon.text.isNotEmpty &&
-        _passCon.text.isNotEmpty;
+    bool isValid = _formstate.currentState!.validate() && _emailCon.text.isNotEmpty && _passCon.text.isNotEmpty;
     if (!isValid) {
       showSnackBar('Bitte füllen Sie alle Felder korrekt aus.');
     }
