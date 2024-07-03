@@ -25,8 +25,11 @@ class UserNotifier extends Notifier<UserVM> {
     _api.deleteToken();
   }
 
-  Future<bool> loginUser(
-      {required String password, required String userName, String? mandatID}) async {
+  Future<bool> loginUser({
+    required String password,
+    required String userName,
+    String? mandatID,
+  }) async {
     final Map<String, dynamic> json = {
       'username': userName,
       'password': password,
