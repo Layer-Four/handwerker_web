@@ -4,23 +4,22 @@ import '../../constants/themes/app_color.dart';
 import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
 
-class LoginView extends StatefulWidget {
+class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  ConsumerState<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends ConsumerState<LoginView> {
   bool isFocused = false;
   bool isOTP = false;
   bool _isPasswordVisible = false;
-  final bool _isLoaded = false;
+  bool _isLoaded = false;
 
   final TextEditingController _emailCon = TextEditingController();
   final TextEditingController _passCon = TextEditingController();
   final GlobalKey<FormState> _formstate = GlobalKey<FormState>();
-  late WidgetRef _ref;
 
   @override
   void dispose() {
@@ -30,6 +29,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void reactionOfLogin(bool isSuccess) {
+    setState(() => _isLoaded = false);
     if (isSuccess) {
       _emailCon.clear();
       _passCon.clear();
@@ -51,7 +51,8 @@ class _LoginViewState extends State<LoginView> {
 
   Future<void> _submitLogin() async {
     if (_formstate.currentState!.validate()) {
-      bool isSuccess = await _ref.read(userProvider.notifier).loginUser(
+      setState(() => _isLoaded = true);
+      bool isSuccess = await ref.read(userProvider.notifier).loginUser(
             password: _passCon.text,
             userName: _emailCon.text,
           );
@@ -67,50 +68,45 @@ class _LoginViewState extends State<LoginView> {
         body: Padding(
           padding: const EdgeInsets.only(top: 60),
           child: SingleChildScrollView(
-            child: Consumer(
-              builder: (context, ref, child) {
-                _ref = ref;
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 60),
-                    const SizedBox(height: 15),
-                    Form(
-                      key: _formstate,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            width: 350,
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          const SizedBox(height: 3),
-                          _buildUsernameTextField(),
-                          const SizedBox(height: 20),
-                          const SizedBox(
-                            width: 350,
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          const SizedBox(height: 3),
-                          _buildPasswordTextField(),
-                          const SizedBox(height: 5),
-                          _buildForgotPassword(),
-                          const SizedBox(height: 20),
-                          _buildLoginButton(),
-                        ],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 60),
+                const SizedBox(height: 15),
+                Form(
+                  key: _formstate,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 350,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
+                      const SizedBox(height: 3),
+                      _buildUsernameTextField(),
+                      const SizedBox(height: 20),
+                      const SizedBox(
+                        width: 350,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      _buildPasswordTextField(),
+                      const SizedBox(height: 5),
+                      _buildForgotPassword(),
+                      const SizedBox(height: 20),
+                      _buildLoginButton(),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -278,25 +274,20 @@ class _LoginViewState extends State<LoginView> {
             : SizedBox(
                 width: 340,
                 height: 44,
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    _ref = ref; // Assign ref to the member variable
-                    return ElevatedButton(
-                      onPressed: () => _submitLogin(),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        backgroundColor: AppColor.kPrimaryButtonColor,
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Anmelden',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    );
-                  },
+                child: ElevatedButton(
+                  onPressed: () => _submitLogin(),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    backgroundColor: AppColor.kPrimaryButtonColor,
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Anmelden',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
       );
