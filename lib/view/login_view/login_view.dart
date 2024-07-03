@@ -31,40 +31,45 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // TODO: would be on Login Screen a be Logo image
-              const SizedBox(height: 75),
-              Form(
-                key: _formstate,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      width: 350,
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    _buildUsernameTextField(),
-                    const SizedBox(
-                      width: 350,
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    _buildPasswordTextField(),
-                    _buildForgotPassword(),
-                    _buildLoginButton(),
-                  ],
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 46,
+                  child: Image.asset('assets/images/img_techtool.png'),
                 ),
-              ),
-            ],
+                const SizedBox(height: 75),
+                Form(
+                  key: _formstate,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 350,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child:
+                              Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      _buildUsernameTextField(),
+                      const SizedBox(
+                        width: 350,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      _buildPasswordTextField(),
+                      _buildForgotPassword(),
+                      _buildLoginButton(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -94,7 +99,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _buildUsernameTextField() => Container(
-        padding: const EdgeInsets.only(top: 3, bottom: 20),
+        margin: const EdgeInsets.only(top: 3, bottom: 20),
         width: 355,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -160,7 +165,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       );
 
   Widget _buildPasswordTextField() => Container(
-        padding: const EdgeInsets.only(top: 3, bottom: 5),
+        margin: const EdgeInsets.only(top: 3, bottom: 5),
         width: 350,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),

@@ -43,6 +43,7 @@ class CustomDayView extends StatelessWidget {
 
   Future<dynamic> _showEventInofs(BuildContext context, List<CalendarEventData<Object?>> events) =>
       showDialog(
+          barrierColor: const Color.fromARGB(20, 0, 0, 0),
           context: context,
           builder: (context) {
             final e = events.map((e) => e.event as TimeVMAdapter).toList();
