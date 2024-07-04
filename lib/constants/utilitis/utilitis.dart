@@ -135,14 +135,24 @@ class Utilitis {
         (_) => Colors.black
       };
 
-  static String getWeekDayString(int weekday) => switch (weekday) {
+  static String getWeekDayStringShort(int weekday) => switch (weekday) {
         1 => 'MO',
         2 => 'DI',
         3 => 'MI',
-        4 => 'Do',
-        5 => 'Fr',
-        6 => 'Sa',
-        7 => 'So',
+        4 => 'DO',
+        5 => 'FR',
+        6 => 'SA',
+        7 => 'SO',
+        _ => throw Exception('There was a unkown Weekday maybe😅')
+      };
+  static String getWeekDayStringLong(int weekday) => switch (weekday) {
+        1 => 'Montag',
+        2 => 'Dienstag',
+        3 => 'Mittwoch',
+        4 => 'Donnerstag',
+        5 => 'Freitag',
+        6 => 'Samstag',
+        7 => 'Sonntag',
         _ => throw Exception('There was a unkown Weekday maybe😅')
       };
 

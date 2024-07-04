@@ -91,9 +91,15 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                            Padding(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(
+                                'Name',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
                             ),
                             buildTextField(
                               hintText: 'Kundenname',
@@ -114,9 +120,15 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Text('Adresse', style: TextStyle(fontWeight: FontWeight.bold)),
+                            Padding(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(
+                                'Adresse',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
                             ),
                             Row(
                               children: [
@@ -173,11 +185,14 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.all(4),
+                            Padding(
+                              padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Sonstiges',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             buildTextField(
@@ -227,8 +242,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                           padding: const EdgeInsets.all(16.0),
                           child: SymmetricButton(
                             text: 'Verwerfen',
-                            textStyle:
-                                Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(color: AppColor.kPrimaryButtonColor),
                             color: AppColor.kWhite,
                             onPressed: () {
                               widget.onCancel();
@@ -263,7 +280,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                 externalId: _customerNumberController.text,
                               );
 
-                              ref.read(customerProvider.notifier).createCustomer(_createCustomer).then((success) {
+                              ref
+                                  .read(customerProvider.notifier)
+                                  .createCustomer(_createCustomer)
+                                  .then((success) {
                                 if (success) {
                                   _showSnackBar('Kunde erfolgreich hinzufügt');
                                   _nameController.clear();

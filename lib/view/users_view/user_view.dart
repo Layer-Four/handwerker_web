@@ -31,35 +31,48 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
       });
 
   @override
-  Widget build(BuildContext ctx) => SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
-              const UserRowHeadLine(),
-              SizedBox(
-                height: 9 * 60,
-                child: ref.watch(userAdministrationProvider).isEmpty
-                    ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')
-                    : ListView.builder(
-                        itemCount: ref.watch(userAdministrationProvider).length,
-                        itemBuilder: (_, index) => UserDataWidget(
-                          ref.watch(userAdministrationProvider)[index],
-                          _roles,
-                          key: ValueKey(ref.watch(userAdministrationProvider)[index]),
-                        ),
-                      ),
+  Widget build(BuildContext ctx) => Stack(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
+                    const UserRowHeadLine(),
+                    Container(
+                      // color: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      height: 11 * 60,
+                      child: ref.watch(userAdministrationProvider).isEmpty
+                          ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')
+                          : ListView.builder(
+                              itemCount: ref.watch(userAdministrationProvider).length,
+                              itemBuilder: (_, index) => UserDataWidget(
+                                key: ValueKey(ref.watch(userAdministrationProvider)[index]),
+                                ref.watch(userAdministrationProvider)[index],
+                                _roles,
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
               ),
-              AddButton(
-                  isOpen: _isVisible,
-                  onTap: () => setState(() => _isVisible = !_isVisible),
-                  hideAbleChild: SizedBox(
-                    child: _isVisible ? AddNewEmployee(_roles) : const SizedBox.shrink(),
-                  )),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            bottom: 50,
+            left: 10,
+            child: AddButton(
+                isOpen: _isVisible,
+                onTap: () => setState(() => _isVisible = !_isVisible),
+                hideAbleChild: SizedBox(
+                  child: _isVisible ? AddNewEmployee(_roles) : const SizedBox.shrink(),
+                )),
+          ),
+        ],
       );
 }

@@ -27,7 +27,7 @@ class CustomWeekView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
                 color: isToday ? AppColor.kPrimaryButtonColor : AppColor.kTextfieldBorder),
             child: Text(
-              '${day.day}\n${Utilitis.getWeekDayString(day.weekday)}',
+              '${day.day}\n${Utilitis.getWeekDayStringShort(day.weekday)}',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: isToday ? AppColor.kWhite : null,
                   ),

@@ -29,13 +29,20 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                   builder: (context, constrains) => Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          Container(
+                            // color: const Color.fromARGB(255, 245, 245, 245), //* smokewhite
+                            color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
+                            // color: const Color.fromARGB(250, 251, 251, 251), //* own Marten
                             height: constrains.maxHeight,
                             child: constrains.maxWidth <= 1000
                                 ? _buildpopUpNav(context, constrains)
                                 : _buildStandartNavBar(context, constrains),
                           ),
-                          SizedBox(
+                          Container(
+                            color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
+                            // color: const Color.fromARGB(255, 238, 238, 238), //* Buchweis Lara
+                            // color: const Color.fromARGB(255, 255, 250, 250),//* Ghost
+                            // color: const Color.fromARGB(250, 251, 251, 251), //* own Marten
                             width: constrains.maxWidth <= 1000
                                 ? constrains.maxWidth - 50
                                 : ((constrains.maxWidth - 250)),

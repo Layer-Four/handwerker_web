@@ -30,7 +30,7 @@ class CalendarOptionsRow extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: isWorkOrder == null || !isWorkOrder!
                     ? null
                     : BoxDecoration(
@@ -50,7 +50,7 @@ class CalendarOptionsRow extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: isWorkOrder == null || isWorkOrder!
                     ? null
                     : BoxDecoration(
@@ -69,8 +69,9 @@ class CalendarOptionsRow extends StatelessWidget {
                   onPressed: onTapTimeEntry,
                 ),
               ),
+              const Padding(padding: EdgeInsets.all(12)),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: isWeekViewChoosed
                     ? null
                     : BoxDecoration(
@@ -88,7 +89,7 @@ class CalendarOptionsRow extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: !isWeekViewChoosed
                     ? null
                     : BoxDecoration(
@@ -105,6 +106,7 @@ class CalendarOptionsRow extends StatelessWidget {
                   color: !isWeekViewChoosed ? null : AppColor.kWhite,
                 ),
               ),
+              const Padding(padding: EdgeInsets.all(12)),
               SizedBox(
                 height: 30,
                 child: SymmetricButton(

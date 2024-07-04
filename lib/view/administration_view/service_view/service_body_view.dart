@@ -24,35 +24,46 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
   }
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SearchLineHeader(title: 'Leistungsverwaltung'),
-              const ServiceHeadlineWidget(),
-              ref.watch(serviceVMProvider).isEmpty
-                  ? Utilitis.waitingMessage(context, 'Lade Leistungseintrage')
-                  : SizedBox(
-                      height: 9 * 60,
-                      child: ListView.builder(
-                        itemCount: ref.watch(serviceVMProvider).length,
-                        itemBuilder: (context, i) => ServiceDataWidget(
-                          key: ValueKey(ref.watch(serviceVMProvider)[i]),
-                          service: ref.watch(serviceVMProvider)[i],
-                        ),
-                      ),
-                    ),
-              AddButton(
-                isOpen: _isVisible,
-                onTap: () => setState(() => _isVisible = !_isVisible),
-                hideAbleChild: CreateServiceWidget(
-                  onReject: () => setState(() => _isVisible = false),
+  Widget build(BuildContext context) => Stack(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SearchLineHeader(title: 'Leistungsverwaltung'),
+                    const ServiceHeadlineWidget(),
+                    ref.watch(serviceVMProvider).isEmpty
+                        ? Utilitis.waitingMessage(context, 'Lade Leistungseintrage')
+                        : SizedBox(
+                            height: 11 * 60,
+                            child: ListView.builder(
+                              itemCount: ref.watch(serviceVMProvider).length,
+                              itemBuilder: (context, i) => ServiceDataWidget(
+                                key: ValueKey(ref.watch(serviceVMProvider)[i]),
+                                service: ref.watch(serviceVMProvider)[i],
+                              ),
+                            ),
+                          ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            left: 10,
+            bottom: 50,
+            child: AddButton(
+              isOpen: _isVisible,
+              onTap: () => setState(() => _isVisible = !_isVisible),
+              hideAbleChild: CreateServiceWidget(
+                onReject: () => setState(() => _isVisible = false),
+              ),
+            ),
+          ),
+        ],
       );
 }

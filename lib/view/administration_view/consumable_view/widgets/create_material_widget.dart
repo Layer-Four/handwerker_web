@@ -115,7 +115,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Menge', style: Theme.of(context).textTheme.labelLarge),
+                            Text(
+                              'Menge',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
                             const SizedBox(height: 15),
                             TextField(
                               controller: _amountController,
@@ -150,24 +156,40 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Einheit', style: Theme.of(context).textTheme.labelLarge),
+                            Text(
+                              'Einheit',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
                             const SizedBox(height: 15),
-                            DropdownButton<Unit>(
-                              borderRadius: BorderRadius.circular(6),
-                              isExpanded: true,
-                              value: _selectedUnit,
-                              items: _units
-                                  .map((Unit unit) => DropdownMenuItem<Unit>(
-                                        value: unit,
-                                        child: Text(unit.name),
-                                      ))
-                                  .toList(),
-                              onChanged: (Unit? newValue) {
-                                setState(() {
-                                  _consumable = _consumable.copyWith(unit: newValue!);
-                                  _selectedUnit = newValue;
-                                });
-                              },
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color.fromARGB(255, 240, 237, 237),
+                                ),
+                                color: AppColor.kTextfieldColor,
+                              ),
+                              child: DropdownButton<Unit>(
+                                hint: const Text('Einheit'),
+                                borderRadius: BorderRadius.circular(6),
+                                underline: const SizedBox.shrink(),
+                                isExpanded: true,
+                                value: _selectedUnit,
+                                items: _units
+                                    .map((Unit unit) => DropdownMenuItem<Unit>(
+                                          value: unit,
+                                          child: Text(unit.name),
+                                        ))
+                                    .toList(),
+                                onChanged: (Unit? newValue) {
+                                  setState(() {
+                                    _consumable = _consumable.copyWith(unit: newValue!);
+                                    _selectedUnit = newValue;
+                                  });
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -180,7 +202,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Preis', style: Theme.of(context).textTheme.labelLarge),
+                            Text(
+                              'Preis',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
                             const SizedBox(height: 15),
                             TextFormField(
                               inputFormatters: [

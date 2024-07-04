@@ -8,6 +8,7 @@ import '../../shared_widgets/search_line_header.dart';
 import '../../users_view/widgets/add_button_widget.dart';
 import 'widgets/create_customer.dart';
 import 'widgets/customer_card.dart';
+import 'widgets/customer_headline_widget.dart';
 
 class CustomerBody extends ConsumerStatefulWidget {
   const CustomerBody({super.key});
@@ -21,60 +22,56 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
   int editingProjectIndex = -1;
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SearchLineHeader(title: 'Kundenverwaltung'),
-              const SizedBox(height: 60),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+  Widget build(BuildContext context) => Stack(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Name',
-                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                    const SearchLineHeader(title: 'Kundenverwaltung'),
+                    const CustomerRowHeadline(),
+                    Container(
+                      height: 11 * 60,
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: ref.watch(customerProvider).isEmpty
+                          ? Utilitis.waitingMessage(context, 'Lade Kundendaten')
+                          : ListView.builder(
+                              itemCount: ref.watch(customerProvider).length,
+                              itemBuilder: (_, index) {
+                                final customer = ref.watch(customerProvider)[index];
+                                return CustomerCard(
+                                  key: ValueKey(index),
+                                  customer: customer,
+                                  onDelete: () {},
+                                  onUpdate: (CustomerOvervewDM value) {},
+                                );
+                              },
+                            ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: MediaQuery.of(context).size.width > 600 ? double.infinity : null,
-                height: 9 * 60,
-                child: ref.watch(customerProvider).isEmpty
-                    ? Utilitis.waitingMessage(context, 'Lade Kundendaten')
-                    : ListView.builder(
-                        itemCount: ref.watch(customerProvider).length,
-                        itemBuilder: (_, index) {
-                          final customer = ref.watch(customerProvider)[index];
-                          return CustomerCard(
-                            key: ValueKey(index),
-                            customer: customer,
-                            onDelete: () {},
-                            onUpdate: (CustomerOvervewDM value) {},
-                          );
-                        },
-                      ),
-              ),
-              AddButton(
-                isOpen: isAddConsumableOpen,
-                onTap: () {
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            left: 10,
+            child: AddButton(
+              isOpen: isAddConsumableOpen,
+              onTap: () {
+                setState(() => isAddConsumableOpen = !isAddConsumableOpen);
+              },
+              hideAbleChild: CreateCustomerWidget(
+                onCancel: () {
                   setState(() => isAddConsumableOpen = !isAddConsumableOpen);
                 },
-                hideAbleChild: CreateCustomerWidget(
-                  onCancel: () {
-                    setState(() => isAddConsumableOpen = !isAddConsumableOpen);
-                  },
-                ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       );
 }

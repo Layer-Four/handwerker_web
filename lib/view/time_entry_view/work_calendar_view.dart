@@ -42,7 +42,7 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
     return CalendarControllerProvider(
       controller: _eventCtr,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
         child: _isLoading
             ? Utilitis.waitingMessage(context, 'Lade Einträge')
             : Column(
