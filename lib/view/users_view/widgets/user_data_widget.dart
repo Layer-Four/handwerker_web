@@ -24,7 +24,6 @@ class UserDataWidget extends ConsumerWidget {
           elevation: 3,
           child: SizedBox(
             height: 69,
-            width: MediaQuery.of(context).size.width,
             child: Padding(
               padding: const EdgeInsets.all(6.0),
               child: Row(

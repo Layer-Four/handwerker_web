@@ -31,6 +31,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,
         body: Center(
           child: SingleChildScrollView(
             child: Column(

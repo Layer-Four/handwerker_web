@@ -164,22 +164,32 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 15),
-                            DropdownButton<Unit>(
-                              borderRadius: BorderRadius.circular(6),
-                              isExpanded: true,
-                              value: _selectedUnit,
-                              items: _units
-                                  .map((Unit unit) => DropdownMenuItem<Unit>(
-                                        value: unit,
-                                        child: Text(unit.name),
-                                      ))
-                                  .toList(),
-                              onChanged: (Unit? newValue) {
-                                setState(() {
-                                  _consumable = _consumable.copyWith(unit: newValue!);
-                                  _selectedUnit = newValue;
-                                });
-                              },
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color.fromARGB(255, 240, 237, 237),
+                                ),
+                                color: AppColor.kTextfieldColor,
+                              ),
+                              child: DropdownButton<Unit>(
+                                hint: const Text('Einheit'),
+                                borderRadius: BorderRadius.circular(6),
+                                underline: const SizedBox.shrink(),
+                                isExpanded: true,
+                                value: _selectedUnit,
+                                items: _units
+                                    .map((Unit unit) => DropdownMenuItem<Unit>(
+                                          value: unit,
+                                          child: Text(unit.name),
+                                        ))
+                                    .toList(),
+                                onChanged: (Unit? newValue) {
+                                  setState(() {
+                                    _consumable = _consumable.copyWith(unit: newValue!);
+                                    _selectedUnit = newValue;
+                                  });
+                                },
+                              ),
                             ),
                           ],
                         ),

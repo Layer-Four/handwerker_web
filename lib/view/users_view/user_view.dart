@@ -52,9 +52,9 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                           : ListView.builder(
                               itemCount: ref.watch(userAdministrationProvider).length,
                               itemBuilder: (_, index) => UserDataWidget(
+                                key: ValueKey(ref.watch(userAdministrationProvider)[index]),
                                 ref.watch(userAdministrationProvider)[index],
                                 _roles,
-                                key: ValueKey(ref.watch(userAdministrationProvider)[index]),
                               ),
                             ),
                     ),
