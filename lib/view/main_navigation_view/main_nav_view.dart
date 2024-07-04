@@ -39,7 +39,8 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                                 : _buildStandartNavBar(context, constrains),
                           ),
                           Container(
-                            color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
+                            // color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
+                            color: Colors.white,
                             // color: const Color.fromARGB(255, 238, 238, 238), //* Buchweis Lara
                             // color: const Color.fromARGB(255, 255, 250, 250),//* Ghost
                             // color: const Color.fromARGB(250, 251, 251, 251), //* own Marten

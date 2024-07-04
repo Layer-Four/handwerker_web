@@ -21,11 +21,12 @@ class UserDataWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4.0),
         child: Material(
+          borderRadius: BorderRadius.circular(6),
           elevation: 3,
           child: SizedBox(
             height: 69,
             child: Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.only(left: 6.0, right: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -46,7 +47,7 @@ class UserDataWidget extends ConsumerWidget {
                         width: MediaQuery.of(context).size.width > 950
                             ? 150
                             : MediaQuery.of(context).size.width * 0.20,
-                        child: buildDropdown(
+                        child: _buildDropdown(
                           roleFromUser: user.roles,
                           userRoles: possibleRoles,
                           context: context,
@@ -69,7 +70,7 @@ class UserDataWidget extends ConsumerWidget {
         ),
       );
 
-  Widget buildDropdown({
+  Widget _buildDropdown({
     required List<UserRole> roleFromUser,
     required List<UserRole> userRoles,
     required BuildContext context,
@@ -88,7 +89,10 @@ class UserDataWidget extends ConsumerWidget {
           items: userRoles
               .map((e) => DropdownMenuItem(
                     value: e,
-                    child: Text(e.name),
+                    child: Text(
+                      e.name,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ))
               .toList(),
           onChanged: (role) {

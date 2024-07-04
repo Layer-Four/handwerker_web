@@ -37,15 +37,13 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
                     const UserRowHeadLine(),
-                    Container(
-                      // color: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                    SizedBox(
                       height: 11 * 60,
                       child: ref.watch(userAdministrationProvider).isEmpty
                           ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')

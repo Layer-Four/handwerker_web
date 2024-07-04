@@ -7,7 +7,7 @@ class ServiceHeadlineWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(left: 4, top: 40, bottom: 24),
+        padding: const EdgeInsets.only(left: 8, top: 40, bottom: 24),
         child: Row(
           children: [
             SizedBox(

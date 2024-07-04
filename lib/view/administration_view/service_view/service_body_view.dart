@@ -30,7 +30,7 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -59,12 +59,12 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SearchLineHeader(title: 'Material Management'),
-                    buildHeaderRow(),
+                    _buildHeaderRow(),
                     _units.isEmpty
                         ? Utilitis.waitingMessage(context, 'Lade Material')
                         : SizedBox(
@@ -109,8 +109,8 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
         ],
       );
 
-  Widget buildHeaderRow() => Padding(
-        padding: const EdgeInsets.only(top: 40, bottom: 24),
+  Widget _buildHeaderRow() => Padding(
+        padding: const EdgeInsets.only(left: 8, top: 40, bottom: 24),
         child: Row(
           children: [
             SizedBox(

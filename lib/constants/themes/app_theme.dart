@@ -4,6 +4,7 @@ import 'app_color.dart';
 class AppTheme {
   static ThemeData get lightTheme => ThemeData(
       cardTheme: const CardTheme(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6))),
         color: Colors.white,
         clipBehavior: Clip.antiAlias,
       ),

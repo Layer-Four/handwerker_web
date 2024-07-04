@@ -28,15 +28,14 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SearchLineHeader(title: 'Kundenverwaltung'),
                     const CustomerRowHeadline(),
-                    Container(
+                    SizedBox(
                       height: 11 * 60,
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: ref.watch(customerProvider).isEmpty
                           ? Utilitis.waitingMessage(context, 'Lade Kundendaten')
                           : ListView.builder(
