@@ -5,7 +5,7 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../provider/customer_provider/customer_provider.dart';
 import '../../shared_widgets/search_line_header.dart';
-import '../../users_view/widgets/add_button_widget.dart';
+import '../../shared_widgets/add_button_widget.dart';
 import 'widgets/create_customer.dart';
 import 'widgets/customer_card.dart';
 import 'widgets/customer_headline_widget.dart';

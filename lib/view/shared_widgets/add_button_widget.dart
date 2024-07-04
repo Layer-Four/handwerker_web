@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/themes/app_color.dart';
+import '../../constants/themes/app_color.dart';
 
 class AddButton extends StatelessWidget {
   final void Function()? onTap;

@@ -94,32 +94,24 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
             ? 800
             : MediaQuery.of(context).size.width / 10 * 8,
         child: Card(
-          surfaceTintColor: Colors.white,
           elevation: 6,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  width: MediaQuery.of(context).size.width > 1000
-                      ? 800
-                      : MediaQuery.of(context).size.width / 10 * 8,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      'Neue Leistung anlegen',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(color: AppColor.kGrey),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Text(
+                    'Neue Leistung anlegen',
+                    style:
+                        Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    const Padding(padding: EdgeInsets.all(12)),
                     SizedBox(
                       width: MediaQuery.of(context).size.width > 1000
                           ? 300
@@ -219,8 +211,9 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Spacer(),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12),
                         child: SymmetricButton(
