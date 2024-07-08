@@ -1,14 +1,10 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:dio/dio.dart';
-import 'package:logging/logging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
-import '../../../models/project_models/project_vm/project_vm.dart';
-import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
 import '../../../constants/api/api.dart';
+import '../../../models/project_entry_models/project_entry_vm/project_entry_vm.dart';
 
 class ProjectVMProvider extends ChangeNotifier {
   final Logger _log = Logger('ProjectVMProvider');
@@ -65,7 +61,6 @@ class ProjectVMProvider extends ChangeNotifier {
       _log.severe('Error updating project: $e');
     }
   }
-
 
   void deleteProject(int projectId) async {
     try {
