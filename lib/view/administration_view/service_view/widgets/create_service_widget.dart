@@ -213,7 +213,7 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12),
                         child: SymmetricButton(

@@ -9,7 +9,8 @@ class CustomerCard extends StatefulWidget {
   final bool isLast;
   final VoidCallback onDelete;
 
-  CustomerCard({
+  const CustomerCard({
+    super.key,
     required this.project,
     required this.onDelete,
     this.isFirst = false,
