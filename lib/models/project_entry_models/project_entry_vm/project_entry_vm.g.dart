@@ -14,6 +14,7 @@ _$ProjectEntryVMImpl _$$ProjectEntryVMImplFromJson(Map<String, dynamic> json) =>
       projectStatusId: (json['projectStatusId'] as num?)?.toInt(),
       customerId: (json['customerId'] as num?)?.toInt(),
       description: json['description'] as String?,
+      id: (json['id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$ProjectEntryVMImplToJson(
@@ -25,4 +26,5 @@ Map<String, dynamic> _$$ProjectEntryVMImplToJson(
       'projectStatusId': instance.projectStatusId,
       'customerId': instance.customerId,
       'description': instance.description,
+      'id': instance.id,
     };

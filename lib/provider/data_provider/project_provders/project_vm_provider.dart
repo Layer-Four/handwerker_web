@@ -1,33 +1,84 @@
-import 'dart:core';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import 'package:logging/logging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/constants/api/api.dart';
-import '/models/project_models/project_vm/project_vm.dart';
 
-final projectVMProvider =
-    AsyncNotifierProvider<ProjectVMNotifer, List<ProjectVM>?>(() => ProjectVMNotifer());
+import '../../../models/project_models/project_vm/project_vm.dart';
+import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
+import '../../../constants/api/api.dart';
 
-class ProjectVMNotifer extends AsyncNotifier<List<ProjectVM>?> {
-  final Api _api = Api();
-  @override
-  List<ProjectVM>? build() => null;
+class ProjectVMProvider extends ChangeNotifier {
+  final Logger _log = Logger('ProjectVMProvider');
+  final Api _api;
+  List<ProjectEntryVM> _projects = [];
+  bool _isLoading = false;
 
-  void loadpProject() async {
+  List<ProjectEntryVM> get projects => _projects;
+  bool get isLoading => _isLoading;
+
+  ProjectVMProvider(this._api) {
+    loadProjects();
+  }
+
+  void loadProjects() async {
+    _isLoading = true;
+    notifyListeners();
     try {
-      final response = await _api.getProjectsDM;
+      final response = await _api.getAllProjects; // Correctly call the getter
       if (response.statusCode != 200) {
-        throw Exception('Error on loadProject status: ${response.statusCode}\n${response.data}');
+        if (response.statusCode == 401) {
+          _log.warning('Request dismissed: unauthorized');
+          _isLoading = false;
+          notifyListeners();
+          return;
+        }
+        _log.warning('Request dismissed: status code ${response.statusCode}');
+        _isLoading = false;
+        notifyListeners();
+        return;
       }
       final List data = response.data;
-      final projects = data.map<ProjectVM>((e) => ProjectVM.fromJson(e)).toList();
-      state = AsyncValue.data(projects);
-      return;
-    } on DioException catch (e) {
-      log('DioException ${e.message}');
+      _projects = data.map<ProjectEntryVM>((e) => ProjectEntryVM.fromJson(e)).toList();
     } catch (e) {
-      log('Exception on loadProject:\n$e');
+      _log.severe('Error loading projects: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  void updateProject(int? projectId, ProjectEntryVM updatedProject) async {
+    try {
+      final response = await _api.putUpdateProjectEntry({
+        'projectId': projectId,
+        ...updatedProject.toJson(),
+      }); // Update API call to include project ID
+      if (response.statusCode != 200) {
+        _log.warning('Failed to update project: ${response.statusCode}');
+        return;
+      }
+      loadProjects(); // Make sure this reloads the projects list after update
+    } catch (e) {
+      _log.severe('Error updating project: $e');
+    }
+  }
+
+
+  void deleteProject(int projectId) async {
+    try {
+      final response = await _api.delDeleteProjectEntry(projectId);
+      if (response.statusCode != 200) {
+        _log.warning('Failed to delete project: ${response.statusCode}');
+        return;
+      }
+      loadProjects();
+    } catch (e) {
+      _log.severe('Error deleting project: $e');
     }
   }
 }
+
+final projectVMProvider = ChangeNotifierProvider((ref) => ProjectVMProvider(Api()));

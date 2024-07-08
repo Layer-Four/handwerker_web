@@ -12,6 +12,7 @@ class ProjectEntryVM with _$ProjectEntryVM {
     int? projectStatusId,
     int? customerId,
     String? description,
+    int? id,
   }) = _ProjectEntryVM;
 
   factory ProjectEntryVM.fromJson(Map<String, dynamic> json) => _$ProjectEntryVMFromJson(json);
