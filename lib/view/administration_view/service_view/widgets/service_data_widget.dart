@@ -140,6 +140,7 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4.0),
         child: Material(
+          borderRadius: BorderRadius.circular(6),
           elevation: 3,
           child: SizedBox(
             height: 69,

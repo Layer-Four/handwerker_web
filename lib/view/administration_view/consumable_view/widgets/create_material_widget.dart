@@ -67,16 +67,25 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
         child: Card(
           elevation: 6,
           child: Padding(
-            padding: const EdgeInsets.only(right: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Text(
+                    'Neues Material anlegen',
+                    style:
+                        Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      const Padding(padding: EdgeInsets.all(12)),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         width: MediaQuery.of(context).size.width > 850

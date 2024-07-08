@@ -27,7 +27,10 @@ class ProjectUtilitisView extends StatelessWidget {
             child: Row(
               children: [
                 Icon(service == null ? Icons.construction : Icons.person),
-                Text(service != null ? service.serviceName : consumable!.consumableName),
+                Text(
+                  service != null ? service.serviceName : consumable!.consumableName,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ],
             ),
           ),
@@ -35,6 +38,7 @@ class ProjectUtilitisView extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.17,
             child: Text(
               (service == null ? consumable!.consumableAmount : service.serviceAmount).toString(),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           SizedBox(
@@ -44,6 +48,7 @@ class ProjectUtilitisView extends StatelessWidget {
             child: Text(
               '${(service == null ? consumable!.consumablePrice : service.servicePrice).toStringAsFixed(2)}€ (${calculateRevenue().toStringAsFixed(2)}€)',
               overflow: TextOverflow.clip,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
         ],

@@ -33,13 +33,16 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.24,
-                    child: Text(_project.projectName),
+                    child: Text(
+                      _project.projectName,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.18,
                     child: Text(_project.projectState?.value ?? '',
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               color: Utilitis.getStatusColor(_project.projectState?.value),
                             )),
                   ),
@@ -47,6 +50,7 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
                     width: MediaQuery.of(context).size.width * 0.17,
                     child: Text(
                       _buildValidTimeString(),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   SizedBox(
@@ -56,11 +60,12 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
                     child: Text(
                       '${_project.projectRevenue?.toStringAsFixed(2) ?? 0} €',
                       overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   Container(
                       alignment: Alignment.centerRight,
-                      width: MediaQuery.of(context).size.width * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.045,
                       child: Icon(isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down))
                 ],
               ),

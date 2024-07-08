@@ -5,7 +5,7 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../provider/customer_provider/customer_provider.dart';
 import '../../shared_widgets/search_line_header.dart';
-import '../../users_view/widgets/add_button_widget.dart';
+import '../../shared_widgets/add_button_widget.dart';
 import 'widgets/create_customer.dart';
 import 'widgets/customer_card.dart';
 import 'widgets/customer_headline_widget.dart';
@@ -28,15 +28,14 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SearchLineHeader(title: 'Kundenverwaltung'),
                     const CustomerRowHeadline(),
-                    Container(
+                    SizedBox(
                       height: 11 * 60,
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: ref.watch(customerProvider).isEmpty
                           ? Utilitis.waitingMessage(context, 'Lade Kundendaten')
                           : ListView.builder(

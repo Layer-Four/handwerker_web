@@ -23,88 +23,73 @@ class CustomerCard extends ConsumerStatefulWidget {
 
 class _CustomerCardState extends ConsumerState<CustomerCard> {
   bool _showCustomerDetails = false;
-  final bool _showMessage = false;
 
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4.0),
         child: Material(
+          borderRadius: BorderRadius.circular(6),
           elevation: 3,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _showCustomerDetails = !_showCustomerDetails;
-                      });
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 10),
-                        Tooltip(
-                          message:
-                              'Kunde: ${widget.customer.customerCredentials.customerName}\nKontaktname: ${widget.customer.customerCredentials.contactName}\nTelefonnummer: ${widget.customer.customerCredentials.customerPhone}\nE-Mail: ${widget.customer.customerCredentials.customerEmail}\nAdresse: \n${widget.customer.fullAdressFormated}',
-                          textStyle: const TextStyle(fontSize: 20, color: Colors.white),
-                          child: Text(
-                            widget.customer.customerCredentials.contactName,
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GestureDetector(
+                onTap: () => setState(() {
+                  _showCustomerDetails = !_showCustomerDetails;
+                }),
+                child: Container(
+                  height: 69,
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Tooltip(
+                        message:
+                            'Kunde: ${widget.customer.customerCredentials.customerName}\nKontaktname: ${widget.customer.customerCredentials.contactName}\nTelefonnummer: ${widget.customer.customerCredentials.customerPhone}\nE-Mail: ${widget.customer.customerCredentials.customerEmail}\nAdresse: \n${widget.customer.fullAdressFormated}',
+                        textStyle: const TextStyle(fontSize: 20, color: Colors.white),
+                        child: Text(
+                          widget.customer.customerCredentials.contactName,
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () => Utilitis.askPopUp(
-                            context,
-                            message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
-                            onAccept: () {
-                              ref
-                                  .read(customerProvider.notifier)
-                                  .deleteCustomer(widget.customer.customerID!)
-                                  .then((success) {
-                                if (success) {
-                                  Utilitis.showSnackBar(
-                                      context, 'Kunde wurde erfolgreich gelöscht');
-                                  widget.onDelete();
-                                } else {
-                                  Utilitis.showSnackBar(context,
-                                      'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
-                                }
-                                Navigator.of(context).pop(); // Dismiss the dialog
-                              });
-                            },
-                            onReject: () {
-                              Navigator.of(context).pop(); // Dismiss the dialog on reject
-                            },
-                          ),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => Utilitis.askPopUp(
+                          context,
+                          message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
+                          onAccept: () {
+                            ref
+                                .read(customerProvider.notifier)
+                                .deleteCustomer(widget.customer.customerID!)
+                                .then((success) {
+                              if (success) {
+                                Utilitis.showSnackBar(context, 'Kunde wurde erfolgreich gelöscht');
+                                widget.onDelete();
+                              } else {
+                                Utilitis.showSnackBar(context,
+                                    'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
+                              }
+                              Navigator.of(context).pop(); // Dismiss the dialog
+                            });
+                          },
+                          onReject: () {
+                            Navigator.of(context).pop(); // Dismiss the dialog on reject
+                          },
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () =>
-                              setState(() => _showCustomerDetails = !_showCustomerDetails),
-                        ),
-                      ],
-                    ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () =>
+                            setState(() => _showCustomerDetails = !_showCustomerDetails),
+                      ),
+                    ],
                   ),
-                  _showMessage
-                      ? const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'Kunde wurde erfolgreich gelöscht',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                  _showCustomerDetails ? _customerDetailsWindow() : const SizedBox.shrink(),
-                ],
+                ),
               ),
-            ),
+              _showCustomerDetails ? _customerDetailsWindow() : const SizedBox.shrink(),
+            ],
           ),
         ),
       );

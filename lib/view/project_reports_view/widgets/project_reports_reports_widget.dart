@@ -89,14 +89,12 @@ class ProjectReportsShowWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildHeadline(BuildContext context) => Container(
+  Widget _buildHeadline(BuildContext context) => SizedBox(
       height: 30,
-      color: Colors.grey[300],
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            color: Colors.grey,
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.10,
             child: Text(
               'Datum',
@@ -104,8 +102,7 @@ class ProjectReportsShowWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-          Container(
-            color: Colors.grey,
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.45,
             child: Text(
               'Berichte',
@@ -113,8 +110,7 @@ class ProjectReportsShowWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-          Container(
-            color: Colors.grey,
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.20,
             child: Text(
               'Fotos',

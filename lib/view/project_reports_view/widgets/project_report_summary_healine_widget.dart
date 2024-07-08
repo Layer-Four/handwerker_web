@@ -10,26 +10,27 @@ class ProjectSummaryHeadLineWidget extends StatelessWidget {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.18,
-            child: const Text(
+            child: Text(
               'Leistung/Material',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.17,
-              child: const Text(
+              child: Text(
                 'Menge',
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               )),
           SizedBox(
             width: MediaQuery.of(context).size.width > 1000
                 ? MediaQuery.of(context).size.width * 0.10
                 : MediaQuery.of(context).size.width * 0.2,
-            child: const Text(
+            child: Text(
               'Preis',
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
         ],

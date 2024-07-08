@@ -13,7 +13,7 @@ class ProjectCustomerOverviewWidget extends StatefulWidget {
 
 class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewWidget> {
   late final CustomerProjectsReportDM _customProject;
-  bool isOpen = false;
+  bool _isOpen = false;
   @override
   void initState() {
     super.initState();
@@ -22,24 +22,23 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () => setState(() => isOpen = !isOpen),
-              child: Material(
-                elevation: 3,
+        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4.0),
+        child: Material(
+          borderRadius: BorderRadius.circular(6),
+          elevation: 3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () => setState(() => _isOpen = !_isOpen),
                 child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(1),
-                  ),
+                  padding: const EdgeInsets.only(left: 6),
                   height: 69,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.59,
+                        width: MediaQuery.of(context).size.width * 0.58,
                         child: Tooltip(
                           message:
                               'Kundennummer: ${_customProject.customerCredentials.customerNumber}\nKontaktname: ${_customProject.customerCredentials.contactName}\nTelefonnummer: ${_customProject.customerCredentials.customerPhone}\nE-Mail: ${_customProject.customerCredentials.customerEmail}\nAdresse: ${_customProject.customerCredentials.customerStreet} ${_customProject.customerCredentials.customerStreetNr}, ${_customProject.customerCredentials.customerZipcode} ${_customProject.customerCredentials.customerCity}'
@@ -48,10 +47,7 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
                           child: Text(
                             _customProject.customerName,
                             textAlign: TextAlign.left,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w700),
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ),
@@ -62,25 +58,22 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
                         child: Text(
                           '${_customProject.customerRevenue?.toStringAsFixed(2) ?? '0,0'}€',
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
                       Container(
                           alignment: Alignment.centerRight,
                           width: MediaQuery.of(context).size.width * 0.05,
-                          child: Icon(isOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down)),
+                          child: Icon(_isOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down)),
                     ],
                   ),
                 ),
               ),
-            ),
-            isOpen
-                ? ProjectReportOverview(projects: _customProject.projectsList)
-                : const SizedBox.shrink(),
-          ],
+              _isOpen
+                  ? ProjectReportOverview(projects: _customProject.projectsList)
+                  : const SizedBox.shrink(),
+            ],
+          ),
         ),
       );
 }

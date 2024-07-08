@@ -85,238 +85,240 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width > 1000 ? 900 : MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
-          child: Card(
-            elevation: 9,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            buildTextField(
-                              hintText: 'Kundenname',
-                              controller: _nameController,
-                              context: context,
-                            ),
-                            const SizedBox(height: 5),
-                            buildTextField(
-                              hintText: 'Unternehmenname',
-                              controller: _companyNameController,
-                              context: context,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Text('Adresse', style: TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 300,
-                                  child: buildTextField(
-                                    hintText: 'Straße',
-                                    controller: _streetController,
-                                    context: context,
-                                  ),
-                                ),
-                                const SizedBox(width: 2),
-                                SizedBox(
-                                  width: 100,
-                                  child: buildTextField(
-                                    hintText: 'Nr',
-                                    controller: _housenumberController,
-                                    context: context,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 300,
-                                  child: buildTextField(
-                                    hintText: 'Ort',
-                                    controller: _cityController,
-                                    context: context,
-                                  ),
-                                ),
-                                const SizedBox(width: 2),
-                                SizedBox(
-                                  width: 100,
-                                  child: buildTextField(
-                                    hintText: 'PLZ',
-                                    controller: _postNumberController,
-                                    context: context,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Text(
-                                'Sonstiges',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            buildTextField(
-                              hintText: 'Email',
-                              controller: _emailController,
-                              context: context,
-                            ),
-                            const SizedBox(height: 10),
-                            buildTextField(
-                              hintText: 'Telefon',
-                              controller: _telephoneController,
-                              context: context,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Text(''),
-                            ),
-                            buildTextField(
-                              hintText: 'Kundennummer',
-                              controller: _customerNumberController,
-                              context: context,
-                            ),
-                            const SizedBox(height: 10),
-                            buildTextField(
-                              hintText: 'Kontaktperson',
-                              controller: _contactController,
-                              context: context,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Consumer(
-                    builder: (context, ref, _) => Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: SymmetricButton(
-                            text: 'Verwerfen',
-                            textStyle:
-                                Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
-                            color: AppColor.kWhite,
-                            onPressed: widget.onCancel,
+  Widget build(BuildContext context) => Container(
+        color: Colors.white,
+        width: MediaQuery.of(context).size.width > 900 ? 900 : MediaQuery.of(context).size.width,
+        // padding: const EdgeInsets.only(left: 5.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
+        child: Card(
+          elevation: 9,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: SymmetricButton(
-                            text: 'Speichern',
-                            onPressed: () async {
-                              if (_streetController.text.isEmpty &&
-                                  _cityController.text.isEmpty &&
-                                  _companyNameController.text.isEmpty &&
-                                  _contactController.text.isEmpty &&
-                                  _customerNumberController.text.isEmpty &&
-                                  _telephoneController.text.isEmpty &&
-                                  _postNumberController.text.isEmpty) {
-                                _showSnackBar('Bitte füllen Sie alle Felder aus.');
-                                return;
-                              }
-
-                              final x = CreateCustomerDM(
-                                city: _cityController.text,
-                                street: _streetController.text,
-                                companyName: _companyNameController.text,
-                                contactMail: _emailController.text,
-                                contactPhone: _telephoneController.text,
-                                streetNr: _housenumberController.text,
-                                zipcode: _postNumberController.text,
-                                contactName: _nameController.text,
-                                externalId: _customerNumberController.text,
-                              );
-
-                              try {
-                                final success = await ref
-                                    .read(customerProvider.notifier)
-                                    .updateCustomer(x, _initialCustomer.customerID!);
-                                if (success) {
-                                  if (widget.onSave != null) {
-                                    // Create updated CustomerOvervewDM
-                                    final updatedCustomer = CustomerOvervewDM(
-                                      customerID: _initialCustomer.customerID,
-                                      customerCredentials: CustomerCredentialDM(
-                                        contactName: _nameController.text,
-                                        companyName: _companyNameController.text,
-                                        customerStreet: _streetController.text,
-                                        customerStreetNr: _housenumberController.text,
-                                        customerCity: _cityController.text,
-                                        customerZipcode: _postNumberController.text,
-                                        customerEmail: _emailController.text,
-                                        customerNumber: _customerNumberController.text,
-                                        customerPhone: _telephoneController.text,
-                                      ),
-                                      numOfProjects: _initialCustomer.numOfProjects,
-                                      totalCostMaterial: _initialCustomer.totalCostMaterial,
-                                      totalTimeTracked: _initialCustomer.totalTimeTracked,
-                                      turnover: _initialCustomer.turnover,
-                                    );
-
-                                    widget.onSave!(updatedCustomer);
-                                  }
-                                } else {
-                                  _showSnackBar('Speichern fehlgeschlagen');
-                                }
-                              } catch (e) {
-                                _showSnackBar('Ein Fehler ist aufgetreten');
-                                // log'Error: $e';
-                              }
-                            },
+                          buildTextField(
+                            hintText: 'Kundenname',
+                            controller: _nameController,
+                            context: context,
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 5),
+                          buildTextField(
+                            hintText: 'Unternehmenname',
+                            controller: _companyNameController,
+                            context: context,
+                          ),
+                        ],
+                      ),
                     ),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text('Adresse', style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 300,
+                                child: buildTextField(
+                                  hintText: 'Straße',
+                                  controller: _streetController,
+                                  context: context,
+                                ),
+                              ),
+                              const SizedBox(width: 2),
+                              SizedBox(
+                                width: 100,
+                                child: buildTextField(
+                                  hintText: 'Nr',
+                                  controller: _housenumberController,
+                                  context: context,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 300,
+                                child: buildTextField(
+                                  hintText: 'Ort',
+                                  controller: _cityController,
+                                  context: context,
+                                ),
+                              ),
+                              const SizedBox(width: 2),
+                              SizedBox(
+                                width: 100,
+                                child: buildTextField(
+                                  hintText: 'PLZ',
+                                  controller: _postNumberController,
+                                  context: context,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text(
+                              'Sonstiges',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          buildTextField(
+                            hintText: 'Email',
+                            controller: _emailController,
+                            context: context,
+                          ),
+                          const SizedBox(height: 10),
+                          buildTextField(
+                            hintText: 'Telefon',
+                            controller: _telephoneController,
+                            context: context,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text(''),
+                          ),
+                          buildTextField(
+                            hintText: 'Kundennummer',
+                            controller: _customerNumberController,
+                            context: context,
+                          ),
+                          const SizedBox(height: 10),
+                          buildTextField(
+                            hintText: 'Kontaktperson',
+                            controller: _contactController,
+                            context: context,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Consumer(
+                  builder: (context, ref, _) => Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SymmetricButton(
+                          text: 'Verwerfen',
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .labelMedium
+                              ?.copyWith(color: AppColor.kPrimaryButtonColor),
+                          color: AppColor.kWhite,
+                          onPressed: widget.onCancel,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SymmetricButton(
+                          text: 'Speichern',
+                          onPressed: () async {
+                            if (_streetController.text.isEmpty &&
+                                _cityController.text.isEmpty &&
+                                _companyNameController.text.isEmpty &&
+                                _contactController.text.isEmpty &&
+                                _customerNumberController.text.isEmpty &&
+                                _telephoneController.text.isEmpty &&
+                                _postNumberController.text.isEmpty) {
+                              _showSnackBar('Bitte füllen Sie alle Felder aus.');
+                              return;
+                            }
+
+                            final x = CreateCustomerDM(
+                              city: _cityController.text,
+                              street: _streetController.text,
+                              companyName: _companyNameController.text,
+                              contactMail: _emailController.text,
+                              contactPhone: _telephoneController.text,
+                              streetNr: _housenumberController.text,
+                              zipcode: _postNumberController.text,
+                              contactName: _nameController.text,
+                              externalId: _customerNumberController.text,
+                            );
+
+                            try {
+                              final success = await ref
+                                  .read(customerProvider.notifier)
+                                  .updateCustomer(x, _initialCustomer.customerID!);
+                              if (success) {
+                                if (widget.onSave != null) {
+                                  // Create updated CustomerOvervewDM
+                                  final updatedCustomer = CustomerOvervewDM(
+                                    customerID: _initialCustomer.customerID,
+                                    customerCredentials: CustomerCredentialDM(
+                                      contactName: _nameController.text,
+                                      companyName: _companyNameController.text,
+                                      customerStreet: _streetController.text,
+                                      customerStreetNr: _housenumberController.text,
+                                      customerCity: _cityController.text,
+                                      customerZipcode: _postNumberController.text,
+                                      customerEmail: _emailController.text,
+                                      customerNumber: _customerNumberController.text,
+                                      customerPhone: _telephoneController.text,
+                                    ),
+                                    numOfProjects: _initialCustomer.numOfProjects,
+                                    totalCostMaterial: _initialCustomer.totalCostMaterial,
+                                    totalTimeTracked: _initialCustomer.totalTimeTracked,
+                                    turnover: _initialCustomer.turnover,
+                                  );
+
+                                  widget.onSave!(updatedCustomer);
+                                }
+                              } else {
+                                _showSnackBar('Speichern fehlgeschlagen');
+                              }
+                            } catch (e) {
+                              _showSnackBar('Ein Fehler ist aufgetreten');
+                              // log'Error: $e';
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/utilitis/utilitis.dart';
 import '../../models/users_models/user_role/user_role.dart';
 import '../../provider/user_provider/user_administration/user_administration._provider.dart';
+import '../shared_widgets/add_button_widget.dart';
 import '../shared_widgets/search_line_header.dart';
-import 'widgets/add_button_widget.dart';
 import 'widgets/edit_employee_widget.dart';
 import 'widgets/user_data_widget.dart';
 import 'widgets/user_row_headline_widget.dart';
@@ -37,15 +37,13 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SearchLineHeader(title: 'Mitarbeiterverwaltung'),
                     const UserRowHeadLine(),
-                    Container(
-                      // color: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                    SizedBox(
                       height: 11 * 60,
                       child: ref.watch(userAdministrationProvider).isEmpty
                           ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')

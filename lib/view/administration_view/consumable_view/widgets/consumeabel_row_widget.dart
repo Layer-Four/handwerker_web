@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../constants/themes/app_color.dart';
 import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../../models/consumable_models/unit/unit.dart';
@@ -92,6 +93,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4.0),
         child: Material(
+          borderRadius: BorderRadius.circular(6),
           elevation: 3,
           child: SizedBox(
             height: 69,
@@ -179,7 +181,13 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                                     value: e,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                      child: Text(e.name),
+                                      child: Text(
+                                        e.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(color: isEditing ? null : AppColor.kGrey),
+                                      ),
                                     ),
                                   ))
                               .toList(),

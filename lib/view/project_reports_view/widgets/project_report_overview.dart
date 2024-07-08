@@ -10,6 +10,7 @@ class ProjectReportOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.only(left: 5),
         color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

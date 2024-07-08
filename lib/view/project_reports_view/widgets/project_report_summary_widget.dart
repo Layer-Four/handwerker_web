@@ -23,7 +23,7 @@ class ProjectReportSummary extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.24,
             child: project.projectDescription != null
                 ? DescriptionFiedlWidget(project.projectDescription)
-                : const SizedBox(),
+                : const SizedBox.shrink(),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.55,
@@ -72,9 +72,9 @@ class ProjectReportSummary extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text('Projektberichte (${project.reportsList.length})',
-                                    style: TextStyle(
-                                      color: AppColor.kPrimaryButtonColor,
-                                    )),
+                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                          color: AppColor.kPrimaryButtonColor,
+                                        )),
                               ),
                             ],
                           ),

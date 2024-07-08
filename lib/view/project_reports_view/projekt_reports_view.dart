@@ -10,25 +10,30 @@ class ProjectOverviewView extends StatelessWidget {
   const ProjectOverviewView({super.key});
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: [
-            const SearchLineHeader(title: 'Berichte'),
-            const ProjectReportHeader(),
-            SizedBox(
-              height: 11 * 60,
-              child: Consumer(
-                builder: (context, ref, child) => ref.watch(projektReportProvider).isEmpty
-                    ? Utilitis.waitingMessage(context, 'Lade Berichte')
-                    : ListView.builder(
-                        itemCount: ref.watch(projektReportProvider).length,
-                        itemBuilder: (_, index) =>
-                            ProjectCustomerOverviewWidget(ref.watch(projektReportProvider)[index]),
-                      ),
-              ),
+  Widget build(BuildContext context) => SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                const SearchLineHeader(title: 'Berichte'),
+                const ProjectReportHeader(),
+                SizedBox(
+                  height: 11 * 60,
+                  child: Consumer(
+                    builder: (context, ref, child) => ref.watch(projektReportProvider).isEmpty
+                        ? Utilitis.waitingMessage(context, 'Lade Berichte')
+                        : ListView.builder(
+                            itemCount: ref.watch(projektReportProvider).length,
+                            itemBuilder: (_, index) => ProjectCustomerOverviewWidget(
+                                ref.watch(projektReportProvider)[index]),
+                          ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       );
 }
