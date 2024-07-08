@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
 
 class Customer {
   final String? companyName;
@@ -26,7 +24,6 @@ class Customer {
   }
 }
 
-
 // Project class
 class Project {
   final String? title;
@@ -36,10 +33,12 @@ class Project {
   Project({this.title, required this.id, required this.customerId}); // Update constructor
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
-    title: json['title'] != null ? json['title'] as String : 'Default Title',
-    id: json['id'] != null ? json['id'] as int : -1,
-    customerId: json['customerId'] != null ? json['customerId'] as int : -1, // Parse customerId from JSON
-  );
+        title: json['title'] != null ? json['title'] as String : 'Default Title',
+        id: json['id'] != null ? json['id'] as int : -1,
+        customerId: json['customerId'] != null
+            ? json['customerId'] as int
+            : -1, // Parse customerId from JSON
+      );
 }
 
 class Api {
@@ -63,7 +62,7 @@ class Api {
   final String _getListUsersShort = '/user/list';
   final String _getListCustomer = '/customer/list';
   final String _getListProject = '/project/list';
-  final String _getProjects = '/project/list';
+  // final String _getProjects = '/project/list';
   final String _getProjectByCustomer = '/project/list?customerId=';
   final String _getProjectsConsumable = '/userProjectMaterial/read/1';
   final String _getService = '/service/list';
@@ -152,13 +151,14 @@ class Api {
       _api.put(_putUpdateCustomer, data: json);
   Future<Response> get getReadAllProjects => _api.get(_getReadAllProjects);
 
-  Future<Response> postCreateProjectEntry(Map<String, dynamic> data) => _api.post(_postCreateProjectEntry, data: data);
+  Future<Response> postCreateProjectEntry(Map<String, dynamic> data) =>
+      _api.post(_postCreateProjectEntry, data: data);
 
-  Future<Response> putUpdateProjectEntry(Map<String, dynamic> data) {
-    return _api.put(_putUpdateProjectEntry, data: data);
-  }
+  Future<Response> putUpdateProjectEntry(Map<String, dynamic> data) =>
+      _api.put(_putUpdateProjectEntry, data: data);
 
-  Future<Response> delDeleteProjectEntry(int projectId) => _api.delete('$_delDeleteProjectEntry/$projectId');
+  Future<Response> delDeleteProjectEntry(int projectId) =>
+      _api.delete('$_delDeleteProjectEntry/$projectId');
 
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
   Future<Response> deleteConsumable(int serviceID) =>
@@ -166,11 +166,11 @@ class Api {
 
   Future<Response> deleteCustomer(int customerID) => _api.delete('$_deleteCustomer/$customerID');
   void deleteToken() => _storage.then((value) {
-    if (value.getString('TOKEN')?.isNotEmpty ?? false) {
-      value.remove('TOKEN');
-    }
-    return;
-  });
+        if (value.getString('TOKEN')?.isNotEmpty ?? false) {
+          value.remove('TOKEN');
+        }
+        return;
+      });
 
   Future<Response> deleteUser(String userID) => _api.delete('$_deleteUser/$userID');
   Future<Response> getDokuforProjectURL(int projectID) =>
@@ -209,8 +209,7 @@ class Api {
   Future<Response> putUpdateService(Map<String, dynamic> json) =>
       _api.put(_putUpdateService, data: json);
 
-  Future<Response> putUpdateUser(Map<String, dynamic> json) =>
-      _api.put(_putUpdateUser, data: json);
+  Future<Response> putUpdateUser(Map<String, dynamic> json) => _api.put(_putUpdateUser, data: json);
 
   void storeToken(String token) async =>
       await _storage.then((value) => value.setString('TOKEN', token));

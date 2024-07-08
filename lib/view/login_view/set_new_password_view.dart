@@ -81,7 +81,7 @@ class _PasswordViewState extends State<SetNewPasswordView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
+        // backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
         appBar: AppBar(
           toolbarHeight: 30.0,
         ),

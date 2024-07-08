@@ -10,12 +10,12 @@ class ServiceDataWidget extends ConsumerStatefulWidget {
   final ServiceVM service;
 
   const ServiceDataWidget({
-    Key? key,
+    super.key,
     required this.service,
-  }) : super(key: key);
+  });
 
   @override
-  _ServiceDataWidgetState createState() => _ServiceDataWidgetState();
+  ConsumerState<ServiceDataWidget> createState() => _ServiceDataWidgetState();
 }
 
 class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
@@ -87,9 +87,8 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
     });
   }
 
-  Color getBorderColor(bool isHovered) {
-    return isHovered ? AppColor.kPrimary : Colors.white.withOpacity(0.5);
-  }
+  Color getBorderColor(bool isHovered) =>
+      isHovered ? AppColor.kPrimary : Colors.white.withOpacity(0.5);
 
   void _saveData(WidgetRef ref) {
     String currentTitle = _titleController.text;
@@ -153,8 +152,9 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                     children: [
                       // Title TextField
                       SizedBox(
-                        width:
-                            MediaQuery.of(context).size.width > 1000 ? 400 : MediaQuery.of(context).size.width / 10 * 3,
+                        width: MediaQuery.of(context).size.width > 1000
+                            ? 400
+                            : MediaQuery.of(context).size.width / 10 * 3,
                         child: MouseRegion(
                           onEnter: (_) {
                             setState(() {
@@ -171,7 +171,8 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                               color: isEditing ? Colors.grey[200] : Colors.transparent,
                               borderRadius: BorderRadius.circular(10.0),
                               border: Border.all(
-                                color: isEditing ? AppColor.kPrimary : getBorderColor(_isTitleHovered),
+                                color:
+                                    isEditing ? AppColor.kPrimary : getBorderColor(_isTitleHovered),
                               ),
                             ),
                             child: TextField(
@@ -180,9 +181,10 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: Colors.black,
                                   ),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                                contentPadding:
+                                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                               ),
                               readOnly: !isEditing,
                               onTap: () {
@@ -201,8 +203,9 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                       ),
                       // Price TextField
                       SizedBox(
-                        width:
-                            MediaQuery.of(context).size.width > 1000 ? 400 : MediaQuery.of(context).size.width / 10 * 3,
+                        width: MediaQuery.of(context).size.width > 1000
+                            ? 400
+                            : MediaQuery.of(context).size.width / 10 * 3,
                         child: MouseRegion(
                           onEnter: (_) {
                             setState(() {
@@ -219,7 +222,8 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                               color: isEditing ? Colors.grey[200] : Colors.transparent,
                               borderRadius: BorderRadius.circular(10.0),
                               border: Border.all(
-                                color: isEditing ? AppColor.kPrimary : getBorderColor(_isPriceHovered),
+                                color:
+                                    isEditing ? AppColor.kPrimary : getBorderColor(_isPriceHovered),
                               ),
                             ),
                             child: TextField(
@@ -228,12 +232,13 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: Colors.black,
                                   ),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                                contentPadding:
+                                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                               ),
                               readOnly: !isEditing,
-                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}€?$')),
                               ],
@@ -259,7 +264,8 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                                 if (double.tryParse(value.replaceAll('€', '')) != null &&
                                     double.parse(value.replaceAll('€', '')) > 10000) {
                                   _showSnackBar('Diese Zahl ist zu groß');
-                                  _priceController.text = '${value.substring(0, value.length - 1)}€';
+                                  _priceController.text =
+                                      '${value.substring(0, value.length - 1)}€';
                                   _priceController.selection = TextSelection.fromPosition(
                                     TextPosition(offset: _priceController.text.length - 1),
                                   );
@@ -300,9 +306,13 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                                   }
                                 : () => Utilitis.askPopUp(
                                       context,
-                                      message: 'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
+                                      message:
+                                          'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
                                       onAccept: () {
-                                        ref.read(serviceVMProvider.notifier).deleteService(_service.id!).then((e) {
+                                        ref
+                                            .read(serviceVMProvider.notifier)
+                                            .deleteService(_service.id!)
+                                            .then((e) {
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(
                                               content: Center(

@@ -24,7 +24,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
   bool _createdUser = false;
   final List<UserRole> _roles = [];
   Map<String, dynamic>? _newUser;
-  late final overflowWith;
+  late final double overflowWith;
   final int _snackBarDuration = 7;
   final TextEditingController _nameController = TextEditingController();
   // final TextEditingController _secondNameController = TextEditingController();
@@ -317,7 +317,6 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
         ),
       );
 
-// TODO:We need a FormField or is a normal DropDown suiteable
   Widget buildDropdown() => DropdownButtonFormField(
         isExpanded: true,
         value: _selectedRole,

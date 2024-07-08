@@ -23,7 +23,7 @@ class DescriptionFiedlWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
               ),
-              child: Text(description!),
+              child: SingleChildScrollView(child: Text(description!)),
             ),
           ],
         ),

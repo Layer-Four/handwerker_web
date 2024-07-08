@@ -1,32 +1,31 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:dio/dio.dart';
+import 'dart:developer';
 
-import 'package:handwerker_web/constants/themes/app_color.dart';
-import 'package:handwerker_web/constants/themes/app_theme.dart';
-import 'package:handwerker_web/models/project_models/customer_projekt_model/custom_project.dart';
-import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
-import 'package:handwerker_web/constants/api/api.dart';
-import 'package:handwerker_web/provider/data_provider/project_provders/project_vm_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:handwerker_web/view/administration_view/project_management_view/mutableprojectentryvm.dart';
+import 'package:intl/intl.dart';
+
+import '../../../../constants/api/api.dart';
+import '../../../../constants/themes/app_color.dart';
+import '../../../../models/project_entry_models/project_entry_vm/project_entry_vm.dart';
+import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../mutableprojectentryvm.dart';
 
 class EditProject extends ConsumerStatefulWidget {
   final VoidCallback onSave;
   final VoidCallback onCancel;
   final CustomeProject? project;
   final ProjectEntryVM projectEntryVM;
-  late MutableProjectEntryVM mutableProjectEntryVM;
+  late final MutableProjectEntryVM mutableProjectEntryVM;
 
   EditProject({
-    Key? key,
+    super.key,
     required this.onSave,
     required this.onCancel,
     this.project,
     required this.projectEntryVM,
-  }) : super(key: key){
-  mutableProjectEntryVM = MutableProjectEntryVM.fromProjectEntryVM(projectEntryVM);
-}
+  }) {
+    mutableProjectEntryVM = MutableProjectEntryVM.fromProjectEntryVM(projectEntryVM);
+  }
 
   factory EditProject.withDefaultVM({
     Key? key,
@@ -34,18 +33,17 @@ class EditProject extends ConsumerStatefulWidget {
     required VoidCallback onCancel,
     required CustomeProject? project,
     ProjectEntryVM? projectEntryVM,
-  }) {
-    return EditProject(
-      key: key,
-      onSave: onSave,
-      onCancel: onCancel,
-      project: project,
-      projectEntryVM: projectEntryVM ?? ProjectEntryVM(),
-    );
-  }
+  }) =>
+      EditProject(
+        key: key,
+        onSave: onSave,
+        onCancel: onCancel,
+        project: project,
+        projectEntryVM: projectEntryVM ?? const ProjectEntryVM(),
+      );
 
   @override
-  _EditProjectState createState() => _EditProjectState();
+  ConsumerState<EditProject> createState() => _EditProjectState();
 }
 
 class _EditProjectState extends ConsumerState<EditProject> {
@@ -56,12 +54,7 @@ class _EditProjectState extends ConsumerState<EditProject> {
   String? selectedCustomer;
   String? selectedStatus;
   List<Customer> customerOptions = [];
-  List<String> statusOptions = [
-    'Offen',
-    'Geschlossen',
-    'In Bearbeitung',
-    'On Hold'
-  ];
+  List<String> statusOptions = ['Offen', 'Geschlossen', 'In Bearbeitung', 'On Hold'];
   final Map<String, int> statusOptionsMap = {
     'Offen': 3,
     'Geschlossen': 5,
@@ -73,20 +66,17 @@ class _EditProjectState extends ConsumerState<EditProject> {
   @override
   void initState() {
     super.initState();
-    _nameController =
-        TextEditingController(text: widget.projectEntryVM.title ?? '');
+    _nameController = TextEditingController(text: widget.projectEntryVM.title ?? '');
     _dateStartController = TextEditingController(
         text: widget.projectEntryVM.dateOfStart != null
             ? DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.projectEntryVM.dateOfStart!))
-            : ''
-    );
+            : '');
     _dateEndController = TextEditingController(
         text: widget.projectEntryVM.dateOfTermination != null
-            ? DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.projectEntryVM.dateOfTermination!))
-            : ''
-    );
-    _descriptionController =
-        TextEditingController(text: widget.projectEntryVM.description ?? '');
+            ? DateFormat('yyyy-MM-dd')
+                .format(DateTime.parse(widget.projectEntryVM.dateOfTermination!))
+            : '');
+    _descriptionController = TextEditingController(text: widget.projectEntryVM.description ?? '');
     fetchCustomers();
   }
 
@@ -104,8 +94,7 @@ class _EditProjectState extends ConsumerState<EditProject> {
       final response = await Api().getListCustomer;
       final List<dynamic> data = response.data;
       setState(() {
-        customerOptions =
-            data.map((json) => Customer.fromJson(json)).toList();
+        customerOptions = data.map((json) => Customer.fromJson(json)).toList();
         isLoadingCustomers = false;
       });
     } catch (e) {
@@ -118,7 +107,7 @@ class _EditProjectState extends ConsumerState<EditProject> {
 
   Future<void> _saveProjectEntry(BuildContext context) async {
     Customer? selectedCustomerObject = customerOptions.firstWhere(
-          (customer) => customer.companyName == selectedCustomer,
+      (customer) => customer.companyName == selectedCustomer,
       orElse: () => Customer(companyName: 'Standardunternehmen', id: -1),
     );
 
@@ -129,7 +118,7 @@ class _EditProjectState extends ConsumerState<EditProject> {
       dateOfStart: _dateStartController.text,
       dateOfTermination: _dateEndController.text,
       projectStatusId: selectedStatusId,
-      customerId: selectedCustomerObject?.id,
+      customerId: selectedCustomerObject.id,
       description: _descriptionController.text,
     );
 
@@ -145,148 +134,141 @@ class _EditProjectState extends ConsumerState<EditProject> {
           dateOfStart: _dateStartController.text,
           dateOfTermination: _dateEndController.text,
           projectStatusId: selectedStatusId ?? 0,
-          customerId: selectedCustomerObject?.id ?? 0,
+          customerId: selectedCustomerObject.id,
           description: _descriptionController.text,
         );
 
-        final Map<String, dynamic> projectEntryMap = widget.mutableProjectEntryVM.toProjectEntryVM().toJson();
+        final Map<String, dynamic> projectEntryMap =
+            widget.mutableProjectEntryVM.toProjectEntryVM().toJson();
         await Api().putUpdateProjectEntry(projectEntryMap);
       }
       widget.onSave();
     } catch (e) {
-      print('Error: $e');
+      log('Error: $e');
       // Handle errors if necessary
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Projektspeicherung fehlgeschlagen: $e'),
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         ),
       );
     }
   }
 
-
-
-
-
-
   @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Project Title
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Projektüberschrift',
+  Widget build(BuildContext context) => Dialog(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Project Title
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Projektüberschrift',
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        //_nameController.text = value;
+                      });
+                    },
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      //_nameController.text = value;
-                    });
-                  },
                 ),
-              ),
 
-              // Kundenzuweisung (Customer Selection)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildDropdown(
-                  options: customerOptions
-                      .map((customer) => customer.companyName)
-                      .toList(),
-                  selectedValue: selectedCustomer,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCustomer = value;
-                    });
-                  },
-                  context: context,
-                  hintText: 'Kunden auswählen',
-                ),
-              ),
-
-              // Status
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildDropdown(
-                  options: statusOptions,
-                  selectedValue: selectedStatus,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedStatus = value;
-                    });
-                  },
-                  context: context,
-                  hintText: 'Status auswählen',
-                ),
-              ),
-
-              // Start Date
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-                child: buildDateField(
-                  controller: _dateStartController,
-                  hintText: 'Start Datum',
-                  context: context,
-                ),
-              ),
-
-              // End Date
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: buildDateField(
-                  controller: _dateEndController,
-                  hintText: 'End Datum',
-                  context: context,
-                ),
-              ),
-
-              // Description
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: TextFormField(
-                  controller: _descriptionController,
-                  decoration: InputDecoration(
-                    labelText: 'Beschreibung',
+                // Kundenzuweisung (Customer Selection)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: buildDropdown(
+                    options: customerOptions.map((customer) => customer.companyName).toList(),
+                    selectedValue: selectedCustomer,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCustomer = value;
+                      });
+                    },
+                    context: context,
+                    hintText: 'Kunden auswählen',
                   ),
-                  maxLines: 3, // Adjust max lines as needed
-                  onChanged: (value) {
-                    setState(() {
-                      _descriptionController.text = value;
-                    });
-                  },
                 ),
-              ),
 
-              // Save and Cancel Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: widget.onCancel,
-                    child: Text('Abbrechen'),
+                // Status
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: buildDropdown(
+                    options: statusOptions,
+                    selectedValue: selectedStatus,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedStatus = value;
+                      });
+                    },
+                    context: context,
+                    hintText: 'Status auswählen',
                   ),
-                  ElevatedButton(
-                    onPressed: () => _saveProjectEntry(context),
-                    child: Text('Speichern'),
+                ),
+
+                // Start Date
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+                  child: buildDateField(
+                    controller: _dateStartController,
+                    hintText: 'Start Datum',
+                    context: context,
                   ),
-                ],
-              ),
-            ],
+                ),
+
+                // End Date
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: buildDateField(
+                    controller: _dateEndController,
+                    hintText: 'End Datum',
+                    context: context,
+                  ),
+                ),
+
+                // Description
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: TextFormField(
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(
+                      labelText: 'Beschreibung',
+                    ),
+                    maxLines: 3, // Adjust max lines as needed
+                    onChanged: (value) {
+                      setState(() {
+                        _descriptionController.text = value;
+                      });
+                    },
+                  ),
+                ),
+
+                // Save and Cancel Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: widget.onCancel,
+                      child: const Text('Abbrechen'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _saveProjectEntry(context),
+                      child: const Text('Speichern'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   Widget buildDateField({
     required TextEditingController controller,
@@ -298,8 +280,8 @@ class _EditProjectState extends ConsumerState<EditProject> {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: AppColor.kTextfieldBorder,
-          ),
+                color: AppColor.kTextfieldBorder,
+              ),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 15,
             vertical: 5,
@@ -322,8 +304,7 @@ class _EditProjectState extends ConsumerState<EditProject> {
         onTap: () => _selectDate(controller, context),
       );
 
-  Future<void> _selectDate(
-      TextEditingController controller, BuildContext context) async {
+  Future<void> _selectDate(TextEditingController controller, BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -351,8 +332,8 @@ class _EditProjectState extends ConsumerState<EditProject> {
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-          color: AppColor.kTextfieldBorder,
-        ),
+              color: AppColor.kTextfieldBorder,
+            ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 5,
@@ -372,11 +353,10 @@ class _EditProjectState extends ConsumerState<EditProject> {
       ),
       onChanged: onChanged,
       items: uniqueOptions
-          .map<DropdownMenuItem<String?>>((String? value) =>
-          DropdownMenuItem<String?>(
-            value: value,
-            child: Text(value ?? ''),
-          ))
+          .map<DropdownMenuItem<String?>>((String? value) => DropdownMenuItem<String?>(
+                value: value,
+                child: Text(value ?? ''),
+              ))
           .toList(),
     );
   }
