@@ -31,8 +31,9 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                         children: [
                           Container(
                             // color: const Color.fromARGB(255, 245, 245, 245), //* smokewhite
-                            color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
+                            // color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
                             // color: const Color.fromARGB(250, 251, 251, 251), //* own Marten
+                            color: Colors.white,
                             height: constrains.maxHeight,
                             child: constrains.maxWidth <= 1000
                                 ? _buildpopUpNav(context, constrains)
