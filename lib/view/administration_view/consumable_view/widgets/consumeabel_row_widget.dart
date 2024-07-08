@@ -35,6 +35,9 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
   late ConsumableVM _consumable;
   late final List<Unit> _units;
   bool isEditing = false;
+  bool _isTitleHovered = false;
+  bool _isPriceHovered = false;
+  bool _isAmountHovered = false;
 
   String? _initialMaterialName;
   int? _initialAmount;
@@ -83,11 +86,53 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
     );
   }
 
+  Color getBorderColor(bool isHovered) =>
+      isHovered ? AppColor.kTextfieldBorder : Colors.transparent; // Changed to transparent when not hovered
+
   bool _hasChanges() =>
       _materialNameController.text != _initialMaterialName ||
       _amountController.text != _initialAmount.toString() ||
       _priceController.text.replaceAll('€', '') != _initialPrice?.replaceAll('€', '') ||
       _currentUnit != _initialUnit;
+
+  void _saveChanges() {
+    if (!_hasChanges()) {
+      _showSnackBar('Keine Änderungen erkannt.');
+      setState(() {
+        isEditing = false;
+      });
+      return;
+    }
+
+    String priceValue = _priceController.text;
+
+    if (!priceValue.endsWith('€')) {
+      priceValue += '€';
+    }
+
+    double parsedPrice = double.parse(priceValue.replaceAll('€', ''));
+
+    ConsumableVM updatedConsumable = ConsumableVM(
+      id: widget.consumable.id,
+      name: _materialNameController.text,
+      amount: int.parse(_amountController.text),
+      unit: _currentUnit ?? _consumable.unit,
+      price: parsedPrice,
+    );
+
+    ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable).then((b) {
+      if (b) {
+        // ignore: unused_result
+        ref.refresh(consumableProvider);
+        setState(() {
+          _priceController.text = priceValue;
+          isEditing = false;
+        });
+      }
+
+      _showSnackBar(b ? 'wurde erfolgreich angebpasst' : 'hat leider nicht geklappt');
+    });
+  }
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -104,148 +149,240 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                 children: [
                   Row(
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width > 1100
-                            ? 200
-                            : MediaQuery.of(context).size.width / 10 * 1.8,
-                        child: TextField(
-                          controller: _materialNameController,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
-                            border: isEditing ? const OutlineInputBorder() : InputBorder.none,
-                            contentPadding: const EdgeInsets.all(4),
+                      MouseRegion(
+                        onEnter: (_) {
+                          setState(() {
+                            _isTitleHovered = true;
+                            _isAmountHovered = false;
+                            _isPriceHovered = false;
+                          });
+                        },
+                        onExit: (_) {
+                          setState(() {
+                            _isTitleHovered = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isEditing || _isTitleHovered ? AppColor.kGreyBackground : Colors.transparent,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: isEditing ? AppColor.kPrimaryButtonColor : getBorderColor(_isTitleHovered),
+                            ),
                           ),
-                          readOnly: !isEditing,
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width > 1100
-                            ? 200
-                            : MediaQuery.of(context).size.width / 10 * 1.8,
-                        child: TextField(
-                          controller: _amountController,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
-                            border: isEditing ? const OutlineInputBorder() : InputBorder.none,
-                            contentPadding: const EdgeInsets.all(4),
-                          ),
-                          onChanged: (value) {
-                            if (int.tryParse(value) == null) {
-                              _amountController.text = _amountController.text
-                                  .substring(0, _amountController.text.length - 1);
-                              return _showSnackBar('Bitte geben sie nur Zahlen ein');
-                            }
-
-                            TextSelection previousSelection = _amountController.selection;
-                            _amountController.text = value;
-                            _amountController.selection = previousSelection;
-                            setState(
-                              () => _consumable = _consumable.copyWith(
-                                amount: int.parse(_amountController.text),
+                          width: MediaQuery.of(context).size.width > 1100
+                              ? 200
+                              : MediaQuery.of(context).size.width / 10 * 1.8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: TextField(
+                              controller: _materialNameController,
+                              style: Theme.of(context).textTheme.titleMedium,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
+                                border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+                                contentPadding: const EdgeInsets.all(4),
                               ),
-                            );
-                          },
-                          readOnly: !isEditing,
-                          keyboardType: TextInputType.number,
+                              readOnly: !isEditing,
+                              onSubmitted: (_) {
+                                if (isEditing) {
+                                  _saveChanges();
+                                }
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            right: MediaQuery.of(context).size.width > 600 ? 30 : 0),
-                        width: MediaQuery.of(context).size.width > 1100
-                            ? 200 - 30
-                            : MediaQuery.of(context).size.width > 600
-                                ? MediaQuery.of(context).size.width / 10 * 1.8 - 30
-                                : MediaQuery.of(context).size.width / 10 * 1.8,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 240, 237, 237),
-                            width: 1.0,
+                      MouseRegion(
+                        onEnter: (_) {
+                          setState(() {
+                            _isAmountHovered = true;
+                            _isTitleHovered = false;
+                            _isPriceHovered = false;
+                          });
+                        },
+                        onExit: (_) {
+                          setState(() {
+                            _isAmountHovered = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isEditing || _isAmountHovered ? AppColor.kGreyBackground : Colors.transparent,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: isEditing ? AppColor.kPrimaryButtonColor : getBorderColor(_isAmountHovered),
+                            ),
                           ),
-                          color: isEditing
-                              ? Colors.grey[200]
-                              : const Color.fromARGB(249, 254, 255, 253),
+                          width: MediaQuery.of(context).size.width > 1100
+                              ? 200
+                              : MediaQuery.of(context).size.width / 10 * 1.8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: TextField(
+                              controller: _amountController,
+                              style: Theme.of(context).textTheme.titleMedium,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
+                                border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+                                contentPadding: const EdgeInsets.all(4),
+                              ),
+                              onChanged: (value) {
+                                if (int.tryParse(value) == null) {
+                                  _amountController.text =
+                                      _amountController.text.substring(0, _amountController.text.length - 1);
+                                  return _showSnackBar('Bitte geben sie nur Zahlen ein');
+                                }
+
+                                TextSelection previousSelection = _amountController.selection;
+                                _amountController.text = value;
+                                _amountController.selection = previousSelection;
+                                setState(
+                                  () => _consumable = _consumable.copyWith(
+                                    amount: int.parse(_amountController.text),
+                                  ),
+                                );
+                              },
+                              readOnly: !isEditing,
+                              keyboardType: TextInputType.number,
+                              onSubmitted: (_) {
+                                if (isEditing) {
+                                  _saveChanges();
+                                }
+                              },
+                            ),
+                          ),
                         ),
-                        child: DropdownButton<Unit?>(
-                          padding: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width > 1100 ? 16 : 8),
-                          isExpanded: true,
-                          underline: const SizedBox.shrink(),
-                          value: _consumable.unit,
-                          items: _units
-                              .map((e) => DropdownMenuItem(
-                                    value: e,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                      child: Text(
-                                        e.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(color: isEditing ? null : AppColor.kGrey),
+                      ),
+                      MouseRegion(
+                        onEnter: (_) {
+                          setState(() {
+                            _isPriceHovered = true;
+                            _isTitleHovered = false;
+                            _isAmountHovered = false;
+                          });
+                        },
+                        onExit: (_) {
+                          setState(() {
+                            _isPriceHovered = false;
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width > 600 ? 30 : 0),
+                          width: MediaQuery.of(context).size.width > 1100
+                              ? 200 - 30
+                              : MediaQuery.of(context).size.width > 600
+                                  ? MediaQuery.of(context).size.width / 10 * 1.8 - 30
+                                  : MediaQuery.of(context).size.width / 10 * 1.8,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 240, 237, 237),
+                              width: 1.0,
+                            ),
+                            color: isEditing ? AppColor.kGreyBackground : const Color.fromARGB(249, 254, 255, 253),
+                          ),
+                          child: DropdownButton<Unit?>(
+                            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width > 1100 ? 16 : 8),
+                            isExpanded: true,
+                            underline: const SizedBox.shrink(),
+                            value: _consumable.unit,
+                            items: _units
+                                .map((e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                        child: Text(
+                                          e.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(color: isEditing ? null : AppColor.kGrey),
+                                        ),
                                       ),
-                                    ),
-                                  ))
-                              .toList(),
-                          onChanged: isEditing
-                              ? (Unit? newValue) {
-                                  setState(() {
-                                    _consumable = _consumable.copyWith(unit: newValue);
-                                    _currentUnit = newValue;
-                                  });
-                                }
-                              : null,
+                                    ))
+                                .toList(),
+                            onChanged: isEditing
+                                ? (Unit? newValue) {
+                                    setState(() {
+                                      _consumable = _consumable.copyWith(unit: newValue);
+                                      _currentUnit = newValue;
+                                    });
+                                  }
+                                : null,
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width > 1100
-                            ? 200
-                            : MediaQuery.of(context).size.width / 10 * 1.8,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))
-                          ],
-                          controller: _priceController,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
-                            border: isEditing ? const OutlineInputBorder() : InputBorder.none,
-                            contentPadding: const EdgeInsets.all(4),
+                      MouseRegion(
+                        onEnter: (_) {
+                          setState(() {
+                            _isPriceHovered = true;
+                            _isTitleHovered = false;
+                            _isAmountHovered = false;
+                          });
+                        },
+                        onExit: (_) {
+                          setState(() {
+                            _isPriceHovered = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isEditing || _isPriceHovered ? AppColor.kGreyBackground : Colors.transparent,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: isEditing ? AppColor.kPrimaryButtonColor : getBorderColor(_isPriceHovered),
+                            ),
                           ),
-                          readOnly: !isEditing,
-                          onChanged: (value) {
-                            if (value.contains(',')) {
-                              final list = value.split('');
-                              String newValue = '';
-                              for (var e in list) {
-                                if (e == ',') {
-                                  newValue += '.';
-                                } else {
-                                  newValue += e;
+                          width: MediaQuery.of(context).size.width > 1100
+                              ? 200
+                              : MediaQuery.of(context).size.width / 10 * 1.8,
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))],
+                            controller: _priceController,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: isEditing ? AppColor.kGreyBackground : Colors.transparent,
+                              border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+                              contentPadding: const EdgeInsets.all(4),
+                            ),
+                            readOnly: !isEditing,
+                            onChanged: (value) {
+                              if (value.contains(',')) {
+                                final list = value.split('');
+                                String newValue = '';
+                                for (var e in list) {
+                                  if (e == ',') {
+                                    newValue += '.';
+                                  } else {
+                                    newValue += e;
+                                  }
                                 }
+                                value = newValue;
                               }
-                              value = newValue;
-                            }
 
-                            if (value.isNotEmpty &&
-                                double.parse(value.replaceAll('€', '')) > 10000) {
-                              return _showSnackBar('Diese Zahl ist zu groß');
-                            }
+                              if (value.isNotEmpty && double.parse(value.replaceAll('€', '')) > 10000) {
+                                return _showSnackBar('Diese Zahl ist zu groß');
+                              }
 
-                            TextSelection previousSelection = _priceController.selection;
-                            _priceController.text = value;
-                            _priceController.selection = previousSelection;
-                            setState(() {
-                              _consumable = _consumable.copyWith(
-                                  price: double.parse(_priceController.text.replaceAll('€', '')));
-                            });
-                          },
+                              TextSelection previousSelection = _priceController.selection;
+                              _priceController.text = value;
+                              _priceController.selection = previousSelection;
+                              setState(() {
+                                _consumable = _consumable.copyWith(
+                                  price: double.parse(_priceController.text.replaceAll('€', '')),
+                                );
+                              });
+                            },
+                            onFieldSubmitted: (_) {
+                              if (isEditing) {
+                                _saveChanges();
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -268,8 +405,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                                 }
                               : () => Utilitis.askPopUp(
                                     context,
-                                    message:
-                                        'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
+                                    message: 'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
                                     onReject: () => Navigator.of(context).pop(),
                                     onAccept: () async {
                                       Navigator.of(context).pop();
@@ -284,43 +420,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                           ),
                           onPressed: () {
                             if (isEditing) {
-                              if (!_hasChanges()) {
-                                return _showSnackBar('Keine Änderungen erkannt.');
-                              }
-
-                              String priceValue = _priceController.text;
-
-                              if (!priceValue.endsWith('€')) {
-                                priceValue += '€';
-                              }
-
-                              double parsedPrice = double.parse(priceValue.replaceAll('€', ''));
-
-                              ConsumableVM updatedConsumable = ConsumableVM(
-                                id: widget.consumable.id,
-                                name: _materialNameController.text,
-                                amount: int.parse(_amountController.text),
-                                unit: _currentUnit ?? _consumable.unit,
-                                price: parsedPrice,
-                              );
-
-                              ref
-                                  .read(consumableProvider.notifier)
-                                  .updateConsumable(updatedConsumable)
-                                  .then((b) {
-                                if (b) {
-                                  // ignore: unused_result
-                                  ref.refresh(consumableProvider);
-                                  setState(() {
-                                    _priceController.text = priceValue;
-                                    isEditing = false;
-                                  });
-                                }
-
-                                return _showSnackBar(
-                                  b ? 'wurde erfolgreich angebpasst' : 'hat leider nicht geklappt',
-                                );
-                              });
+                              _saveChanges();
                             } else {
                               setState(() {
                                 isEditing = true;
@@ -338,3 +438,29 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
         ),
       );
 }
+
+
+    // child: TextField(
+    //                             controller: _titleController,
+    //                             focusNode: _titleFocusNode,
+    //                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
+    //                                   color: Colors.black,
+    //                                 ),
+    //                             decoration: InputDecoration(
+    //                               border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+
+    //                               // border: InputBorder.none,
+    //                               contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+    //                             ),
+    //                             readOnly: !isEditing,
+    //                             onTap: () {
+    //                               setState(() {
+    //                                 _titleFocusNode.requestFocus();
+    //                               });
+    //                             },
+    //                             onSubmitted: (value) {
+    //                               if (isEditing) {
+    //                                 _saveData(ref);
+    //                               }
+    //                             },
+    //                           ),

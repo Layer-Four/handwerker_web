@@ -26,6 +26,7 @@ class CreateMaterialCard extends ConsumerStatefulWidget {
 
 class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
   bool _isSnackbarShowed = false;
+  bool isEditing = false;
   late final Duration _snackbarDuration;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
@@ -76,8 +77,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Text(
                     'Neues Material anlegen',
-                    style:
-                        Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
                   ),
                 ),
                 Padding(
@@ -88,18 +88,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                       const Padding(padding: EdgeInsets.all(12)),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        width: MediaQuery.of(context).size.width > 850
-                            ? 180
-                            : MediaQuery.of(context).size.width * 0.2,
+                        width: MediaQuery.of(context).size.width > 850 ? 180 : MediaQuery.of(context).size.width * 0.2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Material',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 15),
                             TextField(
@@ -109,8 +104,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                 TextSelection previousSelection = _nameController.selection;
                                 _nameController.text = value;
                                 _nameController.selection = previousSelection;
-                                setState(() =>
-                                    _consumable = _consumable.copyWith(name: _nameController.text));
+                                setState(() => _consumable = _consumable.copyWith(name: _nameController.text));
                               },
                             ),
                           ],
@@ -118,18 +112,14 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        width: MediaQuery.of(context).size.width > 1000
-                            ? 180
-                            : MediaQuery.of(context).size.width * 0.20,
+                        width:
+                            MediaQuery.of(context).size.width > 1000 ? 180 : MediaQuery.of(context).size.width * 0.20,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Menge',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 15),
                             TextField(
@@ -137,8 +127,8 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                               decoration: Utilitis.textFieldDecoration('Menge'),
                               onChanged: (value) {
                                 if (int.tryParse(value) == null) {
-                                  _amountController.text = _amountController.text
-                                      .substring(0, _amountController.text.length - 1);
+                                  _amountController.text =
+                                      _amountController.text.substring(0, _amountController.text.length - 1);
                                   return _showSnackBar('Bitte geben sie nur Zahlen ein');
                                 }
                                 if (int.parse(value) > 10000) {
@@ -159,18 +149,14 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        width: MediaQuery.of(context).size.width > 1000
-                            ? 180
-                            : MediaQuery.of(context).size.width * 0.20,
+                        width:
+                            MediaQuery.of(context).size.width > 1000 ? 180 : MediaQuery.of(context).size.width * 0.20,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Einheit',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 15),
                             Container(
@@ -205,24 +191,18 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        width: MediaQuery.of(context).size.width > 1000
-                            ? 180
-                            : MediaQuery.of(context).size.width * 0.20,
+                        width:
+                            MediaQuery.of(context).size.width > 1000 ? 180 : MediaQuery.of(context).size.width * 0.20,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Preis',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 15),
                             TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))],
                               keyboardType: TextInputType.number,
                               controller: _priceController,
                               decoration: Utilitis.textFieldDecoration('Preis/€'),
@@ -247,8 +227,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                 _priceController.text = value;
                                 _priceController.selection = previousSelection;
                                 setState(() {
-                                  _consumable = _consumable.copyWith(
-                                      price: double.parse(_priceController.text));
+                                  _consumable = _consumable.copyWith(price: double.parse(_priceController.text));
                                 });
                               },
                             ),
@@ -289,10 +268,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                             _showSnackBar('Bitte füllen Sie alle Felder aus.');
                             return;
                           }
-                          ref
-                              .read(consumableProvider.notifier)
-                              .createConsumable(_consumable)
-                              .then((e) {
+                          ref.read(consumableProvider.notifier).createConsumable(_consumable).then((e) {
                             e
                                 ? {
                                     _nameController.clear(),
