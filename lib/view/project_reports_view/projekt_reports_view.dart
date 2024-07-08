@@ -24,10 +24,16 @@ class ProjectOverviewView extends StatelessWidget {
                   child: Consumer(
                     builder: (context, ref, child) => ref.watch(projektReportProvider).isEmpty
                         ? Utilitis.waitingMessage(context, 'Lade Berichte')
-                        : ListView.builder(
-                            itemCount: ref.watch(projektReportProvider).length,
-                            itemBuilder: (_, index) => ProjectCustomerOverviewWidget(
-                                ref.watch(projektReportProvider)[index]),
+                        : Scrollbar(
+                            thumbVisibility: true,
+                            trackVisibility: true,
+                            interactive: true,
+                            thickness: 10,
+                            child: ListView.builder(
+                              itemCount: ref.watch(projektReportProvider).length,
+                              itemBuilder: (_, index) => ProjectCustomerOverviewWidget(
+                                  ref.watch(projektReportProvider)[index]),
+                            ),
                           ),
                   ),
                 ),

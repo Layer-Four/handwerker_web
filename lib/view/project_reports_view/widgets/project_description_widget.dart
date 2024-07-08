@@ -16,7 +16,7 @@ class DescriptionFiedlWidget extends StatelessWidget {
             ),
             Container(
               width: MediaQuery.of(context).size.width > 850
-                  ? 200
+                  ? 400
                   : MediaQuery.of(context).size.width * 0.1,
               height: 100,
               padding: const EdgeInsets.all(5),

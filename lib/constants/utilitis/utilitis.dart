@@ -55,7 +55,11 @@ class Utilitis {
         barrierColor: const Color.fromARGB(20, 0, 0, 0),
         builder: (context) => Dialog(
           backgroundColor: Colors.white,
-          child: SizedBox(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(),
+            ),
             height: 350,
             width: MediaQuery.of(context).size.width / 10 * 60,
             child: Column(
