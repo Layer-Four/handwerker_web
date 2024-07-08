@@ -7,14 +7,13 @@ class CustomerCard extends StatefulWidget {
   final CustomeProject project;
   final bool isFirst;
   final bool isLast;
-  bool isContainerOpen;
+  final VoidCallback onDelete;
 
-  CustomerCard(
-    this.project, {
-    super.key,
+  CustomerCard({
+    required this.project,
+    required this.onDelete,
     this.isFirst = false,
     this.isLast = false,
-    this.isContainerOpen = false,
   });
 
   @override

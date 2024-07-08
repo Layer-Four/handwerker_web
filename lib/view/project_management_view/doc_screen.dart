@@ -1,4 +1,4 @@
-import 'dart:developer';
+/*import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -153,7 +153,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
   }
 }
 
-/*final List<CustomeProject> project = [
+final List<CustomeProject> project = [
   const CustomeProject(
     'Layer Four GmbH',
     'Austausch der Heizungsanlage',
@@ -268,7 +268,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
       ),
     ],
   ),
-];*/
+];
 final List<CustomeProject> project = [
   const CustomeProject(
     'Elektrische Erneuerung Müller',
@@ -351,7 +351,6 @@ final List<CustomeProject> project = [
     122000,
   ),
 ];
-/*
 final List<CustomeProject> project = [
   const CustomeProject(
     'Project X',
@@ -383,7 +382,7 @@ final List<CustomeProject> project = [
     2,
     900000,
   ),
-  */ /*  const CustomeProject(
+  const CustomeProject(
     'Fio Bestmann',
     'Steinloch 43\n22880, Hamburg',
     true,
@@ -402,5 +401,5 @@ final List<CustomeProject> project = [
     '01.01.2024 - 01.06.2025',
     2,
     122000,
-  ),*/ /*
+  ),
 ];*/

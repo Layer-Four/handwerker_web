@@ -26,6 +26,7 @@ mixin _$ProjectEntryVM {
   int? get projectStatusId => throw _privateConstructorUsedError;
   int? get customerId => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +46,8 @@ abstract class $ProjectEntryVMCopyWith<$Res> {
       String? dateOfTermination,
       int? projectStatusId,
       int? customerId,
-      String? description});
+      String? description,
+      int? id});
 }
 
 /// @nodoc
@@ -67,6 +69,7 @@ class _$ProjectEntryVMCopyWithImpl<$Res, $Val extends ProjectEntryVM>
     Object? projectStatusId = freezed,
     Object? customerId = freezed,
     Object? description = freezed,
+    Object? id = freezed,
   }) {
     return _then(_value.copyWith(
       title: freezed == title
@@ -93,6 +96,10 @@ class _$ProjectEntryVMCopyWithImpl<$Res, $Val extends ProjectEntryVM>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -111,7 +118,8 @@ abstract class _$$ProjectEntryVMImplCopyWith<$Res>
       String? dateOfTermination,
       int? projectStatusId,
       int? customerId,
-      String? description});
+      String? description,
+      int? id});
 }
 
 /// @nodoc
@@ -131,6 +139,7 @@ class __$$ProjectEntryVMImplCopyWithImpl<$Res>
     Object? projectStatusId = freezed,
     Object? customerId = freezed,
     Object? description = freezed,
+    Object? id = freezed,
   }) {
     return _then(_$ProjectEntryVMImpl(
       title: freezed == title
@@ -157,6 +166,10 @@ class __$$ProjectEntryVMImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -170,7 +183,8 @@ class _$ProjectEntryVMImpl implements _ProjectEntryVM {
       this.dateOfTermination,
       this.projectStatusId,
       this.customerId,
-      this.description});
+      this.description,
+      this.id});
 
   factory _$ProjectEntryVMImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProjectEntryVMImplFromJson(json);
@@ -187,10 +201,12 @@ class _$ProjectEntryVMImpl implements _ProjectEntryVM {
   final int? customerId;
   @override
   final String? description;
+  @override
+  final int? id;
 
   @override
   String toString() {
-    return 'ProjectEntryVM(title: $title, dateOfStart: $dateOfStart, dateOfTermination: $dateOfTermination, projectStatusId: $projectStatusId, customerId: $customerId, description: $description)';
+    return 'ProjectEntryVM(title: $title, dateOfStart: $dateOfStart, dateOfTermination: $dateOfTermination, projectStatusId: $projectStatusId, customerId: $customerId, description: $description, id: $id)';
   }
 
   @override
@@ -208,13 +224,14 @@ class _$ProjectEntryVMImpl implements _ProjectEntryVM {
             (identical(other.customerId, customerId) ||
                 other.customerId == customerId) &&
             (identical(other.description, description) ||
-                other.description == description));
+                other.description == description) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, title, dateOfStart,
-      dateOfTermination, projectStatusId, customerId, description);
+      dateOfTermination, projectStatusId, customerId, description, id);
 
   @JsonKey(ignore: true)
   @override
@@ -238,7 +255,8 @@ abstract class _ProjectEntryVM implements ProjectEntryVM {
       final String? dateOfTermination,
       final int? projectStatusId,
       final int? customerId,
-      final String? description}) = _$ProjectEntryVMImpl;
+      final String? description,
+      final int? id}) = _$ProjectEntryVMImpl;
 
   factory _ProjectEntryVM.fromJson(Map<String, dynamic> json) =
       _$ProjectEntryVMImpl.fromJson;
@@ -255,6 +273,8 @@ abstract class _ProjectEntryVM implements ProjectEntryVM {
   int? get customerId;
   @override
   String? get description;
+  @override
+  int? get id;
   @override
   @JsonKey(ignore: true)
   _$$ProjectEntryVMImplCopyWith<_$ProjectEntryVMImpl> get copyWith =>
