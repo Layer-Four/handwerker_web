@@ -1,4 +1,4 @@
-// TODO: Delete Screen when is unused
+/*// TODO: Delete Screen when is unused
 // import 'dart:developer';
 
 // import 'package:flutter/material.dart';
@@ -149,7 +149,7 @@
 //   }
 // }
 
-// /*final List<CustomeProject> project = [
+// final List<CustomeProject> project = [
 //   const CustomeProject(
 //     'Layer Four GmbH',
 //     'Austausch der Heizungsanlage',
@@ -264,7 +264,7 @@
 //       ),
 //     ],
 //   ),
-// ];*/
+// ];
 // final List<CustomeProject> project = [
 //   const CustomeProject(
 //     'Elektrische Erneuerung Müller',
@@ -347,8 +347,7 @@
 //     122000,
 //   ),
 // ];
-// /*
-// final List<CustomeProject> project = [
+// // final List<CustomeProject> project = [
 //   const CustomeProject(
 //     'Project X',
 //     'Austausch der\nHeizungsanlage',
@@ -379,7 +378,7 @@
 //     2,
 //     900000,
 //   ),
-//   */ /*  const CustomeProject(
+//   const CustomeProject(
 //     'Fio Bestmann',
 //     'Steinloch 43\n22880, Hamburg',
 //     true,
@@ -398,5 +397,5 @@
 //     '01.01.2024 - 01.06.2025',
 //     2,
 //     122000,
-//   ),*/ /*
+//   ),
 // ];*/

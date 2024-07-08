@@ -6,7 +6,8 @@ class Api {
   final _storage = SharedPreferences.getInstance();
   // Adresses
   static const String _baseUrl = 'https://r-wa-happ-be.azurewebsites.net/api';
-  // delete Adress
+
+  // Routes
   final String _deleteService = '/service/delete';
   final String _deleteServiceMaterial = '/material/delete';
   final String _deleteUser = '/user/delete';
@@ -22,7 +23,7 @@ class Api {
   final String _getListUsersShort = '/user/list';
   final String _getListCustomer = '/customer/list';
   final String _getListProject = '/project/list';
-  final String _getProjects = '/project/list';
+  // final String _getProjects = '/project/list';
   final String _getProjectByCustomer = '/project/list?customerId=';
   final String _getProjectsConsumable = '/userProjectMaterial/read/1';
   final String _getService = '/service/list';
@@ -32,7 +33,6 @@ class Api {
   final String _getMaterialsList = '/material/list';
   final String _getUserServiceListByID = '/userservice/list?userid=';
   final String _getUserServiceList = '/userservice/list';
-  // post Adress
   final String _postcreateCardMaterial = '/material/create';
   final String _postCreateCustomer = '/customer/create';
   final String _postCreateService = '/service/create';
@@ -42,7 +42,6 @@ class Api {
   final String _postResetPasswordRequest = '/user/password/request/';
   final String _postTimeEntry = '/timetracking/create';
   final String _postProjectConsumabele = '/userProjectMaterial/create';
-  // put Adress
   final String _putDocumentationDay = '/userProjectDay/update';
   final String _putProjectMaterial = '/userProjectMaterial/update';
   final String _putProjectWebMaterial = '/material/update';
@@ -52,6 +51,9 @@ class Api {
   final String _putUpdateUser = '/user/update';
   final String _postCreateProjectEntry = '/project/create';
   final String _putUpdateCustomer = '/customer/update';
+  final String _putUpdateProjectEntry = '/project/update'; // New endpoint for updating projects
+  final String _delDeleteProjectEntry = '/project/delete'; // New endpoint for deleting projects
+  final String _getReadAllProjects = '/project/read';
 
   Api() {
     _api.options = BaseOptions(baseUrl: _baseUrl);
@@ -83,19 +85,18 @@ class Api {
       // },
     ));
   }
+
   Future<Response> get getAllProjects => _api.get(_getAllProjects);
   Future<Response> get getAllTimeEntrys => _api.get(_getAllTimeTacks);
   Future<Response> get getAllUnits => _api.get(_getAllUnitsList);
   Future<Response> get getAllCustomers => _api.get(_getAllCustomerWeb);
   Future<Response> get getAllCustomerProjectReports => _api.get(_getCustomerProjectReport);
   Future<Response> get getExecuteableServices => _api.get(_getService);
-  // Getter for customer list
   Future<Response> get getListCustomer => _api.get(_getListCustomer);
-  // Getter for project list
   Future<Response> get getListProject => _api.get(_getListProject);
   Future<Response> get getMaterialsList => _api.get(_getMaterialsList);
   Future<Response> get getProjectConsumableEntry => _api.get(_getProjectsConsumable);
-  Future<Response> get getProjectsDM => _api.get(_getProjects);
+  Future<Response> get getProjectsDM => _api.get('/project/list');
   Future<Response> get getProjectsTimeEntrys => _api.get(_getTimeTacks);
   Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
   Future<Response> get getUserDataShort => _api.get(_getListUsersShort);
@@ -110,6 +111,14 @@ class Api {
       _api.post(_postCreateProjectEntry, data: data);
   Future<Response> putUpdateCustomer(Map<String, dynamic> json) =>
       _api.put(_putUpdateCustomer, data: json);
+  Future<Response> get getReadAllProjects => _api.get(_getReadAllProjects);
+
+  Future<Response> putUpdateProjectEntry(Map<String, dynamic> data) =>
+      _api.put(_putUpdateProjectEntry, data: data);
+
+  Future<Response> delDeleteProjectEntry(int projectId) =>
+      _api.delete('$_delDeleteProjectEntry/$projectId');
+
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
   Future<Response> deleteConsumable(int serviceID) =>
       _api.delete('$_deleteServiceMaterial/$serviceID');
@@ -120,15 +129,20 @@ class Api {
         }
         return;
       });
+
   Future<Response> deleteUser(String userID) => _api.delete('$_deleteUser/$userID');
   Future<Response> getDokuforProjectURL(int projectID) =>
       _api.get('/project/$projectID/documentations');
+  // Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
   Future<Response> postCreateMaterial(Map<String, dynamic> data) =>
       _api.post(_postcreateCardMaterial, data: data);
+
   Future<Response> postCreateNewUser(Map<String, dynamic> user) =>
       _api.post(_postNewUser, data: user);
+
   Future<Response> postCreateService(Map<String, dynamic> json) =>
       _api.post(_postCreateService, data: json);
+
   Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
 
   Future<Response> postloginUser(Map<String, dynamic> json) =>
@@ -140,6 +154,7 @@ class Api {
       _api.post('$_postResetPasswordRequest/marten.meissner@layer-four.de', data: json);
 
   Future<Response> postTimeEnty(Map<String, dynamic> json) => _api.post(_postTimeEntry, data: json);
+
   Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) =>
       _api.put(_putProjectWebMaterial, data: json);
 
@@ -148,14 +163,17 @@ class Api {
 
   Future<Response> postUpdateProjectConsumableEntry(Map<String, dynamic> data) =>
       _api.post(_putProjectMaterial, data: data);
+
   Future<Response> putResetPassword(Map<String, dynamic> json) =>
       _api.put(_putResetPassword, data: json);
   Future<Response> putSetNewPassword(Map<String, dynamic> json) =>
       _api.put(_putSetNewPassword, data: json);
+
   Future<Response> putUpdateService(Map<String, dynamic> json) =>
       _api.put(_putUpdateService, data: json);
 
   Future<Response> putUpdateUser(Map<String, dynamic> json) => _api.put(_putUpdateUser, data: json);
+
   void storeToken(String token) async =>
       await _storage.then((value) => value.setString('TOKEN', token));
 }
