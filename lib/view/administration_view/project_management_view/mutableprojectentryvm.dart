@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
+import '../../../models/project_entry_models/project_entry_vm/project_entry_vm.dart';
 
 class MutableProjectEntryVM {
   String title;
@@ -21,27 +19,24 @@ class MutableProjectEntryVM {
     this.id,
   });
 
-  factory MutableProjectEntryVM.fromProjectEntryVM(ProjectEntryVM projectEntryVM) {
-    return MutableProjectEntryVM(
-      title: projectEntryVM.title ?? '',
-      dateOfStart: projectEntryVM.dateOfStart ?? '',
-      dateOfTermination: projectEntryVM.dateOfTermination ?? '',
-      projectStatusId: projectEntryVM.projectStatusId ?? 0,
-      customerId: projectEntryVM.customerId ?? 0,
-      description: projectEntryVM.description ?? '',
-      id: projectEntryVM.id,
-    );
-  }
+  factory MutableProjectEntryVM.fromProjectEntryVM(ProjectEntryVM projectEntryVM) =>
+      MutableProjectEntryVM(
+        title: projectEntryVM.title ?? '',
+        dateOfStart: projectEntryVM.dateOfStart ?? '',
+        dateOfTermination: projectEntryVM.dateOfTermination ?? '',
+        projectStatusId: projectEntryVM.projectStatusId ?? 0,
+        customerId: projectEntryVM.customerId ?? 0,
+        description: projectEntryVM.description ?? '',
+        id: projectEntryVM.id,
+      );
 
-  ProjectEntryVM toProjectEntryVM() {
-    return ProjectEntryVM(
-      title: title,
-      dateOfStart: dateOfStart,
-      dateOfTermination: dateOfTermination,
-      projectStatusId: projectStatusId,
-      customerId: customerId,
-      description: description,
-      id: id,
-    );
-  }
+  ProjectEntryVM toProjectEntryVM() => ProjectEntryVM(
+        title: title,
+        dateOfStart: dateOfStart,
+        dateOfTermination: dateOfTermination,
+        projectStatusId: projectStatusId,
+        customerId: customerId,
+        description: description,
+        id: id,
+      );
 }
