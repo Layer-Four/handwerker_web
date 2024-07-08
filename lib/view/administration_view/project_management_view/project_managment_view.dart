@@ -5,8 +5,8 @@ import 'package:logging/logging.dart';
 import '../../../models/project_models/project_vm/project_vm.dart';
 import '../../../provider/data_provider/project_provders/project_vm_provider.dart';
 import '../../shared_widgets/search_line_header.dart';
-import '../../users_view/widgets/add_button_widget.dart';
-import 'package:handwerker_web/view/administration_view/project_management_view/edit_project.dart';
+import 'package:handwerker_web/view/shared_widgets/add_button_widget.dart';
+import 'package:handwerker_web/view/administration_view/project_management_view/widgets/edit_project.dart';
 import 'package:handwerker_web/models/project_entry_models/project_entry_vm/project_entry_vm.dart';
 import 'package:handwerker_web/view/administration_view/project_management_view/editproject_card.dart';
 

@@ -24,7 +24,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
   bool _createdUser = false;
   final List<UserRole> _roles = [];
   Map<String, dynamic>? _newUser;
-
+  late final overflowWith;
   final int _snackBarDuration = 7;
   final TextEditingController _nameController = TextEditingController();
   // final TextEditingController _secondNameController = TextEditingController();
@@ -42,184 +42,167 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
     super.initState();
     _roles.addAll(widget.roles);
     _selectedRole = _roles.first;
+    overflowWith = widget.overflowWidth;
   }
 
   @override
-  Widget build(BuildContext context) {
-    final overflowWith = widget.overflowWidth;
-    return LayoutBuilder(
-      builder: (context, constrains) => Container(
-        width: constrains.maxWidth >= overflowWith ? 800 : null,
+  Widget build(BuildContext context) => Container(
+        width:
+            MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width - 50,
         padding: const EdgeInsets.all(10.0),
         child: Card(
-          elevation: 9,
+          elevation: 6,
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: !_createdUser
-                ? _createUserField(overflowWith, constrains)
-                : _showUserCredential(overflowWith, constrains),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child:
+                !_createdUser ? _createUserField(overflowWith) : _showUserCredential(overflowWith),
           ),
         ),
-      ),
-    );
-  }
+      );
 
-  Widget _showUserCredential(double overflowWith, BoxConstraints constrains) => _createdUser &&
-          _newUser == null
-      ? const Text('Erstelle Eintrag')
-      : Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width:
-                  MediaQuery.of(context).size.width >= overflowWith ? 355 : constrains.maxWidth / 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _showUserCredential(double overflowWith) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Neuer Nutzer wurde angelegt',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
+                overflow: TextOverflow.ellipsis,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Neuer Nutzer wurde angelegt',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: AppColor.kPrimaryButtonColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Nutzername: ',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      ),
-                      Text('${_newUser!['userName']}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Einmal Passwort: ',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      ),
-                      Text('${_newUser!['password']}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.width >= overflowWith ? 32.0 : 12,
-                    ),
-                    child: SymmetricButton(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width >= overflowWith ? 50 : 15,
-                          vertical: MediaQuery.of(context).size.width >= overflowWith ? 6 : 3),
-                      textStyle: MediaQuery.of(context).size.width >= overflowWith
-                          ? Theme.of(context)
-                              .textTheme
-                              .headlineSmall!
-                              .copyWith(color: AppColor.kWhite)
-                          : Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: AppColor.kWhite),
-                      text: 'Drucken',
-                      onPressed: () async => Utilitis.writePDFAndDownload(_newUser!),
-                    ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Nutzername: ',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(fontWeight: FontWeight.bold)),
                   ),
+                  Text('${_newUser!['userName']}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(fontWeight: FontWeight.bold)),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: QrImageView(
-                // data: 'Nutzername: ${_nameController.text}\nEinmal Passwort: Xcy24KjIq0abkAd',
-                data: '${_newUser!['userName']} ${_newUser!['password']}',
-                version: QrVersions.auto,
-                size: MediaQuery.of(context).size.width >= overflowWith
-                    ? 250
-                    : ((constrains.maxWidth / 10) * 3.4),
-                // gapless: false,
-                embeddedImageStyle: const QrEmbeddedImageStyle(
-                  size: Size(80, 80),
-                ),
-                errorStateBuilder: (cxt, err) => const Center(
-                  child: Text(
-                    'Uh oh! Something went wrong...',
-                    textAlign: TextAlign.center,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Einmal Passwort: ',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(fontWeight: FontWeight.bold)),
                   ),
+                  Text('${_newUser!['password']}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(fontWeight: FontWeight.bold)),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: SymmetricButton(
+                  text: 'Drucken',
+                  onPressed: () async => Utilitis.writePDFAndDownload(_newUser!),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: QrImageView(
+              data: '${_newUser!['userName']} ${_newUser!['password']}',
+              version: QrVersions.auto,
+              size: MediaQuery.of(context).size.width >= overflowWith
+                  ? 250
+                  : MediaQuery.of(context).size.width * 0.34,
+              embeddedImageStyle: const QrEmbeddedImageStyle(
+                size: Size(80, 80),
+              ),
+              errorStateBuilder: (cxt, err) => const Center(
+                child: Text(
+                  'Uh oh! Something went wrong...',
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
-          ],
-        );
+          ),
+        ],
+      );
 
-  Column _createUserField(double overflowWith, BoxConstraints constrains) => Column(
+  Column _createUserField(double overflowWith) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Neuer Nutzer',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Text(
+              'Neuer Nutzer',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width >= overflowWith
-                    ? 250
-                    : ((constrains.maxWidth / 10) * 2.5),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        child: Text('Name',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                      ),
-                      buildTextField(),
-                    ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Row(
+              children: [
+                const Padding(padding: EdgeInsets.all(12)),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width > 850
+                      ? 180
+                      : MediaQuery.of(context).size.width * 0.25,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Name',
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        buildTextField(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width > overflowWith
-                    ? 250
-                    : constrains.maxWidth / 10 * 2.5,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                Container(
+                  width: MediaQuery.of(context).size.width > 850
+                      ? 180
+                      : MediaQuery.of(context).size.width * 0.25,
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        child: Text('Role',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      Text(
+                        'Role',
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
+                      const SizedBox(height: 15),
                       _roles.isNotEmpty ? buildDropdown() : const Text('Lade Nutzerrolle'),
                     ],
                   ),
                 ),
-              ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
                 child: SizedBox(
@@ -234,13 +217,13 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                             .read(userAdministrationProvider.notifier)
                             .createUser(role: _selectedRole!, name: _nameController.text)
                             .then((value) {
-                          // ignore: unused_result
-                          ref.refresh(userAdministrationProvider);
                           if (value.keys.contains('error')) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text(
-                                    'Nutzer konnte nicht erstellt werden.\nNutzer mit diesem Namen exisiert bereits'),
+                                content: Center(
+                                  child: Text(
+                                      'Nutzer konnte nicht erstellt werden.\nNutzer mit diesem Namen exisiert bereits'),
+                                ),
                               ),
                             );
                             return;
@@ -259,8 +242,10 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               duration: Duration(seconds: _snackBarDuration),
-                              content: const Text(
-                                  'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                              content: const Center(
+                                child: Text(
+                                    'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                              ),
                             ),
                           );
                         }
@@ -268,15 +253,15 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                     },
                   ),
                 ),
-              )
+              ),
             ],
-          ),
+          )
         ],
       );
 
   Widget buildTextField() => SizedBox(
         child: Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8),
+          padding: const EdgeInsets.only(right: 8, top: 15),
           child: TextField(
             controller: _nameController,
             decoration: InputDecoration(
@@ -310,8 +295,10 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         duration: Duration(seconds: _snackBarDuration),
-                        content: const Text(
-                            'Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                        content: const Center(
+                          child:
+                              Text('Bitte vermeinden sie Umlaute, Sonderzeichen und Leerzeichen'),
+                        ),
                       ),
                     );
                   }

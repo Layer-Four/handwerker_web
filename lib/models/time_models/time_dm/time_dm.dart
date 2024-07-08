@@ -15,18 +15,23 @@ class TimeEntry with _$TimeEntry {
     int? id,
     DateTime? pauseEnd,
     DateTime? pauseStart,
-    int? projectID,
-    int? serviceID,
-    String? serviceTitle,
+    int? projectId,
+    int? serviceId,
+    int? userServiceId,
     required DateTime startTime,
     @Default(1) int type,
-    // @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
-    String? userID,
+    String? userId,
+    int? customerId,
   }) = _TimeEntry;
+
   factory TimeEntry.fromJson(Map<String, dynamic> json) => _$TimeEntryFromJson(json);
+  // @Default('f7e8b09a-ac4f-4a30-a7c5-b6f829cff9aa') String userID,
 
   const TimeEntry._();
-  factory TimeEntry.fromTimeEntriesVM(TimeVMAdapter e) => TimeEntry(
+  factory TimeEntry.fromTimeEntriesVM(
+    TimeVMAdapter e,
+  ) =>
+      TimeEntry(
         date: e.date,
         description: e.description,
         duration: e.duration,
@@ -34,11 +39,11 @@ class TimeEntry with _$TimeEntry {
         id: e.id,
         pauseEnd: e.pauseEnd,
         pauseStart: e.pauseStart,
-        projectID: e.projectId,
-        serviceID: e.serviceId,
-        serviceTitle: e.serviceTitle,
+        projectId: e.project?.id,
+        serviceId: e.service?.id,
         startTime: e.startTime,
         type: e.type.index,
-        userID: e.userId,
+        userId: e.user?.id,
+        customerId: e.customerId,
       );
 }

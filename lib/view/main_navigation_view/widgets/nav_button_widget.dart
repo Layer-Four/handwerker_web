@@ -11,7 +11,7 @@ class NavButtonWidget extends ConsumerWidget {
   final MainView? nextView;
   final IconData? icon;
   final List<String> subcategoriestitles;
-  final List<MainView> subcategoryMainViews; // List of subcategory main views
+  final List<MainView> subcategoryViews;
   final Color? color;
   final double width;
   final double? height;
@@ -21,7 +21,7 @@ class NavButtonWidget extends ConsumerWidget {
     this.nextView,
     this.icon,
     this.subcategoriestitles = const <String>[],
-    this.subcategoryMainViews = const [],
+    this.subcategoryViews = const [],
     this.color,
     this.width = 250,
     this.height = 100,
@@ -50,11 +50,11 @@ class NavButtonWidget extends ConsumerWidget {
                       ref.read(userProvider.notifier).userLogOut();
                       return;
                     }
-                    if (subcategoriestitles.isEmpty || subcategoryMainViews.isEmpty) {
+                    if (subcategoriestitles.isEmpty || subcategoryViews.isEmpty) {
                       final MainView? next = MainViewExtension.getMainview(title);
                       if (next != null) ref.read(mainNavProvider.notifier).state = next;
                     } else {
-                      ref.read(mainNavProvider.notifier).state = subcategoryMainViews.first;
+                      ref.read(mainNavProvider.notifier).state = subcategoryViews.first;
                     }
                   },
                   child: Padding(
@@ -92,7 +92,7 @@ class NavButtonWidget extends ConsumerWidget {
                           child: Text(
                             subcategoriestitles[index],
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: subcategoryMainViews[index] == ref.watch(mainNavProvider)
+                                  color: subcategoryViews[index] == ref.watch(mainNavProvider)
                                       ? AppColor.kPrimaryButtonColor
                                       : Colors.black,
                                   fontWeight: FontWeight.w500,

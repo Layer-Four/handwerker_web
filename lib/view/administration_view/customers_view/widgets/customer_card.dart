@@ -1,90 +1,112 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../constants/utilitis/utilitis.dart';
+import '../../../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
+import '../../../../provider/customer_provider/customer_provider.dart';
+import 'update_customer_widget.dart';
 
-import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
+class CustomerCard extends ConsumerStatefulWidget {
+  final CustomerOvervewDM customer;
+  final VoidCallback onDelete;
+  final ValueChanged<CustomerOvervewDM> onUpdate;
 
-// ignore: must_be_immutable
-class CustomerCard extends StatefulWidget {
-  final CustomeProject project;
-  final bool isFirst;
-  final bool isLast;
-  bool isContainerOpen;
-
-  CustomerCard(
-    this.project, {
+  const CustomerCard({
     super.key,
-    this.isFirst = false,
-    this.isLast = false,
-    this.isContainerOpen = false,
+    required this.customer,
+    required this.onDelete,
+    required this.onUpdate,
   });
 
   @override
-  State<CustomerCard> createState() => _CustomerCardState();
+  ConsumerState<CustomerCard> createState() => _CustomerCardState();
 }
 
-class _CustomerCardState extends State<CustomerCard> {
-  @override
-  Widget build(BuildContext context) {
-    final screenWidthInPercent = (MediaQuery.of(context).size.width / 100);
+class _CustomerCardState extends ConsumerState<CustomerCard> {
+  bool _showCustomerDetails = false;
 
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border(
-          top: widget.isFirst ? BorderSide.none : const BorderSide(),
-          // left: const BorderSide(),
-          // right: const BorderSide(),
-          bottom: widget.isLast ? const BorderSide() : BorderSide.none,
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SizedBox(
-                    width: screenWidthInPercent * 80, //If we remove this, it crashes. Sloppy fix
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.project.customer,
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4.0),
+        child: Material(
+          borderRadius: BorderRadius.circular(6),
+          elevation: 3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GestureDetector(
+                onTap: () => setState(() {
+                  _showCustomerDetails = !_showCustomerDetails;
+                }),
+                child: Container(
+                  height: 69,
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Tooltip(
+                        message:
+                            'Kunde: ${widget.customer.customerCredentials.customerName}\nKontaktname: ${widget.customer.customerCredentials.contactName}\nTelefonnummer: ${widget.customer.customerCredentials.customerPhone}\nE-Mail: ${widget.customer.customerCredentials.customerEmail}\nAdresse: \n${widget.customer.fullAdressFormated}',
+                        textStyle: const TextStyle(fontSize: 20, color: Colors.white),
+                        child: Text(
+                          widget.customer.customerCredentials.contactName,
                           textAlign: TextAlign.left,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        const SizedBox(width: 10),
-                        Tooltip(
-                          message:
-                              'Kunde: ${widget.project.customer}\nKontaktname: Max Mustermann\nTelefonnummer: +49 123 456789\nE-Mail: max@example.com\nAdresse: Musterstraße 1, 12345 Musterstadt',
-                          textStyle: const TextStyle(fontSize: 20, color: Colors.white),
-                          child: const Icon(
-                            Icons.info_outline,
-                            size: 20,
-                          ),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => Utilitis.askPopUp(
+                          context,
+                          message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
+                          onAccept: () {
+                            ref
+                                .read(customerProvider.notifier)
+                                .deleteCustomer(widget.customer.customerID!)
+                                .then((success) {
+                              if (success) {
+                                Utilitis.showSnackBar(context, 'Kunde wurde erfolgreich gelöscht');
+                                widget.onDelete();
+                              } else {
+                                Utilitis.showSnackBar(context,
+                                    'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
+                              }
+                              Navigator.of(context).pop(); // Dismiss the dialog
+                            });
+                          },
+                          onReject: () {
+                            Navigator.of(context).pop(); // Dismiss the dialog on reject
+                          },
                         ),
-                        const Spacer(),
-                        // Icon(widget.isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down),
-                        const Icon(Icons.edit_document),
-                        const SizedBox(
-                          //pushes icon into visible range, otherwise icon is invisible
-                          width: 190,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () =>
+                            setState(() => _showCustomerDetails = !_showCustomerDetails),
+                      ),
+                    ],
+                  ),
+                ),
               ),
+              _showCustomerDetails ? _customerDetailsWindow() : const SizedBox.shrink(),
+            ],
+          ),
+        ),
+      );
+
+  Widget _customerDetailsWindow() => SizedBox(
+        height: 400,
+        child: Row(
+          children: [
+            UpdateCustomerWidget(
+              onCancel: () => setState(() => _showCustomerDetails = false),
+              customer: widget.customer,
+              onSave: (updatedCustomer) {
+                widget.onUpdate(updatedCustomer);
+                setState(() => _showCustomerDetails = false);
+              },
             ),
           ],
         ),
-      ),
-    );
-  }
+      );
 }

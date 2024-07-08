@@ -1,45 +1,46 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// TODO: Please load all Datas from Api instance
-import 'package:http/http.dart' as http;
-import '../../../../constants/api/api.dart';
+
 import '../../../../models/service_models/service_vm/service_vm.dart';
-import '../../../../models/time_models/time_dm/time_dm.dart';
 import '../../../../models/users_models/user_data_short/user_short.dart';
 import '../../../../provider/data_provider/service_provider/service_vm_provider.dart';
 import '../../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '../../../constants/themes/app_color.dart';
+import '../../../constants/utilitis/utilitis.dart';
+import '../../../models/customer_models/customer_short_model/customer_short_dm.dart';
+import '../../../models/project_models/project_vm/project_vm.dart';
+import '../../../models/time_models/time_vm/time_vm.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
   const TimeEntryDialog({super.key});
   @override
-  ConsumerState<TimeEntryDialog> createState() => _ExecutionState();
+  ConsumerState<TimeEntryDialog> createState() => _TimeEntryDialogState();
 }
 
-class _ExecutionState extends ConsumerState<TimeEntryDialog> {
+class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
   final TextEditingController _dayPickerController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _durationController = TextEditingController();
   final TextEditingController _endController = TextEditingController();
   final TextEditingController _startController = TextEditingController();
-  bool isUserSet = false;
-  bool isProjectSet = false;
   TimeOfDay? selectedTime;
   List<UserDataShort>? _users;
   ServiceVM? _choosenService;
   UserDataShort? _selectedUser;
   bool _initUser = false;
-  Project? _project;
-  late TimeEntry _entry;
-  List<Project>? _projectsForCustomer;
-  int? _selectedCustomerId;
+  ProjectVM? _project;
+  late TimeVMAdapter _entry;
+  List<ProjectVM> _projectsFormCustomer = [];
+  List<CustomerShortDM> _customers = [];
+  CustomerShortDM? _selectedCustomers;
 
   @override
   void initState() {
     super.initState();
-    _entry = TimeEntry(
+    loadCustomer();
+    _entry = TimeVMAdapter(
       date: DateTime.now(),
       startTime: DateTime.now(),
       endTime: DateTime.now(),
@@ -62,38 +63,169 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             children: [
               _dayInputRow(),
               _timeInputRow(),
-              _buildCustomerField(),
-              _buildProjectField(_projectsForCustomer ?? []), // Pass projects here
+              _buildCustomerDropDown(),
+              _buildProjectField(),
               _buildServiceDropdown(),
               _buildDescription(),
               _buildSelectUser(),
-              const SizedBox(height: 46),
               _submitInput(),
-              SizedBox(
-                height: 70,
-                child: Center(
-                  child: Image.asset('assets/images/img_techtool.png', height: 20),
+              Center(
+                child: Image.asset('assets/images/img_techtool.png', height: 20),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  void loadCustomer() => ref.read(timeVMProvider.notifier).getAllCustomer().then(
+        (e) => setState(() => _customers = e),
+      );
+
+  Future<List<UserDataShort>> loadUser() async =>
+      await ref.read(timeVMProvider.notifier).getListUserService();
+
+  Widget _buildCustomerDropDown() => GestureDetector(
+        onTap: (() => _customers.isEmpty ? loadCustomer() : null),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  'Kunde*',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+              ),
+              Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColor.kTextfieldBorder),
+                ),
+                child: DropdownButton(
+                  underline: const SizedBox(),
+                  isExpanded: true,
+                  value: _selectedCustomers,
+                  items: _customers
+                      .map(
+                        (customer) => DropdownMenuItem(
+                          value: customer,
+                          child: Text(customer.companyName),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (customer) {
+                    ref.read(timeVMProvider.notifier).getProjectForCustomer(customer!.id).then((e) {
+                      setState(() {
+                        _selectedCustomers = customer;
+                        _projectsFormCustomer = e.toSet().toList();
+                        _project =
+                            _projectsFormCustomer.isEmpty ? null : _projectsFormCustomer.last;
+                        _entry = _entry.copyWith(
+                          customerId: customer.id,
+                          customerName: customer.companyName,
+                          project: _project,
+                        );
+                      });
+                    });
+                  },
                 ),
               ),
             ],
           ),
         ),
       );
-  Future<List<UserDataShort>> loadUser() async =>
-      await ref.read(timeVMProvider.notifier).getListUserService();
+
+  Padding _buildDescription() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                'Beschreibung',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+            SizedBox(
+              height: 80,
+              child: TextField(
+                cursorHeight: 20,
+                controller: _descriptionController,
+                textAlignVertical: TextAlignVertical.top,
+                expands: true,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+                maxLines: null,
+                decoration: timeEntryTextFieldDecoration(),
+                onChanged: (value) {
+                  setState(() {
+                    TextSelection previousSelection = _descriptionController.selection;
+                    _descriptionController.text = value;
+                    _descriptionController.selection = previousSelection;
+                    _entry = _entry.copyWith(description: _descriptionController.text);
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildProjectField() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                'Projekt*',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+            Container(
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColor.kTextfieldBorder),
+              ),
+              child: DropdownButton(
+                underline: const SizedBox(),
+                isExpanded: true,
+                value: _project,
+                items: _projectsFormCustomer
+                    .map(
+                      (project) => DropdownMenuItem(
+                        value: project,
+                        child: Text(project.title ?? 'Kein Title'),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (project) {
+                  setState(() {
+                    _project = project;
+                    _entry = _entry.copyWith(project: project);
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      );
 
   Widget _buildSelectUser() => FutureBuilder(
         future: loadUser(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
           if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
             if (!_initUser) {
               _users = snapshot.data;
               _selectedUser = _users!.first;
               _initUser = true;
-              _entry = _entry.copyWith(userID: _selectedUser!.id);
+              _entry = _entry.copyWith(user: _selectedUser);
             }
           }
           return Padding(
@@ -104,7 +236,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
-                    'Mitarbeiter',
+                    'Mitarbeiter*',
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
@@ -129,215 +261,15 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                         .toList(),
                     onChanged: (e) => setState(() {
                       _selectedUser = e!;
-                      _entry = _entry.copyWith(userID: e.id);
+                      _entry = _entry.copyWith(user: e);
                     }),
-                    onTap: () => (_users == null) ? loadUser() : () => null,
+                    onTap: () => (_users == null) ? loadUser() : null,
                   ),
                 ),
               ],
             ),
           );
         },
-      );
-
-  Widget _buildCustomerField() => FutureBuilder<List<Customer>>(
-        future: fetchCustomers(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator.adaptive();
-          }
-          if (snapshot.hasError) {
-            return const Text('Error fetching customers');
-          }
-          final customers = snapshot.data!;
-          return _buildCustomerDropdown(customers);
-        },
-      );
-
-  Widget _buildCustomerDropdown(List<Customer> customers) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(
-                'Kunde',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            Container(
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColor.kTextfieldBorder),
-              ),
-              child: DropdownButton<int>(
-                underline: const SizedBox(),
-                isExpanded: true,
-                value: _selectedCustomerId,
-                items: customers
-                    .map(
-                      (customer) => DropdownMenuItem<int>(
-                        value: customer.id,
-                        child: Text(customer.companyName ?? 'Unknown Company'),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (customerId) {
-                  setState(() {
-                    _selectedCustomerId = customerId;
-                    final selectedCustomer = customers.firstWhere(
-                      (customer) => customer.id == customerId,
-                      orElse: () => Customer(companyName: null, id: -1),
-                    );
-                    // Call _fetchProjectsForCustomer with the selected customer ID
-                    _fetchProjectsForCustomer(selectedCustomer.id);
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Widget _buildProjectField(List<Project> projects) {
-    if (_project == null && projects.isNotEmpty) {
-      _project = projects.first;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Text(
-              'Projekt',
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-          ),
-          Container(
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColor.kTextfieldBorder),
-            ),
-            child: DropdownButton<Project>(
-              underline: const SizedBox(),
-              isExpanded: true,
-              value: _project,
-              items: projects
-                  .map(
-                    (project) => DropdownMenuItem<Project>(
-                      value: project,
-                      child: Text(project.title ?? 'Default Title'),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (project) {
-                setState(() {
-                  _project = project;
-                  _entry = _entry.copyWith(projectID: project!.id);
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<List<Customer>> fetchCustomers() async {
-    try {
-      final response =
-          await http.get(Uri.parse('https://r-wa-happ-be.azurewebsites.net/api/customer/list'));
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonList = json.decode(response.body);
-        return jsonList.map((json) => Customer.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to load customers');
-      }
-    } catch (e) {
-      throw Exception('Failed to load customers: $e');
-    }
-  }
-
-  Future<void> _fetchProjectsForCustomer(int customerId) async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://r-wa-happ-be.azurewebsites.net/api/project/list?customerId=$customerId'));
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonList = json.decode(response.body);
-        final projects = jsonList.map((json) => Project.fromJson(json)).toList();
-
-        // Ensure uniqueness using a Set
-        final uniqueProjects = projects.toSet().toList();
-
-        setState(() {
-          _projectsForCustomer = uniqueProjects;
-          _project = projects.isNotEmpty ? projects.first : null;
-        });
-      } else {
-        throw Exception('Failed to load projects for customer');
-      }
-    } catch (e) {
-      throw Exception('Failed to load projects for customer: $e');
-    }
-  }
-
-  Padding _buildDescription() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(
-                'Beschreibung',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(
-              height: 80,
-              child: TextField(
-                cursorHeight: 20,
-                controller: _descriptionController,
-                textAlignVertical: TextAlignVertical.top,
-                expands: true,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.newline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: AppColor.kTextfieldBorder,
-                      ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 5,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: AppColor.kTextfieldBorder,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-                  ),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _descriptionController.text = value;
-                    _entry = _entry.copyWith(description: _descriptionController.text);
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
       );
 
   Widget _buildServiceDropdown() => Padding(
@@ -348,7 +280,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Text(
-                'Leistung',
+                'Leistung*',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
@@ -373,47 +305,13 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     .toList(),
                 onChanged: (e) => setState(() {
                   _choosenService = e;
-                  _entry = _entry.copyWith(
-                    // serviceTitle: e!.name,
-                    serviceID: e!.id,
-                  );
+                  _entry = _entry.copyWith(service: e);
                 }),
               ),
             ),
           ],
         ),
       );
-
-  /// Split the [String] values from the TextEdingController with the given
-  /// format and build [DateTime] objects with the Compination from
-  /// _dayPickerController and _startController.
-  /// than do  the same translation with _dayPickerController and _endController
-  /// and return the different between this [DateTime] object in minutes.
-  void _calculateDuration() {
-    final dateAsList = _dayPickerController.text.split('.').map((e) => int.parse(e)).toList();
-    final start = DateTime(
-      dateAsList[2],
-      dateAsList[1],
-      dateAsList[0],
-      int.parse(_startController.text.split(':').first),
-      int.parse(_startController.text.split(':').last),
-    );
-    final end = DateTime(
-      start.year,
-      start.month,
-      start.day,
-      int.parse(_endController.text.split(':').first),
-      int.parse(_endController.text.split(':').last),
-    );
-    final sum = ((end.millisecondsSinceEpoch - start.millisecondsSinceEpoch) / 1000) ~/ 60;
-    setState(() {
-      _entry = _entry.copyWith(duration: sum);
-    });
-    final hours = sum ~/ 60;
-    final minutes = sum % 60;
-    // TODO: exclude pause?
-    _durationController.text = '$hours:${minutes < 10 ? '0$minutes' : minutes} h.';
-  }
 
   _dayInputRow() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -428,7 +326,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
-                      'Tag',
+                      'Tag*',
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ),
@@ -436,6 +334,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     height: 35,
                     width: 200,
                     child: TextField(
+                      readOnly: true,
                       controller: _dayPickerController,
                       cursorHeight: 20,
                       autofocus: false,
@@ -454,25 +353,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                           });
                         }
                       },
-                      decoration: InputDecoration(
-                        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: AppColor.kTextfieldBorder,
-                            ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 5,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: AppColor.kTextfieldBorder,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-                        ),
-                      ),
+                      decoration: timeEntryTextFieldDecoration(),
                     ),
                   ),
                 ],
@@ -494,39 +375,26 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                     height: 35,
                     width: 200,
                     child: TextField(
-                        cursorHeight: 20,
-                        autofocus: false,
-                        controller: _durationController,
-                        keyboardType: TextInputType.number,
-                        // TODO: implement a wheelspinner for pick Hours and minutes?
-                        onChanged: (value) {
-                          setState(() {
-                            _entry = _entry.copyWith(duration: int.tryParse(value));
-                          });
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'min.',
-                          hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                color: AppColor.kTextfieldBorder,
-                              ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 5,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-                          ),
-                        )),
+                      cursorHeight: 20,
+                      controller: _durationController,
+                      readOnly: true,
+                      decoration: timeEntryTextFieldDecoration(hint: 'min'),
+                    ),
                   ),
                 ],
               ),
             )
           ],
+        ),
+      );
+
+  Widget _submitInput() => Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: SymmetricButton(
+          color: AppColor.kPrimaryButtonColor,
+          text: 'Eintrag erstellen',
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+          onPressed: () => _submit(),
         ),
       );
 
@@ -541,54 +409,36 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
-                    'START',
+                    'START*',
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
                 SizedBox(
                   height: 35,
                   width: 200,
-                  child: TextField(
+                  child: TextFormField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^[\d:]{0,5}')),
+                    ],
                     keyboardType: TextInputType.datetime,
-                    autofocus: false,
                     cursorHeight: 20,
-                    textInputAction: TextInputAction.next,
                     controller: _startController,
-                    decoration: InputDecoration(
-                      hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: AppColor.kTextfieldBorder,
-                          ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 5,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: AppColor.kTextfieldBorder,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-                      ),
-                    ),
-                    onTap: () async {
-                      final time =
-                          await showTimePicker(context: context, initialTime: selectedTime!);
-                      if (time != null) {
-                        final minute = time.minute < 10 ? '0${time.minute}' : '${time.minute}';
-                        _entry = _entry.copyWith(
-                            startTime: DateTime(
-                          _entry.date.year,
-                          _entry.date.month,
-                          _entry.date.day,
-                          time.hour,
-                          time.minute,
-                        ));
-                        _startController.text = '${time.hour}:$minute';
+                    decoration: timeEntryTextFieldDecoration(),
+                    onTap: () => _selectStartTime(),
+                    onTapOutside: (event) => setState(() {
+                      final result = _checkIfTimeFormat(_startController.text);
+                      _startController.text = result.isEmpty ? _startController.text : result;
+                      if (_endController.text.isNotEmpty) {
+                        _calculateDuration();
                       }
-                    },
+                    }),
+                    onEditingComplete: () => setState(() {
+                      final result = _checkIfTimeFormat(_startController.text);
+                      _startController.text = result.isEmpty ? _startController.text : result;
+                      if (_endController.text.isNotEmpty) {
+                        _calculateDuration();
+                      }
+                    }),
                   ),
                 ),
               ],
@@ -599,7 +449,7 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
-                    'BIS',
+                    'BIS*',
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
@@ -607,54 +457,29 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
                   height: 35,
                   width: 200,
                   child: TextField(
-                    keyboardType: TextInputType.datetime,
+                    onTapOutside: (event) => setState(() {
+                      final result = _checkIfTimeFormat(_endController.text);
+                      _endController.text = result.isEmpty ? _endController.text : result;
+                      _calculateDuration();
+                    }),
+                    onEditingComplete: () => setState(() {
+                      // _endController.text = _checkIfTimeFormat(_endController.text);
+                      final result = _checkIfTimeFormat(_endController.text);
+                      _endController.text = result.isEmpty ? _endController.text : result;
+                      _calculateDuration();
+                    }),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^[\d:]{0,5}')),
+                      // FilteringTextInputFormatter.allow(RegExp(r'^[0-2]?[0-9]?:?[0-5]?[0-9]?$')),
+                      // FilteringTextInputFormatter.allow(
+                      //     RegExp(r'^([01]?[0-9]|2[0-3]):[0-5]?[0-9]$')),
+                    ],
                     autofocus: false,
                     cursorHeight: 20,
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.next,
                     controller: _endController,
-                    decoration: InputDecoration(
-                      hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: AppColor.kTextfieldBorder,
-                          ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 5,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: AppColor.kTextfieldBorder,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-                      ),
-                    ),
-                    onTap: () async {
-                      final time = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay(
-                          hour: int.tryParse(_endController.text.split(':').first) ?? 16,
-                          minute: int.tryParse(_endController.text.split(':').last) ?? 30,
-                        ),
-                      );
-                      if (time != null) {
-                        setState(() {
-                          _entry = _entry.copyWith(
-                              endTime: DateTime(
-                            _entry.date.year,
-                            _entry.date.month,
-                            _entry.date.day,
-                            time.hour,
-                            time.minute,
-                          ));
-                          final minute = time.minute < 10 ? '0${time.minute}' : '${time.minute}';
-                          _endController.text = '${time.hour}:$minute';
-                        });
-                        _calculateDuration();
-                      }
-                    },
+                    decoration: timeEntryTextFieldDecoration(),
+                    onTap: () => _selectEndTime(),
                   ),
                 ),
               ],
@@ -662,30 +487,153 @@ class _ExecutionState extends ConsumerState<TimeEntryDialog> {
           ],
         ),
       );
-  Future getData(Api apo) async {
-    final response = await apo.getAllProjects;
-    return response.data;
+  void _selectStartTime() async {
+    final date = _entry.date;
+    final initialTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      int.tryParse(_startController.text.split(':').first) ?? DateTime.now().hour,
+      int.tryParse(_startController.text.split(':').last) ?? DateTime.now().minute,
+    );
+    final time = await Utilitis.showTimeSpinner(context, initialTime);
+    if (time == null) return;
+    final timeAsList = time.split(':');
+    final hour = int.parse(timeAsList.first);
+    final minute = int.parse(timeAsList.last);
+
+    DateTime startDate = DateTime(date.year, date.month, date.day, hour, minute);
+
+    final minuteString = startDate.minute < 10 ? '0${startDate.minute}' : '${startDate.minute}';
+
+    setState(() {
+      _entry = _entry.copyWith(startTime: startDate);
+      _startController.text = '${_entry.startTime.hour}:$minuteString';
+    });
+    return;
   }
 
-  Widget _submitInput() => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SymmetricButton(
-          color: AppColor.kPrimaryButtonColor,
-          text: 'Eintrag erstellen',
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-          onPressed: () {
-            ref.read(timeVMProvider.notifier).saveTimeEntry(_entry).then((e) {
-              Navigator.of(context).pop();
-              return ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Center(
-                    child: Text(e ? 'Eintrag wurde erstellt' : 'Leider ist etwas schief gegangen'),
-                  ),
-                ),
-              );
-            });
-          },
+  void _selectEndTime() async {
+    final date = _entry.date;
+    final initialTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      int.tryParse(_endController.text.split(':').first) ?? 16,
+      int.tryParse(_endController.text.split(':').last) ?? 30,
+    );
+    final time = await Utilitis.showTimeSpinner(context, initialTime);
+    if (time == null) return;
+    final timeAsList = time.split(':');
+    final hour = int.parse(timeAsList.first);
+    final minute = int.parse(timeAsList.last);
+
+    DateTime endDate = DateTime(date.year, date.month, date.day, hour, minute);
+    final startDate = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      int.tryParse(_startController.text.split(':').first) ?? 0,
+      int.tryParse(_startController.text.split(':').last) ?? 0,
+    );
+    if (endDate.millisecondsSinceEpoch < startDate.millisecondsSinceEpoch) {
+      endDate = startDate;
+    }
+    final minuteString = endDate.minute < 10 ? '0${endDate.minute}' : '${endDate.minute}';
+    setState(() {
+      _entry = _entry.copyWith(endTime: endDate);
+      _endController.text = '${_entry.endTime.hour}:$minuteString';
+    });
+    _calculateDuration();
+    return;
+  }
+
+  void _submit() {
+    if (_dayPickerController.text.isEmpty ||
+        _startController.text.isEmpty ||
+        _endController.text.isEmpty ||
+        _durationController.text.isEmpty ||
+        _selectedCustomers == null ||
+        _choosenService == null ||
+        _project == null ||
+        _selectedUser == null) {
+      Utilitis.showErrorMessage(context, 'Bitte füllen alle mit * Markierten Felder aus');
+
+      return;
+    }
+    ref.read(timeVMProvider.notifier).saveTimeEntry(_entry).then((e) {
+      Navigator.of(context).pop();
+      return ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Center(
+            child: Text(e ? 'Eintrag wurde erstellt' : 'Leider ist etwas schief gegangen'),
+          ),
         ),
       );
+    });
+  }
+
+  InputDecoration timeEntryTextFieldDecoration({String? hint}) => InputDecoration(
+        hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+              color: AppColor.kTextfieldBorder,
+            ),
+        hintText: hint,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 5,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: AppColor.kTextfieldBorder,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: AppColor.kTextfieldBorder),
+        ),
+      );
+  String _checkIfTimeFormat(String timeString) {
+    final regex = RegExp(r'^([01]?[0-9]|2[0-3]):[0-5]?[0-9]$');
+    if (!regex.hasMatch(timeString)) {
+      Utilitis.showErrorMessage(context, 'Keine Gültige Uhrzeit');
+      return '';
+    }
+    return timeString;
+  }
+
+  _calculateDuration() {
+    final dateAsList = _dayPickerController.text.split('.').map((e) => int.parse(e)).toList();
+    final start = DateTime(
+      dateAsList[2],
+      dateAsList[1],
+      dateAsList[0],
+      int.parse(_startController.text.split(':').first),
+      int.parse(_startController.text.split(':').last),
+    );
+    if (!_endController.text.contains(':')) {
+      final x = _endController.text;
+      setState(() {
+        _endController.text = '${x[0]}${x[1]}:${x.substring(2).isEmpty ? '00' : x.substring(2)}';
+      });
+    }
+    final timeList = _endController.text.split(':');
+    DateTime end = DateTime(
+      dateAsList[2],
+      dateAsList[1],
+      dateAsList[0],
+      int.parse(_endController.text.split(':').first),
+      int.parse(timeList.length > 1 ? _endController.text.split(':').last : '00'),
+    );
+    if (end.millisecondsSinceEpoch < start.millisecondsSinceEpoch) {
+      end = start;
+      setState(() =>
+          _endController.text = '${end.hour}:${end.minute < 10 ? '0${end.minute}' : end.minute}');
+    }
+    final sum = ((end.millisecondsSinceEpoch - start.millisecondsSinceEpoch) / 1000) ~/ 60;
+    setState(() {
+      _entry = _entry.copyWith(duration: sum);
+      _durationController.text = Utilitis.buildDurationInHourers(sum);
+    });
+  }
 }
-// class

@@ -30,14 +30,13 @@ class CalendarOptionsRow extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: isWorkOrder == null || !isWorkOrder!
                     ? null
                     : BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
-                // width: 100,
                 height: 30,
                 child: SymmetricButton(
                   elevation: isWorkOrder == null || !isWorkOrder! ? 5 : 2,
@@ -51,14 +50,13 @@ class CalendarOptionsRow extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: isWorkOrder == null || isWorkOrder!
                     ? null
                     : BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
-                // width: 100,
                 height: 30,
                 child: SymmetricButton(
                   text: 'Zeiteintrag',
@@ -71,8 +69,9 @@ class CalendarOptionsRow extends StatelessWidget {
                   onPressed: onTapTimeEntry,
                 ),
               ),
+              const Padding(padding: EdgeInsets.all(12)),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: isWeekViewChoosed
                     ? null
                     : BoxDecoration(
@@ -90,14 +89,13 @@ class CalendarOptionsRow extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: !isWeekViewChoosed
                     ? null
                     : BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: AppColor.kPrimaryButtonColor, width: 1.5),
                       ),
-                // width: 100,
                 height: 30,
                 child: SymmetricButton(
                   text: 'Woche',
@@ -108,12 +106,12 @@ class CalendarOptionsRow extends StatelessWidget {
                   color: !isWeekViewChoosed ? null : AppColor.kWhite,
                 ),
               ),
+              const Padding(padding: EdgeInsets.all(12)),
               SizedBox(
-                // width: 100,
                 height: 30,
                 child: SymmetricButton(
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  text: 'Neuer Termin',
+                  text: 'Neuer Termin +',
                   onPressed: () => showDialog(
                       context: context,
                       builder: (context) => Dialog(
@@ -123,7 +121,7 @@ class CalendarOptionsRow extends StatelessWidget {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              height: MediaQuery.of(context).size.height - 400,
+                              height: MediaQuery.of(context).size.height - 200,
                               width: 500,
                               child: const TimeEntryDialog(),
                             ),

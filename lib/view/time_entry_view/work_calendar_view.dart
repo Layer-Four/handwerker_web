@@ -1,6 +1,8 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../constants/utilitis/utilitis.dart';
 import '../../models/time_models/time_vm/time_vm.dart';
 import '../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '../shared_widgets/search_line_header.dart';
@@ -17,9 +19,10 @@ class WorkCalendarView extends ConsumerStatefulWidget {
 
 class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
   final List<CalendarEventData<TimeVMAdapter>> _allEvents = [];
-  late EventController _eventCtr;
+  late final EventController _eventCtr;
   bool _isInit = false;
   bool _isWeekView = true;
+  bool _isLoading = true;
   bool? _isWorkOrder;
   @override
   void initState() {
@@ -39,40 +42,52 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
     return CalendarControllerProvider(
       controller: _eventCtr,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        child: Column(
-          children: [
-            const SearchLineHeader(title: 'Stundenübersicht'),
-            CalendarOptionsRow(
-              isWeekViewChoosed: _isWeekView,
-              isWorkOrder: _isWorkOrder,
-              onTapWeekViewView: () => setState(() => _isWeekView = true),
-              onTapDayView: () => setState(() => _isWeekView = false),
-              onTapTimeEntry: () => _updateEventController(false),
-              onTapWorkOrder: () => _updateEventController(true),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height - 130,
-              child: Material(
-                borderRadius: BorderRadius.circular(6),
-                clipBehavior: Clip.antiAlias,
-                elevation: 9,
-                child: _isWeekView ? const CustomWeekView() : const CustomDayView(),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+        child: _isLoading
+            ? Utilitis.waitingMessage(context, 'Lade Einträge')
+            : Column(
+                children: [
+                  const SearchLineHeader(title: 'Stundenübersicht'),
+                  CalendarOptionsRow(
+                    isWeekViewChoosed: _isWeekView,
+                    isWorkOrder: _isWorkOrder,
+                    onTapWeekViewView: () => setState(() => _isWeekView = true),
+                    onTapDayView: () => setState(() => _isWeekView = false),
+                    onTapTimeEntry: () => _updateEventController(false),
+                    onTapWorkOrder: () => _updateEventController(true),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height - 130,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(6),
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 9,
+                      child: _isWeekView ? const CustomWeekView() : const CustomDayView(),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            // CustonWeekView(),
-          ],
-        ),
       ),
     );
   }
 
-  void _loadEvents() => ref.read(timeVMProvider.notifier).loadEvents().then((i) {
-        setState(() {
-          _allEvents.addAll(i);
-          _eventCtr.addAll(_allEvents);
+  void _loadEvents() {
+    setState(() => _isLoading = true);
+
+    ref.read(timeVMProvider.notifier).loadEvents().then((i) {
+      if (i.isEmpty) {
+        Future.delayed(const Duration(seconds: 1)).then((_) {
+          _loadEvents();
         });
+        return;
+      }
+      setState(() {
+        _allEvents.addAll(i);
+        _eventCtr.addAll(_allEvents);
+        _isLoading = false;
       });
+    });
+  }
 
   void _updateEventController(bool isFilterWorkOrder) {
     final oldEvents = [..._eventCtr.allEvents];
@@ -88,7 +103,6 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
       setState(() => _isWorkOrder = isFilterWorkOrder);
       return;
     }
-    // final timeEntrys = _allEvents.where((e) => e.event!.type == TimeEntryType.timeEntry).toList();
     _eventCtr.addAll(_allEvents.where((e) => e.event!.type == TimeEntryType.timeEntry).toList());
     setState(() => _isWorkOrder = isFilterWorkOrder);
     return;

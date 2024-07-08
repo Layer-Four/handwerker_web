@@ -5,25 +5,29 @@ class UserRowHeadLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.only(left: 8, top: 40, bottom: 24),
         child: Row(
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width / 10 * 2,
-              child: const Text(
+              width: MediaQuery.of(context).size.width > 1200
+                  ? 300
+                  : MediaQuery.of(context).size.width * 0.2,
+              child: Text(
                 'Name',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width / 10 * 2,
-              // width: constraints.maxWidth / 10 * 2,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Rolle',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+              width: MediaQuery.of(context).size.width > 950
+                  ? 150
+                  : MediaQuery.of(context).size.width * 0.2,
+              child: Text(
+                'Rolle',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ),
           ],

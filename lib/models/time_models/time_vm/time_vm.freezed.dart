@@ -20,7 +20,7 @@ TimeVMAdapter _$TimeVMAdapterFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TimeVMAdapter {
-  String? get userId => throw _privateConstructorUsedError;
+  UserDataShort? get user => throw _privateConstructorUsedError;
   DateTime get startTime => throw _privateConstructorUsedError;
   DateTime get endTime => throw _privateConstructorUsedError;
   DateTime? get pauseEnd => throw _privateConstructorUsedError;
@@ -29,11 +29,10 @@ mixin _$TimeVMAdapter {
   DateTime get date => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   int? get duration => throw _privateConstructorUsedError;
-  int? get projectId => throw _privateConstructorUsedError;
-  String? get projectTitle => throw _privateConstructorUsedError;
-  int? get serviceId => throw _privateConstructorUsedError;
-  String? get serviceTitle => throw _privateConstructorUsedError;
+  ProjectVM? get project => throw _privateConstructorUsedError;
+  ServiceVM? get service => throw _privateConstructorUsedError;
   String? get customerName => throw _privateConstructorUsedError;
+  int? get customerId => throw _privateConstructorUsedError;
   TimeEntryType get type => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,7 +48,7 @@ abstract class $TimeVMAdapterCopyWith<$Res> {
       _$TimeVMAdapterCopyWithImpl<$Res, TimeVMAdapter>;
   @useResult
   $Res call(
-      {String? userId,
+      {UserDataShort? user,
       DateTime startTime,
       DateTime endTime,
       DateTime? pauseEnd,
@@ -58,12 +57,15 @@ abstract class $TimeVMAdapterCopyWith<$Res> {
       DateTime date,
       String? description,
       int? duration,
-      int? projectId,
-      String? projectTitle,
-      int? serviceId,
-      String? serviceTitle,
+      ProjectVM? project,
+      ServiceVM? service,
       String? customerName,
+      int? customerId,
       TimeEntryType type});
+
+  $UserDataShortCopyWith<$Res>? get user;
+  $ProjectVMCopyWith<$Res>? get project;
+  $ServiceVMCopyWith<$Res>? get service;
 }
 
 /// @nodoc
@@ -79,7 +81,7 @@ class _$TimeVMAdapterCopyWithImpl<$Res, $Val extends TimeVMAdapter>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = freezed,
+    Object? user = freezed,
     Object? startTime = null,
     Object? endTime = null,
     Object? pauseEnd = freezed,
@@ -88,18 +90,17 @@ class _$TimeVMAdapterCopyWithImpl<$Res, $Val extends TimeVMAdapter>
     Object? date = null,
     Object? description = freezed,
     Object? duration = freezed,
-    Object? projectId = freezed,
-    Object? projectTitle = freezed,
-    Object? serviceId = freezed,
-    Object? serviceTitle = freezed,
+    Object? project = freezed,
+    Object? service = freezed,
     Object? customerName = freezed,
+    Object? customerId = freezed,
     Object? type = null,
   }) {
     return _then(_value.copyWith(
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserDataShort?,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -132,31 +133,63 @@ class _$TimeVMAdapterCopyWithImpl<$Res, $Val extends TimeVMAdapter>
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as int?,
-      projectId: freezed == projectId
-          ? _value.projectId
-          : projectId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      projectTitle: freezed == projectTitle
-          ? _value.projectTitle
-          : projectTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
-      serviceId: freezed == serviceId
-          ? _value.serviceId
-          : serviceId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      serviceTitle: freezed == serviceTitle
-          ? _value.serviceTitle
-          : serviceTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
+      project: freezed == project
+          ? _value.project
+          : project // ignore: cast_nullable_to_non_nullable
+              as ProjectVM?,
+      service: freezed == service
+          ? _value.service
+          : service // ignore: cast_nullable_to_non_nullable
+              as ServiceVM?,
       customerName: freezed == customerName
           ? _value.customerName
           : customerName // ignore: cast_nullable_to_non_nullable
               as String?,
+      customerId: freezed == customerId
+          ? _value.customerId
+          : customerId // ignore: cast_nullable_to_non_nullable
+              as int?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TimeEntryType,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserDataShortCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserDataShortCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ProjectVMCopyWith<$Res>? get project {
+    if (_value.project == null) {
+      return null;
+    }
+
+    return $ProjectVMCopyWith<$Res>(_value.project!, (value) {
+      return _then(_value.copyWith(project: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ServiceVMCopyWith<$Res>? get service {
+    if (_value.service == null) {
+      return null;
+    }
+
+    return $ServiceVMCopyWith<$Res>(_value.service!, (value) {
+      return _then(_value.copyWith(service: value) as $Val);
+    });
   }
 }
 
@@ -169,7 +202,7 @@ abstract class _$$TimeVMAdapterImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? userId,
+      {UserDataShort? user,
       DateTime startTime,
       DateTime endTime,
       DateTime? pauseEnd,
@@ -178,12 +211,18 @@ abstract class _$$TimeVMAdapterImplCopyWith<$Res>
       DateTime date,
       String? description,
       int? duration,
-      int? projectId,
-      String? projectTitle,
-      int? serviceId,
-      String? serviceTitle,
+      ProjectVM? project,
+      ServiceVM? service,
       String? customerName,
+      int? customerId,
       TimeEntryType type});
+
+  @override
+  $UserDataShortCopyWith<$Res>? get user;
+  @override
+  $ProjectVMCopyWith<$Res>? get project;
+  @override
+  $ServiceVMCopyWith<$Res>? get service;
 }
 
 /// @nodoc
@@ -197,7 +236,7 @@ class __$$TimeVMAdapterImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = freezed,
+    Object? user = freezed,
     Object? startTime = null,
     Object? endTime = null,
     Object? pauseEnd = freezed,
@@ -206,18 +245,17 @@ class __$$TimeVMAdapterImplCopyWithImpl<$Res>
     Object? date = null,
     Object? description = freezed,
     Object? duration = freezed,
-    Object? projectId = freezed,
-    Object? projectTitle = freezed,
-    Object? serviceId = freezed,
-    Object? serviceTitle = freezed,
+    Object? project = freezed,
+    Object? service = freezed,
     Object? customerName = freezed,
+    Object? customerId = freezed,
     Object? type = null,
   }) {
     return _then(_$TimeVMAdapterImpl(
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserDataShort?,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -250,26 +288,22 @@ class __$$TimeVMAdapterImplCopyWithImpl<$Res>
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as int?,
-      projectId: freezed == projectId
-          ? _value.projectId
-          : projectId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      projectTitle: freezed == projectTitle
-          ? _value.projectTitle
-          : projectTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
-      serviceId: freezed == serviceId
-          ? _value.serviceId
-          : serviceId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      serviceTitle: freezed == serviceTitle
-          ? _value.serviceTitle
-          : serviceTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
+      project: freezed == project
+          ? _value.project
+          : project // ignore: cast_nullable_to_non_nullable
+              as ProjectVM?,
+      service: freezed == service
+          ? _value.service
+          : service // ignore: cast_nullable_to_non_nullable
+              as ServiceVM?,
       customerName: freezed == customerName
           ? _value.customerName
           : customerName // ignore: cast_nullable_to_non_nullable
               as String?,
+      customerId: freezed == customerId
+          ? _value.customerId
+          : customerId // ignore: cast_nullable_to_non_nullable
+              as int?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -282,7 +316,7 @@ class __$$TimeVMAdapterImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TimeVMAdapterImpl extends _TimeVMAdapter {
   const _$TimeVMAdapterImpl(
-      {this.userId,
+      {this.user,
       required this.startTime,
       required this.endTime,
       this.pauseEnd,
@@ -291,11 +325,10 @@ class _$TimeVMAdapterImpl extends _TimeVMAdapter {
       required this.date,
       this.description,
       this.duration,
-      this.projectId,
-      this.projectTitle,
-      this.serviceId,
-      this.serviceTitle,
+      this.project,
+      this.service,
       this.customerName,
+      this.customerId,
       this.type = TimeEntryType.workOrder})
       : super._();
 
@@ -303,7 +336,7 @@ class _$TimeVMAdapterImpl extends _TimeVMAdapter {
       _$$TimeVMAdapterImplFromJson(json);
 
   @override
-  final String? userId;
+  final UserDataShort? user;
   @override
   final DateTime startTime;
   @override
@@ -321,22 +354,20 @@ class _$TimeVMAdapterImpl extends _TimeVMAdapter {
   @override
   final int? duration;
   @override
-  final int? projectId;
+  final ProjectVM? project;
   @override
-  final String? projectTitle;
-  @override
-  final int? serviceId;
-  @override
-  final String? serviceTitle;
+  final ServiceVM? service;
   @override
   final String? customerName;
+  @override
+  final int? customerId;
   @override
   @JsonKey()
   final TimeEntryType type;
 
   @override
   String toString() {
-    return 'TimeVMAdapter(userId: $userId, startTime: $startTime, endTime: $endTime, pauseEnd: $pauseEnd, pauseStart: $pauseStart, id: $id, date: $date, description: $description, duration: $duration, projectId: $projectId, projectTitle: $projectTitle, serviceId: $serviceId, serviceTitle: $serviceTitle, customerName: $customerName, type: $type)';
+    return 'TimeVMAdapter(user: $user, startTime: $startTime, endTime: $endTime, pauseEnd: $pauseEnd, pauseStart: $pauseStart, id: $id, date: $date, description: $description, duration: $duration, project: $project, service: $service, customerName: $customerName, customerId: $customerId, type: $type)';
   }
 
   @override
@@ -344,7 +375,7 @@ class _$TimeVMAdapterImpl extends _TimeVMAdapter {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TimeVMAdapterImpl &&
-            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.startTime, startTime) ||
                 other.startTime == startTime) &&
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
@@ -358,16 +389,12 @@ class _$TimeVMAdapterImpl extends _TimeVMAdapter {
                 other.description == description) &&
             (identical(other.duration, duration) ||
                 other.duration == duration) &&
-            (identical(other.projectId, projectId) ||
-                other.projectId == projectId) &&
-            (identical(other.projectTitle, projectTitle) ||
-                other.projectTitle == projectTitle) &&
-            (identical(other.serviceId, serviceId) ||
-                other.serviceId == serviceId) &&
-            (identical(other.serviceTitle, serviceTitle) ||
-                other.serviceTitle == serviceTitle) &&
+            (identical(other.project, project) || other.project == project) &&
+            (identical(other.service, service) || other.service == service) &&
             (identical(other.customerName, customerName) ||
                 other.customerName == customerName) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId) &&
             (identical(other.type, type) || other.type == type));
   }
 
@@ -375,7 +402,7 @@ class _$TimeVMAdapterImpl extends _TimeVMAdapter {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      userId,
+      user,
       startTime,
       endTime,
       pauseEnd,
@@ -384,11 +411,10 @@ class _$TimeVMAdapterImpl extends _TimeVMAdapter {
       date,
       description,
       duration,
-      projectId,
-      projectTitle,
-      serviceId,
-      serviceTitle,
+      project,
+      service,
       customerName,
+      customerId,
       type);
 
   @JsonKey(ignore: true)
@@ -407,7 +433,7 @@ class _$TimeVMAdapterImpl extends _TimeVMAdapter {
 
 abstract class _TimeVMAdapter extends TimeVMAdapter {
   const factory _TimeVMAdapter(
-      {final String? userId,
+      {final UserDataShort? user,
       required final DateTime startTime,
       required final DateTime endTime,
       final DateTime? pauseEnd,
@@ -416,11 +442,10 @@ abstract class _TimeVMAdapter extends TimeVMAdapter {
       required final DateTime date,
       final String? description,
       final int? duration,
-      final int? projectId,
-      final String? projectTitle,
-      final int? serviceId,
-      final String? serviceTitle,
+      final ProjectVM? project,
+      final ServiceVM? service,
       final String? customerName,
+      final int? customerId,
       final TimeEntryType type}) = _$TimeVMAdapterImpl;
   const _TimeVMAdapter._() : super._();
 
@@ -428,7 +453,7 @@ abstract class _TimeVMAdapter extends TimeVMAdapter {
       _$TimeVMAdapterImpl.fromJson;
 
   @override
-  String? get userId;
+  UserDataShort? get user;
   @override
   DateTime get startTime;
   @override
@@ -446,15 +471,13 @@ abstract class _TimeVMAdapter extends TimeVMAdapter {
   @override
   int? get duration;
   @override
-  int? get projectId;
+  ProjectVM? get project;
   @override
-  String? get projectTitle;
-  @override
-  int? get serviceId;
-  @override
-  String? get serviceTitle;
+  ServiceVM? get service;
   @override
   String? get customerName;
+  @override
+  int? get customerId;
   @override
   TimeEntryType get type;
   @override

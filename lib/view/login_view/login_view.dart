@@ -1,60 +1,60 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/themes/app_color.dart';
-import '../../provider/settings_provider/user_provider.dart';
+import '../../constants/utilitis/utilitis.dart';
+import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
 
-class LoginView extends StatefulWidget {
+class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  ConsumerState<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends ConsumerState<LoginView> {
   bool isFocused = false;
   bool isOTP = false;
   bool _isPasswordVisible = false;
+  bool _isLoaded = false;
 
-  TextEditingController emailCon = TextEditingController();
-  TextEditingController passCon = TextEditingController();
-  GlobalKey<FormState> formstate = GlobalKey<FormState>();
+  final TextEditingController _emailCon = TextEditingController();
+  final TextEditingController _passCon = TextEditingController();
+  final GlobalKey<FormState> _formstate = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _emailCon.dispose();
+    _passCon.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(top: 60),
+        backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,
+        body: Center(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 90),
                 SizedBox(
-                  height: 44,
+                  height: 46,
                   child: Image.asset('assets/images/img_techtool.png'),
                 ),
-                const SizedBox(height: 60),
-                const SizedBox(height: 15),
+                const SizedBox(height: 75),
                 Form(
-                  key: formstate,
+                  key: _formstate,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(
                         width: 350,
                         child: Align(
                           alignment: Alignment.bottomLeft,
-                          child:
-                              Text('Mandatenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text('Nutzername', style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ),
-                      const SizedBox(height: 3),
-                      _buildUsernameTextField(emailCon, 'Bitte eine gültige Mandatenname eingeben'),
-                      const SizedBox(height: 20),
+                      _buildUsernameTextField(),
                       const SizedBox(
                         width: 350,
                         child: Align(
@@ -62,12 +62,9 @@ class _LoginViewState extends State<LoginView> {
                           child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ),
-                      const SizedBox(height: 3),
-                      buildPasswordTextField(),
-                      const SizedBox(height: 5),
-                      buildForgotPassword(context),
-                      const SizedBox(height: 20),
-                      buildLoginButton(context),
+                      _buildPasswordTextField(),
+                      _buildForgotPassword(),
+                      _buildLoginButton(),
                     ],
                   ),
                 ),
@@ -77,8 +74,33 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget _buildUsernameTextField(TextEditingController controller, String errorMessage) =>
-      Container(
+  void reactionOfLogin(bool isSuccess) {
+    setState(() => _isLoaded = false);
+    if (isSuccess) {
+      Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
+      return;
+    }
+    _passCon.clear();
+    return Utilitis.showSnackBar(
+      context,
+      'Nutzername oder Passwort sind falsch',
+      // 'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
+    );
+  }
+
+  Future<void> _submitLogin() async {
+    if (_formstate.currentState!.validate()) {
+      setState(() => _isLoaded = true);
+      bool isSuccess = await ref.read(userProvider.notifier).loginUser(
+            password: _passCon.text,
+            userName: _emailCon.text,
+          );
+      reactionOfLogin(isSuccess);
+    }
+  }
+
+  Widget _buildUsernameTextField() => Container(
+        margin: const EdgeInsets.only(top: 3, bottom: 20),
         width: 355,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -93,24 +115,26 @@ class _LoginViewState extends State<LoginView> {
             height: isFocused ? 44 : 40,
             child: TextFormField(
               autofocus: true,
+              keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               validator: (value) {
                 if (value!.isEmpty) {
                   return null;
-                } else if (value.length < 3) {
-                  return errorMessage;
+                } else if (value.isNotEmpty && value.length < 3) {
+                  return 'Bitte eine gültige Nutzernamen eingeben';
                 }
                 return null;
               },
-              controller: controller,
+              onFieldSubmitted: (_) => _submitLogin(),
+              controller: _emailCon,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.transparent,
                 contentPadding: const EdgeInsets.all(10),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Color.fromARGB(255, 224, 142, 60),
+                  borderSide: BorderSide(
+                    color: AppColor.kPrimaryButtonColor,
                     width: 2,
                   ),
                 ),
@@ -141,31 +165,31 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget buildPasswordTextField() => Container(
+  Widget _buildPasswordTextField() => Container(
+        margin: const EdgeInsets.only(top: 3, bottom: 5),
         width: 350,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: const Color.fromARGB(255, 231, 226, 226),
+          color: AppColor.kTextfieldBorder,
         ),
         child: Focus(
-          onFocusChange: (hasFocus) {
-            setState(() => isFocused = hasFocus);
-          },
+          onFocusChange: (hasFocus) => setState(() => isFocused = hasFocus),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             height: isFocused ? 44 : 40,
             child: TextFormField(
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value!.isEmpty) {
-                  return null; // Let the SnackBar handle the empty case
+                  return null;
                 } else if (value.length < 7) {
                   return 'Bitte mehr als 6 Buchstaben eingeben';
                 }
                 return null;
               },
+              onFieldSubmitted: (_) => _submitLogin(),
               obscureText: !_isPasswordVisible,
-              controller: passCon,
+              controller: _passCon,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.transparent,
@@ -177,8 +201,8 @@ class _LoginViewState extends State<LoginView> {
                 contentPadding: const EdgeInsets.all(10),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Color.fromARGB(255, 224, 142, 60),
+                  borderSide: BorderSide(
+                    color: AppColor.kPrimaryButtonColor,
                     width: 2,
                   ),
                 ),
@@ -209,63 +233,38 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
 
-  Widget buildForgotPassword(BuildContext context) => SizedBox(
+  Widget _buildForgotPassword() => SizedBox(
         width: 350,
         child: Align(
           alignment: Alignment.topRight,
           child: GestureDetector(
-            child: const Text(
+            child: Text(
               'Passwort vergessen?',
               style: TextStyle(
-                color: Colors.orange,
+                color: AppColor.kPrimaryButtonColor,
                 fontWeight: FontWeight.w700,
                 decoration: TextDecoration.underline,
-                decorationColor: Colors.orange,
+                decorationColor: AppColor.kPrimaryButtonColor,
                 decorationThickness: 2.0,
               ),
             ),
-            onTap: () => Navigator.of(context).pushNamed(AppRoutes.forgotPassword),
+            onTap: () => Navigator.of(context).pushReplacementNamed(AppRoutes.forgotPassword),
           ),
         ),
       );
 
-  void reactionOfLogin(bool isSuccess) async {
-    if (isSuccess) {
-      emailCon.clear();
-      passCon.clear();
-      Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
-      return;
-    }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('leider hats nicht geklappt')));
-  }
-
-  Widget buildLoginButton(BuildContext context) => Center(
-        child: SizedBox(
-          width: 340,
-          height: 44,
-          child: Consumer(
-              builder: (context, ref, child) => ElevatedButton(
-                    onPressed: () async {
-                      if (formstate.currentState!.validate()) {
-                        ref
-                            .read(userProvider.notifier)
-                            .loginUser(
-                              password: passCon.text,
-                              userName: emailCon.text,
-                            )
-                            .then((value) {
-                          reactionOfLogin(value);
-                          SharedPreferences.getInstance().then((value) {
-                            final token = value.getString('TOKEN');
-                            log(token.toString());
-                          });
-                        });
-                      }
-                      if (isOTP) {
-                        Navigator.of(context).pushNamed(AppRoutes.setPasswordScreen);
-                      }
-                    },
+  Widget _buildLoginButton() => Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Center(
+          child: _isLoaded
+              ? const SizedBox(
+                  child: CircularProgressIndicator(),
+                )
+              : SizedBox(
+                  width: 340,
+                  height: 44,
+                  child: ElevatedButton(
+                    onPressed: () => _submitLogin(),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -278,27 +277,22 @@ class _LoginViewState extends State<LoginView> {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                  )),
+                  ),
+                ),
         ),
       );
+
   bool validateFields() {
-    if (formstate.currentState == null) {
+    if (_formstate.currentState == null) {
       return false;
     }
 
-    bool isValid =
-        formstate.currentState!.validate() && emailCon.text.isNotEmpty && passCon.text.isNotEmpty;
+    bool isValid = _formstate.currentState!.validate() &&
+        _emailCon.text.isNotEmpty &&
+        _passCon.text.isNotEmpty;
     if (!isValid) {
-      showSnackBar('Bitte füllen Sie alle Felder korrekt aus.');
+      Utilitis.showSnackBar(context, 'Bitte füllen Sie alle Felder korrekt aus.');
     }
     return isValid;
-  }
-
-  void showSnackBar(String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      duration: const Duration(seconds: 2),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
