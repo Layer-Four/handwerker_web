@@ -7,6 +7,9 @@ import '../../../provider/data_provider/project_provders/project_vm_provider.dar
 import '../../shared_widgets/add_button_widget.dart';
 import '../../shared_widgets/search_line_header.dart';
 import 'widgets/edit_project.dart';
+import 'package:handwerker_web/view/administration_view/project_management_view/widgets/projectcard.dart';
+
+import 'widgets/project_headline_widget.dart';
 
 final Logger log = Logger('ProjectManagementBody');
 
@@ -19,22 +22,7 @@ class ProjectManagementBody extends ConsumerStatefulWidget {
 
 class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
   bool _isOpen = false;
-  // bool _isSnackbarShowed = false;
   ProjectEntryVM? _currentProject;
-
-  // void _showSnackBar(String message) {
-  //   if (_isSnackbarShowed) return;
-  //   setState(() => _isSnackbarShowed = true);
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Center(child: Text(message)),
-  //       duration: const Duration(seconds: 7),
-  //     ),
-  //   );
-  //   Future.delayed(const Duration(seconds: 7)).then(
-  //     (_) => setState(() => _isSnackbarShowed = false),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -44,86 +32,76 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SearchLineHeader(title: 'Projektverwaltung'),
-            notifier.projects.isEmpty
-                ? const Text('Keine Projekte verfügbar')
-                : SizedBox(
-                    height: 9 * 74,
+    return Stack(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SearchLineHeader(title: 'Projektverwaltung'),
+                  const ProjectRowHeadline(),
+                  notifier.projects.isEmpty
+                      ? const Text('Keine Projekte verfügbar')
+                      : SizedBox(
+                    height: 11 * 60,
                     child: ListView.builder(
                       itemCount: notifier.projects.length,
                       itemBuilder: (_, index) {
                         final project = notifier.projects[index];
-                        return Column(
-                          children: [
-                            ListTile(
-                              title: Row(
-                                children: [
-                                  Expanded(
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        project.title ?? 'Unbenanntes Projekt',
-                                        style: const TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.edit),
-                                        onPressed: () => _openEditProjectDialog(project),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.delete),
-                                        onPressed: () => _deleteProject(ref, project.id ?? -1),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(left: 16), // Adjust left margin for spacing
-                              color: Colors.grey, // Color of the underline
-                              height: 1, // Height of the underline
-                              width: double.infinity, // Full width
-                            ),
-                          ],
+                        return ProjectCard(
+                          key: ValueKey(index),
+                          project: project,
+                          onDelete: () {
+                            setState(() {
+                              notifier.projects.removeAt(index);
+                            });
+                          },
+                          onUpdate: (updatedProject) {
+                            setState(() {
+                              notifier.projects[index] = updatedProject;
+                            });
+                          },
                         );
                       },
                     ),
                   ),
-            AddButton(
-              onTap: () {
-                setState(() {
-                  _isOpen = !_isOpen;
-                  _currentProject = null; // Reset current project for add
-                });
-              },
-              isOpen: _isOpen,
-              hideAbleChild: _isOpen
-                  ? EditProject(
-                      onSave: () {
-                        Navigator.of(context).pop();
-                      },
-                      onCancel: () {
-                        Navigator.of(context).pop();
-                      },
-                      projectEntryVM: _currentProject ?? const ProjectEntryVM(),
-                    )
-                  : const SizedBox.shrink(),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
-      ),
+        Positioned(
+          bottom: 50,
+          left: 10,
+          child: AddButton(
+            isOpen: _isOpen,
+            onTap: () {
+              setState(() {
+                _isOpen = !_isOpen;
+                _currentProject = null; // Reset current project for add
+              });
+            },
+            hideAbleChild: _isOpen
+                ? Container(
+              width: MediaQuery.of(context).size.width > 900 ? 900 : MediaQuery.of(context).size.width,
+              child: EditProject(
+                onSave: () {
+                  setState(() => _isOpen = false);
+                },
+                onCancel: () {
+                  setState(() => _isOpen = false);
+                },
+                projectEntryVM: _currentProject ?? const ProjectEntryVM(),
+              ),
+            )
+                : const SizedBox.shrink(),
+          ),
+        ),
+      ],
     );
   }
 
@@ -159,11 +137,4 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
       ),
     );
   }
-
-  // void _updateProject(
-  //     BuildContext context, WidgetRef ref, int? projectId, ProjectEntryVM updatedProject) {
-  //   ref
-  //       .read(projectVMProvider)
-  //       .updateProject(projectId, updatedProject); // Pass ID and updated project
-  // }
 }
