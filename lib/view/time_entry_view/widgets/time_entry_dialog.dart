@@ -9,7 +9,7 @@ import '../../../../provider/data_provider/time_entry_provider/time_entry_provid
 import '../../../constants/themes/app_color.dart';
 import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/customer_models/customer_short_model/customer_short_dm.dart';
-import '../../../models/project_models/project_vm/project_vm.dart';
+import '../../../models/project_models/project_short_vm/project_short_vm.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
 
@@ -30,9 +30,9 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
   ServiceVM? _choosenService;
   UserDataShort? _selectedUser;
   bool _initUser = false;
-  ProjectVM? _project;
+  ProjectShortVM? _project;
   late TimeVMAdapter _entry;
-  List<ProjectVM> _projectsFormCustomer = [];
+  List<ProjectShortVM> _projectsFormCustomer = [];
   List<CustomerShortDM> _customers = [];
   CustomerShortDM? _selectedCustomers;
 

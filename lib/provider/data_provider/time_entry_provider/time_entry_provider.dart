@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/api/api.dart';
 import '../../../models/customer_models/customer_short_model/customer_short_dm.dart';
-import '../../../models/project_models/project_vm/project_vm.dart';
+import '../../../models/project_models/project_short_vm/project_short_vm.dart';
 import '../../../models/service_models/service_vm/service_vm.dart';
 import '../../../models/time_models/time_dm/time_dm.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
@@ -43,7 +43,7 @@ class TimeVMNotifier extends Notifier<List<CalendarEventData>> {
         if (workers.map((j) => j.id).toList().contains(e['userId'])) {
           user = workers.firstWhere((k) => k.id == e['userId']);
         }
-        final project = ProjectVM(id: e['projectId'], title: e['projectTitle']);
+        final project = ProjectShortVM(id: e['projectId'], title: e['projectTitle']);
         final service = ServiceVM(name: e['serviceTitle'], id: e['serviceId']);
         final object = TimeVMAdapter(
           date: DateTime.parse(e['date']),
@@ -130,7 +130,7 @@ class TimeVMNotifier extends Notifier<List<CalendarEventData>> {
     return [];
   }
 
-  Future<List<ProjectVM>> getProjectForCustomer(int customerId) async {
+  Future<List<ProjectShortVM>> getProjectForCustomer(int customerId) async {
     try {
       final response = await _api.getProjectByCustomerID(customerId);
       if (response.statusCode != 200) {
@@ -139,7 +139,7 @@ class TimeVMNotifier extends Notifier<List<CalendarEventData>> {
         );
       }
       final List data = response.data.map((e) => e).toList();
-      return data.map((e) => ProjectVM.fromJson(e)).toList();
+      return data.map((e) => ProjectShortVM.fromJson(e)).toList();
     } on DioException catch (e) {
       log('DioException: ${e.message}');
     } catch (e) {

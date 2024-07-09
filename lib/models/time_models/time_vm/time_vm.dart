@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../project_models/project_vm/project_vm.dart';
+import '../../project_models/project_short_vm/project_short_vm.dart';
 import '../../service_models/service_vm/service_vm.dart';
 import '../../users_models/user_data_short/user_short.dart';
 
@@ -19,7 +19,7 @@ class TimeVMAdapter with _$TimeVMAdapter {
     required DateTime date,
     String? description,
     int? duration,
-    ProjectVM? project,
+    ProjectShortVM? project,
     ServiceVM? service,
     String? customerName,
     int? customerId,

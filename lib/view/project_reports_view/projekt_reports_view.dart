@@ -6,8 +6,9 @@ import '../shared_widgets/search_line_header.dart';
 import 'widgets/project_customer_overview_widget.dart';
 import 'widgets/project_report_header.dart';
 
-class ProjectOverviewView extends StatelessWidget {
-  const ProjectOverviewView({super.key});
+class ProjectReportOverviewView extends StatelessWidget {
+  final ScrollController _scrollController;
+  ProjectReportOverviewView({super.key}) : _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -29,7 +30,9 @@ class ProjectOverviewView extends StatelessWidget {
                             trackVisibility: true,
                             interactive: true,
                             thickness: 10,
+                            controller: _scrollController,
                             child: ListView.builder(
+                              controller: _scrollController,
                               itemCount: ref.watch(projektReportProvider).length,
                               itemBuilder: (_, index) => ProjectCustomerOverviewWidget(
                                   ref.watch(projektReportProvider)[index]),

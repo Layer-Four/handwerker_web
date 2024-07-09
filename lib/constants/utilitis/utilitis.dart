@@ -17,12 +17,15 @@ class Utilitis {
   static Future<String?> showTimeSpinner(BuildContext context, DateTime initalTime) async {
     final result = await showDialog(
       context: context,
-      builder: (context) => Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.3,
-            vertical: MediaQuery.of(context).size.height * 0.2,
-          ),
-          child: TimeSpinnerWidget(initalTime: initalTime)),
+      builder: (context) => Center(
+        child: Container(
+            height: MediaQuery.of(context).size.height - 150,
+            margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.3,
+              vertical: MediaQuery.of(context).size.height * 0.2,
+            ),
+            child: TimeSpinnerWidget(initalTime: initalTime)),
+      ),
     );
     if (result.runtimeType != String) {
       return null;
@@ -51,6 +54,7 @@ class Utilitis {
     required Function() onReject,
   }) =>
       showDialog(
+        //  TODO: Add on rigth top corner a close button('X')
         context: context,
         barrierColor: const Color.fromARGB(20, 0, 0, 0),
         builder: (context) => Dialog(
@@ -256,11 +260,11 @@ class Utilitis {
         ),
       );
 
-  static Widget waitingMessage(BuildContext context, String message) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
+  static Widget waitingMessage(BuildContext context, String message) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Center(
+            child: Padding(
               padding: const EdgeInsets.all(60.0),
               child: Text(
                 message,
@@ -268,9 +272,9 @@ class Utilitis {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
-            const CircularProgressIndicator(),
-          ],
-        ),
+          ),
+          const CircularProgressIndicator(),
+        ],
       );
 
   static void writePDFAndDownload(Map<String, dynamic> newUser) async {
