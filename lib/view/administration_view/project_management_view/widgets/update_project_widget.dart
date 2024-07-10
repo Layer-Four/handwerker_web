@@ -1,14 +1,17 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:developer';
 
 import '../../../../constants/themes/app_color.dart';
 import '../../../../models/customer_models/customer_short_model/customer_short_dm.dart';
 import '../../../../models/project_models/project_entry_vm/project_entry_vm.dart';
 import '../../../../provider/data_provider/project_provders/project_vm_provider.dart';
 import 'mutableprojectentryvm.dart';
+import '../../../../models/project_entry_models/project_entry_vm/project_entry_vm.dart';
+import '../../../../models/project_models/customer_projekt_model/custom_project.dart';
+import '../mutableprojectentryvm.dart';
+import '../../../shared_widgets/symetric_button_widget.dart';
 
 class UpdateProjectWidget extends ConsumerStatefulWidget {
   final ProjectEntryVM projectEntryVM;
@@ -72,6 +75,18 @@ class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
     _dateEndController.text = DateFormat('d.M.y').format(_project.terminationDate);
     _descriptionController.text = _project.description ?? '';
     super.initState();
+    _nameController = TextEditingController(text: widget.projectEntryVM.title ?? '');
+    _dateStartController = TextEditingController(
+        text: widget.projectEntryVM.dateOfStart != null
+            ? DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.projectEntryVM.dateOfStart!))
+            : '');
+    _dateEndController = TextEditingController(
+        text: widget.projectEntryVM.dateOfTermination != null
+            ? DateFormat('dd-MM-yyyy')
+                .format(DateTime.parse(widget.projectEntryVM.dateOfTermination!))
+            : '');
+    _descriptionController = TextEditingController(text: widget.projectEntryVM.description ?? '');
+    fetchCustomers();
   }
 
   @override
@@ -138,131 +153,189 @@ class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
   // }
 
   @override
-  Widget build(BuildContext context) => Dialog(
-        child: SingleChildScrollView(
+  Widget build(BuildContext context) => Container(
+        color: Colors.white,
+        width: MediaQuery.of(context).size.width > 900 ? 900 : MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8.0),
+        child: Card(
+          elevation: 9,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // Project Title
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: TextFormField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(
-                      labelText: 'Projektüberschrift',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text('Projektüberschrift',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          buildTextField(
+                            hintText: 'Projektüberschrift',
+                            controller: _nameController,
+                            context: context,
+                          ),
+                          const SizedBox(height: 5),
+                          buildDropdown(
+                            options: customerOptions
+                                .map((customer) => customer.companyName)
+                                .where((name) => name != null)
+                                .cast<String>()
+                                .toList(),
+                            selectedValue: selectedCustomer,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedCustomer = value;
+                              });
+                            },
+                            context: context,
+                            hintText: 'Kunden auswählen',
+                          ),
+                        ],
+                      ),
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        //_nameController.text = value;
-                      });
-                    },
-                  ),
-                ),
-
-                // Kundenzuweisung (Customer Selection)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: buildDropdown(
-                    options: ref
-                        .watch(projectVMProvider)
-                        .customers
-                        .map(
-                          (e) => e.companyName,
-                        )
-                        .toList(),
-                    // customerOptions.map((customer) => customer.companyName).toList(),
-                    selectedValue: widget.projectEntryVM.customer!.companyName,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedCustomer = ref
-                            .watch(projectVMProvider)
-                            .customers
-                            .firstWhere((e) => e.companyName == value);
-                      });
-                    },
-                    context: context,
-                    hintText: 'Kunden auswählen',
-                  ),
-                ),
-
-                // Status
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: buildDropdown(
-                    options: [
-                      ProjectState.doing.title,
-                      ProjectState.finished.title,
-                      ProjectState.onHold.title,
-                      ProjectState.start.title,
-                    ],
-                    selectedValue: _selectedStatus.title,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedStatus = ProjectStateExt.getStateFromTitle(value!);
-                      });
-                    },
-                    context: context,
-                    hintText: 'Status auswählen',
-                  ),
-                ),
-
-                // Start Date
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-                  child: buildDateField(
-                    controller: _dateStartController,
-                    hintText: 'Start Datum',
-                    context: context,
-                  ),
-                ),
-
-                // End Date
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: buildDateField(
-                    controller: _dateEndController,
-                    hintText: 'End Datum',
-                    context: context,
-                  ),
-                ),
-
-                // Description
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: TextFormField(
-                    controller: _descriptionController,
-                    decoration: const InputDecoration(
-                      labelText: 'Beschreibung',
+                    Flexible(
+                      flex: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text('Status', style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          buildDropdown(
+                            options: statusOptions,
+                            selectedValue: selectedStatus,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedStatus = value;
+                              });
+                            },
+                            context: context,
+                            hintText: 'Status auswählen',
+                          ),
+                          const SizedBox(height: 5),
+                          buildDateField(
+                            controller: _dateStartController,
+                            hintText: 'Start Datum',
+                            context: context,
+                          ),
+                          const SizedBox(height: 5),
+                          buildDateField(
+                            controller: _dateEndController,
+                            hintText: 'End Datum',
+                            context: context,
+                          ),
+                        ],
+                      ),
                     ),
-                    maxLines: 3, // Adjust max lines as needed
-                    onChanged: (value) {
-                      setState(() {
-                        _descriptionController.text = value;
-                      });
-                    },
-                  ),
+                  ],
                 ),
-
-                // Save and Cancel Buttons
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text(
+                              'Beschreibung',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          buildTextField(
+                            hintText: 'Beschreibung',
+                            controller: _descriptionController,
+                            context: context,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
-                      onPressed: () {},
-                      // onPressed: widget.onCancel,
-                      child: const Text('Abbrechen'),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SymmetricButton(
+                        text: 'Verwerfen',
+                        textStyle: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(color: AppColor.kPrimaryButtonColor),
+                        color: AppColor.kWhite,
+                        onPressed: widget.onCancel,
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: () => () {},
-                      // onPressed: () => _saveProjectEntry(context),
-                      child: const Text('Speichern'),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SymmetricButton(
+                        text: 'Speichern',
+                        onPressed: () => _saveProjectEntry(context),
+                      ),
                     ),
                   ],
                 ),
               ],
+            ),
+          ),
+        ),
+      );
+
+  Widget buildTextField({
+    required String hintText,
+    required TextEditingController controller,
+    required BuildContext context,
+  }) =>
+      Padding(
+        padding: const EdgeInsets.only(left: 8, right: 8),
+        child: TextField(
+          controller: controller,
+          decoration: EditProject.textFieldDecoration(hintText), // Utilize textFieldDecoration here
+        ),
+      );
+
+  Widget buildDropdown({
+    required List<String> options,
+    required String? selectedValue,
+    required ValueChanged<String?> onChanged,
+    required BuildContext context,
+    required String hintText,
+  }) =>
+      Padding(
+        padding: const EdgeInsets.only(left: 8, right: 8),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColor.kTextfieldColor, // Set background color here
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: Colors.white),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: DropdownButton<String>(
+              value: selectedValue,
+              hint: Text(hintText, style: const TextStyle(color: Colors.black38)),
+              isExpanded: true,
+              underline: Container(),
+              onChanged: onChanged,
+              items: options.map((value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
           ),
         ),
@@ -273,21 +346,18 @@ class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
     required String hintText,
     required BuildContext context,
   }) =>
-      TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: AppColor.kTextfieldBorder,
-              ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 5,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(
-              color: AppColor.kTextfieldBorder,
+      Padding(
+        padding: const EdgeInsets.only(left: 8, right: 8),
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: AppColor.kTextfieldColor,
+            hintText: hintText,
+            hintStyle: const TextStyle(color: Colors.black38),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6.0),
+              borderSide: const BorderSide(color: Colors.white),
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -351,21 +421,11 @@ class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
       ),
       onChanged: onChanged,
       items: uniqueOptions
-          .map<DropdownMenuItem<String?>>((value) => DropdownMenuItem(
+          .map<DropdownMenuItem<String?>>((String? value) => DropdownMenuItem<String?>(
                 value: value,
                 child: Text(value ?? ''),
               ))
           .toList(),
     );
-  }
-
-  void updateProject() {
-    _project = _project.copyWith(
-        title: _titleController.text,
-        start: DateTime.parse(_dateStartController.text),
-        terminationDate: DateTime.parse(_dateEndController.text),
-        state: _selectedStatus,
-        description: _descriptionController.text,
-        customer: _selectedCustomer);
   }
 }
