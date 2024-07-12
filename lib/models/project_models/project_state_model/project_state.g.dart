@@ -6,8 +6,9 @@ part of 'project_state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ProjectStateImpl _$$ProjectStateImplFromJson(Map<String, dynamic> json) =>
-    _$ProjectStateImpl(
+_$ProjectInfoStateImpl _$$ProjectInfoStateImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ProjectInfoStateImpl(
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -23,7 +24,8 @@ _$ProjectStateImpl _$$ProjectStateImplFromJson(Map<String, dynamic> json) =>
       value: json['value'] as String?,
     );
 
-Map<String, dynamic> _$$ProjectStateImplToJson(_$ProjectStateImpl instance) =>
+Map<String, dynamic> _$$ProjectInfoStateImplToJson(
+        _$ProjectInfoStateImpl instance) =>
     <String, dynamic>{
       'createdAt': instance.createdAt?.toIso8601String(),
       'createdBy': instance.createdBy,

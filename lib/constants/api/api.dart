@@ -51,8 +51,8 @@ class Api {
   final String _putUpdateService = '/service/update';
   final String _putUpdateUser = '/user/update';
   final String _postCreateProjectEntry = '/project/create';
-  final String _putUpdateProjectEntry = '/project/update'; // New endpoint for updating projects
-  final String _delDeleteProjectEntry = '/project/delete'; // New endpoint for deleting projects
+  final String _putUpdateProjectEntry = '/project/update';
+  final String _delDeleteProjectEntry = '/project/delete';
   final String _getReadAllProjects = '/project/read';
   final String _putUpdateCustomer = '/customer/update';
 

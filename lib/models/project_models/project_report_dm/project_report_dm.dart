@@ -16,7 +16,7 @@ class ProjectRepotsDM with _$ProjectRepotsDM {
     String? projectDescription,
     required String projectName,
     double? projectRevenue,
-    ProjectState? projectState,
+    ProjectInfoState? projectState,
     @Default([]) List<ProjectTimeEntry> reportsList,
     @Default([]) List<ServiceProject> serviceList,
   }) = _ProjectRepotsDM;

@@ -12,7 +12,7 @@ _$ProjectEntryVMImpl _$$ProjectEntryVMImplFromJson(Map<String, dynamic> json) =>
       start: DateTime.parse(json['start'] as String),
       terminationDate: DateTime.parse(json['terminationDate'] as String),
       state: $enumDecodeNullable(_$ProjectStateEnumMap, json['state']) ??
-          ProjectState.onHold,
+          ProjectState.planning,
       description: json['description'] as String?,
       id: (json['id'] as num?)?.toInt(),
       customer: json['customer'] == null
@@ -33,8 +33,8 @@ Map<String, dynamic> _$$ProjectEntryVMImplToJson(
     };
 
 const _$ProjectStateEnumMap = {
-  ProjectState.start: 'start',
   ProjectState.finished: 'finished',
-  ProjectState.doing: 'doing',
-  ProjectState.onHold: 'onHold',
+  ProjectState.start: 'start',
+  ProjectState.paused: 'paused',
+  ProjectState.planning: 'planning',
 };

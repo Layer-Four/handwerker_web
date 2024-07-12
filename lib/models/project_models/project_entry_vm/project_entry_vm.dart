@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../customer_models/customer_short_model/customer_short_dm.dart';
+import '../projects_state_enum/project_state.dart';
 
 part 'project_entry_vm.freezed.dart';
 part 'project_entry_vm.g.dart';
@@ -11,41 +12,19 @@ class ProjectEntryVM with _$ProjectEntryVM {
     required String title,
     required DateTime start,
     required DateTime terminationDate,
-    @Default(ProjectState.onHold) ProjectState state,
+    @Default(ProjectState.planning) ProjectState state,
     String? description,
     int? id,
     CustomerShortDM? customer,
   }) = _ProjectEntryVM;
 
+  bool isProjectMinFilled() {
+    if (customer != null && start.millisecondsSinceEpoch < terminationDate.millisecondsSinceEpoch) {
+      return true;
+    }
+    return false;
+  }
+
   factory ProjectEntryVM.fromJson(Map<String, dynamic> json) => _$ProjectEntryVMFromJson(json);
   const ProjectEntryVM._();
-}
-
-enum ProjectState {
-  start(3),
-  finished(5),
-  doing(6),
-  onHold(7);
-
-  final int value;
-
-  const ProjectState(this.value);
-
-  String get title => switch (value) {
-        3 => 'Offen',
-        5 => 'Geschlossen',
-        6 => 'In Bearbeitung',
-        7 => 'on Hold',
-        _ => 'Kein Status ',
-      };
-}
-
-extension ProjectStateExt on ProjectState {
-  static ProjectState getStateFromTitle(String title) => switch (title) {
-        'Offen' => ProjectState.start,
-        'Geschlossen' => ProjectState.finished,
-        'In Bearbeitung' => ProjectState.doing,
-        'on Hold' => ProjectState.onHold,
-        _ => throw UnimplementedError()
-      };
 }

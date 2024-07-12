@@ -61,7 +61,7 @@ class TimeVMNotifier extends Notifier<List<CalendarEventData>> {
           type: TimeEntryType.values[e['type']],
         );
         if (object.customerName == null) {
-          log(object.toJson().toString());
+          // log(object.toJson().toString());
         }
         result.add(CalendarEventData(
           title: object.customerName ?? 'Kein Kunde',

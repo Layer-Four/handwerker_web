@@ -198,7 +198,7 @@ class _$ProjectEntryVMImpl extends _ProjectEntryVM {
       {required this.title,
       required this.start,
       required this.terminationDate,
-      this.state = ProjectState.onHold,
+      this.state = ProjectState.planning,
       this.description,
       this.id,
       this.customer})

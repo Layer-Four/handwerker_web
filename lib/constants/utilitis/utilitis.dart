@@ -245,11 +245,12 @@ class Utilitis {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  static InputDecoration textFieldDecoration(String hintText) => InputDecoration(
+  static InputDecoration textFieldDecoration([String? hintText, Icon? suffixIcon]) =>
+      InputDecoration(
         filled: true,
         fillColor: AppColor.kTextfieldColor,
         hintText: hintText,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(6),
           borderSide: BorderSide.none,
@@ -258,6 +259,7 @@ class Utilitis {
           borderSide: const BorderSide(color: Colors.grey, width: 0),
           borderRadius: BorderRadius.circular(6),
         ),
+        suffixIcon: suffixIcon,
       );
 
   static Widget waitingMessage(BuildContext context, String message) => Column(

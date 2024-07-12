@@ -2,39 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../constants/themes/app_color.dart';
 import '../../../../constants/utilitis/utilitis.dart';
-import '../../../../models/customer_models/customer_short_model/customer_short_dm.dart';
-import '../../../../models/project_models/project_entry_dm/project_entry_dm.dart';
+import '../../../../models/project_models/projects_state_enum/project_state.dart';
 import '../../../../provider/data_provider/project_provders/project_vm_provider.dart';
+import '../../../shared_widgets/custom_datepicker_widget.dart';
+import '../../../shared_widgets/custom_dropdown_button.dart';
+import '../../../shared_widgets/custom_textfield_widget.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
 class CreateProjectWidget extends ConsumerStatefulWidget {
-  final VoidCallback onSave;
-  final VoidCallback onCancel;
+  final void Function() onCancel;
 
-  const CreateProjectWidget({
-    super.key,
-    required this.onSave,
-    required this.onCancel,
-  });
-
-  // factory EditProject.withDefaultVM({
-  //   Key? key,
-  //   required VoidCallback onSave,
-  //   required VoidCallback onCancel,
-  //   required CustomeProject? project,
-  //   ProjectEntryVM? projectEntryVM,
-  // }) =>
-  //     EditProject(
-  //       key: key,
-  //       onSave: onSave,
-  //       onCancel: onCancel,
-  //       project: project,
-  //       projectEntryVM: projectEntryVM ?? const ProjectEntryVM(),
-  //     );
+  const CreateProjectWidget({super.key, required this.onCancel});
 
   @override
   ConsumerState<CreateProjectWidget> createState() => _EditProjectState();
@@ -42,54 +23,17 @@ class CreateProjectWidget extends ConsumerStatefulWidget {
 
 class _EditProjectState extends ConsumerState<CreateProjectWidget> {
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _dateStartController = TextEditingController();
-  final TextEditingController _dateEndController = TextEditingController();
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  ProjectEntryDM _project = const ProjectEntryDM();
-  String? selectedCustomer;
-  String? selectedStatus;
-  List<CustomerShortDM> customerOptions = [];
-  List<String> statusOptions = ['Offen', 'Geschlossen', 'In Bearbeitung', 'On Hold'];
-  final Map<String, int> statusOptionsMap = {
-    'Offen': 3,
-    'Geschlossen': 5,
-    'In Bearbeitung': 6,
-    'On Hold': 7,
-  };
-  bool isLoadingCustomers = true;
-
-  @override
-  void initState() {
-    getCustomers();
-    // if (widget.projectEntryVM != null) {
-    //   _project = widget.projectEntryVM!;
-    //   _titleController.text = _project.title ?? '';
-    //   _dateStartController.text = _project.dateOfStart != null
-    //       ? DateFormat('d.M.y').format(DateTime.parse(_project.dateOfStart!))
-    //       : '';
-    //   _dateEndController.text = _project.dateOfTermination != null
-    //       ? DateFormat('d.M.y').format(DateTime.parse(_project.dateOfTermination!))
-    //       : '';
-    //   _descriptionController.text = _project.description ?? '';
-    // }
-    super.initState();
-  }
 
   @override
   void dispose() {
     _titleController.dispose();
-    _dateStartController.dispose();
-    _dateEndController.dispose();
+    _startDateController.dispose();
+    _endDateController.dispose();
     _descriptionController.dispose();
     super.dispose();
-  }
-
-  Future<void> getCustomers() async {
-    final x = await ref.read(projectVMProvider.notifier).fetchCustomer();
-    setState(() {
-      customerOptions = x;
-      isLoadingCustomers = false;
-    });
   }
 
   // Future<void> _saveProjectEntry(BuildContext context) async {
@@ -141,228 +85,182 @@ class _EditProjectState extends ConsumerState<CreateProjectWidget> {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Material(
-          borderRadius: BorderRadius.circular(6),
-          elevation: 3,
+        child: Card(
+          elevation: 9,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Project Title
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: TextFormField(
-                    controller: _titleController,
-                    decoration: Utilitis.textFieldDecoration('Projektüberschrift'),
-                    // const InputDecoration(
-                    //   labelText: 'Projektüberschrift',
-                    // ),
-                    // onChanged: (value) {
-                    //   setState(() {
-                    //     _nameController.text = value;
-                    //   }
-                    //   );
-                    // },
-                  ),
+                CustomTextfield(
+                  title: 'Projektname',
+                  controller: _titleController,
+                  hintText: 'Benenne dein Projekt',
                 ),
 
                 // Kundenzuweisung (Customer Selection)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: buildDropdown(
-                    options: customerOptions.map((customer) => customer.companyName).toList(),
-                    selectedValue: selectedCustomer,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedCustomer = value;
-                      });
-                    },
-                    context: context,
-                    hintText: 'Kunden auswählen',
-                  ),
-                ),
-
-                // Status
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: buildDropdown(
-                    options: statusOptions,
-                    selectedValue: selectedStatus,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedStatus = value;
-                      });
-                    },
-                    context: context,
-                    hintText: 'Status auswählen',
-                  ),
-                ),
-
-                // Start Date
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-                  child: buildDateField(
-                    controller: _dateStartController,
-                    hintText: 'Start Datum',
-                  ),
-                ),
-
-                // End Date
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: buildDateField(
-                    controller: _dateEndController,
-                    hintText: 'End Datum',
-                  ),
-                ),
-
-                // Description
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: SizedBox(
-                    height: 80,
-                    child: TextFormField(
-                      controller: _descriptionController,
-                      expands: true,
-                      decoration: Utilitis.textFieldDecoration('Beschreibung'),
-                      //   const InputDecoration(
-                      //   labelText: 'Beschreibung',
-                      // ),
-                      maxLines: null, // Adjust max lines as needed
-                      // onChanged: (value) {
-                      //   setState(() {
-                      //     _descriptionController.text = value;
-                      //   });
-                      // },
-                    ),
-                  ),
-                ),
-
-                // Save and Cancel Buttons
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SymmetricButton(
-                        onPressed: widget.onCancel,
-                        text: 'Abbrechen',
-                        textStyle: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.copyWith(color: AppColor.kPrimaryButtonColor),
-                        color: AppColor.kWhite,
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: CustomDropDown(
+                        initalValue: ref.watch(projectVMProvider).editAbleProject?.customer,
+                        title: 'Kunde',
+                        hintText: 'Kunden auswählen',
+                        items: ref
+                            .watch(projectVMProvider)
+                            .customers
+                            .map(
+                              (c) => DropdownMenuItem(
+                                value: c,
+                                child: Text(c.companyName),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (c) => ref
+                            .read(projectVMProvider.notifier)
+                            .updateEditableEntry(newCustomer: c),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SymmetricButton(
-                        onPressed: () => () {
-                          _project = _project.copyWith(customerId: 1111);
-                          log(_project.toJson().toString());
-                        },
-                        // onPressed: () => _saveProjectEntry(context),
-                        text: 'Speichern',
-                      ),
+                    CustomDropDown(
+                      initalValue: ref.watch(projectVMProvider).editAbleProject?.state,
+                      title: 'Status',
+                      hintText: 'Status auswählen',
+                      items: ProjectStateExt.getProjectStates
+                          .map(
+                            (s) => DropdownMenuItem(
+                              value: s,
+                              child: Text(s.title),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (s) {
+                        ref.read(projectVMProvider.notifier).updateEditableEntry(newState: s!);
+                      },
                     ),
                   ],
                 ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: CustomDatePicker(
+                        title: 'Start Datum',
+                        initDate: DateTime.now(),
+                        controller: _startDateController,
+                      ),
+                    ),
+                    CustomDatePicker(
+                      title: 'End Datum',
+                      initDate: DateTime.now().add(const Duration(days: 1)),
+                      controller: _endDateController,
+                    )
+                  ],
+                ),
+                _buildDescriptionAndButton(),
+                // Save and Cancel Buttons
               ],
             ),
           ),
         ),
       );
 
-  Widget buildDateField({
-    required TextEditingController controller,
-    required String hintText,
-  }) =>
-      TextFormField(
-        controller: controller,
-        decoration: Utilitis.textFieldDecoration(hintText),
-        //  InputDecoration(
-        //   hintText: hintText,
-        //   hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-        //         color: AppColor.kTextfieldBorder,
-        //       ),
-        //   contentPadding: const EdgeInsets.symmetric(
-        //     horizontal: 15,
-        //     vertical: 5,
-        //   ),
-        //   enabledBorder: OutlineInputBorder(
-        //     borderRadius: BorderRadius.circular(12),
-        //     borderSide: BorderSide(
-        //       color: AppColor.kTextfieldBorder,
-        //     ),
-        //   ),
-        //   focusedBorder: OutlineInputBorder(
-        //     borderRadius: BorderRadius.circular(12),
-        //     borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-        //   ),
-        //   filled: true,
-        //   fillColor: Colors.white,
-        //   suffixIcon: const Icon(Icons.calendar_today),
-        // ),
-        readOnly: true,
-        onTap: () => _selectDate(controller, context),
-      );
-
-  Future<void> _selectDate(TextEditingController controller, BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now().add(const Duration(days: -1825)),
-      lastDate: DateTime.now().add(const Duration(days: 3650)),
-    );
-    if (picked != null && picked != DateTime.now()) {
-      setState(() {
-        controller.text = DateFormat('d.M.y').format(picked);
-      });
-    }
-  }
-
-  Widget buildDropdown({
-    required List<String?> options,
-    required String? selectedValue,
-    required ValueChanged<String?> onChanged,
-    required BuildContext context,
-    required String hintText,
-  }) {
-    final uniqueOptions = options.toSet().toList();
-
-    return DropdownButtonFormField<String?>(
-      value: selectedValue,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: AppColor.kTextfieldBorder,
+  Widget _buildDescriptionAndButton() => MediaQuery.of(context).size.width > 600
+      ? Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: CustomTextfield(
+                title: 'Beschreibung',
+                hintText: 'Beschreibung',
+                controller: _descriptionController,
+                isMultiLine: true,
+                textfieldHeight: 90,
+              ),
             ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 5,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: AppColor.kTextfieldBorder,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColor.kTextfieldBorder),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      onChanged: onChanged,
-      items: uniqueOptions
-          .map<DropdownMenuItem<String?>>((String? value) => DropdownMenuItem<String?>(
-                value: value,
-                child: Text(value ?? ''),
-              ))
-          .toList(),
-    );
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: SymmetricButton(
+                text: 'Verwerfen',
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(color: AppColor.kPrimaryButtonColor),
+                color: AppColor.kWhite,
+                onPressed: widget.onCancel,
+              ),
+            ),
+            SymmetricButton(
+              text: 'Speichern',
+              onPressed: () => _updateAndCreateNewProject(),
+              // onPressed: () => _saveProjectEntry(context),
+            ),
+          ],
+        )
+      : Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: CustomTextfield(
+                title: 'Beschreibung',
+                hintText: 'Beschreibung',
+                controller: _descriptionController,
+                isMultiLine: true,
+                textfieldHeight: 90,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: SymmetricButton(
+                    text: 'Speichern',
+                    onPressed: () => _updateAndCreateNewProject(),
+                    // onPressed: () => _saveProjectEntry(context),
+                  ),
+                ),
+                SymmetricButton(
+                  text: 'Verwerfen',
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .labelMedium
+                      ?.copyWith(color: AppColor.kPrimaryButtonColor),
+                  color: AppColor.kWhite,
+                  onPressed: widget.onCancel,
+                ),
+              ],
+            ),
+          ],
+        );
+  void _updateAndCreateNewProject() {
+    log('${ref.watch(projectVMProvider).editAbleProject}');
+    final start = _startDateController.text.split('.').map((e) => int.parse(e)).toList();
+    final end = _endDateController.text.split('.').map((e) => int.parse(e)).toList();
+    ref.read(projectVMProvider.notifier).updateEditableEntry(
+          newDescription: _descriptionController.text,
+          newStart: DateTime(start[2], start[1], start[0]),
+          newTermination: DateTime(end[2], end[1], end[0]),
+          newTitle: _titleController.text,
+        );
+    log('${ref.watch(projectVMProvider).editAbleProject}');
+
+    ref.read(projectVMProvider.notifier).createProject().then((e) {
+      widget.onCancel();
+      Utilitis.showSnackBar(
+        context,
+        e ? 'Erfolgreich neues Projekt angelegt' : 'Leider ist etwas schief gegangen',
+      );
+    });
+    return;
   }
 }
