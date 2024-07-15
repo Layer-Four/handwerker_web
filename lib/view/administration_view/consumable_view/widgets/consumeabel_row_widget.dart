@@ -98,7 +98,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
           child: SizedBox(
             height: 69,
             child: Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.only(left: 6.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

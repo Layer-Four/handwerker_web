@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../constants/utilitis/utilitis.dart';
 import '../../provider/data_provider/customer_project/projekt_overview_provider.dart';
 import '../shared_widgets/search_line_header.dart';
+import '../shared_widgets/waiting_message_widget.dart';
 import 'widgets/project_customer_overview_widget.dart';
 import 'widgets/project_report_header.dart';
 
@@ -24,7 +24,7 @@ class ProjectReportOverviewView extends StatelessWidget {
                   height: 11 * 60,
                   child: Consumer(
                     builder: (context, ref, child) => ref.watch(projektReportProvider).isEmpty
-                        ? Utilitis.waitingMessage(context, 'Lade Berichte')
+                        ? const WaitingMessageWidget('Lade Berichte')
                         : Scrollbar(
                             thumbVisibility: true,
                             trackVisibility: true,

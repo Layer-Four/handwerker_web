@@ -33,20 +33,6 @@ class Utilitis {
     return result;
   }
 
-  static void showErrorMessage(BuildContext context, String errorMessage) => showDialog(
-        context: context,
-        builder: (context) => GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: AlertDialog(
-            backgroundColor: Colors.white,
-            content: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24),
-              child: Text(errorMessage),
-            ),
-          ),
-        ),
-      );
-
   static Future<dynamic> askPopUp(
     BuildContext context, {
     required String message,
@@ -260,23 +246,6 @@ class Utilitis {
           borderRadius: BorderRadius.circular(6),
         ),
         suffixIcon: suffixIcon,
-      );
-
-  static Widget waitingMessage(BuildContext context, String message) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(60.0),
-              child: Text(
-                message,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ),
-          ),
-          const CircularProgressIndicator(),
-        ],
       );
 
   static void writePDFAndDownload(Map<String, dynamic> newUser) async {

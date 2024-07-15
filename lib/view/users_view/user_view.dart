@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../constants/utilitis/utilitis.dart';
 import '../../models/users_models/user_role/user_role.dart';
 import '../../provider/user_provider/user_administration/user_administration._provider.dart';
 import '../shared_widgets/add_button_widget.dart';
 import '../shared_widgets/search_line_header.dart';
+import '../shared_widgets/waiting_message_widget.dart';
 import 'widgets/edit_employee_widget.dart';
 import 'widgets/user_data_widget.dart';
 import 'widgets/user_row_headline_widget.dart';
@@ -46,7 +46,7 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                     SizedBox(
                       height: 11 * 60,
                       child: ref.watch(userAdministrationProvider).isEmpty
-                          ? Utilitis.waitingMessage(ctx, 'Lade Mitarbeitende')
+                          ? const WaitingMessageWidget('Lade Mitarbeitende')
                           : ListView.builder(
                               itemCount: ref.watch(userAdministrationProvider).length,
                               itemBuilder: (_, index) => UserDataWidget(

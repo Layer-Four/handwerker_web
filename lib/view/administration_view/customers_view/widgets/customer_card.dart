@@ -41,7 +41,7 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                   height: 69,
                   padding: const EdgeInsets.only(left: 6.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Tooltip(
                         message:
@@ -53,36 +53,44 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => Utilitis.askPopUp(
-                          context,
-                          message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
-                          onAccept: () {
-                            ref
-                                .read(customerProvider.notifier)
-                                .deleteCustomer(widget.customer.customerID!)
-                                .then((success) {
-                              if (success) {
-                                Utilitis.showSnackBar(context, 'Kunde wurde erfolgreich gelöscht');
-                                widget.onDelete();
-                              } else {
-                                Utilitis.showSnackBar(context,
-                                    'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
-                              }
-                              Navigator.of(context).pop(); // Dismiss the dialog
-                            });
-                          },
-                          onReject: () {
-                            Navigator.of(context).pop(); // Dismiss the dialog on reject
-                          },
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () => Utilitis.askPopUp(
+                                context,
+                                message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
+                                onAccept: () {
+                                  ref
+                                      .read(customerProvider.notifier)
+                                      .deleteCustomer(widget.customer.customerID!)
+                                      .then((success) {
+                                    if (success) {
+                                      Utilitis.showSnackBar(
+                                          context, 'Kunde wurde erfolgreich gelöscht');
+                                      widget.onDelete();
+                                    } else {
+                                      Utilitis.showSnackBar(context,
+                                          'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
+                                    }
+                                    Navigator.of(context).pop(); // Dismiss the dialog
+                                  });
+                                },
+                                onReject: () {
+                                  Navigator.of(context).pop(); // Dismiss the dialog on reject
+                                },
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () =>
+                                  setState(() => _showCustomerDetails = !_showCustomerDetails),
+                            ),
+                          ],
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () =>
-                            setState(() => _showCustomerDetails = !_showCustomerDetails),
                       ),
                     ],
                   ),

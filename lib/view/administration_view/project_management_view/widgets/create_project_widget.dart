@@ -10,6 +10,7 @@ import '../../../../provider/data_provider/project_provders/project_vm_provider.
 import '../../../shared_widgets/custom_datepicker_widget.dart';
 import '../../../shared_widgets/custom_dropdown_button.dart';
 import '../../../shared_widgets/custom_textfield_widget.dart';
+import '../../../shared_widgets/error_message_widget.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
 class CreateProjectWidget extends ConsumerStatefulWidget {
@@ -220,6 +221,10 @@ class _EditProjectState extends ConsumerState<CreateProjectWidget> {
       });
       return;
     }
-    return Utilitis.showErrorMessage(context, 'Bitte füllen sie Alle Eingabefelder aus');
+    showDialog(
+      context: context,
+      builder: (context) => const ErrorMessageWidget('Bitte füllen sie Alle Eingabefelder aus'),
+    );
+    return;
   }
 }

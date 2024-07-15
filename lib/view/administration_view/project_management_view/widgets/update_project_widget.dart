@@ -12,7 +12,9 @@ import '../../../../provider/data_provider/project_provders/project_vm_provider.
 import '../../../shared_widgets/custom_datepicker_widget.dart';
 import '../../../shared_widgets/custom_dropdown_button.dart';
 import '../../../shared_widgets/custom_textfield_widget.dart';
+import '../../../shared_widgets/error_message_widget.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
+import '../../../shared_widgets/waiting_message_widget.dart';
 
 class UpdateProjectWidget extends ConsumerStatefulWidget {
   final ProjectEntryVM project;
@@ -49,7 +51,7 @@ class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
 
   @override
   Widget build(BuildContext context) => ref.watch(projectVMProvider).isLoading
-      ? Utilitis.waitingMessage(context, 'Lade Projekt')
+      ? const WaitingMessageWidget('Lade Projekt')
       : Container(
           margin: EdgeInsets.only(
               right: MediaQuery.of(context).size.width > 950
@@ -228,7 +230,11 @@ class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
           );
     }
     if (ref.watch(projectVMProvider.notifier).editAbleProject == null) {
-      return Utilitis.showErrorMessage(context, 'Bitte füllen sie Alle Eingabefelder aus');
+      showDialog(
+          context: context,
+          builder: (context) =>
+              const ErrorMessageWidget('Bitte füllen sie Alle Eingabefelder aus'));
+      return;
     }
     log('${ref.watch(projectVMProvider).editAbleProject}');
     ref.read(projectVMProvider.notifier).updateProject().then((e) {
