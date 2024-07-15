@@ -36,52 +36,6 @@ class _EditProjectState extends ConsumerState<CreateProjectWidget> {
     super.dispose();
   }
 
-  // Future<void> _saveProjectEntry(BuildContext context) async {
-  //   CustomerShortDM? selectedCustomerObject = customerOptions.firstWhere(
-  //     (customer) => customer.companyName == selectedCustomer,
-  //     orElse: () => CustomerShortDM(companyName: 'Standardunternehmen', id: -1),
-  //   );
-
-  //   int? selectedStatusId = statusOptionsMap[selectedStatus];
-
-  //   ProjectEntryVM newProjectEntry = ProjectEntryVM(
-  //     title: _titleController.text,
-  //     dateOfStart: _dateStartController.text,
-  //     dateOfTermination: _dateEndController.text,
-  //     projectStatusId: selectedStatusId,
-  //     customerId: selectedCustomerObject.id,
-  //     description: _descriptionController.text,
-  //   );
-
-  //   try {
-  //     if (widget.project == null) {
-  //       // Creating a new project
-  //       final Map<String, dynamic> projectEntryMap = newProjectEntry.toJson();
-  //       await Api().postCreateProjectEntry(projectEntryMap);
-  //     } else {
-  //       // Updating an existing project
-  //       widget.mutableProjectEntryVM = MutableProjectEntryVM(
-  //         title: _titleController.text,
-  //         dateOfStart: _dateStartController.text,
-  //         dateOfTermination: _dateEndController.text,
-  //         projectStatusId: selectedStatusId ?? 0,
-  //         customerId: selectedCustomerObject.id,
-  //         description: _descriptionController.text,
-  //       );
-
-  //       final Map<String, dynamic> projectEntryMap =
-  //           widget.mutableProjectEntryVM.toProjectEntryVM().toJson();
-  //       await Api().putUpdateProjectEntry(projectEntryMap);
-  //     }
-  //     widget.onSave();
-  //   } catch (e) {
-  //     log('Error: $e');
-  //     // Handle errors if necessary
-  //     // ignore: use_build_context_synchronously
-  //     return Utilitis.showSnackBar(context, 'Projektspeicherung fehlgeschlagen: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.all(8.0),

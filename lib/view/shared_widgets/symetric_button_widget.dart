@@ -69,10 +69,11 @@ class _SymmetricButtonState extends State<SymmetricButton> with SingleTickerProv
   Widget build(BuildContext context) => InkWell(
         onTap: () {
           widget.onPressed?.call();
-          _shrinkButtonSize();
-          _restoreButtonSize();
+          // _shrinkButtonSize();
+          // _restoreButtonSize();
         },
         onTapDown: (_) => _shrinkButtonSize(),
+        onTapUp: (_) => _restoreButtonSize(),
         child: Transform.scale(
           scale: _scaleTransformValue,
           child: Material(
