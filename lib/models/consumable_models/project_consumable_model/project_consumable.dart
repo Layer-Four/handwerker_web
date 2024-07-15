@@ -6,7 +6,8 @@ part 'project_consumable.g.dart';
 class ProjectConsumable with _$ProjectConsumable {
   const factory ProjectConsumable({
     required String consumableName,
-    required int consumableAmount,
+    // TODO: Update when Consumable List in CustomerProjectReoports get amount
+    int? consumableAmount,
     required double consumablePrice,
   }) = _ProjectConsumable;
   factory ProjectConsumable.fromJson(Map<String, dynamic> json) =>

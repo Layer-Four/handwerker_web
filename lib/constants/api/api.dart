@@ -1,46 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Customer {
-  final String? companyName;
-  final int id;
-
-  Customer({this.companyName, required this.id});
-
-  factory Customer.fromJson(Map<String, dynamic>? json) {
-    if (json == null) {
-      // Return a default Customer object if json is null
-      return Customer(companyName: 'Unknown Company', id: -1);
-    }
-
-    // Ensure that json['companyName'] and json['id'] are handled safely
-    final companyName = json['companyName'] as String?;
-    final id = json['id'] as int?;
-
-    return Customer(
-      companyName: companyName ?? 'Unknown Company',
-      id: id ?? -1,
-    );
-  }
-}
-
-// Project class
-class Project {
-  final String? title;
-  final int id;
-  final int customerId; // Add customerId property
-
-  Project({this.title, required this.id, required this.customerId}); // Update constructor
-
-  factory Project.fromJson(Map<String, dynamic> json) => Project(
-        title: json['title'] != null ? json['title'] as String : 'Default Title',
-        id: json['id'] != null ? json['id'] as int : -1,
-        customerId: json['customerId'] != null
-            ? json['customerId'] as int
-            : -1, // Parse customerId from JSON
-      );
-}
-
 class Api {
   final Dio _api = Dio();
   final _storage = SharedPreferences.getInstance();
@@ -91,8 +51,8 @@ class Api {
   final String _putUpdateService = '/service/update';
   final String _putUpdateUser = '/user/update';
   final String _postCreateProjectEntry = '/project/create';
-  final String _putUpdateProjectEntry = '/project/update'; // New endpoint for updating projects
-  final String _delDeleteProjectEntry = '/project/delete'; // New endpoint for deleting projects
+  final String _putUpdateProjectEntry = '/project/update';
+  final String _delDeleteProjectEntry = '/project/delete';
   final String _getReadAllProjects = '/project/read';
   final String _putUpdateCustomer = '/customer/update';
 

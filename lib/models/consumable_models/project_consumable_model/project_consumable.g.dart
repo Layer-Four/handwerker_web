@@ -10,7 +10,7 @@ _$ProjectConsumableImpl _$$ProjectConsumableImplFromJson(
         Map<String, dynamic> json) =>
     _$ProjectConsumableImpl(
       consumableName: json['consumableName'] as String,
-      consumableAmount: (json['consumableAmount'] as num).toInt(),
+      consumableAmount: (json['consumableAmount'] as num?)?.toInt(),
       consumablePrice: (json['consumablePrice'] as num).toDouble(),
     );
 

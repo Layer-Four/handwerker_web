@@ -62,6 +62,8 @@ class ProjectUtilitisView extends StatelessWidget {
       return unit.servicePrice * unit.serviceAmount;
     }
     final unit = utilits as ProjectConsumable;
-    return unit.consumablePrice * unit.consumableAmount;
+    // TODO: Update when Consumable List in CustomerProjectReoports get amount
+    return unit.consumablePrice * 1;
+    // return unit.consumablePrice * unit.consumableAmount;
   }
 }

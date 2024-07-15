@@ -25,7 +25,7 @@ _$TimeVMAdapterImpl _$$TimeVMAdapterImplFromJson(Map<String, dynamic> json) =>
       duration: (json['duration'] as num?)?.toInt(),
       project: json['project'] == null
           ? null
-          : ProjectVM.fromJson(json['project'] as Map<String, dynamic>),
+          : ProjectShortVM.fromJson(json['project'] as Map<String, dynamic>),
       service: json['service'] == null
           ? null
           : ServiceVM.fromJson(json['service'] as Map<String, dynamic>),

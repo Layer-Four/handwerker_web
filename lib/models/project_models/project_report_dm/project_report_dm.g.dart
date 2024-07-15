@@ -25,7 +25,8 @@ _$ProjectRepotsDMImpl _$$ProjectRepotsDMImplFromJson(
       projectRevenue: (json['projectRevenue'] as num?)?.toDouble(),
       projectState: json['projectState'] == null
           ? null
-          : ProjectState.fromJson(json['projectState'] as Map<String, dynamic>),
+          : ProjectInfoState.fromJson(
+              json['projectState'] as Map<String, dynamic>),
       reportsList: (json['reportsList'] as List<dynamic>?)
               ?.map((e) => ProjectTimeEntry.fromJson(e as Map<String, dynamic>))
               .toList() ??

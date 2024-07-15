@@ -20,8 +20,9 @@ ProjectConsumable _$ProjectConsumableFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProjectConsumable {
-  String get consumableName => throw _privateConstructorUsedError;
-  int get consumableAmount => throw _privateConstructorUsedError;
+  String get consumableName =>
+      throw _privateConstructorUsedError; // TODO: Update when Consumable List in CustomerProjectReoports get amount
+  int? get consumableAmount => throw _privateConstructorUsedError;
   double get consumablePrice => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +38,7 @@ abstract class $ProjectConsumableCopyWith<$Res> {
       _$ProjectConsumableCopyWithImpl<$Res, ProjectConsumable>;
   @useResult
   $Res call(
-      {String consumableName, int consumableAmount, double consumablePrice});
+      {String consumableName, int? consumableAmount, double consumablePrice});
 }
 
 /// @nodoc
@@ -54,7 +55,7 @@ class _$ProjectConsumableCopyWithImpl<$Res, $Val extends ProjectConsumable>
   @override
   $Res call({
     Object? consumableName = null,
-    Object? consumableAmount = null,
+    Object? consumableAmount = freezed,
     Object? consumablePrice = null,
   }) {
     return _then(_value.copyWith(
@@ -62,10 +63,10 @@ class _$ProjectConsumableCopyWithImpl<$Res, $Val extends ProjectConsumable>
           ? _value.consumableName
           : consumableName // ignore: cast_nullable_to_non_nullable
               as String,
-      consumableAmount: null == consumableAmount
+      consumableAmount: freezed == consumableAmount
           ? _value.consumableAmount
           : consumableAmount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       consumablePrice: null == consumablePrice
           ? _value.consumablePrice
           : consumablePrice // ignore: cast_nullable_to_non_nullable
@@ -83,7 +84,7 @@ abstract class _$$ProjectConsumableImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String consumableName, int consumableAmount, double consumablePrice});
+      {String consumableName, int? consumableAmount, double consumablePrice});
 }
 
 /// @nodoc
@@ -98,7 +99,7 @@ class __$$ProjectConsumableImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? consumableName = null,
-    Object? consumableAmount = null,
+    Object? consumableAmount = freezed,
     Object? consumablePrice = null,
   }) {
     return _then(_$ProjectConsumableImpl(
@@ -106,10 +107,10 @@ class __$$ProjectConsumableImplCopyWithImpl<$Res>
           ? _value.consumableName
           : consumableName // ignore: cast_nullable_to_non_nullable
               as String,
-      consumableAmount: null == consumableAmount
+      consumableAmount: freezed == consumableAmount
           ? _value.consumableAmount
           : consumableAmount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       consumablePrice: null == consumablePrice
           ? _value.consumablePrice
           : consumablePrice // ignore: cast_nullable_to_non_nullable
@@ -123,7 +124,7 @@ class __$$ProjectConsumableImplCopyWithImpl<$Res>
 class _$ProjectConsumableImpl implements _ProjectConsumable {
   const _$ProjectConsumableImpl(
       {required this.consumableName,
-      required this.consumableAmount,
+      this.consumableAmount,
       required this.consumablePrice});
 
   factory _$ProjectConsumableImpl.fromJson(Map<String, dynamic> json) =>
@@ -131,8 +132,9 @@ class _$ProjectConsumableImpl implements _ProjectConsumable {
 
   @override
   final String consumableName;
+// TODO: Update when Consumable List in CustomerProjectReoports get amount
   @override
-  final int consumableAmount;
+  final int? consumableAmount;
   @override
   final double consumablePrice;
 
@@ -177,7 +179,7 @@ class _$ProjectConsumableImpl implements _ProjectConsumable {
 abstract class _ProjectConsumable implements ProjectConsumable {
   const factory _ProjectConsumable(
       {required final String consumableName,
-      required final int consumableAmount,
+      final int? consumableAmount,
       required final double consumablePrice}) = _$ProjectConsumableImpl;
 
   factory _ProjectConsumable.fromJson(Map<String, dynamic> json) =
@@ -185,8 +187,8 @@ abstract class _ProjectConsumable implements ProjectConsumable {
 
   @override
   String get consumableName;
-  @override
-  int get consumableAmount;
+  @override // TODO: Update when Consumable List in CustomerProjectReoports get amount
+  int? get consumableAmount;
   @override
   double get consumablePrice;
   @override

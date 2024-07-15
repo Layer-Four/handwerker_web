@@ -19,6 +19,7 @@ class ProjectOverViewNotifier extends Notifier<List<CustomerProjectsReportDM>> {
   }
 
   void loadCustomerProjectReports() async {
+    int count = 0;
     try {
       final response = await _api.getAllCustomerProjectReports;
       if (response.statusCode != 200) {
@@ -26,6 +27,7 @@ class ProjectOverViewNotifier extends Notifier<List<CustomerProjectsReportDM>> {
             'loadCustomerProjectOverview dismissed-> status: ${response.statusCode}\n${response.data}');
       }
       final List data = response.data.map((e) => e as Map).toList();
+
       final reports = data.map((e) => CustomerProjectsReportDM.fromJson(e)).toList();
 
       state = reports;
@@ -33,6 +35,7 @@ class ProjectOverViewNotifier extends Notifier<List<CustomerProjectsReportDM>> {
     } on DioException catch (e) {
       log('DioException ${e.message}');
     } catch (e) {
+      log('count $count');
       log('Exception was thrown ad loadCustomerProjectReports ad projectReportProvider->\n$e');
       return;
     }
