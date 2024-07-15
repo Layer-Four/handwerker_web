@@ -4,8 +4,8 @@ class ErrorMessageWidget extends StatelessWidget {
   final String message;
   const ErrorMessageWidget(this.message, {super.key});
   @override
-  Widget build(BuildContext ctx) => GestureDetector(
-        onTap: () => Navigator.of(ctx).pop(),
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
         child: AlertDialog(
           backgroundColor: Colors.white,
           content: Padding(
