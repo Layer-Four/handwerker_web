@@ -88,8 +88,18 @@ class _ProjectCardState extends ConsumerState<ProjectDataCard> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.edit),
-                            onPressed: () =>
-                                setState(() => _showProjectDetails = !_showProjectDetails),
+                            onPressed: () {
+                              ref.read(projectVMProvider.notifier).updateEditableEntry(
+                                    newCustomer: widget.project.customer,
+                                    newDescription: widget.project.description,
+                                    newStart: widget.project.start,
+                                    newState: widget.project.state,
+                                    newTermination: widget.project.terminationDate,
+                                    newTitle: widget.project.title,
+                                    newID: widget.project.id,
+                                  );
+                              setState(() => _showProjectDetails = !_showProjectDetails);
+                            },
                           ),
                         ],
                       ),

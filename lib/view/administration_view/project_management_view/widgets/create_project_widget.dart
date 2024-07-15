@@ -197,24 +197,29 @@ class _EditProjectState extends ConsumerState<CreateProjectWidget> {
           ],
         );
   void _updateAndCreateNewProject() {
+    final project = ref.watch(projectVMProvider).editAbleProject;
+    log('$project');
+    if (_startDateController.text.isNotEmpty && _endDateController.text.isNotEmpty) {
+      final start = _startDateController.text.split('.').map((e) => int.parse(e)).toList();
+      final end = _endDateController.text.split('.').map((e) => int.parse(e)).toList();
+      ref.read(projectVMProvider.notifier).updateEditableEntry(
+            newDescription: _descriptionController.text,
+            newStart: DateTime(start[2], start[1], start[0]),
+            newTermination: DateTime(end[2], end[1], end[0]),
+            newTitle: _titleController.text,
+          );
+    }
     log('${ref.watch(projectVMProvider).editAbleProject}');
-    final start = _startDateController.text.split('.').map((e) => int.parse(e)).toList();
-    final end = _endDateController.text.split('.').map((e) => int.parse(e)).toList();
-    ref.read(projectVMProvider.notifier).updateEditableEntry(
-          newDescription: _descriptionController.text,
-          newStart: DateTime(start[2], start[1], start[0]),
-          newTermination: DateTime(end[2], end[1], end[0]),
-          newTitle: _titleController.text,
+    if (project != null && project.isProjectMinFilled()) {
+      ref.read(projectVMProvider.notifier).createProject().then((e) {
+        widget.onCancel();
+        Utilitis.showSnackBar(
+          context,
+          e ? 'Erfolgreich neues Projekt angelegt' : 'Leider ist etwas schief gegangen',
         );
-    log('${ref.watch(projectVMProvider).editAbleProject}');
-
-    ref.read(projectVMProvider.notifier).createProject().then((e) {
-      widget.onCancel();
-      Utilitis.showSnackBar(
-        context,
-        e ? 'Erfolgreich neues Projekt angelegt' : 'Leider ist etwas schief gegangen',
-      );
-    });
-    return;
+      });
+      return;
+    }
+    return Utilitis.showErrorMessage(context, 'Bitte füllen sie Alle Eingabefelder aus');
   }
 }
