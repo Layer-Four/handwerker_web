@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/themes/app_color.dart';
-import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/service_models/service_vm/service_vm.dart';
 import '../../../../provider/data_provider/service_provider/service_vm_provider.dart';
+import '../../../shared_widgets/ask_agreement_widget.dart';
 
 class ServiceDataWidget extends ConsumerStatefulWidget {
   final ServiceVM service;
@@ -144,7 +144,7 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
           child: SizedBox(
             height: 69,
             child: Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.only(left: 6.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -299,37 +299,37 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                         children: [
                           // Cancel or Delete Icon
                           IconButton(
-                            icon: Icon(isEditing ? Icons.cancel : Icons.delete),
-                            onPressed: isEditing
-                                ? () {
-                                    _resetFields();
-                                  }
-                                : () => Utilitis.askPopUp(
-                                      context,
-                                      message:
-                                          'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
-                                      onAccept: () {
-                                        ref
-                                            .read(serviceVMProvider.notifier)
-                                            .deleteService(_service.id!)
-                                            .then((e) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: Center(
-                                                child: Text(
-                                                  e
-                                                      ? 'Leistung wurde erfolgreich gelöscht'
-                                                      : 'Leider ist etwas schief gegangen. Versuchen Sie es erneut.',
+                              icon: Icon(isEditing ? Icons.cancel : Icons.delete),
+                              onPressed: isEditing
+                                  ? () {
+                                      _resetFields();
+                                    }
+                                  : () => showDialog(
+                                        context: context,
+                                        builder: (context) => AskoForAgreement(
+                                          message:
+                                              'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
+                                          onAccept: () {
+                                            ref
+                                                .read(serviceVMProvider.notifier)
+                                                .deleteService(_service.id!)
+                                                .then((e) {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Center(
+                                                    child: Text(
+                                                      e
+                                                          ? 'Leistung wurde erfolgreich gelöscht'
+                                                          : 'Leider ist etwas schief gegangen. Versuchen Sie es erneut.',
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          );
-                                          Navigator.of(context).pop();
-                                        });
-                                      },
-                                      onReject: () => Navigator.of(context).pop(),
-                                    ),
-                          ),
+                                              );
+                                              Navigator.of(context).pop();
+                                            });
+                                          },
+                                        ),
+                                      )),
                           // Save or Edit Icon
                           IconButton(
                             icon: Icon(isEditing ? Icons.save : Icons.edit),

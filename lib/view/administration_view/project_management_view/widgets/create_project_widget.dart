@@ -10,6 +10,7 @@ import '../../../../provider/data_provider/project_provders/project_vm_provider.
 import '../../../shared_widgets/custom_datepicker_widget.dart';
 import '../../../shared_widgets/custom_dropdown_button.dart';
 import '../../../shared_widgets/custom_textfield_widget.dart';
+import '../../../shared_widgets/error_message_widget.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
 class CreateProjectWidget extends ConsumerStatefulWidget {
@@ -35,52 +36,6 @@ class _EditProjectState extends ConsumerState<CreateProjectWidget> {
     _descriptionController.dispose();
     super.dispose();
   }
-
-  // Future<void> _saveProjectEntry(BuildContext context) async {
-  //   CustomerShortDM? selectedCustomerObject = customerOptions.firstWhere(
-  //     (customer) => customer.companyName == selectedCustomer,
-  //     orElse: () => CustomerShortDM(companyName: 'Standardunternehmen', id: -1),
-  //   );
-
-  //   int? selectedStatusId = statusOptionsMap[selectedStatus];
-
-  //   ProjectEntryVM newProjectEntry = ProjectEntryVM(
-  //     title: _titleController.text,
-  //     dateOfStart: _dateStartController.text,
-  //     dateOfTermination: _dateEndController.text,
-  //     projectStatusId: selectedStatusId,
-  //     customerId: selectedCustomerObject.id,
-  //     description: _descriptionController.text,
-  //   );
-
-  //   try {
-  //     if (widget.project == null) {
-  //       // Creating a new project
-  //       final Map<String, dynamic> projectEntryMap = newProjectEntry.toJson();
-  //       await Api().postCreateProjectEntry(projectEntryMap);
-  //     } else {
-  //       // Updating an existing project
-  //       widget.mutableProjectEntryVM = MutableProjectEntryVM(
-  //         title: _titleController.text,
-  //         dateOfStart: _dateStartController.text,
-  //         dateOfTermination: _dateEndController.text,
-  //         projectStatusId: selectedStatusId ?? 0,
-  //         customerId: selectedCustomerObject.id,
-  //         description: _descriptionController.text,
-  //       );
-
-  //       final Map<String, dynamic> projectEntryMap =
-  //           widget.mutableProjectEntryVM.toProjectEntryVM().toJson();
-  //       await Api().putUpdateProjectEntry(projectEntryMap);
-  //     }
-  //     widget.onSave();
-  //   } catch (e) {
-  //     log('Error: $e');
-  //     // Handle errors if necessary
-  //     // ignore: use_build_context_synchronously
-  //     return Utilitis.showSnackBar(context, 'Projektspeicherung fehlgeschlagen: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -243,24 +198,33 @@ class _EditProjectState extends ConsumerState<CreateProjectWidget> {
           ],
         );
   void _updateAndCreateNewProject() {
+    final project = ref.watch(projectVMProvider).editAbleProject;
+    log('$project');
+    if (_startDateController.text.isNotEmpty && _endDateController.text.isNotEmpty) {
+      final start = _startDateController.text.split('.').map((e) => int.parse(e)).toList();
+      final end = _endDateController.text.split('.').map((e) => int.parse(e)).toList();
+      ref.read(projectVMProvider.notifier).updateEditableEntry(
+            newDescription: _descriptionController.text,
+            newStart: DateTime(start[2], start[1], start[0]),
+            newTermination: DateTime(end[2], end[1], end[0]),
+            newTitle: _titleController.text,
+          );
+    }
     log('${ref.watch(projectVMProvider).editAbleProject}');
-    final start = _startDateController.text.split('.').map((e) => int.parse(e)).toList();
-    final end = _endDateController.text.split('.').map((e) => int.parse(e)).toList();
-    ref.read(projectVMProvider.notifier).updateEditableEntry(
-          newDescription: _descriptionController.text,
-          newStart: DateTime(start[2], start[1], start[0]),
-          newTermination: DateTime(end[2], end[1], end[0]),
-          newTitle: _titleController.text,
+    if (project != null && project.isProjectMinFilled()) {
+      ref.read(projectVMProvider.notifier).createProject().then((e) {
+        widget.onCancel();
+        Utilitis.showSnackBar(
+          context,
+          e ? 'Erfolgreich neues Projekt angelegt' : 'Leider ist etwas schief gegangen',
         );
-    log('${ref.watch(projectVMProvider).editAbleProject}');
-
-    ref.read(projectVMProvider.notifier).createProject().then((e) {
-      widget.onCancel();
-      Utilitis.showSnackBar(
-        context,
-        e ? 'Erfolgreich neues Projekt angelegt' : 'Leider ist etwas schief gegangen',
-      );
-    });
+      });
+      return;
+    }
+    showDialog(
+      context: context,
+      builder: (context) => const ErrorMessageWidget('Bitte füllen sie Alle Eingabefelder aus'),
+    );
     return;
   }
 }

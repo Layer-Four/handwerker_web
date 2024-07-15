@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../constants/utilitis/utilitis.dart';
 import '../../../provider/data_provider/service_provider/service_vm_provider.dart';
 import '../../shared_widgets/add_button_widget.dart';
 import '../../shared_widgets/search_line_header.dart';
+import '../../shared_widgets/waiting_message_widget.dart';
 import 'widgets/create_service_widget.dart';
 import 'widgets/service_data_widget.dart';
 import 'widgets/service_headlin_widget.dart';
@@ -38,7 +38,7 @@ class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
                     const SearchLineHeader(title: 'Leistungsverwaltung'),
                     const ServiceHeadlineWidget(),
                     ref.watch(serviceVMProvider).isEmpty
-                        ? Utilitis.waitingMessage(context, 'Lade Leistungseintrage')
+                        ? const WaitingMessageWidget('Lade Leistungseintrage')
                         : SizedBox(
                             height: 11 * 60,
                             child: ListView.builder(

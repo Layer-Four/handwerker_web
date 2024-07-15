@@ -151,7 +151,7 @@ class Api {
   Future<Response> postProjectConsumable(Map<String, dynamic> json) =>
       _api.post(_postProjectConsumabele, data: json);
   Future<Response> postResetPasswordRequest(Map<String, dynamic> json) =>
-      _api.post('$_postResetPasswordRequest/marten.meissner@layer-four.de', data: json);
+      _api.post(_postResetPasswordRequest, data: json);
 
   Future<Response> postTimeEnty(Map<String, dynamic> json) => _api.post(_postTimeEntry, data: json);
   Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) =>

@@ -77,6 +77,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
   void reactionOfLogin(bool isSuccess) {
     setState(() => _isLoaded = false);
     if (isSuccess) {
+      if (ref.watch(userProvider.notifier).isOTP) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.setPasswordScreen);
+        return;
+      }
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
       return;
     }

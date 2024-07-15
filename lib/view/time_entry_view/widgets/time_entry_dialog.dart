@@ -11,6 +11,7 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/customer_models/customer_short_model/customer_short_dm.dart';
 import '../../../models/project_models/project_short_vm/project_short_vm.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
+import '../../shared_widgets/error_message_widget.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
@@ -557,7 +558,11 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
         _choosenService == null ||
         _project == null ||
         _selectedUser == null) {
-      Utilitis.showErrorMessage(context, 'Bitte füllen alle mit * Markierten Felder aus');
+      showDialog(
+        context: context,
+        builder: (context) =>
+            const ErrorMessageWidget('Bitte füllen alle mit * Markierten Felder aus'),
+      );
 
       return;
     }
@@ -596,7 +601,10 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
   String _checkIfTimeFormat(String timeString) {
     final regex = RegExp(r'^([01]?[0-9]|2[0-3]):[0-5]?[0-9]$');
     if (!regex.hasMatch(timeString)) {
-      Utilitis.showErrorMessage(context, 'Keine Gültige Uhrzeit');
+      showDialog(
+        context: context,
+        builder: (context) => const ErrorMessageWidget('Keine Gültige Uhrzeit'),
+      );
       return '';
     }
     return timeString;

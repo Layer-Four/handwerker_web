@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
-import '../../../constants/utilitis/utilitis.dart';
 import '../../../provider/data_provider/project_provders/project_vm_provider.dart';
 import '../../shared_widgets/add_button_widget.dart';
 import '../../shared_widgets/search_line_header.dart';
+import '../../shared_widgets/waiting_message_widget.dart';
 import 'widgets/create_project_widget.dart';
 import 'widgets/project_data_widget.dart';
 import 'widgets/project_headline_widget.dart';
@@ -37,7 +37,7 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                     const SearchLineHeader(title: 'Projektverwaltung'),
                     const ProjectRowHeadline(),
                     ref.watch(projectVMProvider).projects.isEmpty
-                        ? Utilitis.waitingMessage(context, 'Lade Projektdaten')
+                        ? const WaitingMessageWidget('Lade Projektdaten')
                         : SizedBox(
                             height: 11 * 60,
                             child: ListView.builder(
