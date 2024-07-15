@@ -5,6 +5,8 @@ import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/users_models/user_data_short/user_short.dart';
 import '../../../models/users_models/user_role/user_role.dart';
 import '../../../provider/user_provider/user_administration/user_administration._provider.dart';
+import '../../shared_widgets/ask_agreement_widget.dart';
+import '../../shared_widgets/new_user_credential_widget.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
 
 class UserDataWidget extends ConsumerWidget {
@@ -102,12 +104,10 @@ class UserDataWidget extends ConsumerWidget {
                 .then((r) {
               // ignore: unused_result
               ref.refresh(userAdministrationProvider);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  showCloseIcon: true,
-                  content: Center(
-                      child: Text(r ? 'Erfolgreich angepasst' : 'Leider ist etwas schief gegagen')),
-                ),
+              Utilitis.showSnackBar(
+                context,
+                r ? 'Erfolgreich angepasst' : 'Leider ist etwas schief gegagen',
+                true,
               );
             });
           },
@@ -120,20 +120,21 @@ class UserDataWidget extends ConsumerWidget {
           width: 80,
           child: SymmetricButton(
             onPressed: () {
-              Utilitis.askPopUp(
-                context,
-                message: 'Sind sie sicher, dass sie diesen Mitarbeitenden löschen wollen?',
-                onReject: () => Navigator.of(context).pop(),
-                onAccept: () =>
-                    ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
-                  Navigator.of(context).pop();
-                  Utilitis.showSnackBar(
-                    context,
-                    e
-                        ? 'Mitarbeitenden erfolgreich gelöscht'
-                        : 'Mitarbeitenden konnte nicht gelöscht werden',
-                  );
-                }),
+              showDialog(
+                context: context,
+                builder: (context) => AskoForAgreement(
+                  message: 'Sind sie sicher, dass sie diesen Mitarbeitenden löschen wollen?',
+                  onAccept: () =>
+                      ref.read(userAdministrationProvider.notifier).deleteUser(user.id).then((e) {
+                    Navigator.of(context).pop();
+                    Utilitis.showSnackBar(
+                      context,
+                      e
+                          ? 'Mitarbeitenden erfolgreich gelöscht'
+                          : 'Mitarbeitenden konnte nicht gelöscht werden',
+                    );
+                  }),
+                ),
               );
             },
             color: AppColor.kWhite,
@@ -155,19 +156,26 @@ class UserDataWidget extends ConsumerWidget {
         child: SymmetricButton(
           borderRadius: BorderRadius.circular(6),
           onPressed: () {
-            Utilitis.askPopUp(context,
+            showDialog(
+              context: context,
+              builder: (context) => AskoForAgreement(
                 message: 'Soll das Passwort wirklich zurück gesetzt werden?',
                 onAccept: () => ref
-                        .read(userAdministrationProvider.notifier)
-                        .resetPassword(user.userName)
-                        .then((e) {
-                      Navigator.of(context).pop();
-                      if (e.containsKey('Error')) {
-                        return Utilitis.showSnackBar(context, 'Anfrage wurde abgewiesen');
-                      }
-                      Utilitis.showNewPasswordPopUp(context, e);
-                    }),
-                onReject: () => Navigator.of(context).pop());
+                    .read(userAdministrationProvider.notifier)
+                    .resetPassword(user.userName)
+                    .then((e) {
+                  Navigator.of(context).pop();
+                  if (e.containsKey('Error')) {
+                    return Utilitis.showSnackBar(context, 'Anfrage wurde abgewiesen');
+                  }
+                  showDialog(
+                    context: context,
+                    builder: (context) => NewUserDataWidget(userData: e),
+                  );
+                  // Utilitis.showNewPasswordPopUp(context, e);
+                }),
+              ),
+            );
           },
           text: 'Passwort zurücksetzen',
           overflow: TextOverflow.clip,

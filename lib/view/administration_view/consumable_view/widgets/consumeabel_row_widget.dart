@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/themes/app_color.dart';
-import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../../models/consumable_models/unit/unit.dart';
 import '../../../../provider/data_provider/consumeable_proivder/consumable_provider.dart';
+import '../../../shared_widgets/ask_agreement_widget.dart';
 
 class ConsumebaleDataRow extends ConsumerStatefulWidget {
   final ConsumableVM consumable;
@@ -266,16 +266,16 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                                         '${widget.consumable.price}€'; // Ensure the price has € symbol
                                   });
                                 }
-                              : () => Utilitis.askPopUp(
-                                    context,
-                                    message:
-                                        'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
-                                    onReject: () => Navigator.of(context).pop(),
-                                    onAccept: () async {
-                                      Navigator.of(context).pop();
-                                      widget.onDelete();
-                                    },
-                                  ),
+                              : () => showDialog(
+                                  context: context,
+                                  builder: (context) => AskoForAgreement(
+                                        message:
+                                            'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
+                                        onAccept: () async {
+                                          Navigator.of(context).pop();
+                                          widget.onDelete();
+                                        },
+                                      )),
                           icon: Icon(isEditing ? Icons.cancel : Icons.delete),
                         ),
                         IconButton(

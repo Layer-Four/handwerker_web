@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../../provider/customer_provider/customer_provider.dart';
+import '../../../shared_widgets/ask_agreement_widget.dart';
 import 'update_customer_widget.dart';
 
 class CustomerCard extends ConsumerStatefulWidget {
@@ -60,28 +61,14 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.delete),
-                              onPressed: () => Utilitis.askPopUp(
-                                context,
-                                message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
-                                onAccept: () {
-                                  ref
-                                      .read(customerProvider.notifier)
-                                      .deleteCustomer(widget.customer.customerID!)
-                                      .then((success) {
-                                    if (success) {
-                                      Utilitis.showSnackBar(
-                                          context, 'Kunde wurde erfolgreich gelöscht');
-                                      widget.onDelete();
-                                    } else {
-                                      Utilitis.showSnackBar(context,
-                                          'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
-                                    }
-                                    Navigator.of(context).pop(); // Dismiss the dialog
-                                  });
-                                },
-                                onReject: () {
-                                  Navigator.of(context).pop(); // Dismiss the dialog on reject
-                                },
+                              onPressed: () => showDialog(
+                                context: context,
+                                builder: (context) => AskoForAgreement(
+                                  message: 'Sind Sie sicher, dass Sie diese Kunde löschen wollen?',
+                                  onAccept: () {
+                                    _deleteAndShowResponse(context);
+                                  },
+                                ),
                               ),
                             ),
                             IconButton(
@@ -96,25 +83,37 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                   ),
                 ),
               ),
-              _showCustomerDetails ? _customerDetailsWindow() : const SizedBox.shrink(),
+              !_showCustomerDetails
+                  ? const SizedBox.shrink()
+                  : SizedBox(
+                      height: 400,
+                      child: Row(
+                        children: [
+                          UpdateCustomerWidget(
+                            onCancel: () => setState(() => _showCustomerDetails = false),
+                            customer: widget.customer,
+                            onSave: (updatedCustomer) {
+                              widget.onUpdate(updatedCustomer);
+                              setState(() => _showCustomerDetails = false);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
             ],
           ),
         ),
       );
 
-  Widget _customerDetailsWindow() => SizedBox(
-        height: 400,
-        child: Row(
-          children: [
-            UpdateCustomerWidget(
-              onCancel: () => setState(() => _showCustomerDetails = false),
-              customer: widget.customer,
-              onSave: (updatedCustomer) {
-                widget.onUpdate(updatedCustomer);
-                setState(() => _showCustomerDetails = false);
-              },
-            ),
-          ],
-        ),
-      );
+  void _deleteAndShowResponse(BuildContext context) {
+    ref.read(customerProvider.notifier).deleteCustomer(widget.customer.customerID!).then((success) {
+      if (success) {
+        Utilitis.showSnackBar(context, 'Kunde wurde erfolgreich gelöscht');
+        widget.onDelete();
+      } else {
+        Utilitis.showSnackBar(context, 'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
+      }
+      Navigator.of(context).pop(); // Dismiss the dialog
+    });
+  }
 }

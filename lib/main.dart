@@ -39,7 +39,8 @@ class MainApp extends ConsumerWidget {
         //   Locale('de'), // German
         //   Locale('ar') // - Arabic
         // ],
-        initialRoute: AppRoutes.initialRoute,
+        initialRoute: AppRoutes.reactOnPwResetView,
+        // initialRoute: AppRoutes.initialRoute,
         routes: AppRoutes.routes,
       );
 }
