@@ -83,7 +83,6 @@ class _ProjectCardState extends ConsumerState<ProjectDataCard> {
                                           ? 'Projekt wurde erfolgreich gelöscht'
                                           : 'Leider ist etwas schief gegangen\nProjekt kann nicht gelöscht werden');
                                 }),
-                                onReject: () => Navigator.pop(context),
                               ),
                             ),
                           ),
