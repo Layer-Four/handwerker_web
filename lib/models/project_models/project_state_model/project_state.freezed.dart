@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-ProjectState _$ProjectStateFromJson(Map<String, dynamic> json) {
-  return _ProjectState.fromJson(json);
+ProjectInfoState _$ProjectInfoStateFromJson(Map<String, dynamic> json) {
+  return _ProjectInfoState.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ProjectState {
+mixin _$ProjectInfoState {
   DateTime? get createdAt => throw _privateConstructorUsedError;
   String? get createdBy => throw _privateConstructorUsedError;
   DateTime? get editedAt => throw _privateConstructorUsedError;
@@ -32,15 +32,15 @@ mixin _$ProjectState {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ProjectStateCopyWith<ProjectState> get copyWith =>
+  $ProjectInfoStateCopyWith<ProjectInfoState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ProjectStateCopyWith<$Res> {
-  factory $ProjectStateCopyWith(
-          ProjectState value, $Res Function(ProjectState) then) =
-      _$ProjectStateCopyWithImpl<$Res, ProjectState>;
+abstract class $ProjectInfoStateCopyWith<$Res> {
+  factory $ProjectInfoStateCopyWith(
+          ProjectInfoState value, $Res Function(ProjectInfoState) then) =
+      _$ProjectInfoStateCopyWithImpl<$Res, ProjectInfoState>;
   @useResult
   $Res call(
       {DateTime? createdAt,
@@ -55,9 +55,9 @@ abstract class $ProjectStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ProjectStateCopyWithImpl<$Res, $Val extends ProjectState>
-    implements $ProjectStateCopyWith<$Res> {
-  _$ProjectStateCopyWithImpl(this._value, this._then);
+class _$ProjectInfoStateCopyWithImpl<$Res, $Val extends ProjectInfoState>
+    implements $ProjectInfoStateCopyWith<$Res> {
+  _$ProjectInfoStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -119,11 +119,11 @@ class _$ProjectStateCopyWithImpl<$Res, $Val extends ProjectState>
 }
 
 /// @nodoc
-abstract class _$$ProjectStateImplCopyWith<$Res>
-    implements $ProjectStateCopyWith<$Res> {
-  factory _$$ProjectStateImplCopyWith(
-          _$ProjectStateImpl value, $Res Function(_$ProjectStateImpl) then) =
-      __$$ProjectStateImplCopyWithImpl<$Res>;
+abstract class _$$ProjectInfoStateImplCopyWith<$Res>
+    implements $ProjectInfoStateCopyWith<$Res> {
+  factory _$$ProjectInfoStateImplCopyWith(_$ProjectInfoStateImpl value,
+          $Res Function(_$ProjectInfoStateImpl) then) =
+      __$$ProjectInfoStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -139,11 +139,11 @@ abstract class _$$ProjectStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ProjectStateImplCopyWithImpl<$Res>
-    extends _$ProjectStateCopyWithImpl<$Res, _$ProjectStateImpl>
-    implements _$$ProjectStateImplCopyWith<$Res> {
-  __$$ProjectStateImplCopyWithImpl(
-      _$ProjectStateImpl _value, $Res Function(_$ProjectStateImpl) _then)
+class __$$ProjectInfoStateImplCopyWithImpl<$Res>
+    extends _$ProjectInfoStateCopyWithImpl<$Res, _$ProjectInfoStateImpl>
+    implements _$$ProjectInfoStateImplCopyWith<$Res> {
+  __$$ProjectInfoStateImplCopyWithImpl(_$ProjectInfoStateImpl _value,
+      $Res Function(_$ProjectInfoStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -159,7 +159,7 @@ class __$$ProjectStateImplCopyWithImpl<$Res>
     Object? projects = freezed,
     Object? value = freezed,
   }) {
-    return _then(_$ProjectStateImpl(
+    return _then(_$ProjectInfoStateImpl(
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -202,8 +202,8 @@ class __$$ProjectStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ProjectStateImpl implements _ProjectState {
-  _$ProjectStateImpl(
+class _$ProjectInfoStateImpl implements _ProjectInfoState {
+  _$ProjectInfoStateImpl(
       {this.createdAt,
       this.createdBy,
       this.editedAt,
@@ -214,8 +214,8 @@ class _$ProjectStateImpl implements _ProjectState {
       this.projects,
       this.value});
 
-  factory _$ProjectStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ProjectStateImplFromJson(json);
+  factory _$ProjectInfoStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProjectInfoStateImplFromJson(json);
 
   @override
   final DateTime? createdAt;
@@ -238,14 +238,14 @@ class _$ProjectStateImpl implements _ProjectState {
 
   @override
   String toString() {
-    return 'ProjectState(createdAt: $createdAt, createdBy: $createdBy, editedAt: $editedAt, editedBy: $editedBy, id: $id, mandantID: $mandantID, mandant: $mandant, projects: $projects, value: $value)';
+    return 'ProjectInfoState(createdAt: $createdAt, createdBy: $createdBy, editedAt: $editedAt, editedBy: $editedBy, id: $id, mandantID: $mandantID, mandant: $mandant, projects: $projects, value: $value)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ProjectStateImpl &&
+            other is _$ProjectInfoStateImpl &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.createdBy, createdBy) ||
@@ -271,19 +271,20 @@ class _$ProjectStateImpl implements _ProjectState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ProjectStateImplCopyWith<_$ProjectStateImpl> get copyWith =>
-      __$$ProjectStateImplCopyWithImpl<_$ProjectStateImpl>(this, _$identity);
+  _$$ProjectInfoStateImplCopyWith<_$ProjectInfoStateImpl> get copyWith =>
+      __$$ProjectInfoStateImplCopyWithImpl<_$ProjectInfoStateImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ProjectStateImplToJson(
+    return _$$ProjectInfoStateImplToJson(
       this,
     );
   }
 }
 
-abstract class _ProjectState implements ProjectState {
-  factory _ProjectState(
+abstract class _ProjectInfoState implements ProjectInfoState {
+  factory _ProjectInfoState(
       {final DateTime? createdAt,
       final String? createdBy,
       final DateTime? editedAt,
@@ -292,10 +293,10 @@ abstract class _ProjectState implements ProjectState {
       final int? mandantID,
       final String? mandant,
       final String? projects,
-      final String? value}) = _$ProjectStateImpl;
+      final String? value}) = _$ProjectInfoStateImpl;
 
-  factory _ProjectState.fromJson(Map<String, dynamic> json) =
-      _$ProjectStateImpl.fromJson;
+  factory _ProjectInfoState.fromJson(Map<String, dynamic> json) =
+      _$ProjectInfoStateImpl.fromJson;
 
   @override
   DateTime? get createdAt;
@@ -317,6 +318,6 @@ abstract class _ProjectState implements ProjectState {
   String? get value;
   @override
   @JsonKey(ignore: true)
-  _$$ProjectStateImplCopyWith<_$ProjectStateImpl> get copyWith =>
+  _$$ProjectInfoStateImplCopyWith<_$ProjectInfoStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

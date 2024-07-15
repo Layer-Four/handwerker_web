@@ -8,9 +8,9 @@ import '../../constants/api/api.dart';
 import '../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../models/customer_models/customer_create_model/create_customer_model.dart';
 import '../../models/customer_models/customer_credential.dart';
-import '../user_provider/user_provider.dart';
 
-final customerProvider = NotifierProvider<CustomerNotifier, List<CustomerOvervewDM>>(() => CustomerNotifier());
+final customerProvider =
+    NotifierProvider<CustomerNotifier, List<CustomerOvervewDM>>(() => CustomerNotifier());
 
 class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
   final Api _api = Api();
@@ -25,14 +25,16 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
     try {
       final response = await _api.getAllCustomers;
       if (response.statusCode != 200) {
-        throw Exception('Wrong response occurred, status -> ${response.statusCode} \n${response.data}');
+        throw Exception(
+            'Wrong response occurred, status -> ${response.statusCode} \n${response.data}');
       }
 
       final List data = response.data as List;
       final List<CustomerOvervewDM> result =
           data.map((e) => CustomerOvervewDM.fromJson(e as Map<String, dynamic>)).toList();
-      result.sort((a, b) =>
-          a.customerCredentials.contactName.toLowerCase().compareTo(b.customerCredentials.contactName.toLowerCase()));
+      result.sort((a, b) => a.customerCredentials.contactName
+          .toLowerCase()
+          .compareTo(b.customerCredentials.contactName.toLowerCase()));
 
       state = result;
     } on DioException catch (e) {
@@ -45,10 +47,6 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
   }
 
   Future<bool> createCustomer(CreateCustomerDM customer) async {
-    final userToken = ref.watch(userProvider).userToken;
-    log('User Token: $userToken');
-    log('Customer Data: ${jsonEncode(customer)}');
-
     try {
       final response = await _api.postCreateCustomer(customer.toJson());
 
@@ -104,7 +102,8 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
       final response = await _api.putUpdateCustomer(json);
       if (response.statusCode != 200) {
         log('Update response: ${response.data}');
-        throw Exception('Exception on updateCustomer status -> ${response.statusCode}\n${response.data}');
+        throw Exception(
+            'Exception on updateCustomer status -> ${response.statusCode}\n${response.data}');
       }
       await loadAllCustomers();
       return true;

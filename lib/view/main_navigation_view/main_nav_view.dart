@@ -51,7 +51,7 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                             child: switch (view) {
                               MainView.home => const HomeBody(),
                               MainView.timeEntry => const WorkCalendarView(),
-                              MainView.projectCustomer => const ProjectOverviewView(),
+                              MainView.projectCustomer => ProjectReportOverviewView(),
                               MainView.consumables => const ConsumableBodyView(),
                               MainView.customer => const CustomerBody(),
                               MainView.projectManagement => const ProjectManagementBody(),

@@ -24,35 +24,33 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
   @override
   Widget build(BuildContext context) => Stack(
         children: [
-          SizedBox(
+          Container(
             height: MediaQuery.of(context).size.height,
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SearchLineHeader(title: 'Kundenverwaltung'),
-                    const CustomerRowHeadline(),
-                    SizedBox(
-                      height: 11 * 60,
-                      child: ref.watch(customerProvider).isEmpty
-                          ? Utilitis.waitingMessage(context, 'Lade Kundendaten')
-                          : ListView.builder(
-                              itemCount: ref.watch(customerProvider).length,
-                              itemBuilder: (_, index) {
-                                final customer = ref.watch(customerProvider)[index];
-                                return CustomerCard(
-                                  key: ValueKey(index),
-                                  customer: customer,
-                                  onDelete: () {},
-                                  onUpdate: (CustomerOvervewDM value) {},
-                                );
-                              },
-                            ),
-                    ),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SearchLineHeader(title: 'Kundenverwaltung'),
+                  const CustomerRowHeadline(),
+                  SizedBox(
+                    height: 11 * 60,
+                    child: ref.watch(customerProvider).isEmpty
+                        ? Utilitis.waitingMessage(context, 'Lade Kundendaten')
+                        : ListView.builder(
+                            itemCount: ref.watch(customerProvider).length,
+                            itemBuilder: (_, index) {
+                              final customer = ref.watch(customerProvider)[index];
+                              return CustomerCard(
+                                key: ValueKey(index),
+                                customer: customer,
+                                onDelete: () {},
+                                onUpdate: (CustomerOvervewDM value) {},
+                              );
+                            },
+                          ),
+                  ),
+                ],
               ),
             ),
           ),
