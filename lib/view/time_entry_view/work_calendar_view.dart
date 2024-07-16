@@ -2,10 +2,10 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../constants/utilitis/utilitis.dart';
 import '../../models/time_models/time_vm/time_vm.dart';
 import '../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
 import '../shared_widgets/search_line_header.dart';
+import '../shared_widgets/waiting_message_widget.dart';
 import 'widgets/calendar_options_widget.dart';
 import 'widgets/custom_day_view.dart';
 import 'widgets/custom_week_view.dart';
@@ -44,7 +44,7 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
         child: _isLoading
-            ? Utilitis.waitingMessage(context, 'Lade Einträge')
+            ? const WaitingMessageWidget('Lade Einträge')
             : Column(
                 children: [
                   const SearchLineHeader(title: 'Stundenübersicht'),

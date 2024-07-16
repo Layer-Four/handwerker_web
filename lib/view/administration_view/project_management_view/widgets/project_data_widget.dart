@@ -31,22 +31,8 @@ class _ProjectCardState extends ConsumerState<ProjectDataCard> {
             children: [
               GestureDetector(
                 onTap: () {
-                  if (_showProjectDetails) {
-                    ref.read(projectVMProvider.notifier).clearEditableProject();
-                  } else {
-                    ref.read(projectVMProvider.notifier).updateEditableEntry(
-                          newCustomer: widget.project.customer,
-                          newDescription: widget.project.description,
-                          newStart: widget.project.start,
-                          newState: widget.project.state,
-                          newTermination: widget.project.terminationDate,
-                          newTitle: widget.project.title,
-                          newID: widget.project.id,
-                        );
-                  }
-                  setState(() {
-                    _showProjectDetails = !_showProjectDetails;
-                  });
+                  _setOrClearCache();
+                  setState(() => _showProjectDetails = !_showProjectDetails);
                 },
                 child: Container(
                   height: 69,
@@ -64,35 +50,41 @@ class _ProjectCardState extends ConsumerState<ProjectDataCard> {
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () => showDialog(
-                              context: context,
-                              builder: (context) => AskoForAgreement(
-                                message: 'Sind Sie sicher, dass Sie dieses Projekt löschen wollen?',
-                                onAccept: () => ref
-                                    .read(projectVMProvider.notifier)
-                                    .deleteProject(widget.project)
-                                    .then((e) {
-                                  Navigator.of(context).pop();
-                                  Utilitis.showSnackBar(
-                                      context,
-                                      e
-                                          ? 'Projekt wurde erfolgreich gelöscht'
-                                          : 'Leider ist etwas schief gegangen\nProjekt kann nicht gelöscht werden');
-                                }),
-                                onReject: () => Navigator.pop(context),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () => showDialog(
+                                context: context,
+                                builder: (context) => AskoForAgreement(
+                                  message:
+                                      'Sind Sie sicher, dass Sie dieses Projekt löschen wollen?',
+                                  onAccept: () => ref
+                                      .read(projectVMProvider.notifier)
+                                      .deleteProject(widget.project)
+                                      .then((e) {
+                                    Navigator.of(context).pop();
+                                    Utilitis.showSnackBar(
+                                        context,
+                                        e
+                                            ? 'Projekt wurde erfolgreich gelöscht'
+                                            : 'Leider ist etwas schief gegangen\nProjekt kann nicht gelöscht werden');
+                                  }),
+                                ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () =>
-                                setState(() => _showProjectDetails = !_showProjectDetails),
-                          ),
-                        ],
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {
+                                _setOrClearCache();
+                                setState(() => _showProjectDetails = !_showProjectDetails);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -111,4 +103,20 @@ class _ProjectCardState extends ConsumerState<ProjectDataCard> {
           ),
         ),
       );
+
+  void _setOrClearCache() {
+    if (_showProjectDetails) {
+      ref.read(projectVMProvider.notifier).clearEditableProject();
+    } else {
+      ref.read(projectVMProvider.notifier).updateEditableEntry(
+            newCustomer: widget.project.customer,
+            newDescription: widget.project.description,
+            newStart: widget.project.start,
+            newState: widget.project.state,
+            newTermination: widget.project.terminationDate,
+            newTitle: widget.project.title,
+            newID: widget.project.id,
+          );
+    }
+  }
 }

@@ -46,6 +46,7 @@ class NavButtonWidget extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(21),
                   onTap: () {
                     if (nextView == null) {
+                      ref.read(mainNavProvider.notifier).state = MainView.home;
                       Navigator.of(context).pushReplacementNamed(AppRoutes.initialRoute);
                       ref.read(userProvider.notifier).userLogOut();
                       return;

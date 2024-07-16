@@ -19,7 +19,9 @@ class ProjectEntryVM with _$ProjectEntryVM {
   }) = _ProjectEntryVM;
 
   bool isProjectMinFilled() {
-    if (customer != null && start.millisecondsSinceEpoch < terminationDate.millisecondsSinceEpoch) {
+    if (customer != null &&
+        start.millisecondsSinceEpoch < terminationDate.millisecondsSinceEpoch &&
+        title.isNotEmpty) {
       return true;
     }
     return false;
