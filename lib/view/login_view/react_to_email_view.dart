@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/utilitis/utilitis.dart';
 import '../../provider/user_provider/user_administration/user_administration._provider.dart';
 import '../../routes/app_routes.dart';
+import '../shared_widgets/new_user_credential_widget.dart';
 import '../shared_widgets/symetric_button_widget.dart';
 
 class ReactToEmailView extends StatefulWidget {
@@ -16,7 +17,7 @@ class _ReactToEmailViewState extends State<ReactToEmailView> {
   final TextEditingController _userNameCtr = TextEditingController();
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,
+        // backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,
         body: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,13 +58,22 @@ class _ReactToEmailViewState extends State<ReactToEmailView> {
                                 .read(userAdministrationProvider.notifier)
                                 .resetPassword(_userNameCtr.text)
                                 .then((e) {
-                              Utilitis.showNewPasswordPopUp(
-                                context,
-                                e,
-                                onAcceptTitel: 'Zurück Zur Startseite',
-                                onAccept: () => Navigator.of(context)
-                                    .pushReplacementNamed(AppRoutes.initialRoute),
+                              showDialog(
+                                context: context,
+                                builder: (context) => NewUserDataWidget(
+                                  userData: e,
+                                  onAcceptTitel: 'Zurück Zur Startseite',
+                                  onAccept: () => Navigator.of(context)
+                                      .pushReplacementNamed(AppRoutes.initialRoute),
+                                ),
                               );
+                              // Utilitis.showNewPasswordPopUp(
+                              //   context,
+                              //   e,
+                              //   onAcceptTitel: 'Zurück Zur Startseite',
+                              //   onAccept: () => Navigator.of(context)
+                              //       .pushReplacementNamed(AppRoutes.initialRoute),
+                              // );
                             });
                           },
                         )),

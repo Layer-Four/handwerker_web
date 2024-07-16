@@ -24,43 +24,46 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
   Widget build(BuildContext context) {
     final view = ref.watch(mainNavProvider);
     return Builder(
-        builder: (context) => Scaffold(
-              body: LayoutBuilder(
-                  builder: (context, constrains) => Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            // color: const Color.fromARGB(255, 245, 245, 245), //* smokewhite
-                            color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
-                            // color: const Color.fromARGB(250, 251, 251, 251), //* own Marten
-                            height: constrains.maxHeight,
-                            child: constrains.maxWidth <= 1000
-                                ? _buildpopUpNav(context, constrains)
-                                : _buildStandartNavBar(context, constrains),
-                          ),
-                          Container(
-                            // color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
-                            color: Colors.white,
-                            // color: const Color.fromARGB(255, 238, 238, 238), //* Buchweis Lara
-                            // color: const Color.fromARGB(255, 255, 250, 250),//* Ghost
-                            // color: const Color.fromARGB(250, 251, 251, 251), //* own Marten
-                            width: constrains.maxWidth <= 1000
-                                ? constrains.maxWidth - 50
-                                : ((constrains.maxWidth - 250)),
-                            child: switch (view) {
-                              MainView.home => const HomeBody(),
-                              MainView.timeEntry => const WorkCalendarView(),
-                              MainView.projectCustomer => const ProjectOverviewView(),
-                              MainView.consumables => const ConsumableBodyView(),
-                              MainView.customer => const CustomerBody(),
-                              MainView.projectManagement => const ProjectManagementBody(),
-                              MainView.performance => const ServiceBodyView(),
-                              MainView.users => const EmployeeAdministration(),
-                            },
-                          ),
-                        ],
-                      )),
-            ));
+      builder: (context) => Scaffold(
+        body: LayoutBuilder(
+          builder: (context, constrains) => Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                // color: const Color.fromARGB(255, 245, 245, 245), //* smokewhite
+                // color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
+                // color: const Color.fromARGB(250, 251, 251, 251), //* own Marten
+                color: Colors.white,
+                height: constrains.maxHeight,
+                child: constrains.maxWidth <= 1000
+                    ? _buildpopUpNav(context, constrains)
+                    : _buildStandartNavBar(context, constrains),
+              ),
+              Container(
+                // color: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David
+                color: Colors.white,
+                // color: const Color.fromARGB(255, 238, 238, 238), //* Buchweis Lara
+                // color: const Color.fromARGB(255, 255, 250, 250),//* Ghost
+                // color: const Color.fromARGB(250, 251, 251, 251), //* own Marten
+                width: constrains.maxWidth <= 1000
+                    ? constrains.maxWidth - 50
+                    : ((constrains.maxWidth - 250)),
+                child: switch (view) {
+                  MainView.home => const HomeBody(),
+                  MainView.timeEntry => const WorkCalendarView(),
+                  MainView.projectCustomer => ProjectReportOverviewView(),
+                  MainView.consumables => const ConsumableBodyView(),
+                  MainView.customer => const CustomerBody(),
+                  MainView.projectManagement => const ProjectManagementBody(),
+                  MainView.performance => const ServiceBodyView(),
+                  MainView.users => const EmployeeAdministration(),
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildStandartNavBar(BuildContext context, BoxConstraints constrains) => Container(

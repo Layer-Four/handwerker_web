@@ -26,7 +26,7 @@ mixin _$ProjectRepotsDM {
   String? get projectDescription => throw _privateConstructorUsedError;
   String get projectName => throw _privateConstructorUsedError;
   double? get projectRevenue => throw _privateConstructorUsedError;
-  ProjectState? get projectState => throw _privateConstructorUsedError;
+  ProjectInfoState? get projectState => throw _privateConstructorUsedError;
   List<ProjectTimeEntry> get reportsList => throw _privateConstructorUsedError;
   List<ServiceProject> get serviceList => throw _privateConstructorUsedError;
 
@@ -49,11 +49,11 @@ abstract class $ProjectRepotsDMCopyWith<$Res> {
       String? projectDescription,
       String projectName,
       double? projectRevenue,
-      ProjectState? projectState,
+      ProjectInfoState? projectState,
       List<ProjectTimeEntry> reportsList,
       List<ServiceProject> serviceList});
 
-  $ProjectStateCopyWith<$Res>? get projectState;
+  $ProjectInfoStateCopyWith<$Res>? get projectState;
 }
 
 /// @nodoc
@@ -107,7 +107,7 @@ class _$ProjectRepotsDMCopyWithImpl<$Res, $Val extends ProjectRepotsDM>
       projectState: freezed == projectState
           ? _value.projectState
           : projectState // ignore: cast_nullable_to_non_nullable
-              as ProjectState?,
+              as ProjectInfoState?,
       reportsList: null == reportsList
           ? _value.reportsList
           : reportsList // ignore: cast_nullable_to_non_nullable
@@ -121,12 +121,12 @@ class _$ProjectRepotsDMCopyWithImpl<$Res, $Val extends ProjectRepotsDM>
 
   @override
   @pragma('vm:prefer-inline')
-  $ProjectStateCopyWith<$Res>? get projectState {
+  $ProjectInfoStateCopyWith<$Res>? get projectState {
     if (_value.projectState == null) {
       return null;
     }
 
-    return $ProjectStateCopyWith<$Res>(_value.projectState!, (value) {
+    return $ProjectInfoStateCopyWith<$Res>(_value.projectState!, (value) {
       return _then(_value.copyWith(projectState: value) as $Val);
     });
   }
@@ -147,12 +147,12 @@ abstract class _$$ProjectRepotsDMImplCopyWith<$Res>
       String? projectDescription,
       String projectName,
       double? projectRevenue,
-      ProjectState? projectState,
+      ProjectInfoState? projectState,
       List<ProjectTimeEntry> reportsList,
       List<ServiceProject> serviceList});
 
   @override
-  $ProjectStateCopyWith<$Res>? get projectState;
+  $ProjectInfoStateCopyWith<$Res>? get projectState;
 }
 
 /// @nodoc
@@ -204,7 +204,7 @@ class __$$ProjectRepotsDMImplCopyWithImpl<$Res>
       projectState: freezed == projectState
           ? _value.projectState
           : projectState // ignore: cast_nullable_to_non_nullable
-              as ProjectState?,
+              as ProjectInfoState?,
       reportsList: null == reportsList
           ? _value._reportsList
           : reportsList // ignore: cast_nullable_to_non_nullable
@@ -258,7 +258,7 @@ class _$ProjectRepotsDMImpl extends _ProjectRepotsDM {
   @override
   final double? projectRevenue;
   @override
-  final ProjectState? projectState;
+  final ProjectInfoState? projectState;
   final List<ProjectTimeEntry> _reportsList;
   @override
   @JsonKey()
@@ -344,7 +344,7 @@ abstract class _ProjectRepotsDM extends ProjectRepotsDM {
       final String? projectDescription,
       required final String projectName,
       final double? projectRevenue,
-      final ProjectState? projectState,
+      final ProjectInfoState? projectState,
       final List<ProjectTimeEntry> reportsList,
       final List<ServiceProject> serviceList}) = _$ProjectRepotsDMImpl;
   const _ProjectRepotsDM._() : super._();
@@ -365,7 +365,7 @@ abstract class _ProjectRepotsDM extends ProjectRepotsDM {
   @override
   double? get projectRevenue;
   @override
-  ProjectState? get projectState;
+  ProjectInfoState? get projectState;
   @override
   List<ProjectTimeEntry> get reportsList;
   @override

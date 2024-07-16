@@ -20,7 +20,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,
+        // backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(

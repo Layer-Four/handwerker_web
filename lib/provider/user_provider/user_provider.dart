@@ -9,6 +9,9 @@ final userProvider = NotifierProvider<UserNotifier, UserVM>(() => UserNotifier()
 
 class UserNotifier extends Notifier<UserVM> {
   final Api _api = Api();
+  // TODO refactor to a UserState class so the provider data can be immutable
+  bool _isOTP = true;
+  bool get isOTP => _isOTP;
 
   @override
   UserVM build() {
@@ -45,6 +48,7 @@ class UserNotifier extends Notifier<UserVM> {
       _api.storeToken(response.data['token']);
       state = state.copyWith(userToken: response.data['token']);
       log(state.userToken);
+      _isOTP = response.data['oneTimePassword'];
       return true;
     } on DioException catch (e) {
       if (e.response!.statusCode == 401) {

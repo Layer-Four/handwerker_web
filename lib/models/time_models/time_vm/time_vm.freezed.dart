@@ -29,7 +29,7 @@ mixin _$TimeVMAdapter {
   DateTime get date => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   int? get duration => throw _privateConstructorUsedError;
-  ProjectVM? get project => throw _privateConstructorUsedError;
+  ProjectShortVM? get project => throw _privateConstructorUsedError;
   ServiceVM? get service => throw _privateConstructorUsedError;
   String? get customerName => throw _privateConstructorUsedError;
   int? get customerId => throw _privateConstructorUsedError;
@@ -57,14 +57,14 @@ abstract class $TimeVMAdapterCopyWith<$Res> {
       DateTime date,
       String? description,
       int? duration,
-      ProjectVM? project,
+      ProjectShortVM? project,
       ServiceVM? service,
       String? customerName,
       int? customerId,
       TimeEntryType type});
 
   $UserDataShortCopyWith<$Res>? get user;
-  $ProjectVMCopyWith<$Res>? get project;
+  $ProjectShortVMCopyWith<$Res>? get project;
   $ServiceVMCopyWith<$Res>? get service;
 }
 
@@ -136,7 +136,7 @@ class _$TimeVMAdapterCopyWithImpl<$Res, $Val extends TimeVMAdapter>
       project: freezed == project
           ? _value.project
           : project // ignore: cast_nullable_to_non_nullable
-              as ProjectVM?,
+              as ProjectShortVM?,
       service: freezed == service
           ? _value.service
           : service // ignore: cast_nullable_to_non_nullable
@@ -170,12 +170,12 @@ class _$TimeVMAdapterCopyWithImpl<$Res, $Val extends TimeVMAdapter>
 
   @override
   @pragma('vm:prefer-inline')
-  $ProjectVMCopyWith<$Res>? get project {
+  $ProjectShortVMCopyWith<$Res>? get project {
     if (_value.project == null) {
       return null;
     }
 
-    return $ProjectVMCopyWith<$Res>(_value.project!, (value) {
+    return $ProjectShortVMCopyWith<$Res>(_value.project!, (value) {
       return _then(_value.copyWith(project: value) as $Val);
     });
   }
@@ -211,7 +211,7 @@ abstract class _$$TimeVMAdapterImplCopyWith<$Res>
       DateTime date,
       String? description,
       int? duration,
-      ProjectVM? project,
+      ProjectShortVM? project,
       ServiceVM? service,
       String? customerName,
       int? customerId,
@@ -220,7 +220,7 @@ abstract class _$$TimeVMAdapterImplCopyWith<$Res>
   @override
   $UserDataShortCopyWith<$Res>? get user;
   @override
-  $ProjectVMCopyWith<$Res>? get project;
+  $ProjectShortVMCopyWith<$Res>? get project;
   @override
   $ServiceVMCopyWith<$Res>? get service;
 }
@@ -291,7 +291,7 @@ class __$$TimeVMAdapterImplCopyWithImpl<$Res>
       project: freezed == project
           ? _value.project
           : project // ignore: cast_nullable_to_non_nullable
-              as ProjectVM?,
+              as ProjectShortVM?,
       service: freezed == service
           ? _value.service
           : service // ignore: cast_nullable_to_non_nullable
@@ -354,7 +354,7 @@ class _$TimeVMAdapterImpl extends _TimeVMAdapter {
   @override
   final int? duration;
   @override
-  final ProjectVM? project;
+  final ProjectShortVM? project;
   @override
   final ServiceVM? service;
   @override
@@ -442,7 +442,7 @@ abstract class _TimeVMAdapter extends TimeVMAdapter {
       required final DateTime date,
       final String? description,
       final int? duration,
-      final ProjectVM? project,
+      final ProjectShortVM? project,
       final ServiceVM? service,
       final String? customerName,
       final int? customerId,
@@ -471,7 +471,7 @@ abstract class _TimeVMAdapter extends TimeVMAdapter {
   @override
   int? get duration;
   @override
-  ProjectVM? get project;
+  ProjectShortVM? get project;
   @override
   ServiceVM? get service;
   @override

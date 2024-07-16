@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../constants/utilitis/utilitis.dart';
 import '../../../models/consumable_models/unit/unit.dart';
 import '../../../provider/data_provider/consumeable_proivder/consumable_provider.dart';
 import '../../shared_widgets/add_button_widget.dart';
 import '../../shared_widgets/search_line_header.dart';
+import '../../shared_widgets/waiting_message_widget.dart';
 import 'widgets/consumeabel_row_widget.dart';
 import 'widgets/create_material_widget.dart';
 
@@ -67,7 +67,7 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
                     const SearchLineHeader(title: 'Material Management'),
                     _buildHeaderRow(),
                     _units.isEmpty
-                        ? Utilitis.waitingMessage(context, 'Lade Material')
+                        ? const WaitingMessageWidget('Lade Material')
                         : SizedBox(
                             height: 11 * 60,
                             child: ListView.builder(

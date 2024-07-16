@@ -31,7 +31,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: const Color.fromARGB(255, 254, 254, 245),
+        // backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,
         body: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -77,6 +77,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
   void reactionOfLogin(bool isSuccess) {
     setState(() => _isLoaded = false);
     if (isSuccess) {
+      if (ref.watch(userProvider.notifier).isOTP) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.setPasswordScreen);
+        return;
+      }
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
       return;
     }

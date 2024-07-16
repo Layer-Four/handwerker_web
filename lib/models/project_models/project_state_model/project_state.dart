@@ -4,8 +4,8 @@ part 'project_state.freezed.dart';
 part 'project_state.g.dart';
 
 @freezed
-class ProjectState with _$ProjectState {
-  factory ProjectState({
+class ProjectInfoState with _$ProjectInfoState {
+  factory ProjectInfoState({
     DateTime? createdAt,
     String? createdBy,
     DateTime? editedAt,
@@ -15,6 +15,6 @@ class ProjectState with _$ProjectState {
     String? mandant,
     String? projects,
     String? value,
-  }) = _ProjectState;
-  factory ProjectState.fromJson(Map<String, dynamic> json) => _$ProjectStateFromJson(json);
+  }) = _ProjectInfoState;
+  factory ProjectInfoState.fromJson(Map<String, dynamic> json) => _$ProjectInfoStateFromJson(json);
 }

@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf_widget;
 
-import '../../view/shared_widgets/symetric_button_widget.dart';
 import '../../view/time_entry_view/widgets/time_spinner.dart';
 import '../themes/app_color.dart';
 
@@ -17,88 +16,21 @@ class Utilitis {
   static Future<String?> showTimeSpinner(BuildContext context, DateTime initalTime) async {
     final result = await showDialog(
       context: context,
-      builder: (context) => Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.3,
-            vertical: MediaQuery.of(context).size.height * 0.2,
-          ),
-          child: TimeSpinnerWidget(initalTime: initalTime)),
+      builder: (context) => Center(
+        child: Container(
+            height: MediaQuery.of(context).size.height - 150,
+            margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.3,
+              vertical: MediaQuery.of(context).size.height * 0.2,
+            ),
+            child: TimeSpinnerWidget(initalTime: initalTime)),
+      ),
     );
     if (result.runtimeType != String) {
       return null;
     }
     return result;
   }
-
-  static void showErrorMessage(BuildContext context, String errorMessage) => showDialog(
-        context: context,
-        builder: (context) => GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: AlertDialog(
-            backgroundColor: Colors.white,
-            content: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24),
-              child: Text(errorMessage),
-            ),
-          ),
-        ),
-      );
-
-  static Future<dynamic> askPopUp(
-    BuildContext context, {
-    required String message,
-    required Function() onAccept,
-    required Function() onReject,
-  }) =>
-      showDialog(
-        context: context,
-        barrierColor: const Color.fromARGB(20, 0, 0, 0),
-        builder: (context) => Dialog(
-          backgroundColor: Colors.white,
-          child: SizedBox(
-            height: 350,
-            width: MediaQuery.of(context).size.width / 10 * 60,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        message,
-                        style: Theme.of(context).textTheme.titleLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40.0),
-                            child: SymmetricButton(
-                              text: 'Ja',
-                              onPressed: onAccept,
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40.0),
-                            child: SymmetricButton(
-                              text: 'Nein',
-                              onPressed: onReject,
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
 
   static HeaderStyle buildCustomHeadStyle(BuildContext context) => HeaderStyle(
         leftIcon: Container(
@@ -156,92 +88,20 @@ class Utilitis {
         _ => throw Exception('There was a unkown Weekday maybe😅')
       };
 
-  static Future<dynamic> showNewPasswordPopUp(
-    BuildContext context,
-    Map<String, dynamic> e, {
-    Function()? onAccept,
-    String? onAcceptTitel,
-  }) =>
-      showDialog(
-        context: context,
-        builder: (context) => Dialog(
-          backgroundColor: Colors.white,
-          child: SizedBox(
-            height: 400,
-            width: 400,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Mitarbeiter:',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          '   ${e['userName']}',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Passwort:',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          '     ${e['password']}',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                        child: SymmetricButton(
-                          text: 'Als PDF Herunterladen',
-                          onPressed: () => writePDFAndDownload(e),
-                        ),
-                      ),
-                      onAccept == null
-                          ? const SizedBox.shrink()
-                          : Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                              child: SymmetricButton(
-                                text: onAcceptTitel ?? '',
-                                onPressed: onAccept,
-                              ),
-                            )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-
-  static void showSnackBar(BuildContext context, String message) {
+  static void showSnackBar(BuildContext context, String message, [bool showCloseIcon = false]) {
     final snackBar = SnackBar(
+      showCloseIcon: showCloseIcon,
       content: Center(child: Text(message, textAlign: TextAlign.center)),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  static InputDecoration textFieldDecoration(String hintText) => InputDecoration(
+  static InputDecoration textFieldDecoration([String? hintText, Icon? suffixIcon]) =>
+      InputDecoration(
         filled: true,
         fillColor: AppColor.kTextfieldColor,
         hintText: hintText,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(6),
           borderSide: BorderSide.none,
@@ -250,23 +110,7 @@ class Utilitis {
           borderSide: const BorderSide(color: Colors.grey, width: 0),
           borderRadius: BorderRadius.circular(6),
         ),
-      );
-
-  static Widget waitingMessage(BuildContext context, String message) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(60.0),
-              child: Text(
-                message,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ),
-            const CircularProgressIndicator(),
-          ],
-        ),
+        suffixIcon: suffixIcon,
       );
 
   static void writePDFAndDownload(Map<String, dynamic> newUser) async {
