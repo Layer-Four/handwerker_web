@@ -44,11 +44,14 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Tooltip(
-                        message:
-                            'Kunde: ${widget.customer.customerCredentials.customerName}\nKontaktname: ${widget.customer.customerCredentials.contactName}\nTelefonnummer: ${widget.customer.customerCredentials.customerPhone}\nE-Mail: ${widget.customer.customerCredentials.customerEmail}\nAdresse: \n${widget.customer.fullAdressFormated}',
+                        message: 'Kunde: ${widget.customer.customerCredentials.companyName}\n'
+                            'Kontaktname: ${widget.customer.customerCredentials.contactName}\n'
+                            'Telefonnummer: ${widget.customer.customerCredentials.customerPhone}\n'
+                            'E-Mail: ${widget.customer.customerCredentials.customerEmail}\n'
+                            'Adresse: \n${widget.customer.fullAdressFormated}',
                         textStyle: const TextStyle(fontSize: 20, color: Colors.white),
                         child: Text(
-                          widget.customer.customerCredentials.contactName,
+                          '${widget.customer.customerCredentials.companyName}',
                           textAlign: TextAlign.left,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
@@ -68,8 +71,8 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                                 Utilitis.showSnackBar(context, 'Kunde wurde erfolgreich gelöscht');
                                 widget.onDelete();
                               } else {
-                                Utilitis.showSnackBar(context,
-                                    'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
+                                Utilitis.showSnackBar(
+                                    context, 'Löschen fehlgeschlagen. Bitte versuchen Sie es erneut.');
                               }
                               Navigator.of(context).pop(); // Dismiss the dialog
                             });
@@ -81,8 +84,7 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: () =>
-                            setState(() => _showCustomerDetails = !_showCustomerDetails),
+                        onPressed: () => setState(() => _showCustomerDetails = !_showCustomerDetails),
                       ),
                     ],
                   ),

@@ -6,6 +6,7 @@ part 'create_customer_model.g.dart';
 class CreateCustomerDM with _$CreateCustomerDM {
   const factory CreateCustomerDM({
     int? id,
+    String? customerName,
     String? externalId,
     String? companyName,
     String? contactName,

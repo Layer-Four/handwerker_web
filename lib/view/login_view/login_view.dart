@@ -31,7 +31,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,
+        backgroundColor: const Color.fromARGB(255, 254, 254, 245),
         body: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -113,6 +113,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             height: isFocused ? 44 : 40,
+            width: 355, // Set the width of AnimatedContainer to match its parent
             child: TextFormField(
               autofocus: true,
               keyboardType: TextInputType.emailAddress,
@@ -148,15 +149,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0,
+                    color: Colors.red,
+                    width: 2,
                   ),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0,
+                    color: Colors.red,
+                    width: 2,
                   ),
                 ),
               ),
@@ -287,9 +288,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       return false;
     }
 
-    bool isValid = _formstate.currentState!.validate() &&
-        _emailCon.text.isNotEmpty &&
-        _passCon.text.isNotEmpty;
+    bool isValid = _formstate.currentState!.validate() && _emailCon.text.isNotEmpty && _passCon.text.isNotEmpty;
     if (!isValid) {
       Utilitis.showSnackBar(context, 'Bitte füllen Sie alle Felder korrekt aus.');
     }
