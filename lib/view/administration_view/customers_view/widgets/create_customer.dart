@@ -94,7 +94,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                             Padding(
                               padding: const EdgeInsets.all(4),
                               child: Text(
-                                'Name',
+                                'Kontaktinformation',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),

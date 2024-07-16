@@ -149,15 +149,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                    color: Colors.red,
-                    width: 2,
+                    color: Colors.transparent,
+                    width: 0,
                   ),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                    color: Colors.red,
-                    width: 2,
+                    color: Colors.transparent,
+                    width: 0,
                   ),
                 ),
               ),

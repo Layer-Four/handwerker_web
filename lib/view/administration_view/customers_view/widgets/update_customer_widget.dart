@@ -105,10 +105,10 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.all(4),
-                            child: Text('Unternehmenname', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text('Kontaktinformation', style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           buildTextField(
-                            hintText: 'Unternehmenname',
+                            hintText: 'Kundenname',
                             controller: _companyNameController,
                             context: context,
                           ),
