@@ -17,14 +17,21 @@ class SearchLineHeader extends StatefulWidget {
 }
 
 class _SearchLineHeaderState extends State<SearchLineHeader> {
-  final TextEditingController _searchController = TextEditingController();
+  late final TextEditingController _searchController;
   late final String _title;
   late final bool _isEnabled;
   @override
   void initState() {
+    _searchController == TextEditingController();
     _title = widget.title;
     _isEnabled = widget.searchbarEnabled;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,9 +65,6 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
                                 borderRadius: BorderRadius.circular(12), color: Colors.white),
                             child: TextField(
                               controller: _searchController,
-                              onChanged: (value) {
-                                _searchController.text = value;
-                              },
                               decoration: InputDecoration(
                                 contentPadding:
                                     const EdgeInsets.symmetric(horizontal: 10, vertical: 2),

@@ -20,7 +20,19 @@ class ProjectManagementBody extends ConsumerStatefulWidget {
 }
 
 class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
+  late final ScrollController _controller;
   bool _isOpen = false;
+  @override
+  void initState() {
+    _controller = ScrollController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => Stack(
@@ -40,11 +52,16 @@ class _ProjectManagementBodyState extends ConsumerState<ProjectManagementBody> {
                         ? const WaitingMessageWidget('Lade Projektdaten')
                         : SizedBox(
                             height: 11 * 60,
-                            child: ListView.builder(
-                              itemCount: ref.watch(projectVMProvider).projects.length,
-                              itemBuilder: (_, i) => ProjectDataCard(
-                                key: ValueKey(ref.watch(projectVMProvider).projects[i].id),
-                                project: ref.watch(projectVMProvider).projects[i],
+                            child: Scrollbar(
+                              controller: _controller,
+                              thumbVisibility: true,
+                              child: ListView.builder(
+                                controller: _controller,
+                                itemCount: ref.watch(projectVMProvider).projects.length,
+                                itemBuilder: (_, i) => ProjectDataCard(
+                                  key: ValueKey(ref.watch(projectVMProvider).projects[i].id),
+                                  project: ref.watch(projectVMProvider).projects[i],
+                                ),
                               ),
                             ),
                           ),

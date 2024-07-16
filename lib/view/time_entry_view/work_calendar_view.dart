@@ -32,6 +32,12 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
   }
 
   @override
+  void dispose() {
+    _eventCtr.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (!_isInit) {
       WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) {

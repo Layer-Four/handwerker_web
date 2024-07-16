@@ -18,8 +18,20 @@ class CustomerBody extends ConsumerStatefulWidget {
 }
 
 class _CustomerBodyState extends ConsumerState<CustomerBody> {
+  late final ScrollController _controller;
   bool isAddConsumableOpen = false;
   int editingProjectIndex = -1;
+  @override
+  void initState() {
+    _controller = ScrollController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => Stack(
@@ -37,17 +49,22 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                     height: 11 * 60,
                     child: ref.watch(customerProvider).isEmpty
                         ? const WaitingMessageWidget('Lade Kundendaten')
-                        : ListView.builder(
-                            itemCount: ref.watch(customerProvider).length,
-                            itemBuilder: (_, index) {
-                              final customer = ref.watch(customerProvider)[index];
-                              return CustomerCard(
-                                key: ValueKey(index),
-                                customer: customer,
-                                onDelete: () {},
-                                onUpdate: (CustomerOvervewDM value) {},
-                              );
-                            },
+                        : Scrollbar(
+                            controller: _controller,
+                            thumbVisibility: true,
+                            child: ListView.builder(
+                              controller: _controller,
+                              itemCount: ref.watch(customerProvider).length,
+                              itemBuilder: (_, index) {
+                                final customer = ref.watch(customerProvider)[index];
+                                return CustomerCard(
+                                  key: ValueKey(index),
+                                  customer: customer,
+                                  onDelete: () {},
+                                  onUpdate: (CustomerOvervewDM value) {},
+                                );
+                              },
+                            ),
                           ),
                   ),
                 ],

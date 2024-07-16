@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/project_models/customer_projects_report_dm/customer_projects_report_dm.dart';
+import '../../shared_widgets/error_message_widget.dart';
 import 'project_report_overview.dart';
 
 class ProjectCustomerOverviewWidget extends StatefulWidget {
@@ -30,7 +31,17 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () => setState(() => _isOpen = !_isOpen),
+                onTap: () {
+                  setState(() => _isOpen = !_isOpen);
+                  if (_customProject.projectsList.isEmpty) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => const ErrorMessageWidget(
+                        'Keine Projekte oder Berichte vorhanden für diesen Kunden',
+                      ),
+                    );
+                  }
+                },
                 child: Container(
                   padding: const EdgeInsets.only(left: 6),
                   height: 69,
@@ -70,7 +81,9 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
                 ),
               ),
               _isOpen
-                  ? ProjectReportOverview(projects: _customProject.projectsList)
+                  ? _customProject.projectsList.isNotEmpty
+                      ? ProjectReportOverview(projects: _customProject.projectsList)
+                      : const SizedBox.shrink()
                   : const SizedBox.shrink(),
             ],
           ),

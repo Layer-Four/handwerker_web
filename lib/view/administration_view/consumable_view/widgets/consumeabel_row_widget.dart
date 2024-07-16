@@ -28,9 +28,9 @@ class ConsumebaleDataRow extends ConsumerStatefulWidget {
 class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
   bool _isSnackbarShowed = false;
   late final Duration _snackbarDuration;
-  late TextEditingController _materialNameController;
-  late TextEditingController _amountController;
-  late TextEditingController _priceController;
+  late final TextEditingController _materialNameController;
+  late final TextEditingController _amountController;
+  late final TextEditingController _priceController;
   Unit? _currentUnit;
   late ConsumableVM _consumable;
   late final List<Unit> _units;

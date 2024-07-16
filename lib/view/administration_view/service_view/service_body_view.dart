@@ -18,10 +18,18 @@ class ServiceBodyView extends ConsumerStatefulWidget {
 
 class _ServiceBodyViewState extends ConsumerState<ServiceBodyView> {
   bool _isVisible = false;
+  late final ScrollController _controller;
 
   @override
   void initState() {
+    _controller = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

@@ -18,9 +18,17 @@ class _LoginViewState extends ConsumerState<LoginView> {
   bool _isPasswordVisible = false;
   bool _isLoaded = false;
 
-  final TextEditingController _emailCon = TextEditingController();
-  final TextEditingController _passCon = TextEditingController();
-  final GlobalKey<FormState> _formstate = GlobalKey<FormState>();
+  late final TextEditingController _emailCon;
+  late final TextEditingController _passCon;
+  late final GlobalKey<FormState> _formstate;
+  @override
+  void initState() {
+    _emailCon = TextEditingController();
+    _formstate = GlobalKey<FormState>();
+    _passCon = TextEditingController();
+
+    super.initState();
+  }
 
   @override
   void dispose() {

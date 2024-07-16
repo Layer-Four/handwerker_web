@@ -22,6 +22,7 @@ class ConsumableBodyView extends ConsumerStatefulWidget {
 }
 
 class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
+  late final ScrollController _controller;
   bool _isOpen = false;
   bool _isSnackbarShowed = false;
   late final Duration _snackbarDuration;
@@ -29,9 +30,16 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
 
   @override
   void initState() {
+    _controller = ScrollController();
     super.initState();
     _snackbarDuration = widget.snackbarDuration;
     initUnitsConsumable();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   void initUnitsConsumable() async =>
@@ -70,23 +78,27 @@ class _ConsumableBodyState extends ConsumerState<ConsumableBodyView> {
                         ? const WaitingMessageWidget('Lade Material')
                         : SizedBox(
                             height: 11 * 60,
-                            child: ListView.builder(
-                              itemCount: ref.watch(consumableProvider).length,
-                              itemBuilder: (context, i) => ConsumebaleDataRow(
-                                key: ValueKey(ref.watch(consumableProvider)[i]),
-                                consumable: ref.watch(consumableProvider)[i],
-                                units: _units,
-                                onDelete: () {
-                                  ref
-                                      .read(consumableProvider.notifier)
-                                      .deleteConsumable(ref.watch(consumableProvider)[i].id!)
-                                      .then((e) {
-                                    _showSnackBar(e
-                                        ? 'Eintrag erfolgreich gelöscht'
-                                        : 'Es ist ein Fehler aufgetreten während dem Löschen');
-                                  });
-                                  // Navigator.of(context).pop();
-                                },
+                            child: Scrollbar(
+                              controller: _controller,
+                              child: ListView.builder(
+                                controller: _controller,
+                                itemCount: ref.watch(consumableProvider).length,
+                                itemBuilder: (context, i) => ConsumebaleDataRow(
+                                  key: ValueKey(ref.watch(consumableProvider)[i]),
+                                  consumable: ref.watch(consumableProvider)[i],
+                                  units: _units,
+                                  onDelete: () {
+                                    ref
+                                        .read(consumableProvider.notifier)
+                                        .deleteConsumable(ref.watch(consumableProvider)[i].id!)
+                                        .then((e) {
+                                      _showSnackBar(e
+                                          ? 'Eintrag erfolgreich gelöscht'
+                                          : 'Es ist ein Fehler aufgetreten während dem Löschen');
+                                    });
+                                    // Navigator.of(context).pop();
+                                  },
+                                ),
                               ),
                             ),
                           ),
