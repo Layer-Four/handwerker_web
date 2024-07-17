@@ -28,15 +28,19 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
   bool _isSnackbarShowed = false;
   bool isEditing = false;
   late final Duration _snackbarDuration;
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _amountController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
+  late final TextEditingController _nameController;
+  late final TextEditingController _amountController;
+  late final TextEditingController _priceController;
   late final List<Unit> _units;
   Unit? _selectedUnit;
   late ConsumableVM _consumable;
 
   @override
   void initState() {
+    _amountController = TextEditingController(text: '1');
+    _nameController = TextEditingController();
+    _priceController = TextEditingController();
+
     super.initState();
     _units = widget.units;
     _snackbarDuration = widget.snackbarDuration;
@@ -274,6 +278,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     _nameController.clear(),
                                     _amountController.clear(),
                                     _priceController.clear(),
+                                    _selectedUnit = null
                                   }
                                 : _showSnackBar('hat nicht geklappt');
                           });

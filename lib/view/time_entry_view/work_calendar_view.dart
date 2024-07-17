@@ -19,7 +19,7 @@ class WorkCalendarView extends ConsumerStatefulWidget {
 
 class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
   final List<CalendarEventData<TimeVMAdapter>> _allEvents = [];
-  late final EventController _eventCtr;
+  final EventController _eventCtr = EventController();
   bool _isInit = false;
   bool _isWeekView = true;
   bool _isLoading = true;
@@ -28,7 +28,11 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
   void initState() {
     super.initState();
     _loadEvents();
-    _eventCtr = EventController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

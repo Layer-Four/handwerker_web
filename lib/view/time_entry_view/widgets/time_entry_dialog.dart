@@ -21,12 +21,12 @@ class TimeEntryDialog extends ConsumerStatefulWidget {
 }
 
 class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
-  final TextEditingController _dayPickerController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _durationController = TextEditingController();
-  final TextEditingController _endController = TextEditingController();
-  final TextEditingController _startController = TextEditingController();
-  TimeOfDay? selectedTime;
+  late final TextEditingController _dayPickerController;
+  late final TextEditingController _descriptionController;
+  late final TextEditingController _durationController;
+  late final TextEditingController _endController;
+  late final TextEditingController _startController;
+  TimeOfDay? _selectedTime;
   List<UserDataShort>? _users;
   ServiceVM? _choosenService;
   UserDataShort? _selectedUser;
@@ -39,21 +39,33 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
 
   @override
   void initState() {
-    super.initState();
+    final DateTime now = DateTime.now();
     loadCustomer();
     _entry = TimeVMAdapter(
-      date: DateTime.now(),
-      startTime: DateTime.now(),
-      endTime: DateTime.now(),
+      date: now,
+      startTime: now,
+      endTime: now,
     );
     final minute =
         _entry.startTime.minute < 10 ? '0${_entry.startTime.minute}' : '${_entry.startTime.minute}';
-    if (selectedTime == null || _dayPickerController.text.isEmpty) {
-      _dayPickerController.text =
-          '${_entry.startTime.day}.${_entry.startTime.month}.${_entry.startTime.year}';
-      selectedTime = TimeOfDay(hour: _entry.startTime.hour, minute: _entry.startTime.minute);
-    }
-    _startController.text = '${selectedTime!.hour}:$minute';
+    _dayPickerController = TextEditingController(
+        text: '${_entry.startTime.day}.${_entry.startTime.month}.${_entry.startTime.year}');
+    _descriptionController = TextEditingController();
+    _durationController = TextEditingController();
+    _endController = TextEditingController();
+    _startController = TextEditingController(text: '${_selectedTime!.hour}:$minute');
+    _selectedTime ??= TimeOfDay(hour: _entry.startTime.hour, minute: _entry.startTime.minute);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _dayPickerController.dispose();
+    _descriptionController.dispose();
+    _durationController.dispose();
+    _endController.dispose();
+    _startController.dispose();
+    super.dispose();
   }
 
   @override

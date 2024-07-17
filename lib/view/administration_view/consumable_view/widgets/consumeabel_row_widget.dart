@@ -2,24 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/themes/app_color.dart';
+import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../../models/consumable_models/unit/unit.dart';
 import '../../../../provider/data_provider/consumeable_proivder/consumable_provider.dart';
 import '../../../shared_widgets/ask_agreement_widget.dart';
+import '../../../shared_widgets/custom_dropdown_button.dart';
+import '../../../shared_widgets/hover_textfield_widget.dart';
 
 class ConsumebaleDataRow extends ConsumerStatefulWidget {
   final ConsumableVM consumable;
-  final VoidCallback onDelete;
   final List<Unit> units;
-  final Duration snackbarDuration;
 
-  const ConsumebaleDataRow({
-    super.key,
-    this.snackbarDuration = const Duration(seconds: 7),
-    required this.consumable,
-    required this.onDelete,
-    required this.units,
-  });
+  const ConsumebaleDataRow({super.key, required this.consumable, required this.units});
 
   @override
   ConsumerState<ConsumebaleDataRow> createState() => _ConsumebaleDataRowState();
@@ -27,111 +22,115 @@ class ConsumebaleDataRow extends ConsumerStatefulWidget {
 
 class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
   bool _isSnackbarShowed = false;
-  late final Duration _snackbarDuration;
-  late TextEditingController _materialNameController;
-  late TextEditingController _amountController;
-  late TextEditingController _priceController;
+  late final TextEditingController _titleController, _amountController, _priceController;
   Unit? _currentUnit;
   late ConsumableVM _consumable;
-  late final List<Unit> _units;
-  bool isEditing = false;
-  bool _isTitleHovered = false;
-  bool _isPriceHovered = false;
-  bool _isAmountHovered = false;
+  bool _isEditing = false;
+  // Store initial values
+  late String _initialAmount, _initialPrice, _initialTitle;
+  late Unit? _initialUnit;
 
-  String? _initialMaterialName;
-  int? _initialAmount;
-  String? _initialPrice;
-  Unit? _initialUnit;
+  // Track hover state
+  bool _isUnitHovered = false;
+
+  // Focus nodes
 
   @override
   void initState() {
     super.initState();
     _consumable = widget.consumable;
     _currentUnit = _consumable.unit;
-    _materialNameController = TextEditingController(text: _consumable.name);
+    _titleController = TextEditingController(text: _consumable.name);
     _amountController = TextEditingController(text: _consumable.amount.toString());
     _priceController = TextEditingController(text: '${_consumable.price}€');
-    _units = widget.units;
-    _snackbarDuration = widget.snackbarDuration;
 
-    _initialMaterialName = _consumable.name;
-    _initialAmount = _consumable.amount;
+    _initialTitle = _consumable.name;
+    _initialAmount = _consumable.amount.toStringAsFixed(0);
     _initialPrice = '${_consumable.price}€';
     _initialUnit = _consumable.unit;
+
+    // Initialize initial values
+    _initialTitle = _consumable.name;
+    _initialPrice = '${_consumable.price}€';
   }
 
   @override
   void dispose() {
-    _materialNameController.dispose();
+    _titleController.dispose();
     _amountController.dispose();
     _priceController.dispose();
     super.dispose();
   }
 
-  void _showSnackBar(String message) {
-    if (_isSnackbarShowed) return;
-    setState(() => _isSnackbarShowed = true);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Center(
-          child: Text(message),
-        ),
-        duration: _snackbarDuration,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-    Future.delayed(_snackbarDuration).then(
-      (_) => setState(() => _isSnackbarShowed = false),
-    );
-  }
-
-  Color getBorderColor(bool isHovered) =>
-      isHovered ? AppColor.kTextfieldBorder : Colors.transparent; // Changed to transparent when not hovered
-
-  bool _hasChanges() =>
-      _materialNameController.text != _initialMaterialName ||
-      _amountController.text != _initialAmount.toString() ||
-      _priceController.text.replaceAll('€', '') != _initialPrice?.replaceAll('€', '') ||
-      _currentUnit != _initialUnit;
-
-  void _saveChanges() {
-    if (!_hasChanges()) {
-      _showSnackBar('Keine Änderungen erkannt.');
-      setState(() {
-        isEditing = false;
+  void _showSnackBar(String message, [Function()? callback]) {
+    if (!_isSnackbarShowed) {
+      setState(() => _isSnackbarShowed = true);
+      Utilitis.showSnackBar(context, message);
+      Future.delayed(const Duration(seconds: 7)).then((_) {
+        setState(() => _isSnackbarShowed = false);
+        callback;
       });
       return;
     }
+    return;
+  }
 
-    String priceValue = _priceController.text;
+  void _resetFields() => setState(() {
+        _isEditing = false;
+        // Reset text fields to initial values if they have changed
+        if (_titleController.text != _initialTitle) _titleController.text = _initialTitle;
+        // Reset text fields to initial values if they have changed
+        if (_priceController.text != _initialPrice) _priceController.text = _initialPrice;
+      });
 
-    if (!priceValue.endsWith('€')) {
-      priceValue += '€';
+  Color getBorderColor(bool isHovered) => isHovered
+      ? AppColor.kTextfieldBorder
+      : Colors.transparent; // Changed to transparent when not hovered
+
+  bool _hasChanges() =>
+      _amountController.text != _initialAmount ||
+      _currentUnit != _initialUnit ||
+      _priceController.text.replaceAll('€', '') != _initialPrice.replaceAll('€', '') ||
+      _titleController.text != _initialTitle;
+
+  void _saveData() {
+    if (_hasChanges()) {
+      final parsedPrice = double.parse(_priceController.text.replaceAll('€', ''));
+      final parsedAmount = int.parse(_amountController.text.replaceAll('€', ''));
+      ConsumableVM updatedConsumable = ConsumableVM(
+        id: widget.consumable.id,
+        name: _titleController.text,
+        price: parsedPrice,
+        amount: parsedAmount,
+        unit: _currentUnit,
+      );
+      // Update local state
+      setState(() {
+        _consumable = _consumable.copyWith(
+          price: parsedPrice,
+          name: _titleController.text,
+          amount: parsedAmount,
+          unit: _currentUnit,
+        );
+        _initialTitle = _consumable.name;
+        _initialPrice = '${_consumable.price}€';
+        _initialUnit = _consumable.unit;
+        _initialAmount = _consumable.amount.toStringAsFixed(0);
+      });
+
+      // Example: Updating serviceVMProvider
+      ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable).then((e) {
+        Utilitis.showSnackBar(
+          context,
+          e
+              ? 'Material wurde erfolgreich geändert'
+              : 'Leider hat es nicht funktioniert. Versuchen Sie es erneut.',
+        );
+      });
+      //  TODO: Check if resets field also after update Consumable
+      // No changes were made, just reset fields
+      _resetFields();
     }
-
-    double parsedPrice = double.parse(priceValue.replaceAll('€', ''));
-
-    ConsumableVM updatedConsumable = ConsumableVM(
-      id: widget.consumable.id,
-      name: _materialNameController.text,
-      amount: int.parse(_amountController.text),
-      unit: _currentUnit ?? _consumable.unit,
-      price: parsedPrice,
-    );
-
-    ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable).then((b) {
-      if (b) {
-        // ignore: unused_result
-        ref.refresh(consumableProvider);
-        setState(() {
-          _priceController.text = priceValue;
-          isEditing = false;
-        });
-      }
-
-      _showSnackBar(b ? 'wurde erfolgreich angebpasst' : 'hat leider nicht geklappt');
-    });
   }
 
   @override
@@ -149,241 +148,109 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                 children: [
                   Row(
                     children: [
-                      MouseRegion(
-                        onEnter: (_) {
-                          setState(() {
-                            _isTitleHovered = true;
-                            _isAmountHovered = false;
-                            _isPriceHovered = false;
-                          });
-                        },
-                        onExit: (_) {
-                          setState(() {
-                            _isTitleHovered = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: isEditing || _isTitleHovered ? AppColor.kGreyBackground : Colors.transparent,
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: isEditing ? AppColor.kPrimaryButtonColor : getBorderColor(_isTitleHovered),
-                            ),
-                          ),
-                          width: MediaQuery.of(context).size.width > 1100
-                              ? 200
-                              : MediaQuery.of(context).size.width / 10 * 1.8,
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: TextField(
-                              controller: _materialNameController,
-                              style: Theme.of(context).textTheme.titleMedium,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
-                                border: isEditing ? const OutlineInputBorder() : InputBorder.none,
-                                contentPadding: const EdgeInsets.all(4),
-                              ),
-                              readOnly: !isEditing,
-                              onSubmitted: (_) {
-                                if (isEditing) {
-                                  _saveChanges();
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                      HoverTextfieldWidget(
+                        controller: _titleController,
+                        isEdit: _isEditing,
+                        onTapOutside: (p0) => _resetFields(),
+                        onSubmitted: (p0) => _isEditing ? _saveData() : null,
+                        onDoubleTap: () => setState(() => _isEditing = !_isEditing),
                       ),
-                      MouseRegion(
-                        onEnter: (_) {
-                          setState(() {
-                            _isAmountHovered = true;
-                            _isTitleHovered = false;
-                            _isPriceHovered = false;
-                          });
-                        },
-                        onExit: (_) {
-                          setState(() {
-                            _isAmountHovered = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: isEditing || _isAmountHovered ? AppColor.kGreyBackground : Colors.transparent,
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: isEditing ? AppColor.kPrimaryButtonColor : getBorderColor(_isAmountHovered),
-                            ),
-                          ),
-                          width: MediaQuery.of(context).size.width > 1100
-                              ? 200
-                              : MediaQuery.of(context).size.width / 10 * 1.8,
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: TextField(
-                              controller: _amountController,
-                              style: Theme.of(context).textTheme.titleMedium,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: isEditing ? Colors.grey[200] : Colors.transparent,
-                                border: isEditing ? const OutlineInputBorder() : InputBorder.none,
-                                contentPadding: const EdgeInsets.all(4),
-                              ),
-                              onChanged: (value) {
-                                if (int.tryParse(value) == null) {
-                                  _amountController.text =
-                                      _amountController.text.substring(0, _amountController.text.length - 1);
-                                  return _showSnackBar('Bitte geben sie nur Zahlen ein');
-                                }
-
-                                TextSelection previousSelection = _amountController.selection;
-                                _amountController.text = value;
-                                _amountController.selection = previousSelection;
-                                setState(
-                                  () => _consumable = _consumable.copyWith(
-                                    amount: int.parse(_amountController.text),
+                      HoverTextfieldWidget(
+                        controller: _amountController,
+                        isEdit: _isEditing,
+                        keyboardType: TextInputType.number,
+                        onTapOutside: (p0) => _resetFields(),
+                        onSubmitted: (p0) => _isEditing ? _saveData() : null,
+                        onDoubleTap: () => setState(() => _isEditing = !_isEditing),
+                        format: [FilteringTextInputFormatter.allow(RegExp(r'^\d*'))],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onDoubleTap: () => setState(() => _isEditing = !_isEditing),
+                          child: MouseRegion(
+                            onEnter: (event) => setState(() => _isUnitHovered = true),
+                            onExit: (event) => setState(() => _isUnitHovered = false),
+                            child: CustomDropDown<Unit>(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: const Color.fromARGB(255, 240, 237, 237),
                                   ),
-                                );
-                              },
-                              readOnly: !isEditing,
-                              keyboardType: TextInputType.number,
-                              onSubmitted: (_) {
-                                if (isEditing) {
-                                  _saveChanges();
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      MouseRegion(
-                        onEnter: (_) {
-                          setState(() {
-                            _isPriceHovered = true;
-                            _isTitleHovered = false;
-                            _isAmountHovered = false;
-                          });
-                        },
-                        onExit: (_) {
-                          setState(() {
-                            _isPriceHovered = false;
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width > 600 ? 30 : 0),
-                          width: MediaQuery.of(context).size.width > 1100
-                              ? 200 - 30
-                              : MediaQuery.of(context).size.width > 600
-                                  ? MediaQuery.of(context).size.width / 10 * 1.8 - 30
-                                  : MediaQuery.of(context).size.width / 10 * 1.8,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 240, 237, 237),
-                              width: 1.0,
-                            ),
-                            color: isEditing ? AppColor.kGreyBackground : const Color.fromARGB(249, 254, 255, 253),
-                          ),
-                          child: DropdownButton<Unit?>(
-                            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width > 1100 ? 16 : 8),
-                            isExpanded: true,
-                            underline: const SizedBox.shrink(),
-                            value: _consumable.unit,
-                            items: _units
-                                .map((e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                        child: Text(
-                                          e.name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium
-                                              ?.copyWith(color: isEditing ? null : AppColor.kGrey),
+                                  color: _isEditing
+                                      ? Colors.grey[200]
+                                      : const Color.fromARGB(249, 254, 255, 253),
+                                ),
+                                borderColor:
+                                    _isUnitHovered ? AppColor.kPrimaryButtonColor : AppColor.kWhite,
+                                width: MediaQuery.of(context).size.width > 1100
+                                    ? 184
+                                    : ((MediaQuery.of(context).size.width * 0.18) - 16),
+                                initalValue: _consumable.unit,
+                                items: widget.units
+                                    .map(
+                                      (e) => DropdownMenuItem<Unit>(
+                                        value: e,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                          child: Text(
+                                            e.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
+                                                ?.copyWith(
+                                                    color: _isEditing ? null : AppColor.kGrey),
+                                          ),
                                         ),
                                       ),
-                                    ))
-                                .toList(),
-                            onChanged: isEditing
-                                ? (Unit? newValue) {
-                                    setState(() {
-                                      _consumable = _consumable.copyWith(unit: newValue);
-                                      _currentUnit = newValue;
-                                    });
-                                  }
-                                : null,
+                                    )
+                                    .toList(),
+                                onChanged: _isEditing
+                                    ? (e) => setState(
+                                          () {
+                                            _consumable = _consumable.copyWith(unit: e);
+                                            _currentUnit = e;
+                                          },
+                                        )
+                                    : null),
                           ),
                         ),
                       ),
-                      MouseRegion(
-                        onEnter: (_) {
+                      HoverTextfieldWidget(
+                        controller: _priceController,
+                        isEdit: _isEditing,
+                        keyboardType: TextInputType.number,
+                        onTapOutside: (p0) => _resetFields(),
+                        onSubmitted: (p0) => _isEditing ? _saveData() : null,
+                        onDoubleTap: () => setState(() => _isEditing = !_isEditing),
+                        format: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}')),
+                        ],
+                        onChanged: (p0) {
+                          if (p0.contains(',')) {
+                            final list = p0.split('');
+                            String newValue = '';
+                            for (var e in list) {
+                              if (e == ',') {
+                                newValue += '.';
+                              } else {
+                                newValue += e;
+                              }
+                            }
+                            p0 = newValue;
+                          }
+
+                          if (p0.isNotEmpty && double.parse(p0.replaceAll('€', '')) > 100000) {
+                            return _showSnackBar('Diese Zahl ist zu groß');
+                          }
+
+                          TextSelection previousSelection = _priceController.selection;
+                          _priceController.text = p0;
+                          _priceController.selection = previousSelection;
                           setState(() {
-                            _isPriceHovered = true;
-                            _isTitleHovered = false;
-                            _isAmountHovered = false;
+                            _consumable = _consumable.copyWith(
+                                price: double.parse(_priceController.text.replaceAll('€', '')));
                           });
                         },
-                        onExit: (_) {
-                          setState(() {
-                            _isPriceHovered = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: isEditing || _isPriceHovered ? AppColor.kGreyBackground : Colors.transparent,
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: isEditing ? AppColor.kPrimaryButtonColor : getBorderColor(_isPriceHovered),
-                            ),
-                          ),
-                          width: MediaQuery.of(context).size.width > 1100
-                              ? 200
-                              : MediaQuery.of(context).size.width / 10 * 1.8,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))],
-                            controller: _priceController,
-                            style: Theme.of(context).textTheme.titleMedium,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: isEditing ? AppColor.kGreyBackground : Colors.transparent,
-                              border: isEditing ? const OutlineInputBorder() : InputBorder.none,
-                              contentPadding: const EdgeInsets.all(4),
-                            ),
-                            readOnly: !isEditing,
-                            onChanged: (value) {
-                              if (value.contains(',')) {
-                                final list = value.split('');
-                                String newValue = '';
-                                for (var e in list) {
-                                  if (e == ',') {
-                                    newValue += '.';
-                                  } else {
-                                    newValue += e;
-                                  }
-                                }
-                                value = newValue;
-                              }
-
-                              if (value.isNotEmpty && double.parse(value.replaceAll('€', '')) > 10000) {
-                                return _showSnackBar('Diese Zahl ist zu groß');
-                              }
-
-                              TextSelection previousSelection = _priceController.selection;
-                              _priceController.text = value;
-                              _priceController.selection = previousSelection;
-                              setState(() {
-                                _consumable = _consumable.copyWith(
-                                  price: double.parse(_priceController.text.replaceAll('€', '')),
-                                );
-                              });
-                            },
-                            onFieldSubmitted: (_) {
-                              if (isEditing) {
-                                _saveChanges();
-                              }
-                            },
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -393,39 +260,75 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
-                          onPressed: isEditing
-                              ? () {
-                                  setState(() {
-                                    isEditing = false;
-                                    _materialNameController.text = widget.consumable.name;
-                                    _amountController.text = widget.consumable.amount.toString();
-                                    _priceController.text =
-                                        '${widget.consumable.price}€'; // Ensure the price has € symbol
-                                  });
-                                }
+                          onPressed: _isEditing
+                              ? () => _resetFields()
                               : () => showDialog(
-                                  context: context,
-                                  builder: (context) => AskoForAgreement(
-                                        message: 'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
-                                        onAccept: () async {
+                                    context: context,
+                                    builder: (context) => AskoForAgreement(
+                                      message:
+                                          'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
+                                      onAccept: () {
+                                        ref
+                                            .read(consumableProvider.notifier)
+                                            .deleteConsumable(_consumable.id!)
+                                            .then((e) {
+                                          _showSnackBar(e
+                                              ? 'Eintrag erfolgreich gelöscht'
+                                              : 'Es ist ein Fehler aufgetreten während dem Löschen');
                                           Navigator.of(context).pop();
-                                          widget.onDelete();
-                                        },
-                                      )),
-                          icon: Icon(isEditing ? Icons.cancel : Icons.delete),
+                                        });
+                                      },
+                                    ),
+                                  ),
+                          icon: Icon(_isEditing ? Icons.cancel : Icons.delete),
                         ),
                         IconButton(
                           icon: Icon(
-                            isEditing ? Icons.save : Icons.edit,
+                            _isEditing ? Icons.save : Icons.edit,
                           ),
                           onPressed: () {
-                            if (isEditing) {
-                              _saveChanges();
-                            } else {
-                              setState(() {
-                                isEditing = true;
+                            if (_isEditing) {
+                              if (!_hasChanges()) {
+                                setState(() => _isEditing = !_isEditing);
+                                return _showSnackBar('Keine Änderungen erkannt.');
+                              }
+
+                              String priceValue = _priceController.text;
+
+                              if (!priceValue.endsWith('€')) {
+                                priceValue += '€';
+                              }
+
+                              double parsedPrice = double.parse(priceValue.replaceAll('€', ''));
+
+                              ConsumableVM updatedConsumable = ConsumableVM(
+                                id: widget.consumable.id,
+                                name: _titleController.text,
+                                amount: int.parse(_amountController.text),
+                                unit: _currentUnit ?? _consumable.unit,
+                                price: parsedPrice,
+                              );
+
+                              ref
+                                  .read(consumableProvider.notifier)
+                                  .updateConsumable(updatedConsumable)
+                                  .then((b) {
+                                if (b) {
+                                  // ignore: unused_result
+                                  ref.refresh(consumableProvider);
+                                  setState(() {
+                                    _priceController.text = priceValue;
+                                  });
+                                }
+
+                                return _showSnackBar(
+                                  b ? 'wurde erfolgreich angebpasst' : 'hat leider nicht geklappt',
+                                );
                               });
                             }
+                            setState(() {
+                              _isEditing = true;
+                            });
                           },
                         ),
                       ],
@@ -438,29 +341,3 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
         ),
       );
 }
-
-
-    // child: TextField(
-    //                             controller: _titleController,
-    //                             focusNode: _titleFocusNode,
-    //                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-    //                                   color: Colors.black,
-    //                                 ),
-    //                             decoration: InputDecoration(
-    //                               border: isEditing ? const OutlineInputBorder() : InputBorder.none,
-
-    //                               // border: InputBorder.none,
-    //                               contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-    //                             ),
-    //                             readOnly: !isEditing,
-    //                             onTap: () {
-    //                               setState(() {
-    //                                 _titleFocusNode.requestFocus();
-    //                               });
-    //                             },
-    //                             onSubmitted: (value) {
-    //                               if (isEditing) {
-    //                                 _saveData(ref);
-    //                               }
-    //                             },
-    //                           ),

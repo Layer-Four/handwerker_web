@@ -26,7 +26,7 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
   Map<String, dynamic>? _newUser;
   late final double overflowWith;
   final int _snackBarDuration = 7;
-  final TextEditingController _nameController = TextEditingController();
+  late final TextEditingController _nameController;
   // final TextEditingController _secondNameController = TextEditingController();
   // final TextEditingController _streetController = TextEditingController();
   // final TextEditingController _housenumberController = TextEditingController();
@@ -42,7 +42,14 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
     super.initState();
     _roles.addAll(widget.roles);
     _selectedRole = _roles.first;
+    _nameController = TextEditingController();
     overflowWith = widget.overflowWidth;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
   }
 
   @override

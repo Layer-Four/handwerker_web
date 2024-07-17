@@ -4,8 +4,8 @@ import 'symetric_button_widget.dart';
 
 class AskoForAgreement extends StatelessWidget {
   final String message;
-  final Function() onAccept;
-  final Function()? onReject;
+  final void Function() onAccept;
+  final void Function()? onReject;
 
   const AskoForAgreement({
     super.key,

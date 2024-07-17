@@ -15,6 +15,18 @@ final languageProvider = StateProvider((ref) {
   };
 });
 
+class SettingsState {
+  final Duration _messageDuration;
+  final Dictionary _language;
+  SettingsState({
+    Dictionary? language,
+    Duration? messageDuration,
+  })  : _language = language ?? GermanLanguage(),
+        _messageDuration = messageDuration ?? const Duration(seconds: 7);
+  Duration get messsageDuration => _messageDuration;
+  Dictionary get language => _language;
+}
+
 enum Localizations { de, en, es, ar, be }
 
 extension LocalLocalitaion on Localizations {

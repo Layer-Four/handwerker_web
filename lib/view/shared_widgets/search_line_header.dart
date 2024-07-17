@@ -28,6 +28,11 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constrains) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -58,9 +63,6 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
                                 borderRadius: BorderRadius.circular(12), color: Colors.white),
                             child: TextField(
                               controller: _searchController,
-                              onChanged: (value) {
-                                _searchController.text = value;
-                              },
                               decoration: InputDecoration(
                                 contentPadding:
                                     const EdgeInsets.symmetric(horizontal: 10, vertical: 2),

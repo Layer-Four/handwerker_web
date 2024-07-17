@@ -14,7 +14,19 @@ class ReactToEmailView extends StatefulWidget {
 }
 
 class _ReactToEmailViewState extends State<ReactToEmailView> {
-  final TextEditingController _userNameCtr = TextEditingController();
+  late final TextEditingController _userNameCtr;
+  @override
+  void initState() {
+    _userNameCtr = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _userNameCtr.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         // backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,

@@ -88,10 +88,18 @@ class Utilitis {
         _ => throw Exception('There was a unkown Weekday maybe😅')
       };
 
-  static void showSnackBar(BuildContext context, String message, [bool showCloseIcon = false]) {
+  static void showSnackBar(
+    BuildContext context,
+    String message, [
+    bool showCloseIcon = false,
+    Duration duration = const Duration(seconds: 7),
+    SnackBarBehavior behavior = SnackBarBehavior.floating,
+  ]) {
     final snackBar = SnackBar(
       showCloseIcon: showCloseIcon,
       content: Center(child: Text(message, textAlign: TextAlign.center)),
+      duration: duration,
+      behavior: behavior,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
