@@ -10,6 +10,7 @@ _$CreateCustomerDMImpl _$$CreateCustomerDMImplFromJson(
         Map<String, dynamic> json) =>
     _$CreateCustomerDMImpl(
       id: (json['id'] as num?)?.toInt(),
+      customerName: json['customerName'] as String?,
       externalId: json['externalId'] as String?,
       companyName: json['companyName'] as String?,
       contactName: json['contactName'] as String?,
@@ -26,6 +27,7 @@ Map<String, dynamic> _$$CreateCustomerDMImplToJson(
         _$CreateCustomerDMImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'customerName': instance.customerName,
       'externalId': instance.externalId,
       'companyName': instance.companyName,
       'contactName': instance.contactName,

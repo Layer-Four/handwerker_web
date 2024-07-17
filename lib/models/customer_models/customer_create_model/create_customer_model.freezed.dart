@@ -21,6 +21,7 @@ CreateCustomerDM _$CreateCustomerDMFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CreateCustomerDM {
   int? get id => throw _privateConstructorUsedError;
+  String? get customerName => throw _privateConstructorUsedError;
   String? get externalId => throw _privateConstructorUsedError;
   String? get companyName => throw _privateConstructorUsedError;
   String? get contactName => throw _privateConstructorUsedError;
@@ -46,6 +47,7 @@ abstract class $CreateCustomerDMCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
+      String? customerName,
       String? externalId,
       String? companyName,
       String? contactName,
@@ -72,6 +74,7 @@ class _$CreateCustomerDMCopyWithImpl<$Res, $Val extends CreateCustomerDM>
   @override
   $Res call({
     Object? id = freezed,
+    Object? customerName = freezed,
     Object? externalId = freezed,
     Object? companyName = freezed,
     Object? contactName = freezed,
@@ -88,6 +91,10 @@ class _$CreateCustomerDMCopyWithImpl<$Res, $Val extends CreateCustomerDM>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String?,
       externalId: freezed == externalId
           ? _value.externalId
           : externalId // ignore: cast_nullable_to_non_nullable
@@ -142,6 +149,7 @@ abstract class _$$CreateCustomerDMImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      String? customerName,
       String? externalId,
       String? companyName,
       String? contactName,
@@ -166,6 +174,7 @@ class __$$CreateCustomerDMImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? customerName = freezed,
     Object? externalId = freezed,
     Object? companyName = freezed,
     Object? contactName = freezed,
@@ -182,6 +191,10 @@ class __$$CreateCustomerDMImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      customerName: freezed == customerName
+          ? _value.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String?,
       externalId: freezed == externalId
           ? _value.externalId
           : externalId // ignore: cast_nullable_to_non_nullable
@@ -231,6 +244,7 @@ class __$$CreateCustomerDMImplCopyWithImpl<$Res>
 class _$CreateCustomerDMImpl extends _CreateCustomerDM {
   const _$CreateCustomerDMImpl(
       {this.id,
+      this.customerName,
       this.externalId,
       this.companyName,
       this.contactName,
@@ -248,6 +262,8 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
 
   @override
   final int? id;
+  @override
+  final String? customerName;
   @override
   final String? externalId;
   @override
@@ -272,7 +288,7 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
 
   @override
   String toString() {
-    return 'CreateCustomerDM(id: $id, externalId: $externalId, companyName: $companyName, contactName: $contactName, contactPhone: $contactPhone, contactMail: $contactMail, street: $street, streetNr: $streetNr, zipcode: $zipcode, city: $city, country: $country)';
+    return 'CreateCustomerDM(id: $id, customerName: $customerName, externalId: $externalId, companyName: $companyName, contactName: $contactName, contactPhone: $contactPhone, contactMail: $contactMail, street: $street, streetNr: $streetNr, zipcode: $zipcode, city: $city, country: $country)';
   }
 
   @override
@@ -281,6 +297,8 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
         (other.runtimeType == runtimeType &&
             other is _$CreateCustomerDMImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
             (identical(other.externalId, externalId) ||
                 other.externalId == externalId) &&
             (identical(other.companyName, companyName) ||
@@ -304,6 +322,7 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      customerName,
       externalId,
       companyName,
       contactName,
@@ -333,6 +352,7 @@ class _$CreateCustomerDMImpl extends _CreateCustomerDM {
 abstract class _CreateCustomerDM extends CreateCustomerDM {
   const factory _CreateCustomerDM(
       {final int? id,
+      final String? customerName,
       final String? externalId,
       final String? companyName,
       final String? contactName,
@@ -350,6 +370,8 @@ abstract class _CreateCustomerDM extends CreateCustomerDM {
 
   @override
   int? get id;
+  @override
+  String? get customerName;
   @override
   String? get externalId;
   @override
