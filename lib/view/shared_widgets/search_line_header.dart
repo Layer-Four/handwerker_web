@@ -17,12 +17,11 @@ class SearchLineHeader extends StatefulWidget {
 }
 
 class _SearchLineHeaderState extends State<SearchLineHeader> {
-  late final TextEditingController _searchController;
+  final TextEditingController _searchController = TextEditingController();
   late final String _title;
   late final bool _isEnabled;
   @override
   void initState() {
-    _searchController == TextEditingController();
     _title = widget.title;
     _isEnabled = widget.searchbarEnabled;
     super.initState();
@@ -30,7 +29,6 @@ class _SearchLineHeaderState extends State<SearchLineHeader> {
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 

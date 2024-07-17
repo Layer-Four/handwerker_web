@@ -2,39 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/themes/app_color.dart';
+import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/service_models/service_vm/service_vm.dart';
 import '../../../../provider/data_provider/service_provider/service_vm_provider.dart';
 import '../../../shared_widgets/ask_agreement_widget.dart';
+import '../../../shared_widgets/hover_textfield_widget.dart';
 
 class ServiceDataWidget extends ConsumerStatefulWidget {
   final ServiceVM service;
 
-  const ServiceDataWidget({
-    super.key,
-    required this.service,
-  });
+  const ServiceDataWidget({super.key, required this.service});
 
   @override
   ConsumerState<ServiceDataWidget> createState() => _ServiceDataWidgetState();
 }
 
 class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
-  late TextEditingController _titleController;
-  late TextEditingController _priceController;
-  late ServiceVM _service;
-  bool isEditing = false;
-
+  late final TextEditingController _titleController, _priceController;
   // Store initial values
-  late String _initialTitle;
-  late String _initialPrice;
+  late String _initialTitle, _initialPrice;
+  late ServiceVM _service;
+  late FocusNode _titleFocusNode, _priceFocusNode;
 
   // Track hover state
-  bool _isTitleHovered = false;
-  bool _isPriceHovered = false;
+  bool _isEditing = false, _isSnackbarShowed = false;
 
   // Focus nodes
-  late FocusNode _titleFocusNode;
-  late FocusNode _priceFocusNode;
 
   @override
   void initState() {
@@ -62,19 +55,20 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Center(
-          child: Text(message),
-        ),
-        duration: const Duration(seconds: 3),
-      ),
-    );
+    if (!_isSnackbarShowed) {
+      setState(() => _isSnackbarShowed = true);
+      Utilitis.showSnackBar(context, message);
+      Future.delayed(const Duration(seconds: 7)).then(
+        (_) => setState(() => _isSnackbarShowed = false),
+      );
+    }
   }
 
   void _resetFields() {
     setState(() {
-      isEditing = false;
+      _isEditing = false;
+      _titleFocusNode.unfocus();
+      _priceFocusNode.unfocus();
       // Reset text fields to initial values if they have changed
       if (_titleController.text != _initialTitle) {
         _titleController.text = _initialTitle;
@@ -82,15 +76,12 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
       if (_priceController.text != _initialPrice) {
         _priceController.text = _initialPrice;
       }
-      _titleFocusNode.unfocus();
-      _priceFocusNode.unfocus();
     });
   }
 
-  Color getBorderColor(bool isHovered) =>
-      isHovered ? AppColor.kPrimary : Colors.white.withOpacity(0.5);
+  Color getBorderColor(bool isHovered) => isHovered ? AppColor.kPrimary : Colors.white;
 
-  void _saveData(WidgetRef ref) {
+  void _saveData() {
     String currentTitle = _titleController.text;
     String currentPrice = _priceController.text;
 
@@ -106,16 +97,11 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
 
       // Example: Updating serviceVMProvider
       ref.read(serviceVMProvider.notifier).updateService(updatedRow).then((e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Center(
-              child: Text(
-                e
-                    ? 'Leistung wurde erfolgreich geändert'
-                    : 'Leider hat es nicht funktioniert. Versuchen Sie es erneut.',
-              ),
-            ),
-          ),
+        Utilitis.showSnackBar(
+          context,
+          e
+              ? 'Leistung wurde erfolgreich geändert'
+              : 'Leider hat es nicht funktioniert. Versuchen Sie es erneut.',
         );
 
         // Update local state
@@ -125,14 +111,12 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
             name: currentTitle,
           );
           _initialTitle = currentTitle;
-          _initialPrice = '$currentPrice€';
-          _resetFields(); // Reset fields after saving
+          _initialPrice = currentPrice;
         });
       });
-    } else {
       // No changes were made, just reset fields
-      _resetFields();
     }
+    _resetFields();
   }
 
   @override
@@ -151,202 +135,124 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                   Row(
                     children: [
                       // Title TextField
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width > 1000
-                            ? 400
-                            : MediaQuery.of(context).size.width / 10 * 3,
-                        child: MouseRegion(
-                          onEnter: (_) {
-                            setState(() {
-                              _isTitleHovered = true;
-                            });
-                          },
-                          onExit: (_) {
-                            setState(() {
-                              _isTitleHovered = false;
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: isEditing ? Colors.grey[200] : Colors.transparent,
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                color:
-                                    isEditing ? AppColor.kPrimary : getBorderColor(_isTitleHovered),
-                              ),
-                            ),
-                            child: TextField(
-                              controller: _titleController,
-                              focusNode: _titleFocusNode,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: Colors.black,
-                                  ),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                contentPadding:
-                                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                              ),
-                              readOnly: !isEditing,
-                              onTap: () {
-                                setState(() {
-                                  _titleFocusNode.requestFocus();
-                                });
-                              },
-                              onSubmitted: (value) {
-                                if (isEditing) {
-                                  _saveData(ref);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                      HoverTextfieldWidget(
+                        controller: _titleController,
+                        isEdit: _isEditing,
+                        onDoubleTap: () => setState(() => _isEditing = !_isEditing),
+                        onTapOutside: (_) => _resetFields(),
+                        onSubmitted: (_) => _isEditing ? _saveData() : null,
+                        onMaxWidth: 384,
+                        minWidth: 0.30,
                       ),
-                      // Price TextField
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width > 1000
-                            ? 400
-                            : MediaQuery.of(context).size.width / 10 * 3,
-                        child: MouseRegion(
-                          onEnter: (_) {
-                            setState(() {
-                              _isPriceHovered = true;
-                            });
-                          },
-                          onExit: (_) {
-                            setState(() {
-                              _isPriceHovered = false;
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: isEditing ? Colors.grey[200] : Colors.transparent,
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                color:
-                                    isEditing ? AppColor.kPrimary : getBorderColor(_isPriceHovered),
-                              ),
-                            ),
-                            child: TextField(
-                              controller: _priceController,
-                              focusNode: _priceFocusNode,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: Colors.black,
-                                  ),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                contentPadding:
-                                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                              ),
-                              readOnly: !isEditing,
-                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}€?$')),
-                              ],
-                              onTap: () {
-                                setState(() {
-                                  _priceFocusNode.requestFocus();
-                                });
-                              },
-                              onChanged: (value) {
-                                if (value.contains(',')) {
-                                  final list = value.split('');
-                                  String newValue = '';
-                                  for (var e in list) {
-                                    if (e == ',') {
-                                      newValue += '.';
-                                    } else {
-                                      newValue += e;
-                                    }
-                                  }
-                                  value = newValue;
-                                }
 
-                                if (double.tryParse(value.replaceAll('€', '')) != null &&
-                                    double.parse(value.replaceAll('€', '')) > 10000) {
-                                  _showSnackBar('Diese Zahl ist zu groß');
-                                  _priceController.text =
-                                      '${value.substring(0, value.length - 1)}€';
-                                  _priceController.selection = TextSelection.fromPosition(
-                                    TextPosition(offset: _priceController.text.length - 1),
-                                  );
-                                  return;
-                                }
+                      // TODO: when on Textfield clicked and edit aktiv, is one Field prevered? than that one Focusnode
+                      HoverTextfieldWidget(
+                        controller: _priceController,
+                        isEdit: _isEditing,
+                        onDoubleTap: () => setState(() => _isEditing = !_isEditing),
+                        onTapOutside: (_) => _resetFields(),
+                        onSubmitted: (_) => _isEditing ? _saveData() : null,
+                        format: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^\d*[\,\.]?\d{0,2}€?$')),
+                        ],
+                        onChanged: (p0) {
+                          if (p0.contains(',')) {
+                            final list = p0.split('');
+                            String newValue = '';
+                            for (var e in list) {
+                              if (e == ',') {
+                                newValue += '.';
+                              } else {
+                                newValue += e;
+                              }
+                            }
+                            p0 = newValue;
+                          }
 
-                                if (!value.endsWith('€')) {
-                                  _priceController.text = '$value€';
-                                  _priceController.selection = TextSelection.fromPosition(
-                                    TextPosition(offset: _priceController.text.length - 1),
-                                  );
-                                }
-                              },
-                              onSubmitted: (value) {
-                                if (isEditing) {
-                                  _saveData(ref);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
+                          if (p0.isNotEmpty && double.parse(p0.replaceAll('€', '')) > 100000) {
+                            _priceController.text = p0.substring(0, p0.length - 1);
+                            return _showSnackBar('Diese Zahl ist zu groß');
+                          }
+
+                          TextSelection previousSelection = _priceController.selection;
+                          _priceController.text = p0;
+                          _priceController.selection = previousSelection;
+                          setState(() {
+                            _service = _service.copyWith(
+                                hourlyRate:
+                                    double.tryParse(_priceController.text.replaceAll('€', '')));
+                          });
+                        },
+                        // onChanged: (value) {
+                        //   if (value.contains(',')) {
+                        //     final list = value.split('');
+                        //     String newValue = '';
+                        //     for (var i in list) {
+                        //       if (i == ',') {
+                        //         newValue += '.';
+                        //       } else if (i == '€') {
+                        //       } else {
+                        //         newValue += i;
+                        //       }
+                        //     }
+                        //     value = newValue;
+                        //   }
+
+                        //   if (double.parse(value.replaceAll('€', '')) > 100000) {
+                        //     _showSnackBar('Diese Zahl ist zu groß');
+                        //     _priceController.text = '${value.substring(0, value.length - 1)}€';
+                        //     _priceController.selection = TextSelection.fromPosition(
+                        //       TextPosition(offset: _priceController.text.length - 1),
+                        //     );
+                        //     return;
+                        //   }
+
+                        //   if (!value.endsWith('€')) {
+                        //     _priceController.text = '$value€';
+                        //     _priceController.selection = TextSelection.fromPosition(
+                        //       TextPosition(offset: _priceController.text.length - 1),
+                        //     );
+                        //   }
+                        // },
                       ),
                     ],
                   ),
                   // Edit and Delete Icons
-                  Consumer(
-                    builder: (context, ref, child) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          // Cancel or Delete Icon
-                          IconButton(
-                              icon: Icon(isEditing ? Icons.cancel : Icons.delete),
-                              onPressed: isEditing
-                                  ? () {
-                                      _resetFields();
-                                    }
-                                  : () => showDialog(
-                                        context: context,
-                                        builder: (context) => AskoForAgreement(
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // Cancel or Delete Icon
+                        IconButton(
+                            icon: Icon(_isEditing ? Icons.cancel : Icons.delete),
+                            onPressed: _isEditing
+                                ? () {
+                                    _resetFields();
+                                  }
+                                : () => showDialog(
+                                      context: context,
+                                      builder: (context) => AskoForAgreement(
                                           message:
                                               'Sind Sie sicher, dass Sie diese Leistung löschen wollen?',
-                                          onAccept: () {
-                                            ref
-                                                .read(serviceVMProvider.notifier)
-                                                .deleteService(_service.id!)
-                                                .then((e) {
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  content: Center(
-                                                    child: Text(
-                                                      e
-                                                          ? 'Leistung wurde erfolgreich gelöscht'
-                                                          : 'Leider ist etwas schief gegangen. Versuchen Sie es erneut.',
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                              Navigator.of(context).pop();
-                                            });
-                                          },
-                                        ),
-                                      )),
-                          // Save or Edit Icon
-                          IconButton(
-                            icon: Icon(isEditing ? Icons.save : Icons.edit),
-                            onPressed: () {
-                              if (isEditing) {
-                                _saveData(ref);
-                              } else {
-                                // Edit button pressed
-                                setState(() {
-                                  isEditing = true;
-                                  _titleFocusNode.requestFocus();
-                                });
-                              }
-                            },
-                          )
-                        ],
-                      ),
+                                          onAccept: () => acceptDelete()),
+                                    )),
+                        // Save or Edit Icon
+                        IconButton(
+                          icon: Icon(_isEditing ? Icons.save : Icons.edit),
+                          onPressed: () {
+                            if (_isEditing) {
+                              _saveData();
+                            } else {
+                              // Edit button pressed
+                              setState(() {
+                                _isEditing = true;
+                                _titleFocusNode.requestFocus();
+                              });
+                            }
+                          },
+                        )
+                      ],
                     ),
                   ),
                 ],
@@ -355,4 +261,16 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
           ),
         ),
       );
+
+  void acceptDelete() {
+    ref.read(serviceVMProvider.notifier).deleteService(_service.id!).then((e) {
+      Utilitis.showSnackBar(
+        context,
+        e
+            ? 'Leistung wurde erfolgreich gelöscht'
+            : 'Leider ist etwas schief gegangen. Versuchen Sie es erneut.',
+      );
+      Navigator.of(context).pop();
+    });
+  }
 }

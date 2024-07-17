@@ -11,12 +11,13 @@ class CustomDropDown<T> extends StatelessWidget {
   final T? initalValue;
   final String? hintText;
   final bool isExpanded;
-  final void Function(T?) onChanged;
+  final void Function(T?)? onChanged;
   final EdgeInsets padding;
   final String? title;
   final TextStyle? titleStyle;
   final Widget underline;
   final double? width;
+  final BoxDecoration? decoration;
   // final BorderRadius borderRadius;
   const CustomDropDown({
     super.key,
@@ -25,6 +26,7 @@ class CustomDropDown<T> extends StatelessWidget {
     this.borderColor = Colors.white,
     this.borderRadius = 6.0,
     this.color,
+    this.decoration,
     this.isExpanded = true,
     this.initalValue,
     this.height,
@@ -62,11 +64,12 @@ class CustomDropDown<T> extends StatelessWidget {
             Container(
               padding: padding,
               height: 48,
-              decoration: BoxDecoration(
-                color: color ?? AppColor.kTextfieldColor,
-                borderRadius: BorderRadius.circular(borderRadius),
-                border: Border.all(color: borderColor),
-              ),
+              decoration: decoration ??
+                  BoxDecoration(
+                    color: color ?? AppColor.kTextfieldColor,
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    border: Border.all(color: borderColor),
+                  ),
               child: DropdownButton<T>(
                 value: initalValue,
                 hint: Text(hintText ?? ''),

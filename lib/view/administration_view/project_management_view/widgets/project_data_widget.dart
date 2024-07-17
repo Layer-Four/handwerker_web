@@ -31,7 +31,7 @@ class _ProjectCardState extends ConsumerState<ProjectDataCard> {
             children: [
               GestureDetector(
                 onTap: () {
-                  _setOrClearCache();
+                  _setOrClearProject();
                   setState(() => _showProjectDetails = !_showProjectDetails);
                 },
                 child: Container(
@@ -42,7 +42,7 @@ class _ProjectCardState extends ConsumerState<ProjectDataCard> {
                     children: [
                       Tooltip(
                         message:
-                            'Projekt: ${widget.project.title}\nStartdatum: ${DateFormat('d.M.y').format(widget.project.start)}\nEnddatum: ${DateFormat('d.M.y').format(widget.project.terminationDate)}\nStatus: ${widget.project.state.title}\nKunde: ${widget.project.customer!.companyName}\nBeschreibung: ${widget.project.description}',
+                            'Projekt: ${widget.project.title}\nKunde: ${widget.project.customer!.companyName}\nStatus: ${widget.project.state.title}\nStartdatum: ${DateFormat('d.M.y').format(widget.project.start)}\nEnddatum: ${DateFormat('d.M.y').format(widget.project.terminationDate)}',
                         textStyle: const TextStyle(fontSize: 20, color: Colors.white),
                         child: Text(
                           widget.project.title,
@@ -79,7 +79,7 @@ class _ProjectCardState extends ConsumerState<ProjectDataCard> {
                             IconButton(
                               icon: const Icon(Icons.edit),
                               onPressed: () {
-                                _setOrClearCache();
+                                _setOrClearProject();
                                 setState(() => _showProjectDetails = !_showProjectDetails);
                               },
                             ),
@@ -104,7 +104,7 @@ class _ProjectCardState extends ConsumerState<ProjectDataCard> {
         ),
       );
 
-  void _setOrClearCache() {
+  void _setOrClearProject() {
     if (_showProjectDetails) {
       ref.read(projectVMProvider.notifier).clearEditableProject();
     } else {

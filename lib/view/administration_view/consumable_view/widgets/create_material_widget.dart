@@ -302,6 +302,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     _nameController.clear(),
                                     _amountController.clear(),
                                     _priceController.clear(),
+                                    _selectedUnit = null
                                   }
                                 : _showSnackBar('hat nicht geklappt');
                           });
