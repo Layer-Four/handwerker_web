@@ -83,6 +83,10 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
         if (_priceController.text != _initialPrice) _priceController.text = _initialPrice;
       });
 
+  Color getBorderColor(bool isHovered) => isHovered
+      ? AppColor.kTextfieldBorder
+      : Colors.transparent; // Changed to transparent when not hovered
+
   bool _hasChanges() =>
       _amountController.text != _initialAmount ||
       _currentUnit != _initialUnit ||
@@ -127,6 +131,84 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
       // No changes were made, just reset fields
       _resetFields();
     }
+  }
+
+  void _saveChanges() {
+    if (!_hasChanges()) {
+      _showSnackBar('Keine Änderungen erkannt.');
+      setState(() {
+        isEditing = false;
+      });
+      return;
+    }
+
+    String priceValue = _priceController.text;
+
+    if (!priceValue.endsWith('€')) {
+      priceValue += '€';
+    }
+
+    double parsedPrice = double.parse(priceValue.replaceAll('€', ''));
+
+    ConsumableVM updatedConsumable = ConsumableVM(
+      id: widget.consumable.id,
+      name: _materialNameController.text,
+      amount: int.parse(_amountController.text),
+      unit: _currentUnit ?? _consumable.unit,
+      price: parsedPrice,
+    );
+
+    ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable).then((b) {
+      if (b) {
+        // ignore: unused_result
+        ref.refresh(consumableProvider);
+        setState(() {
+          _priceController.text = priceValue;
+          isEditing = false;
+        });
+      }
+
+      _showSnackBar(b ? 'wurde erfolgreich angebpasst' : 'hat leider nicht geklappt');
+    });
+  }
+
+  void _saveChanges() {
+    if (!_hasChanges()) {
+      _showSnackBar('Keine Änderungen erkannt.');
+      setState(() {
+        isEditing = false;
+      });
+      return;
+    }
+
+    String priceValue = _priceController.text;
+
+    if (!priceValue.endsWith('€')) {
+      priceValue += '€';
+    }
+
+    double parsedPrice = double.parse(priceValue.replaceAll('€', ''));
+
+    ConsumableVM updatedConsumable = ConsumableVM(
+      id: widget.consumable.id,
+      name: _materialNameController.text,
+      amount: int.parse(_amountController.text),
+      unit: _currentUnit ?? _consumable.unit,
+      price: parsedPrice,
+    );
+
+    ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable).then((b) {
+      if (b) {
+        // ignore: unused_result
+        ref.refresh(consumableProvider);
+        setState(() {
+          _priceController.text = priceValue;
+          isEditing = false;
+        });
+      }
+
+      _showSnackBar(b ? 'wurde erfolgreich angebpasst' : 'hat leider nicht geklappt');
+    });
   }
 
   @override
@@ -337,3 +419,29 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
         ),
       );
 }
+
+
+    // child: TextField(
+    //                             controller: _titleController,
+    //                             focusNode: _titleFocusNode,
+    //                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
+    //                                   color: Colors.black,
+    //                                 ),
+    //                             decoration: InputDecoration(
+    //                               border: isEditing ? const OutlineInputBorder() : InputBorder.none,
+
+    //                               // border: InputBorder.none,
+    //                               contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+    //                             ),
+    //                             readOnly: !isEditing,
+    //                             onTap: () {
+    //                               setState(() {
+    //                                 _titleFocusNode.requestFocus();
+    //                               });
+    //                             },
+    //                             onSubmitted: (value) {
+    //                               if (isEditing) {
+    //                                 _saveData(ref);
+    //                               }
+    //                             },
+    //                           ),

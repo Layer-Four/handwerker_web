@@ -125,6 +125,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             height: isFocused ? 44 : 40,
+            width: 355, // Set the width of AnimatedContainer to match its parent
             child: TextFormField(
               autofocus: true,
               keyboardType: TextInputType.emailAddress,
@@ -299,9 +300,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       return false;
     }
 
-    bool isValid = _formstate.currentState!.validate() &&
-        _emailCon.text.isNotEmpty &&
-        _passCon.text.isNotEmpty;
+    bool isValid = _formstate.currentState!.validate() && _emailCon.text.isNotEmpty && _passCon.text.isNotEmpty;
     if (!isValid) {
       Utilitis.showSnackBar(context, 'Bitte füllen Sie alle Felder korrekt aus.');
     }
