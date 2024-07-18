@@ -25,6 +25,23 @@ class SettingsState {
         _messageDuration = messageDuration ?? const Duration(seconds: 7);
   Duration get messsageDuration => _messageDuration;
   Dictionary get language => _language;
+
+  SettingsState copyWith({
+    Dictionary? newLanguage,
+    Duration? newMessageDuration,
+  }) =>
+      SettingsState(
+        language: newLanguage ?? _language,
+        messageDuration: newMessageDuration ?? _messageDuration,
+      );
+  Map<String, dynamic> toJson() => {
+        'language': _language,
+        'messageDuration': _messageDuration,
+      };
+  SettingsState fromJson(Map<String, dynamic> json) => SettingsState(
+        language: json['language'],
+        messageDuration: json['messageDuration'],
+      );
 }
 
 enum Localizations { de, en, es, ar, be }
