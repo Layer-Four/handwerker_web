@@ -26,17 +26,21 @@ class UpdateProjectWidget extends ConsumerStatefulWidget {
 }
 
 class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  late final TextEditingController _titleController;
+  late final TextEditingController _startDateController;
+  late final TextEditingController _endDateController;
+  late final TextEditingController _descriptionController;
 
   @override
   void initState() {
-    _titleController.text = widget.project.title;
-    _startDateController.text = DateFormat('d.M.y').format(widget.project.start);
-    _endDateController.text = DateFormat('d.M.y').format(widget.project.terminationDate);
-    _descriptionController.text = widget.project.description ?? '';
+    _titleController = TextEditingController(text: widget.project.title);
+    _startDateController = TextEditingController(
+      text: DateFormat('d.M.y').format(widget.project.start),
+    );
+    _endDateController = TextEditingController(
+      text: DateFormat('d.M.y').format(widget.project.terminationDate),
+    );
+    _descriptionController = TextEditingController(text: widget.project.description ?? '');
     super.initState();
   }
 

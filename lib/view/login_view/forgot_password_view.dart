@@ -14,9 +14,20 @@ class ForgetScreen extends ConsumerStatefulWidget {
 }
 
 class _ForgetScreenState extends ConsumerState<ForgetScreen> {
-  final TextEditingController _userNameController = TextEditingController();
-  bool obscureText = true;
+  late final TextEditingController _userNameController;
+  bool obscureText = false;
   bool isLoading = false;
+  @override
+  void initState() {
+    _userNameController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _userNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(

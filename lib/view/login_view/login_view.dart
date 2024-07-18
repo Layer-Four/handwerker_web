@@ -19,9 +19,17 @@ class _LoginViewState extends ConsumerState<LoginView> {
   bool isPasswordFocused = false;
   bool _isLoaded = false;
 
-  final TextEditingController _emailCon = TextEditingController();
-  final TextEditingController _passCon = TextEditingController();
-  final GlobalKey<FormState> _formstate = GlobalKey<FormState>();
+  late final TextEditingController _emailCon;
+  late final TextEditingController _passCon;
+  late final GlobalKey<FormState> _formstate;
+  @override
+  void initState() {
+    _emailCon = TextEditingController();
+    _formstate = GlobalKey<FormState>();
+    _passCon = TextEditingController();
+
+    super.initState();
+  }
 
   String? validateEmail(String? input) {
     const emailRegex = r"""^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+""";

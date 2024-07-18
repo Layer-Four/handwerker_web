@@ -18,12 +18,20 @@ class EmployeeAdministration extends ConsumerStatefulWidget {
 }
 
 class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration> {
+  late final ScrollController _controller;
   bool _isVisible = false;
   final List<UserRole> _roles = [];
   @override
   void initState() {
+    _controller = ScrollController();
     super.initState();
     initAttributes();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   void initAttributes() => ref.read(userAdministrationProvider.notifier).loadUserRoles().then((e) {
@@ -47,12 +55,17 @@ class _EmployeeAdministrationState extends ConsumerState<EmployeeAdministration>
                       height: 11 * 60,
                       child: ref.watch(userAdministrationProvider).isEmpty
                           ? const WaitingMessageWidget('Lade Mitarbeitende')
-                          : ListView.builder(
-                              itemCount: ref.watch(userAdministrationProvider).length,
-                              itemBuilder: (_, index) => UserDataWidget(
-                                key: ValueKey(ref.watch(userAdministrationProvider)[index]),
-                                ref.watch(userAdministrationProvider)[index],
-                                _roles,
+                          : Scrollbar(
+                              thumbVisibility: true,
+                              controller: _controller,
+                              child: ListView.builder(
+                                controller: _controller,
+                                itemCount: ref.watch(userAdministrationProvider).length,
+                                itemBuilder: (_, index) => UserDataWidget(
+                                  key: ValueKey(ref.watch(userAdministrationProvider)[index]),
+                                  ref.watch(userAdministrationProvider)[index],
+                                  _roles,
+                                ),
                               ),
                             ),
                     ),

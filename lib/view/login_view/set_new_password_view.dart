@@ -19,18 +19,34 @@ class _PasswordViewState extends State<SetNewPasswordView> {
 
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  final emailController = TextEditingController();
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _oTPController = TextEditingController();
-  final _newPwController = TextEditingController();
-  final _newPwRepeatController = TextEditingController();
-  TextEditingController passCon = TextEditingController();
+  late final TextEditingController _userNameController;
+  late final TextEditingController _oTPController;
+  late final TextEditingController _newPwController;
+  late final TextEditingController _newPwRepeatController;
 
   bool isPassword6Char = false;
   bool isPasswordHas1Number = false;
   bool hasUppercase = false;
   bool hasLowercase = false;
   bool hasSpecialCharacters = false;
+
+  @override
+  void initState() {
+    _newPwController = TextEditingController();
+    _newPwRepeatController = TextEditingController();
+    _oTPController = TextEditingController();
+    _userNameController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _userNameController.dispose();
+    _oTPController.dispose();
+    _newPwController.dispose();
+    _newPwRepeatController.dispose();
+    super.dispose();
+  }
 
   onPasswordChanged(String password) {
     isPassword6Char = false;
@@ -69,14 +85,6 @@ class _PasswordViewState extends State<SetNewPasswordView> {
     setState(() {
       isLoading = false;
     });
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    _newPwController.dispose();
-    _newPwRepeatController.dispose();
-    super.dispose();
   }
 
   @override

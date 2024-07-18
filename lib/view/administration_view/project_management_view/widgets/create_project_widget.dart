@@ -23,10 +23,18 @@ class CreateProjectWidget extends ConsumerStatefulWidget {
 }
 
 class _EditProjectState extends ConsumerState<CreateProjectWidget> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  late final TextEditingController _titleController;
+  late final TextEditingController _startDateController;
+  late final TextEditingController _endDateController;
+  late final TextEditingController _descriptionController;
+  @override
+  void initState() {
+    _descriptionController = TextEditingController();
+    _endDateController = TextEditingController();
+    _startDateController = TextEditingController();
+    _titleController = TextEditingController();
+    super.initState();
+  }
 
   @override
   void dispose() {

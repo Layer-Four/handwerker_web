@@ -27,9 +27,6 @@ class ProjectReportOverviewView extends StatelessWidget {
                         ? const WaitingMessageWidget('Lade Berichte')
                         : Scrollbar(
                             thumbVisibility: true,
-                            trackVisibility: true,
-                            interactive: true,
-                            thickness: 10,
                             controller: _scrollController,
                             child: ListView.builder(
                               controller: _scrollController,

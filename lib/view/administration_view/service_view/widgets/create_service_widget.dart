@@ -21,11 +21,18 @@ class CreateServiceWidget extends ConsumerStatefulWidget {
 }
 
 class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
-  final TextEditingController _leistungCtlr = TextEditingController();
-  final TextEditingController _priceCtlr = TextEditingController();
+  late final TextEditingController _leistungCtlr;
+  late final TextEditingController _priceCtlr;
   ServiceVM _newService = const ServiceVM(name: '', hourlyRate: 0);
   bool _isSnackbarShowed = false;
   late final Duration _snackbarDuration = const Duration(seconds: 7);
+
+  @override
+  void initState() {
+    _leistungCtlr = TextEditingController();
+    _priceCtlr = TextEditingController();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -188,9 +195,8 @@ class _CardWidgetState extends ConsumerState<CreateServiceWidget> {
                               }
 
                               if (double.parse(value) > 10000) {
-                                _showSnackBar('Diese Zahl ist zu groß');
                                 _priceCtlr.text = value.substring(0, value.length - 1);
-                                return;
+                                return _showSnackBar('Diese Zahl ist zu groß');
                               }
 
                               TextSelection previousSelection = _priceCtlr.selection;

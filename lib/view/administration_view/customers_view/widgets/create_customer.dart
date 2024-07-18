@@ -23,7 +23,7 @@ class CreateCustomerWidget extends StatefulWidget {
 
 class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
   bool _isSnackbarShowed = false;
-
+// TODO: Make late inital because garbage collector cleans after dispose and instance of Controller is binding on lifecycle from WidgetState
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _companyNameController = TextEditingController();
   final TextEditingController _streetController = TextEditingController();
