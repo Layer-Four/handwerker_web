@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/themes/app_color.dart';
-import '../../constants/utilitis/utilitis.dart';
 import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
+import '../shared_widgets/background_widget.dart';
+import '../shared_widgets/snackbar.dart';
+import 'custome_textfield_login.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -13,14 +15,34 @@ class LoginView extends ConsumerStatefulWidget {
 }
 
 class _LoginViewState extends ConsumerState<LoginView> {
-  bool isFocused = false;
-  bool isOTP = false;
-  bool _isPasswordVisible = false;
+  bool isUsernameFocused = false;
+  bool isPasswordFocused = false;
   bool _isLoaded = false;
 
   final TextEditingController _emailCon = TextEditingController();
   final TextEditingController _passCon = TextEditingController();
   final GlobalKey<FormState> _formstate = GlobalKey<FormState>();
+
+  String? validateEmail(String? input) {
+    const emailRegex = r"""^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+""";
+    if (input == null || input.isEmpty) {
+      return 'Email bitte eingeben';
+    } else if (RegExp(emailRegex).hasMatch(input)) {
+      return null;
+    } else {
+      return 'Ungültige Nutzernamen Format';
+    }
+  }
+
+  String? validatePassword(String? input) {
+    if (input == null || input.isEmpty) {
+      return 'Passwort bitte eingeben';
+    } else if (input.length >= 6) {
+      return null;
+    } else {
+      return 'Mehr als 6 Zeichen bitte eingeben';
+    }
+  }
 
   @override
   void dispose() {
@@ -31,44 +53,88 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        // backgroundColor: const Color.fromARGB(255, 254, 254, 245), //* DeckWeiss David,
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 46,
-                  child: Image.asset('assets/images/img_techtool.png'),
-                ),
-                const SizedBox(height: 75),
-                Form(
-                  key: _formstate,
+        body: GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: BackgroundWidget(
+            imageName: 'img_anmelden.png',
+            body: Padding(
+              padding: const EdgeInsets.only(top: 60),
+              child: Center(
+                child: SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(
-                        width: 350,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text('Nutzername', style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        height: 46,
+                        child: Image.asset('assets/images/img_techtool.png'),
+                      ),
+                      const SizedBox(height: 75),
+                      Form(
+                        key: _formstate,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              width: 350,
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  'Nutzername',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            CustomTextField(
+                              controller: _emailCon,
+                              inputAction: TextInputAction.next,
+                              validator: validateEmail,
+                              onFieldSubmitted: (_) => _submitLogin(),
+                              onFocusChange: (hasFocus) {
+                                setState(() => isUsernameFocused = hasFocus);
+                              },
+                              autofillHints: const [AutofillHints.email],
+                            ),
+                            const SizedBox(
+                              width: 350,
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  'Passwort',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            CustomTextField(
+                              controller: _passCon,
+                              isPassword: true,
+                              inputAction: TextInputAction.done,
+                              validator: validatePassword,
+                              onFieldSubmitted: (_) => _submitLogin(),
+                              onFocusChange: (hasFocus) {
+                                setState(() => isPasswordFocused = hasFocus);
+                              },
+                              autofillHints: const [AutofillHints.password],
+                            ),
+                            _buildForgotPassword(),
+                            const SizedBox(height: 20),
+                            _buildLoginButton(),
+                          ],
                         ),
                       ),
-                      _buildUsernameTextField(),
-                      const SizedBox(
-                        width: 350,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text('Passwort', style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      _buildPasswordTextField(),
-                      _buildForgotPassword(),
-                      _buildLoginButton(),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -77,166 +143,40 @@ class _LoginViewState extends ConsumerState<LoginView> {
   void reactionOfLogin(bool isSuccess) {
     setState(() => _isLoaded = false);
     if (isSuccess) {
-      if (ref.watch(userProvider.notifier).isOTP) {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.setPasswordScreen);
-        return;
-      }
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
-      return;
+    } else {
+      showSnackBar(
+          context, 'Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Zugangsdaten und versuchen Sie es erneut.');
+      _passCon.clear();
     }
-    _passCon.clear();
-    return Utilitis.showSnackBar(
-      context,
-      'Nutzername oder Passwort sind falsch',
-      // 'leider hat es nicht geklappt.\nKontrolliere deine Zugangsdaten und versuche es erneut',
-    );
   }
 
   Future<void> _submitLogin() async {
     if (_formstate.currentState!.validate()) {
-      setState(() => _isLoaded = true);
-      bool isSuccess = await ref.read(userProvider.notifier).loginUser(
-            password: _passCon.text,
-            userName: _emailCon.text,
-          );
-      reactionOfLogin(isSuccess);
+      final String email = _emailCon.text;
+      final String password = _passCon.text;
+
+      setState(() {
+        _isLoaded = true;
+      });
+
+      try {
+        bool isSuccess = await ref.read(userProvider.notifier).loginUser(
+              password: password,
+              userName: email,
+            );
+
+        reactionOfLogin(isSuccess);
+      } catch (e) {
+        setState(() {
+          _isLoaded = false;
+        });
+        showSnackBar(context, 'Leider hat es nicht geklappt: ${e.toString()}');
+      }
+    } else {
+      showSnackBar(context, 'Ungültige Nutzernamme oder Passwort Eingabe');
     }
   }
-
-  Widget _buildUsernameTextField() => Container(
-        margin: const EdgeInsets.only(top: 3, bottom: 20),
-        width: 355,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: const Color.fromARGB(255, 231, 226, 226),
-        ),
-        child: Focus(
-          onFocusChange: (hasFocus) {
-            setState(() => isFocused = hasFocus);
-          },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            height: isFocused ? 44 : 40,
-            width: 355, // Set the width of AnimatedContainer to match its parent
-            child: TextFormField(
-              autofocus: true,
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return null;
-                } else if (value.isNotEmpty && value.length < 3) {
-                  return 'Bitte eine gültige Nutzernamen eingeben';
-                }
-                return null;
-              },
-              onFieldSubmitted: (_) => _submitLogin(),
-              controller: _emailCon,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.transparent,
-                contentPadding: const EdgeInsets.all(10),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
-                    color: AppColor.kPrimaryButtonColor,
-                    width: 2,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0,
-                  ),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-
-  Widget _buildPasswordTextField() => Container(
-        margin: const EdgeInsets.only(top: 3, bottom: 5),
-        width: 350,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColor.kTextfieldBorder,
-        ),
-        child: Focus(
-          onFocusChange: (hasFocus) => setState(() => isFocused = hasFocus),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            height: isFocused ? 44 : 40,
-            child: TextFormField(
-              textInputAction: TextInputAction.done,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return null;
-                } else if (value.length < 7) {
-                  return 'Bitte mehr als 6 Buchstaben eingeben';
-                }
-                return null;
-              },
-              onFieldSubmitted: (_) => _submitLogin(),
-              obscureText: !_isPasswordVisible,
-              controller: _passCon,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.transparent,
-                suffixIcon: IconButton(
-                  onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
-                  icon: Icon(_isPasswordVisible ? Icons.visibility_off : Icons.visibility),
-                  color: Theme.of(context).iconTheme.color,
-                ),
-                contentPadding: const EdgeInsets.all(10),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
-                    color: AppColor.kPrimaryButtonColor,
-                    width: 2,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0,
-                  ),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    width: 0,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
 
   Widget _buildForgotPassword() => SizedBox(
         width: 350,
@@ -246,9 +186,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
             child: Text(
               'Passwort vergessen?',
               style: TextStyle(
-                color: AppColor.kPrimaryButtonColor,
+                color: AppColor.kWhite,
                 fontWeight: FontWeight.w700,
-                decoration: TextDecoration.underline,
                 decorationColor: AppColor.kPrimaryButtonColor,
                 decorationThickness: 2.0,
               ),
@@ -262,40 +201,32 @@ class _LoginViewState extends ConsumerState<LoginView> {
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: _isLoaded
-              ? const SizedBox(
-                  child: CircularProgressIndicator(),
+              ? SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(AppColor.kPrimaryButtonColor),
+                  ),
                 )
               : SizedBox(
                   width: 340,
                   height: 44,
                   child: ElevatedButton(
-                    onPressed: () => _submitLogin(),
+                    onPressed: _submitLogin,
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                       backgroundColor: AppColor.kPrimaryButtonColor,
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         'Anmelden',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: AppColor.kWhite),
                       ),
                     ),
                   ),
                 ),
         ),
       );
-
-  bool validateFields() {
-    if (_formstate.currentState == null) {
-      return false;
-    }
-
-    bool isValid = _formstate.currentState!.validate() && _emailCon.text.isNotEmpty && _passCon.text.isNotEmpty;
-    if (!isValid) {
-      Utilitis.showSnackBar(context, 'Bitte füllen Sie alle Felder korrekt aus.');
-    }
-    return isValid;
-  }
 }
