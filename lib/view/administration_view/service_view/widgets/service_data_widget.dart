@@ -183,37 +183,6 @@ class _ServiceDataWidgetState extends ConsumerState<ServiceDataWidget> {
                                     double.tryParse(_priceController.text.replaceAll('€', '')));
                           });
                         },
-                        // onChanged: (value) {
-                        //   if (value.contains(',')) {
-                        //     final list = value.split('');
-                        //     String newValue = '';
-                        //     for (var i in list) {
-                        //       if (i == ',') {
-                        //         newValue += '.';
-                        //       } else if (i == '€') {
-                        //       } else {
-                        //         newValue += i;
-                        //       }
-                        //     }
-                        //     value = newValue;
-                        //   }
-
-                        //   if (double.parse(value.replaceAll('€', '')) > 100000) {
-                        //     _showSnackBar('Diese Zahl ist zu groß');
-                        //     _priceController.text = '${value.substring(0, value.length - 1)}€';
-                        //     _priceController.selection = TextSelection.fromPosition(
-                        //       TextPosition(offset: _priceController.text.length - 1),
-                        //     );
-                        //     return;
-                        //   }
-
-                        //   if (!value.endsWith('€')) {
-                        //     _priceController.text = '$value€';
-                        //     _priceController.selection = TextSelection.fromPosition(
-                        //       TextPosition(offset: _priceController.text.length - 1),
-                        //     );
-                        //   }
-                        // },
                       ),
                     ],
                   ),

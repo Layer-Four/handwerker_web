@@ -9,13 +9,11 @@ import 'update_customer_widget.dart';
 class CustomerCard extends ConsumerStatefulWidget {
   final CustomerOvervewDM customer;
   final VoidCallback onDelete;
-  final ValueChanged<CustomerOvervewDM> onUpdate;
 
   const CustomerCard({
     super.key,
     required this.customer,
     required this.onDelete,
-    required this.onUpdate,
   });
 
   @override
@@ -76,7 +74,8 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                             ),
                             IconButton(
                               icon: const Icon(Icons.edit),
-                              onPressed: () => setState(() => _showCustomerDetails = !_showCustomerDetails),
+                              onPressed: () =>
+                                  setState(() => _showCustomerDetails = !_showCustomerDetails),
                             ),
                           ],
                         ),
@@ -95,7 +94,6 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                             onCancel: () => setState(() => _showCustomerDetails = false),
                             customer: widget.customer,
                             onSave: (updatedCustomer) {
-                              widget.onUpdate(updatedCustomer);
                               setState(() => _showCustomerDetails = false);
                             },
                           ),

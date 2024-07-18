@@ -45,7 +45,7 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
   void initState() {
     super.initState();
     _initialCustomer = widget.customer;
-    _companyNameController.text = _initialCustomer.customerCredentials.companyName ?? '';
+    _companyNameController.text = _initialCustomer.customerCredentials.companyName;
     _nameController.text = _initialCustomer.customerCredentials.contactName;
     _streetController.text = _initialCustomer.customerCredentials.customerStreet ?? '';
     _housenumberController.text = _initialCustomer.customerCredentials.customerStreetNr ?? '';
@@ -106,7 +106,8 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.all(4),
-                            child: Text('Kontaktinformation', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text('Kontaktinformation',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           buildTextField(
                             hintText: 'Kundenname',

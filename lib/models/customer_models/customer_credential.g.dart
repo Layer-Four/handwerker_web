@@ -10,7 +10,7 @@ _$CustomerCredentialDMImpl _$$CustomerCredentialDMImplFromJson(
         Map<String, dynamic> json) =>
     _$CustomerCredentialDMImpl(
       contactName: json['contactName'] as String,
-      companyName: json['companyName'] as String?,
+      companyName: json['companyName'] as String? ?? '',
       customerName: json['customerName'] as String?,
       customerCity: json['customerCity'] as String?,
       customerEmail: json['customerEmail'] as String?,

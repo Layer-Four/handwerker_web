@@ -6,7 +6,8 @@ import '../../../constants/api/api.dart';
 import '../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../models/consumable_models/unit/unit.dart';
 
-final consumableProvider = NotifierProvider<ConsumableNotifier, List<ConsumableVM>>(() => ConsumableNotifier());
+final consumableProvider =
+    NotifierProvider<ConsumableNotifier, List<ConsumableVM>>(() => ConsumableNotifier());
 
 class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
   final List<Unit> _units = [];
@@ -48,7 +49,6 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
       result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
       // Debugging: Print the sorted list to verify order
-      log('Sorted Consumables: ${result.map((e) => e.name).toList()}');
 
       state = result;
     } on DioException catch (e) {
@@ -63,7 +63,8 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
     try {
       final response = await _api.getAllUnits;
       if (response.statusCode != 200) {
-        throw Exception('Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
+        throw Exception(
+            'Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
       }
       final List data = response.data as List;
       for (var e in data) {

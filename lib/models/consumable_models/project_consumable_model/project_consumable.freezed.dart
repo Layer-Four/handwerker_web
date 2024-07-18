@@ -20,8 +20,7 @@ ProjectConsumable _$ProjectConsumableFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProjectConsumable {
-  String get consumableName =>
-      throw _privateConstructorUsedError; // TODO: Update when Consumable List in CustomerProjectReoports get amount
+  String get consumableName => throw _privateConstructorUsedError;
   int? get consumableAmount => throw _privateConstructorUsedError;
   double get consumablePrice => throw _privateConstructorUsedError;
 
@@ -132,7 +131,6 @@ class _$ProjectConsumableImpl implements _ProjectConsumable {
 
   @override
   final String consumableName;
-// TODO: Update when Consumable List in CustomerProjectReoports get amount
   @override
   final int? consumableAmount;
   @override
@@ -187,7 +185,7 @@ abstract class _ProjectConsumable implements ProjectConsumable {
 
   @override
   String get consumableName;
-  @override // TODO: Update when Consumable List in CustomerProjectReoports get amount
+  @override
   int? get consumableAmount;
   @override
   double get consumablePrice;
