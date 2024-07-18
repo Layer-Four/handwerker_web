@@ -53,8 +53,8 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
     _descriptionController = TextEditingController();
     _durationController = TextEditingController();
     _endController = TextEditingController();
-    _startController = TextEditingController(text: '${_selectedTime!.hour}:$minute');
     _selectedTime ??= TimeOfDay(hour: _entry.startTime.hour, minute: _entry.startTime.minute);
+    _startController = TextEditingController(text: '${_selectedTime!.hour}:$minute');
     super.initState();
   }
 
