@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/themes/app_color.dart';
 import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
-import '../shared_widgets/background_widget.dart';
 import '../shared_widgets/snackbar.dart';
 import 'custome_textfield_login.dart';
 
@@ -22,17 +21,18 @@ class _LoginViewState extends ConsumerState<LoginView> {
   late final TextEditingController _emailCon;
   late final TextEditingController _passCon;
   late final GlobalKey<FormState> _formstate;
+
   @override
   void initState() {
-    _emailCon = TextEditingController();
-    _formstate = GlobalKey<FormState>();
-    _passCon = TextEditingController();
-
     super.initState();
+    _emailCon = TextEditingController();
+    _passCon = TextEditingController();
+    _formstate = GlobalKey<FormState>();
   }
 
   String? validateEmail(String? input) {
-    const emailRegex = r"""^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+""";
+    const emailRegex = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$";
+
     if (input == null || input.isEmpty) {
       return 'Email bitte eingeben';
     } else if (RegExp(emailRegex).hasMatch(input)) {
@@ -65,82 +65,81 @@ class _LoginViewState extends ConsumerState<LoginView> {
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();
           },
-          child: BackgroundWidget(
-            imageName: 'img_anmelden.png',
-            body: Padding(
-              padding: const EdgeInsets.only(top: 60),
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 46,
-                        child: Image.asset('assets/images/img_techtool.png'),
-                      ),
-                      const SizedBox(height: 75),
-                      Form(
-                        key: _formstate,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              width: 350,
-                              child: Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  'Nutzername',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
+          child:
+              // imageName: 'img_anmelden.png',
+              Padding(
+            padding: const EdgeInsets.only(top: 60),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 46,
+                      child: Image.asset('assets/images/img_techtool.png'),
+                    ),
+                    const SizedBox(height: 75),
+                    Form(
+                      key: _formstate,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            width: 350,
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                'Nutzername',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            CustomTextField(
-                              controller: _emailCon,
-                              inputAction: TextInputAction.next,
-                              validator: validateEmail,
-                              onFieldSubmitted: (_) => _submitLogin(),
-                              onFocusChange: (hasFocus) {
-                                setState(() => isUsernameFocused = hasFocus);
-                              },
-                              autofillHints: const [AutofillHints.email],
-                            ),
-                            const SizedBox(
-                              width: 350,
-                              child: Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  'Passwort',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
+                          ),
+                          const SizedBox(height: 20),
+                          CustomTextField(
+                            controller: _emailCon,
+                            inputAction: TextInputAction.next,
+                            validator: validateEmail,
+                            onFieldSubmitted: (_) => _submitLogin(),
+                            onFocusChange: (hasFocus) {
+                              setState(() => isUsernameFocused = hasFocus);
+                            },
+                            autofillHints: const [AutofillHints.email],
+                          ),
+                          const SizedBox(
+                            width: 350,
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                'Passwort',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            CustomTextField(
-                              controller: _passCon,
-                              isPassword: true,
-                              inputAction: TextInputAction.done,
-                              validator: validatePassword,
-                              onFieldSubmitted: (_) => _submitLogin(),
-                              onFocusChange: (hasFocus) {
-                                setState(() => isPasswordFocused = hasFocus);
-                              },
-                              autofillHints: const [AutofillHints.password],
-                            ),
-                            _buildForgotPassword(),
-                            const SizedBox(height: 20),
-                            _buildLoginButton(),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextField(
+                            controller: _passCon,
+                            isPassword: true,
+                            inputAction: TextInputAction.done,
+                            validator: validatePassword,
+                            onFieldSubmitted: (_) => _submitLogin(),
+                            onFocusChange: (hasFocus) {
+                              setState(() => isPasswordFocused = hasFocus);
+                            },
+                            autofillHints: const [AutofillHints.password],
+                          ),
+                          _buildForgotPassword(),
+                          const SizedBox(height: 20),
+                          _buildLoginButton(),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
