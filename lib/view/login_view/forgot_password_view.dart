@@ -60,7 +60,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: GestureDetector(
-                          child: Text(
+                          child: const Text(
                             'Passwort zurücksetzen',
                             style: TextStyle(
                               color: AppColor.kPrimaryButtonColor,

@@ -35,7 +35,7 @@ class Utilitis {
   static HeaderStyle buildCustomHeadStyle(BuildContext context) => HeaderStyle(
         leftIcon: Container(
           padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
-          child: Icon(
+          child: const Icon(
             Icons.arrow_left_outlined,
             size: 45,
             color: AppColor.kPrimaryButtonColor,
@@ -44,7 +44,7 @@ class Utilitis {
         rightIcon: Container(
           padding: const EdgeInsets.symmetric(vertical: 6),
           alignment: Alignment.centerLeft,
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Icon(

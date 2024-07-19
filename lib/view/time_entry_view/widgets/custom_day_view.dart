@@ -14,6 +14,7 @@ class CustomDayView extends StatelessWidget {
         minDay: DateTime.now().add(const Duration(days: -(365 * 4))),
         maxDay: DateTime.now().add(const Duration(days: 365 * 10)),
         liveTimeIndicatorSettings:
+            // ignore: prefer_const_constructors
             LiveTimeIndicatorSettings(color: AppColor.kPrimaryButtonColor, height: 2),
         onEventTap: (events, date) => _showEventInofs(context, events),
         dateStringBuilder: (date, {secondaryDate}) =>

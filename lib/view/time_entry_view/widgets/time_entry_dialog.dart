@@ -601,13 +601,13 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: AppColor.kTextfieldBorder,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColor.kTextfieldBorder),
+          borderSide: const BorderSide(color: AppColor.kTextfieldBorder),
         ),
       );
   String _checkIfTimeFormat(String timeString) {

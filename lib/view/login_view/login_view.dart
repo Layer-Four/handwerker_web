@@ -146,7 +146,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 contentPadding: const EdgeInsets.all(10),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: AppColor.kPrimaryButtonColor,
                     width: 2,
                   ),
@@ -214,7 +214,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 contentPadding: const EdgeInsets.all(10),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: AppColor.kPrimaryButtonColor,
                     width: 2,
                   ),
@@ -251,7 +251,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         child: Align(
           alignment: Alignment.topRight,
           child: GestureDetector(
-            child: Text(
+            child: const Text(
               'Passwort vergessen?',
               style: TextStyle(
                 color: AppColor.kPrimaryButtonColor,
@@ -300,7 +300,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
       return false;
     }
 
-    bool isValid = _formstate.currentState!.validate() && _emailCon.text.isNotEmpty && _passCon.text.isNotEmpty;
+    bool isValid = _formstate.currentState!.validate() &&
+        _emailCon.text.isNotEmpty &&
+        _passCon.text.isNotEmpty;
     if (!isValid) {
       Utilitis.showSnackBar(context, 'Bitte füllen Sie alle Felder korrekt aus.');
     }

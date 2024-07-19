@@ -95,7 +95,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Kontaktinformation',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             buildTextField(
@@ -126,7 +129,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Adresse',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             Row(
@@ -188,7 +194,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Sonstiges',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             buildTextField(
@@ -225,7 +234,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                             const SizedBox(height: 10),
                             SizedBox(
                               child: Padding(
-                                  padding: EdgeInsets.only(left: 8, right: 8),
+                                  padding: const EdgeInsets.only(left: 8, right: 8),
                                   child: Consumer(
                                     builder: (context, ref, _) => Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
