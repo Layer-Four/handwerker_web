@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf_widget;
 
-import '../../view/time_entry_view/widgets/time_spinner.dart';
+import '../../view/shared_widgets/time_spinner.dart';
 import '../themes/app_color.dart';
 
 class Utilitis {

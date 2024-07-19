@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../shared_widgets/symetric_button_widget.dart';
+import 'symetric_button_widget.dart';
 
 // ignore: must_be_immutable
 class TimeSpinnerWidget extends StatefulWidget {
