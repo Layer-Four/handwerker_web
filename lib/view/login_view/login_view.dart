@@ -31,7 +31,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   String? validateEmail(String? input) {
-    const emailRegex = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$";
+    const emailRegex = r'^(\S+@[^\s@]+\.\S+)$';
 
     if (input == null || input.isEmpty) {
       return 'Email bitte eingeben';
@@ -65,9 +65,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();
           },
-          child:
-              // imageName: 'img_anmelden.png',
-              Padding(
+          child: Padding(
             padding: const EdgeInsets.only(top: 60),
             child: Center(
               child: SingleChildScrollView(
@@ -153,7 +151,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
     } else {
       showSnackBar(
-          context, 'Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Zugangsdaten und versuchen Sie es erneut.');
+          context, 'Anmeldung fehlgeschlagen.\nBitte überprüfen Sie Ihre Zugangsdaten und versuchen Sie es erneut.');
       _passCon.clear();
     }
   }
