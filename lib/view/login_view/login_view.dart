@@ -98,7 +98,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          CustomTextField(
+                          CustomLoginTextField(
                             controller: _emailCon,
                             inputAction: TextInputAction.next,
                             validator: validateEmail,
@@ -122,7 +122,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          CustomTextField(
+                          CustomLoginTextField(
                             controller: _passCon,
                             isPassword: true,
                             inputAction: TextInputAction.done,

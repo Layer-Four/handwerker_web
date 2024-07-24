@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../constants/themes/app_color.dart';
 
-class CustomTextField extends StatefulWidget {
+class CustomLoginTextField extends StatefulWidget {
   final TextEditingController controller;
   final bool isPassword;
   final TextInputAction inputAction;
@@ -12,7 +12,7 @@ class CustomTextField extends StatefulWidget {
   final Function(bool)? onFocusChange;
   final Iterable<String>? autofillHints;
 
-  const CustomTextField({
+  const CustomLoginTextField({
     super.key,
     required this.controller,
     this.isPassword = false,
@@ -26,10 +26,10 @@ class CustomTextField extends StatefulWidget {
   });
 
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
+  State<CustomLoginTextField> createState() => _CustomLoginTextFieldState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
+class _CustomLoginTextFieldState extends State<CustomLoginTextField> {
   bool isPasswordVisible = false;
   @override
   Widget build(
