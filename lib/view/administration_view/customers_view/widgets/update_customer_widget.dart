@@ -4,7 +4,7 @@ import '../../../../constants/themes/app_color.dart';
 import '../../../../constants/utilitis/utilitis.dart';
 import '../../../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../../models/customer_models/customer_create_model/create_customer_model.dart';
-import '../../../../models/customer_models/customer_credential.dart';
+import '../../../../models/customer_models/customer_credential/customer_credential.dart';
 import '../../../../provider/customer_provider/customer_provider.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
@@ -105,7 +105,8 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.all(4),
-                            child: Text('Kontaktinformation', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text('Kontaktinformation',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           buildTextField(
                             hintText: 'Kundenname',
