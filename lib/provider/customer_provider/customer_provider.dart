@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/api/api.dart';
-import '../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
+import '../../models/customer_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../models/customer_models/customer_create_model/create_customer_model.dart';
 import '../../models/customer_models/customer_credential/customer_credential.dart';
 

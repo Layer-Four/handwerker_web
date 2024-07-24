@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/utilitis/utilitis.dart';
-import '../../../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
+import '../../../../models/customer_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../../provider/customer_provider/customer_provider.dart';
 import '../../../shared_widgets/ask_agreement_widget.dart';
 import 'update_customer_widget.dart';
@@ -76,7 +76,8 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                             ),
                             IconButton(
                               icon: const Icon(Icons.edit),
-                              onPressed: () => setState(() => _showCustomerDetails = !_showCustomerDetails),
+                              onPressed: () =>
+                                  setState(() => _showCustomerDetails = !_showCustomerDetails),
                             ),
                           ],
                         ),
