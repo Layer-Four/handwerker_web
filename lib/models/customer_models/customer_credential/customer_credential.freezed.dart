@@ -21,7 +21,7 @@ CustomerCredentialDM _$CustomerCredentialDMFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CustomerCredentialDM {
   String get contactName => throw _privateConstructorUsedError;
-  String? get companyName => throw _privateConstructorUsedError;
+  String get companyName => throw _privateConstructorUsedError;
   String? get customerName => throw _privateConstructorUsedError;
   String? get customerCity => throw _privateConstructorUsedError;
   String? get customerEmail => throw _privateConstructorUsedError;
@@ -46,7 +46,7 @@ abstract class $CustomerCredentialDMCopyWith<$Res> {
   @useResult
   $Res call(
       {String contactName,
-      String? companyName,
+      String companyName,
       String? customerName,
       String? customerCity,
       String? customerEmail,
@@ -73,7 +73,7 @@ class _$CustomerCredentialDMCopyWithImpl<$Res,
   @override
   $Res call({
     Object? contactName = null,
-    Object? companyName = freezed,
+    Object? companyName = null,
     Object? customerName = freezed,
     Object? customerCity = freezed,
     Object? customerEmail = freezed,
@@ -89,10 +89,10 @@ class _$CustomerCredentialDMCopyWithImpl<$Res,
           ? _value.contactName
           : contactName // ignore: cast_nullable_to_non_nullable
               as String,
-      companyName: freezed == companyName
+      companyName: null == companyName
           ? _value.companyName
           : companyName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       customerName: freezed == customerName
           ? _value.customerName
           : customerName // ignore: cast_nullable_to_non_nullable
@@ -143,7 +143,7 @@ abstract class _$$CustomerCredentialDMImplCopyWith<$Res>
   @useResult
   $Res call(
       {String contactName,
-      String? companyName,
+      String companyName,
       String? customerName,
       String? customerCity,
       String? customerEmail,
@@ -167,7 +167,7 @@ class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? contactName = null,
-    Object? companyName = freezed,
+    Object? companyName = null,
     Object? customerName = freezed,
     Object? customerCity = freezed,
     Object? customerEmail = freezed,
@@ -183,10 +183,10 @@ class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
           ? _value.contactName
           : contactName // ignore: cast_nullable_to_non_nullable
               as String,
-      companyName: freezed == companyName
+      companyName: null == companyName
           ? _value.companyName
           : companyName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       customerName: freezed == customerName
           ? _value.customerName
           : customerName // ignore: cast_nullable_to_non_nullable
@@ -232,7 +232,7 @@ class __$$CustomerCredentialDMImplCopyWithImpl<$Res>
 class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
   const _$CustomerCredentialDMImpl(
       {required this.contactName,
-      this.companyName,
+      this.companyName = '',
       this.customerName,
       this.customerCity,
       this.customerEmail,
@@ -250,7 +250,8 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
   @override
   final String contactName;
   @override
-  final String? companyName;
+  @JsonKey()
+  final String companyName;
   @override
   final String? customerName;
   @override
@@ -338,7 +339,7 @@ class _$CustomerCredentialDMImpl extends _CustomerCredentialDM {
 abstract class _CustomerCredentialDM extends CustomerCredentialDM {
   const factory _CustomerCredentialDM(
       {required final String contactName,
-      final String? companyName,
+      final String companyName,
       final String? customerName,
       final String? customerCity,
       final String? customerEmail,
@@ -356,7 +357,7 @@ abstract class _CustomerCredentialDM extends CustomerCredentialDM {
   @override
   String get contactName;
   @override
-  String? get companyName;
+  String get companyName;
   @override
   String? get customerName;
   @override

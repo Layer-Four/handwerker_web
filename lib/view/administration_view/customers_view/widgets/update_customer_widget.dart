@@ -45,7 +45,7 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
   void initState() {
     super.initState();
     _initialCustomer = widget.customer;
-    _companyNameController.text = _initialCustomer.customerCredentials.companyName ?? '';
+    _companyNameController.text = _initialCustomer.customerCredentials.companyName;
     _nameController.text = _initialCustomer.customerCredentials.contactName;
     _streetController.text = _initialCustomer.customerCredentials.customerStreet ?? '';
     _housenumberController.text = _initialCustomer.customerCredentials.customerStreetNr ?? '';

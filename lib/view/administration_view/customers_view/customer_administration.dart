@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/customer_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../provider/customer_provider/customer_provider.dart';
 import '../../shared_widgets/add_button_widget.dart';
 import '../../shared_widgets/search_line_header.dart';
@@ -61,7 +60,6 @@ class _CustomerBodyState extends ConsumerState<CustomerBody> {
                                   key: ValueKey(index),
                                   customer: customer,
                                   onDelete: () {},
-                                  onUpdate: (CustomerOvervewDM value) {},
                                 );
                               },
                             ),
