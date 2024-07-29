@@ -98,7 +98,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          CustomTextField(
+                          CustomLoginTextField(
                             controller: _emailCon,
                             inputAction: TextInputAction.next,
                             validator: validateEmail,
@@ -122,7 +122,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          CustomTextField(
+                          CustomLoginTextField(
                             controller: _passCon,
                             isPassword: true,
                             inputAction: TextInputAction.done,
@@ -152,8 +152,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
     if (isSuccess) {
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
     } else {
-      showSnackBar(
-          context, 'Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Zugangsdaten und versuchen Sie es erneut.');
+      showSnackBar(context,
+          'Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Zugangsdaten und versuchen Sie es erneut.');
       _passCon.clear();
     }
   }
@@ -190,7 +190,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         child: Align(
           alignment: Alignment.topRight,
           child: GestureDetector(
-            child: Text(
+            child: const Text(
               'Passwort vergessen?',
               style: TextStyle(
                 color: AppColor.kWhite,

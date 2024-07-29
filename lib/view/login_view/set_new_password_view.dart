@@ -154,7 +154,7 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: AppColor.kPrimaryButtonColor,
                                     width: 2,
                                   ),
@@ -202,7 +202,7 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: AppColor.kPrimaryButtonColor,
                                     width: 2,
                                   ),
@@ -268,7 +268,7 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: AppColor.kPrimaryButtonColor,
                                     width: 2,
                                   ),
@@ -346,7 +346,7 @@ class _PasswordViewState extends State<SetNewPasswordView> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: AppColor.kPrimaryButtonColor,
                                   width: 2,
                                 ),

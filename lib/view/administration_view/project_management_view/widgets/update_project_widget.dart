@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -116,7 +114,6 @@ class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
                             )
                             .toList(),
                         onChanged: (s) {
-                          log(s.toString());
                           ref.read(projectVMProvider.notifier).updateEditableEntry(newState: s!);
                         },
                       ),
@@ -222,7 +219,6 @@ class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
           ],
         );
   void _updateAndUpload() {
-    log('${ref.watch(projectVMProvider).editAbleProject}');
     if (_startDateController.text.isNotEmpty && _endDateController.text.isNotEmpty) {
       final start = _startDateController.text.split('.').map((e) => int.parse(e)).toList();
       final end = _endDateController.text.split('.').map((e) => int.parse(e)).toList();
@@ -240,7 +236,6 @@ class _EditProjectState extends ConsumerState<UpdateProjectWidget> {
               const ErrorMessageWidget('Bitte füllen sie Alle Eingabefelder aus'));
       return;
     }
-    log('${ref.watch(projectVMProvider).editAbleProject}');
     ref.read(projectVMProvider.notifier).updateProject().then((e) {
       Utilitis.showSnackBar(
           context, e ? 'Erfolgreich geänder' : 'Leider ist etwas schief gegangen');

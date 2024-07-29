@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../constants/themes/app_color.dart';
 import '../../../../constants/utilitis/utilitis.dart';
-import '../../../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../../models/customer_models/customer_create_model/create_customer_model.dart';
-import '../../../../models/customer_models/customer_credential.dart';
+import '../../../../models/customer_models/customer_credential/customer_credential.dart';
+import '../../../../models/customer_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../../provider/customer_provider/customer_provider.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
@@ -44,7 +45,7 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
   void initState() {
     super.initState();
     _initialCustomer = widget.customer;
-    _companyNameController.text = _initialCustomer.customerCredentials.companyName ?? '';
+    _companyNameController.text = _initialCustomer.customerCredentials.companyName;
     _nameController.text = _initialCustomer.customerCredentials.contactName;
     _streetController.text = _initialCustomer.customerCredentials.customerStreet ?? '';
     _housenumberController.text = _initialCustomer.customerCredentials.customerStreetNr ?? '';
@@ -105,7 +106,8 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.all(4),
-                            child: Text('Kontaktinformation', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text('Kontaktinformation',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           buildTextField(
                             hintText: 'Kundenname',

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -207,7 +205,6 @@ class _EditProjectState extends ConsumerState<CreateProjectWidget> {
         );
   void _updateAndCreateNewProject() {
     final project = ref.watch(projectVMProvider).editAbleProject;
-    log('$project');
     if (_startDateController.text.isNotEmpty && _endDateController.text.isNotEmpty) {
       final start = _startDateController.text.split('.').map((e) => int.parse(e)).toList();
       final end = _endDateController.text.split('.').map((e) => int.parse(e)).toList();
@@ -218,7 +215,6 @@ class _EditProjectState extends ConsumerState<CreateProjectWidget> {
             newTitle: _titleController.text,
           );
     }
-    log('${ref.watch(projectVMProvider).editAbleProject}');
     if (project != null && project.isProjectMinFilled()) {
       ref.read(projectVMProvider.notifier).createProject().then((e) {
         widget.onCancel();

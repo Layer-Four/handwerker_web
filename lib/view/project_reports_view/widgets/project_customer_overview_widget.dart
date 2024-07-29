@@ -40,6 +40,7 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
                         'Keine Projekte oder Berichte vorhanden für diesen Kunden',
                       ),
                     );
+                    setState(() => _isOpen = !_isOpen);
                   }
                 },
                 child: Container(

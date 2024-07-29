@@ -89,7 +89,6 @@ class TimeVMNotifier extends Notifier<List<CalendarEventData>> {
     json.removeWhere((key, value) => key == 'type');
     json.removeWhere((key, value) => key == 'id');
     json.removeWhere((key, value) => key == 'userServiceId');
-    // json.removeWhere((key, value) => key == 'customerId');
     log(jsonEncode(json));
     try {
       final response = await _api.postTimeEnty(json);

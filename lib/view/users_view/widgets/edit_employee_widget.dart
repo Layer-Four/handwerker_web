@@ -283,13 +283,13 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: AppColor.kTextfieldBorder,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: AppColor.kTextfieldBorder),
+                borderSide: const BorderSide(color: AppColor.kTextfieldBorder),
               ),
             ),
             onChanged: (value) {
@@ -337,13 +337,13 @@ class _AddNewEmployeeState extends ConsumerState<AddNewEmployee> {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: AppColor.kTextfieldBorder,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: AppColor.kTextfieldBorder),
+            borderSide: const BorderSide(color: AppColor.kTextfieldBorder),
           ),
           filled: true,
           fillColor: Colors.grey[100],
