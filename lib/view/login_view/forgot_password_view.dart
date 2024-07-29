@@ -6,14 +6,14 @@ import '../../constants/utilitis/utilitis.dart';
 import '../../provider/user_provider/user_provider.dart';
 import '../../routes/app_routes.dart';
 
-class ForgetScreen extends ConsumerStatefulWidget {
-  const ForgetScreen({super.key});
+class ForgetPasswordScreen extends ConsumerStatefulWidget {
+  const ForgetPasswordScreen({super.key});
 
   @override
-  ConsumerState<ForgetScreen> createState() => _ForgetScreenState();
+  ConsumerState<ForgetPasswordScreen> createState() => _ForgetScreenState();
 }
 
-class _ForgetScreenState extends ConsumerState<ForgetScreen> {
+class _ForgetScreenState extends ConsumerState<ForgetPasswordScreen> {
   late final TextEditingController _userNameController;
   bool obscureText = false;
   bool isLoading = false;
@@ -60,7 +60,7 @@ class _ForgetScreenState extends ConsumerState<ForgetScreen> {
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: GestureDetector(
-                          child: Text(
+                          child: const Text(
                             'Passwort zurücksetzen',
                             style: TextStyle(
                               color: AppColor.kPrimaryButtonColor,

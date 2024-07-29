@@ -18,7 +18,7 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> routes = {
     anmeldeScreen: (context) => const LoginView(),
-    forgotPassword: (context) => const ForgetScreen(),
+    forgotPassword: (context) => const ForgetPasswordScreen(),
     initialRoute: (context) => const StartView(),
     setPasswordScreen: (context) => const SetNewPasswordView(),
     viewScreen: (context) => const MainViewNavigator(),

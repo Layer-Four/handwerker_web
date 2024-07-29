@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../customer_models/customer_credential.dart';
+import '../customer_credential/customer_credential.dart';
 part 'customer_overvew_dm.freezed.dart';
 part 'customer_overvew_dm.g.dart';
 

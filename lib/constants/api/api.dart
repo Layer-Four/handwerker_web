@@ -60,7 +60,7 @@ class Api {
     _api.options = BaseOptions(baseUrl: _baseUrl);
     _api.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
-        String? token = await getToken;
+        final String? token = await getToken;
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }

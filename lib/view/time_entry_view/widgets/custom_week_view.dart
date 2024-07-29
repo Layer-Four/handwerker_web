@@ -14,6 +14,7 @@ class CustomWeekView extends StatelessWidget {
         controller: CalendarControllerProvider.of(context).controller,
         weekTitleHeight: 70,
         liveTimeIndicatorSettings:
+            // ignore: prefer_const_constructors
             LiveTimeIndicatorSettings(color: AppColor.kPrimaryButtonColor, height: 2),
         weekDayBuilder: (DateTime day) {
           double width = MediaQuery.of(context).size.width;

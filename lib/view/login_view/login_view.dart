@@ -96,7 +96,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          CustomTextField(
+                          CustomLoginTextField(
                             controller: _emailCon,
                             inputAction: TextInputAction.next,
                             validator: validateEmail,
@@ -120,7 +120,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          CustomTextField(
+                          CustomLoginTextField(
                             controller: _passCon,
                             isPassword: true,
                             inputAction: TextInputAction.done,
@@ -188,7 +188,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         child: Align(
           alignment: Alignment.topRight,
           child: GestureDetector(
-            child: Text(
+            child: const Text(
               'Passwort vergessen?',
               style: TextStyle(
                 color: AppColor.kWhite,

@@ -11,13 +11,13 @@ class AppTheme {
       canvasColor: AppColor.kWhite,
       cardColor: AppColor.kWhite,
       // focusColor: AppColor.kTextfieldBorder,
-      bottomAppBarTheme: BottomAppBarTheme(color: AppColor.kPrimary),
+      bottomAppBarTheme: const BottomAppBarTheme(color: AppColor.kPrimary),
       useMaterial3: null,
       fontFamily: 'poppins',
       primarySwatch: AppColor.materialColorPrimary,
       scaffoldBackgroundColor: AppColor.kWhite,
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         elevation: 0,
         backgroundColor: AppColor.kWhite,
         centerTitle: true,

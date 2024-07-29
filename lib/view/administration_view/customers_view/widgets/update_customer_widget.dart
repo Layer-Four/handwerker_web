@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../constants/themes/app_color.dart';
 import '../../../../constants/utilitis/utilitis.dart';
-import '../../../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../../models/customer_models/customer_create_model/create_customer_model.dart';
-import '../../../../models/customer_models/customer_credential.dart';
+import '../../../../models/customer_models/customer_credential/customer_credential.dart';
+import '../../../../models/customer_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../../../provider/customer_provider/customer_provider.dart';
 import '../../../shared_widgets/symetric_button_widget.dart';
 
