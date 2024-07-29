@@ -31,8 +31,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   String? validateEmail(String? input) {
-    // const emailRegex = r'^(\S+@[^\s@]+\.\S+)$';
-    const emailRegex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$';
+    const emailRegex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,64}$';
 
     if (input == null || input.isEmpty) {
       return 'Email bitte eingeben';
@@ -151,8 +150,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
     if (isSuccess) {
       Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
     } else {
-      showSnackBar(
-          context, 'Anmeldung fehlgeschlagen.\nBitte überprüfen Sie Ihre Zugangsdaten und versuchen Sie es erneut.');
+      showSnackBar(context,
+          'Anmeldung fehlgeschlagen.\nBitte überprüfen Sie Ihre Zugangsdaten und versuchen Sie es erneut.');
       _passCon.clear();
     }
   }
