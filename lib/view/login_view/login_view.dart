@@ -206,7 +206,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: _isLoaded
-              ? SizedBox(
+              ? const SizedBox(
                   width: 24,
                   height: 24,
                   child: CircularProgressIndicator(
@@ -224,7 +224,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       ),
                       backgroundColor: AppColor.kPrimaryButtonColor,
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         'Anmelden',
                         style: TextStyle(color: AppColor.kWhite),
