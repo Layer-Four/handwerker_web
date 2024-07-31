@@ -80,6 +80,7 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
         );
       }
       final List data = response.data.map((e) => e).toList();
+
       final List<UserDataShort> users = data.map((e) => UserDataShort.fromJson(e)).toList();
       final newState = <UserDataShort>{...state, ...users}.toList();
       state = newState;
@@ -134,11 +135,13 @@ class UserAdministrationNotifer extends Notifier<List<UserDataShort>> {
 
   Future<bool> updateUser(UserDataShort user) async {
     final roles = user.roles.map((e) => e.name).toList();
-    final Map<String, dynamic> userId = {'userId': user.id};
-    final json = user.toJson();
-    json.update('roles', (e) => e = roles);
-    json.removeWhere((key, value) => key == 'id');
-    json.addAll(userId);
+    user.toJson();
+    final json = {
+      'UserName': user.userName,
+      'Roles': roles,
+      'userId': user.id,
+    };
+
     try {
       final response = await _api.putUpdateUser(json);
       if (response.statusCode != 200) {

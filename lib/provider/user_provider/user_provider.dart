@@ -36,7 +36,7 @@ class UserNotifier extends Notifier<UserVM> {
     final Map<String, dynamic> json = {
       'username': userName,
       'password': password,
-      'mandant': mandatID ?? '1',
+      // 'mandant': mandatID ?? '1',
     };
     try {
       final response = await _api.postloginUser(json);
@@ -52,7 +52,7 @@ class UserNotifier extends Notifier<UserVM> {
       return true;
     } on DioException catch (e) {
       if (e.response!.statusCode == 401) {
-        log('DioException: ${e.response?.statusMessage} ');
+        log('DioException: ${e.response?.statusMessage}\n${e.response?.statusCode}, ${e.response?.data} ');
         return false;
       }
       log('DioException: ${e.message}');

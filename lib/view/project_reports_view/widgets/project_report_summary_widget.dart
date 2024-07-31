@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/themes/app_color.dart';
+import '../../../models/customer_models/customer_credential/customer_credential.dart';
 import '../../../models/project_models/project_report_dm/project_report_dm.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
 import 'invoice_preview_widget/project_customer_review_preview.dart';
@@ -11,7 +12,8 @@ import 'project_reports_reports_widget.dart';
 
 class ProjectReportSummary extends StatelessWidget {
   final ProjectRepotsDM project;
-  const ProjectReportSummary(this.project, {super.key});
+  final CustomerCredentialDM customer;
+  const ProjectReportSummary(this.project, this.customer, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +99,10 @@ class ProjectReportSummary extends StatelessWidget {
                     text: 'Projektbericht erstellen',
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => ProjectCustomerReviewPreviewWidget(project: project),
+                      builder: (context) => ProjectCustomerReviewPreviewWidget(
+                        project: project,
+                        customer: customer,
+                      ),
                     ),
                   ),
                 ),

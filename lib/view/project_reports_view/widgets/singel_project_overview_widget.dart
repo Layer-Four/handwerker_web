@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../constants/utilitis/utilitis.dart';
+import '../../../models/customer_models/customer_credential/customer_credential.dart';
 import '../../../models/project_models/project_report_dm/project_report_dm.dart';
 import 'project_report_summary_widget.dart';
 
 class SingelProjectOverviewWidget extends StatefulWidget {
   final ProjectRepotsDM report;
-
-  const SingelProjectOverviewWidget(this.report, {super.key});
+  final CustomerCredentialDM customer;
+  const SingelProjectOverviewWidget(this.report, this.customer, {super.key});
 
   @override
   State<SingelProjectOverviewWidget> createState() => _SingelProjectOverviewWidgetState();
@@ -71,7 +72,9 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
               ),
             ),
           ),
-          isContainerOpen ? ProjectReportSummary(_project) : const SizedBox.shrink(),
+          isContainerOpen
+              ? ProjectReportSummary(_project, widget.customer)
+              : const SizedBox.shrink(),
           Divider(
             height: 10,
             // color: Colors.black,

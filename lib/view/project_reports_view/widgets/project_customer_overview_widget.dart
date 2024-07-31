@@ -83,7 +83,8 @@ class _ProjectCustomerOverviewWidgetState extends State<ProjectCustomerOverviewW
               ),
               _isOpen
                   ? _customProject.projectsList.isNotEmpty
-                      ? ProjectReportOverview(projects: _customProject.projectsList)
+                      ? ProjectReportOverview(_customProject.customerCredentials,
+                          projects: _customProject.projectsList)
                       : const SizedBox.shrink()
                   : const SizedBox.shrink(),
             ],
