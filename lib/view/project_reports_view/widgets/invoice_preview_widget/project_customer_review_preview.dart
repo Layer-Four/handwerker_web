@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../models/customer_models/customer_credential/customer_credential.dart';
@@ -25,12 +27,7 @@ class ProjectCustomerReviewPreviewWidget extends ConsumerWidget {
             child: Column(
               children: [
                 ProjectCustomerAdressWidget(customer: customer),
-                const Divider(
-                  height: 10,
-                  thickness: 1,
-                  // indent: 20,
-                  endIndent: 20,
-                ),
+                const Divider(height: 10, thickness: 1, endIndent: 20),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.3,
                   child: SingleChildScrollView(
@@ -41,14 +38,14 @@ class ProjectCustomerReviewPreviewWidget extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const Divider(
-                  height: 10,
-                  thickness: 1,
-                  // indent: 20,
-                  endIndent: 20,
-                ),
-                InvoiceConsumableWidget(
-                  consumables: project.consumables,
+                const Divider(height: 10, thickness: 1, endIndent: 20),
+                GestureDetector(
+                  onTap: () {
+                    log('projectConsumables ${project.consumables}');
+                  },
+                  child: InvoiceConsumableWidget(
+                    consumables: project.consumables,
+                  ),
                 ),
                 const Divider(
                   height: 10,
