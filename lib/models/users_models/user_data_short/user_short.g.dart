@@ -8,9 +8,9 @@ part of 'user_short.dart';
 
 _$UserDataShortImpl _$$UserDataShortImplFromJson(Map<String, dynamic> json) =>
     _$UserDataShortImpl(
-      id: json['id'] as String,
-      userName: json['userName'] as String,
-      roles: (json['roles'] as List<dynamic>?)
+      id: json['Id'] as String,
+      userName: json['UserName'] as String,
+      roles: (json['Roles'] as List<dynamic>?)
               ?.map((e) => UserRole.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -18,7 +18,7 @@ _$UserDataShortImpl _$$UserDataShortImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$UserDataShortImplToJson(_$UserDataShortImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'userName': instance.userName,
-      'roles': instance.roles,
+      'Id': instance.id,
+      'UserName': instance.userName,
+      'Roles': instance.roles,
     };

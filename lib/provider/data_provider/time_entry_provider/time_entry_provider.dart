@@ -18,10 +18,67 @@ final timeVMProvider = NotifierProvider<TimeVMNotifier, List<CalendarEventData>>
 
 class TimeVMNotifier extends Notifier<List<CalendarEventData>> {
   final Api _api = Api();
+  List<UserDataShort> _workers = [];
+  List<TimeVMAdapter> _timeEntries = [];
   @override
   List<CalendarEventData> build() {
     loadEvents();
+    loadWorkers();
     return [];
+  }
+
+  List<UserDataShort> get workers => _workers;
+  List<TimeVMAdapter> get entries => _timeEntries;
+
+  void loadWorkers() {
+    if (ref.watch(userAdministrationProvider).isEmpty) return;
+    List<UserDataShort> w = ref.watch(userAdministrationProvider);
+    _workers = w;
+  }
+
+  void loadTimesFromProject(int projectID) async {
+    if (_workers.isEmpty) loadWorkers();
+    try {
+      final res = await _api.getAllTimeEntrys;
+      if (res.statusCode != 200) {
+        throw Exception(
+          'Error on loadEvents, status-> ${res.statusCode}\n ${res.data}',
+        );
+      }
+      final List data = res.data.map((e) => e).toList();
+      final List<TimeVMAdapter> result = [];
+      for (Map<String, dynamic> e in data) {
+        UserDataShort? user;
+        if (workers.map((j) => j.id).toList().contains(e['userId'])) {
+          user = workers.firstWhere((k) => k.id == e['userId']);
+        }
+        final project = ProjectShortVM(id: e['projectId'], title: e['projectTitle']);
+        final service = ServiceVM(name: e['serviceTitle'], id: e['serviceId']);
+        final object = TimeVMAdapter(
+          date: DateTime.parse(e['date']),
+          user: user,
+          description: e['description'],
+          duration: e['duration'],
+          startTime: DateTime.parse(e['startTime']),
+          endTime: DateTime.parse(e['endTime']),
+          pauseEnd: e['pauseEnd'] == null ? null : DateTime.tryParse(e['pauseEnd']),
+          pauseStart: e['pauseStart'] == null ? null : DateTime.tryParse(e['pauseStart']),
+          id: e['id'],
+          project: project,
+          service: service,
+          customerName: e['customerName'],
+          type: TimeEntryType.values[e['type']],
+        );
+
+        result.add(object);
+      }
+      _timeEntries = result;
+    } on DioException catch (e) {
+      log('DioException: ${e.message}');
+    } catch (e) {
+      log('Exception on loadEvents: $e');
+    }
+    return;
   }
 
   Future<List<CalendarEventData<TimeVMAdapter>>> loadEvents() async {

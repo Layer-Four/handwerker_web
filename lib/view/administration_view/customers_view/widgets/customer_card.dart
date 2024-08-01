@@ -50,7 +50,7 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                             'Adresse: \n${widget.customer.fullAdressFormated}',
                         textStyle: const TextStyle(fontSize: 20, color: Colors.white),
                         child: Text(
-                          '${widget.customer.customerCredentials.companyName}',
+                          widget.customer.customerCredentials.companyName,
                           textAlign: TextAlign.left,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),

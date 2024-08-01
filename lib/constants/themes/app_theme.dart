@@ -3,6 +3,14 @@ import 'app_color.dart';
 
 class AppTheme {
   static ThemeData get lightTheme => ThemeData(
+      dialogTheme: const DialogTheme(
+        shape: BeveledRectangleBorder(),
+        // insetPadding: EdgeInsets.symmetric(horizontal: 100, vertical: 50),
+        // actionsPadding: EdgeInsets.all(8),
+        elevation: 7,
+        backgroundColor: AppColor.kWhite,
+        barrierColor: Color.fromARGB(20, 0, 0, 0),
+      ),
       cardTheme: const CardTheme(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6))),
         color: Colors.white,
