@@ -13,6 +13,7 @@ import '../../../models/project_models/project_short_vm/project_short_vm.dart';
 import '../../../models/time_models/time_vm/time_vm.dart';
 import '../../shared_widgets/error_message_widget.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
+import '../../shared_widgets/time_spinner_view_widget.dart';
 
 class TimeEntryDialog extends ConsumerStatefulWidget {
   const TimeEntryDialog({super.key});
@@ -98,58 +99,57 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
       await ref.read(timeVMProvider.notifier).getListUserService();
 
   Widget _buildCustomerDropDown() => GestureDetector(
-        onTap: (() => _customers.isEmpty ? loadCustomer() : null),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                  'Kunde*',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
+      onTap: () => _customers.isEmpty ? loadCustomer() : null,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(
+                'Kunde*',
+                style: Theme.of(context).textTheme.labelMedium,
               ),
-              Container(
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColor.kTextfieldBorder),
-                ),
-                child: DropdownButton(
-                  underline: const SizedBox(),
-                  isExpanded: true,
-                  value: _selectedCustomers,
-                  items: _customers
-                      .map(
-                        (customer) => DropdownMenuItem(
-                          value: customer,
-                          child: Text(customer.companyName),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (customer) {
-                    ref.read(timeVMProvider.notifier).getProjectForCustomer(customer!.id).then((e) {
-                      setState(() {
-                        _selectedCustomers = customer;
-                        _projectsFormCustomer = e.toSet().toList();
-                        _project =
-                            _projectsFormCustomer.isEmpty ? null : _projectsFormCustomer.last;
-                        _entry = _entry.copyWith(
-                          customerId: customer.id,
-                          customerName: customer.companyName,
-                          project: _project,
-                        );
-                      });
+            ),
+            Container(
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColor.kTextfieldBorder),
+              ),
+              child: DropdownButton(
+                underline: const SizedBox(),
+                isExpanded: true,
+                value: _selectedCustomers,
+                items: _customers
+                    .map(
+                      (customer) => DropdownMenuItem(
+                        value: customer,
+                        child: Text(customer.companyName),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (customer) {
+                  ref.read(timeVMProvider.notifier).getProjectForCustomer(customer!.id).then((e) {
+                    setState(() {
+                      _selectedCustomers = customer;
+                      _projectsFormCustomer = e.toSet().toList();
+                      _project = _projectsFormCustomer.isEmpty ? null : _projectsFormCustomer.last;
+                      _entry = _entry.copyWith(
+                        customerId: customer.id,
+                        customerName: customer.companyName,
+                        project: _project,
+                      );
                     });
-                  },
-                ),
+                  });
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
 
   Padding _buildDescription() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -509,7 +509,8 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
       int.tryParse(_startController.text.split(':').first) ?? DateTime.now().hour,
       int.tryParse(_startController.text.split(':').last) ?? DateTime.now().minute,
     );
-    final time = await Utilitis.showTimeSpinner(context, initialTime);
+    final time = await showDialog(
+        context: context, builder: (context) => TimeSpinnerViewWidget(initTime: initialTime));
     if (time == null) return;
     final timeAsList = time.split(':');
     final hour = int.parse(timeAsList.first);
@@ -535,7 +536,8 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
       int.tryParse(_endController.text.split(':').first) ?? 16,
       int.tryParse(_endController.text.split(':').last) ?? 30,
     );
-    final time = await Utilitis.showTimeSpinner(context, initialTime);
+    final time = await showDialog(
+        context: context, builder: (context) => TimeSpinnerViewWidget(initTime: initialTime));
     if (time == null) return;
     final timeAsList = time.split(':');
     final hour = int.parse(timeAsList.first);
@@ -601,13 +603,13 @@ class _TimeEntryDialogState extends ConsumerState<TimeEntryDialog> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: AppColor.kTextfieldBorder,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColor.kTextfieldBorder),
+          borderSide: const BorderSide(color: AppColor.kTextfieldBorder),
         ),
       );
   String _checkIfTimeFormat(String timeString) {

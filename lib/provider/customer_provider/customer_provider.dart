@@ -1,13 +1,12 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/api/api.dart';
-import '../../models/consumable_models/customer_overview_dm/customer_overvew_dm.dart';
+import '../../models/customer_models/customer_overview_dm/customer_overvew_dm.dart';
 import '../../models/customer_models/customer_create_model/create_customer_model.dart';
-import '../../models/customer_models/customer_credential.dart';
+import '../../models/customer_models/customer_credential/customer_credential.dart';
 
 final customerProvider =
     NotifierProvider<CustomerNotifier, List<CustomerOvervewDM>>(() => CustomerNotifier());
@@ -32,9 +31,9 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
       final List data = response.data as List;
       final List<CustomerOvervewDM> result =
           data.map((e) => CustomerOvervewDM.fromJson(e as Map<String, dynamic>)).toList();
-      result.sort((a, b) => a.customerCredentials.contactName
+      result.sort((a, b) => a.customerCredentials.companyName
           .toLowerCase()
-          .compareTo(b.customerCredentials.contactName.toLowerCase()));
+          .compareTo(b.customerCredentials.companyName.toLowerCase()));
 
       state = result;
     } on DioException catch (e) {
@@ -51,14 +50,11 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
       final response = await _api.postCreateCustomer(customer.toJson());
 
       if (response.statusCode == 200) {
-        // Successful creation
-        log('Create Customer Response: ${response.data}');
-
         // Process the response and update local state
         final createdCustomer = CreateCustomerDM.fromJson(response.data);
         final credential = CustomerCredentialDM(
-          contactName: createdCustomer.contactName ?? '',
-          companyName: createdCustomer.companyName,
+          contactName: createdCustomer.contactName ?? 'Kein Kontaktperson',
+          companyName: createdCustomer.companyName ?? 'Kein Firmennamen',
           customerCity: createdCustomer.city,
           customerEmail: createdCustomer.contactMail,
           customerNumber: createdCustomer.externalId,
@@ -98,7 +94,6 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
       'City': customerCredential.city,
     };
     try {
-      log('Update Customer Data: ${jsonEncode(json)}');
       final response = await _api.putUpdateCustomer(json);
       if (response.statusCode != 200) {
         log('Update response: ${response.data}');

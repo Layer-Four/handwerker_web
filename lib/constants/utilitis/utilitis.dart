@@ -9,33 +9,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf_widget;
 
-import '../../view/time_entry_view/widgets/time_spinner.dart';
 import '../themes/app_color.dart';
 
 class Utilitis {
-  static Future<String?> showTimeSpinner(BuildContext context, DateTime initalTime) async {
-    final result = await showDialog(
-      context: context,
-      builder: (context) => Center(
-        child: Container(
-            height: MediaQuery.of(context).size.height - 150,
-            margin: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.3,
-              vertical: MediaQuery.of(context).size.height * 0.2,
-            ),
-            child: TimeSpinnerWidget(initalTime: initalTime)),
-      ),
-    );
-    if (result.runtimeType != String) {
-      return null;
-    }
-    return result;
-  }
-
   static HeaderStyle buildCustomHeadStyle(BuildContext context) => HeaderStyle(
         leftIcon: Container(
           padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 6),
-          child: Icon(
+          child: const Icon(
             Icons.arrow_left_outlined,
             size: 45,
             color: AppColor.kPrimaryButtonColor,
@@ -44,7 +24,7 @@ class Utilitis {
         rightIcon: Container(
           padding: const EdgeInsets.symmetric(vertical: 6),
           alignment: Alignment.centerLeft,
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Icon(

@@ -23,17 +23,16 @@ class CreateCustomerWidget extends StatefulWidget {
 
 class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
   bool _isSnackbarShowed = false;
-// TODO: Make late inital because garbage collector cleans after dispose and instance of Controller is binding on lifecycle from WidgetState
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _companyNameController = TextEditingController();
-  final TextEditingController _streetController = TextEditingController();
-  final TextEditingController _housenumberController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _postNumberController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _customerNumberController = TextEditingController();
-  final TextEditingController _telephoneController = TextEditingController();
-  final TextEditingController _contactController = TextEditingController();
+  late final TextEditingController _nameController = TextEditingController();
+  late final TextEditingController _companyNameController = TextEditingController();
+  late final TextEditingController _streetController = TextEditingController();
+  late final TextEditingController _housenumberController = TextEditingController();
+  late final TextEditingController _cityController = TextEditingController();
+  late final TextEditingController _postNumberController = TextEditingController();
+  late final TextEditingController _emailController = TextEditingController();
+  late final TextEditingController _customerNumberController = TextEditingController();
+  late final TextEditingController _telephoneController = TextEditingController();
+  late final TextEditingController _contactController = TextEditingController();
 
   late CreateCustomerDM _createCustomer;
 
@@ -95,7 +94,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Kontaktinformation',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             buildTextField(
@@ -126,7 +128,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Adresse',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             Row(
@@ -188,7 +193,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Sonstiges',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             buildTextField(
@@ -225,7 +233,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                             const SizedBox(height: 10),
                             SizedBox(
                               child: Padding(
-                                  padding: EdgeInsets.only(left: 8, right: 8),
+                                  padding: const EdgeInsets.only(left: 8, right: 8),
                                   child: Consumer(
                                     builder: (context, ref, _) => Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
