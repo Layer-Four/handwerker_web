@@ -31,12 +31,12 @@ class UserNotifier extends Notifier<UserVM> {
   Future<bool> loginUser({
     required String password,
     required String userName,
-    String? mandatID,
+    // String? mandatID,
   }) async {
     final Map<String, dynamic> json = {
       'username': userName,
       'password': password,
-      // 'mandant': mandatID ?? '1',
+      'mandant': null,
     };
     try {
       final response = await _api.postloginUser(json);
