@@ -19,8 +19,10 @@ class ProjectVMNotifier extends ChangeNotifier {
   ProjectEntryVM? _editableProject;
   List<ProjectEntryDM> _projects = [];
   List<ProjectEntryVM> _projectVms = [];
+  bool _isInitalized = false;
   bool _isLoading = false;
   final List<CustomerShortDM> _customer = [];
+  bool get isInit => _isInitalized;
 // Getter
   List<ProjectEntryVM> get projects => _projectVms;
   List<CustomerShortDM> get customers => _customer;
@@ -100,6 +102,7 @@ class ProjectVMNotifier extends ChangeNotifier {
       }
       final List<dynamic> data = response.data;
       final result = data.map((json) => CustomerShortDM.fromJson(json)).toList();
+      _log.info(result);
       _customer.clear();
       _customer.addAll(result);
       return;
@@ -109,6 +112,7 @@ class ProjectVMNotifier extends ChangeNotifier {
       _log.warning('Error loading projects: $e');
       // Handle the error appropriately
     }
+    _isInitalized = true;
     return;
   }
 
@@ -120,10 +124,11 @@ class ProjectVMNotifier extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final response = await _api.getAllProjects; // Correctly call the getter
+      final response = await _api.getAllProjects;
       if (response.statusCode != 200) {
         _log.warning('ProjectVMProvider Request dismissed: status code ${response.statusCode}');
         _isLoading = false;
+        _isInitalized = true;
         notifyListeners();
         return;
       }
@@ -138,8 +143,7 @@ class ProjectVMNotifier extends ChangeNotifier {
           ProjectEntryVM(
               title: e.title ?? 'Kein Name vergeben',
               start: DateTime.parse(e.dateOfStart ?? DateTime.now().toIso8601String()),
-              terminationDate:
-                  DateTime.parse(e.dateOfTermination ?? DateTime.now().toIso8601String()),
+              terminationDate: DateTime.parse(e.dateOfTermination ?? DateTime.now().toIso8601String()),
               state: e.projectStatusId != null
                   ? ProjectState.values.firstWhere((k) => e.projectStatusId == k.value)
                   : ProjectState.planning,
@@ -148,15 +152,20 @@ class ProjectVMNotifier extends ChangeNotifier {
               id: e.id),
         );
       }
+      _isInitalized = true;
       _projectVms = result;
       notifyListeners();
       return;
     } catch (e) {
       _log.severe('Error loading projects: $e');
     } finally {
+      _isInitalized = true;
       _isLoading = false;
       notifyListeners();
     }
+    _isLoading = false;
+    _isInitalized = true;
+    notifyListeners();
   }
 
   void updateEditableEntry({
@@ -216,8 +225,7 @@ class ProjectVMNotifier extends ChangeNotifier {
         loadProjects(); // Make sure this reloads the projects list after update
         return true;
       } on DioException catch (e) {
-        _log.severe(
-            'DioException updating project: ${e.response?.statusCode} \n${e.response?.data}');
+        _log.severe('DioException updating project: ${e.response?.statusCode} \n${e.response?.data}');
       } catch (e) {
         _log.severe('Error updating project: $e');
       }

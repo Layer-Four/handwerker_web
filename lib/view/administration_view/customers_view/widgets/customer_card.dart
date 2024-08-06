@@ -14,6 +14,7 @@ class CustomerCard extends ConsumerStatefulWidget {
     super.key,
     required this.customer,
     required this.onDelete,
+    required Null Function(CustomerOvervewDM value) onUpdate,
   });
 
   @override
@@ -74,8 +75,7 @@ class _CustomerCardState extends ConsumerState<CustomerCard> {
                             ),
                             IconButton(
                               icon: const Icon(Icons.edit),
-                              onPressed: () =>
-                                  setState(() => _showCustomerDetails = !_showCustomerDetails),
+                              onPressed: () => setState(() => _showCustomerDetails = !_showCustomerDetails),
                             ),
                           ],
                         ),

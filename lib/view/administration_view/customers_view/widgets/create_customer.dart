@@ -23,7 +23,7 @@ class CreateCustomerWidget extends StatefulWidget {
 
 class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
   bool _isSnackbarShowed = false;
-  late final TextEditingController _nameController = TextEditingController();
+  // late final TextEditingController _nameController = TextEditingController();
   late final TextEditingController _companyNameController = TextEditingController();
   late final TextEditingController _streetController = TextEditingController();
   late final TextEditingController _housenumberController = TextEditingController();
@@ -42,10 +42,9 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
     _createCustomer = const CreateCustomerDM();
   }
 
-  // Dispose of controllers
   @override
   void dispose() {
-    _nameController.dispose();
+    // _nameController.dispose();
     _companyNameController.dispose();
     _streetController.dispose();
     _housenumberController.dispose();
@@ -94,23 +93,15 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Kontaktinformation',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             buildTextField(
                               hintText: 'Kundenname',
-                              controller: _nameController,
+                              controller: _companyNameController,
                               context: context,
                             ),
                             const SizedBox(height: 5),
-                            // buildTextField(
-                            //   hintText: 'Unternehmenname',
-                            //   controller: _companyNameController,
-                            //   context: context,
-                            // ),
                             buildTextField(
                               hintText: 'Kontaktperson',
                               controller: _contactController,
@@ -128,10 +119,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Adresse',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             Row(
@@ -193,10 +181,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Sonstiges',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             buildTextField(
@@ -220,7 +205,6 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             const SizedBox(height: 20),
-
                             const Padding(
                               padding: EdgeInsets.all(4),
                               child: Text(''),
@@ -233,91 +217,122 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                             const SizedBox(height: 10),
                             SizedBox(
                               child: Padding(
-                                  padding: const EdgeInsets.only(left: 8, right: 8),
-                                  child: Consumer(
-                                    builder: (context, ref, _) => Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: SymmetricButton(
-                                            text: 'Verwerfen',
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .labelMedium
-                                                ?.copyWith(color: AppColor.kPrimaryButtonColor),
-                                            color: AppColor.kWhite,
-                                            onPressed: () {
-                                              widget.onCancel();
-                                            },
-                                          ),
+                                padding: const EdgeInsets.only(left: 8, right: 8),
+                                child: Consumer(
+                                  builder: (context, ref, _) => Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: SymmetricButton(
+                                          text: 'Verwerfen',
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .labelMedium
+                                              ?.copyWith(color: AppColor.kPrimaryButtonColor),
+                                          color: AppColor.kWhite,
+                                          onPressed: () {
+                                            widget.onCancel();
+                                          },
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: SymmetricButton(
-                                            text: 'Speichern',
-                                            onPressed: () {
-                                              if (_streetController.text.isEmpty &&
-                                                  _nameController.text.isEmpty &&
-                                                  _cityController.text.isEmpty &&
-                                                  _companyNameController.text.isEmpty &&
-                                                  _contactController.text.isEmpty &&
-                                                  _customerNumberController.text.isEmpty &&
-                                                  _telephoneController.text.isEmpty &&
-                                                  _postNumberController.text.isEmpty) {
-                                                _showSnackBar('Bitte füllen Sie alle Felder aus.');
-                                                return;
-                                              }
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: SymmetricButton(
+                                          text: 'Speichern',
+                                          onPressed: () {
+                                            // Log the content of each field
+                                            print('Street: ${_streetController.text}');
+                                            print('City: ${_cityController.text}');
+                                            print('Company Name: ${_companyNameController.text}');
+                                            print('Contact: ${_contactController.text}');
+                                            print('Customer Number: ${_customerNumberController.text}');
+                                            print('Telephone: ${_telephoneController.text}');
+                                            print('Post Number: ${_postNumberController.text}');
+                                            print('House Number: ${_housenumberController.text}');
+                                            print('Email: ${_emailController.text}');
 
-                                              _createCustomer = _createCustomer.copyWith(
-                                                city: _cityController.text,
-                                                street: _streetController.text,
-                                                companyName: _companyNameController.text,
-                                                contactMail: _emailController.text,
-                                                contactPhone: _telephoneController.text,
-                                                streetNr: _housenumberController.text,
-                                                zipcode: _postNumberController.text,
-                                                contactName: _nameController.text,
-                                                externalId: _customerNumberController.text,
-                                                // customerName: _contactController.text,
-                                              );
+                                            // Check each field individually
+                                            if (_streetController.text.isEmpty) {
+                                              _showSnackBar('Bitte füllen Sie das Straße-Feld aus.');
+                                              return;
+                                            }
+                                            if (_cityController.text.isEmpty) {
+                                              _showSnackBar('Bitte füllen Sie das Ort-Feld aus.');
+                                              return;
+                                            }
+                                            if (_companyNameController.text.isEmpty) {
+                                              _showSnackBar('Bitte füllen Sie das Kundenname-Feld aus.');
+                                              return;
+                                            }
+                                            if (_contactController.text.isEmpty) {
+                                              _showSnackBar('Bitte füllen Sie das Kontaktperson-Feld aus.');
+                                              return;
+                                            }
+                                            if (_customerNumberController.text.isEmpty) {
+                                              _showSnackBar('Bitte füllen Sie das Kundennummer-Feld aus.');
+                                              return;
+                                            }
+                                            if (_telephoneController.text.isEmpty) {
+                                              _showSnackBar('Bitte füllen Sie das Telefon-Feld aus.');
+                                              return;
+                                            }
+                                            if (_postNumberController.text.isEmpty) {
+                                              _showSnackBar('Bitte füllen Sie das PLZ-Feld aus.');
+                                              return;
+                                            }
+                                            if (_housenumberController.text.isEmpty) {
+                                              _showSnackBar('Bitte füllen Sie das Nr-Feld aus.');
+                                              return;
+                                            }
+                                            if (_emailController.text.isEmpty) {
+                                              _showSnackBar('Bitte füllen Sie das Email-Feld aus.');
+                                              return;
+                                            }
 
-                                              ref
-                                                  .read(customerProvider.notifier)
-                                                  .createCustomer(_createCustomer)
-                                                  .then((success) {
-                                                if (success) {
-                                                  _showSnackBar('Kunde erfolgreich hinzufügt');
-                                                  _nameController.clear();
-                                                  _companyNameController.clear();
-                                                  _cityController.clear();
-                                                  _contactController.clear();
-                                                  _emailController.clear();
-                                                  _customerNumberController.clear();
-                                                  _postNumberController.clear();
-                                                  _telephoneController.clear();
-                                                  _streetController.clear();
-                                                  _housenumberController.clear();
-                                                } else {
-                                                  _showSnackBar('Speichern fehlgeschlagen');
+                                            // If we've made it this far, all fields are filled
+                                            _createCustomer = _createCustomer.copyWith(
+                                              city: _cityController.text,
+                                              street: _streetController.text,
+                                              companyName: _companyNameController.text,
+                                              contactMail: _emailController.text,
+                                              contactPhone: _telephoneController.text,
+                                              streetNr: _housenumberController.text,
+                                              zipcode: _postNumberController.text,
+                                              contactName: _contactController.text,
+                                              externalId: _customerNumberController.text,
+                                            );
+
+                                            ref
+                                                .read(customerProvider.notifier)
+                                                .createCustomer(_createCustomer)
+                                                .then((success) {
+                                              if (success) {
+                                                _showSnackBar('Kunde erfolgreich hinzufügt');
+                                                _companyNameController.clear();
+                                                _cityController.clear();
+                                                _contactController.clear();
+                                                _emailController.clear();
+                                                _customerNumberController.clear();
+                                                _postNumberController.clear();
+                                                _telephoneController.clear();
+                                                _streetController.clear();
+                                                _housenumberController.clear();
+                                                if (widget.onSave != null) {
+                                                  widget.onSave!();
                                                 }
-                                              });
-                                            },
-                                          ),
+                                              } else {
+                                                _showSnackBar('Speichern fehlgeschlagen');
+                                              }
+                                            });
+                                          },
                                         ),
-                                      ],
-                                    ),
-                                  )
-                                  // TextField(
-                                  //   decoration: InputDecoration(border: InputBorder.none),
-                                  // ),
+                                      ),
+                                    ],
                                   ),
+                                ),
+                              ),
                             ),
-                            // buildTextField(
-                            //   hintText: 'Kontaktperson',
-                            //   controller: _contactController,
-                            //   context: context,
-                            // ),
                           ],
                         ),
                       ),

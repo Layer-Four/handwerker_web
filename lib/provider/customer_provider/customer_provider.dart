@@ -8,8 +8,7 @@ import '../../models/customer_models/customer_create_model/create_customer_model
 import '../../models/customer_models/customer_credential/customer_credential.dart';
 import '../../models/customer_models/customer_overview_dm/customer_overvew_dm.dart';
 
-final customerProvider =
-    NotifierProvider<CustomerNotifier, List<CustomerOvervewDM>>(() => CustomerNotifier());
+final customerProvider = NotifierProvider<CustomerNotifier, List<CustomerOvervewDM>>(() => CustomerNotifier());
 
 class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
   final Api _api = Api();
@@ -24,16 +23,15 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
     try {
       final response = await _api.getAllCustomers;
       if (response.statusCode != 200) {
-        throw Exception(
-            'Wrong response occurred, status -> ${response.statusCode} \n${response.data}');
+        throw Exception('Wrong response occurred, status -> ${response.statusCode} \n${response.data}');
       }
 
       final List data = response.data as List;
       final List<CustomerOvervewDM> result =
           data.map((e) => CustomerOvervewDM.fromJson(e as Map<String, dynamic>)).toList();
-      result.sort((a, b) => a.customerCredentials.companyName
-          .toLowerCase()
-          .compareTo(b.customerCredentials.companyName.toLowerCase()));
+
+      result.sort((a, b) =>
+          a.customerCredentials.companyName.toLowerCase().compareTo(b.customerCredentials.companyName.toLowerCase()));
 
       state = result;
     } on DioException catch (e) {
@@ -97,8 +95,7 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
       final response = await _api.putUpdateCustomer(json);
       if (response.statusCode != 200) {
         log('Update response: ${response.data}');
-        throw Exception(
-            'Exception on updateCustomer status -> ${response.statusCode}\n${response.data}');
+        throw Exception('Exception on updateCustomer status -> ${response.statusCode}\n${response.data}');
       }
       await loadAllCustomers();
       return true;
