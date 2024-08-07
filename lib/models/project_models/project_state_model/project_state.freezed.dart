@@ -24,11 +24,13 @@ mixin _$ProjectInfoState {
   String? get createdBy => throw _privateConstructorUsedError;
   DateTime? get editedAt => throw _privateConstructorUsedError;
   String? get editedBy => throw _privateConstructorUsedError;
-  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'id')
+  int? get statusID => throw _privateConstructorUsedError;
   int? get mandantID => throw _privateConstructorUsedError;
   String? get mandant => throw _privateConstructorUsedError;
   String? get projects => throw _privateConstructorUsedError;
-  String? get value => throw _privateConstructorUsedError;
+  @JsonKey(name: 'value')
+  String? get statusName => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,11 +49,11 @@ abstract class $ProjectInfoStateCopyWith<$Res> {
       String? createdBy,
       DateTime? editedAt,
       String? editedBy,
-      int? id,
+      @JsonKey(name: 'id') int? statusID,
       int? mandantID,
       String? mandant,
       String? projects,
-      String? value});
+      @JsonKey(name: 'value') String? statusName});
 }
 
 /// @nodoc
@@ -71,11 +73,11 @@ class _$ProjectInfoStateCopyWithImpl<$Res, $Val extends ProjectInfoState>
     Object? createdBy = freezed,
     Object? editedAt = freezed,
     Object? editedBy = freezed,
-    Object? id = freezed,
+    Object? statusID = freezed,
     Object? mandantID = freezed,
     Object? mandant = freezed,
     Object? projects = freezed,
-    Object? value = freezed,
+    Object? statusName = freezed,
   }) {
     return _then(_value.copyWith(
       createdAt: freezed == createdAt
@@ -94,9 +96,9 @@ class _$ProjectInfoStateCopyWithImpl<$Res, $Val extends ProjectInfoState>
           ? _value.editedBy
           : editedBy // ignore: cast_nullable_to_non_nullable
               as String?,
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      statusID: freezed == statusID
+          ? _value.statusID
+          : statusID // ignore: cast_nullable_to_non_nullable
               as int?,
       mandantID: freezed == mandantID
           ? _value.mandantID
@@ -110,9 +112,9 @@ class _$ProjectInfoStateCopyWithImpl<$Res, $Val extends ProjectInfoState>
           ? _value.projects
           : projects // ignore: cast_nullable_to_non_nullable
               as String?,
-      value: freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
+      statusName: freezed == statusName
+          ? _value.statusName
+          : statusName // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -131,11 +133,11 @@ abstract class _$$ProjectInfoStateImplCopyWith<$Res>
       String? createdBy,
       DateTime? editedAt,
       String? editedBy,
-      int? id,
+      @JsonKey(name: 'id') int? statusID,
       int? mandantID,
       String? mandant,
       String? projects,
-      String? value});
+      @JsonKey(name: 'value') String? statusName});
 }
 
 /// @nodoc
@@ -153,11 +155,11 @@ class __$$ProjectInfoStateImplCopyWithImpl<$Res>
     Object? createdBy = freezed,
     Object? editedAt = freezed,
     Object? editedBy = freezed,
-    Object? id = freezed,
+    Object? statusID = freezed,
     Object? mandantID = freezed,
     Object? mandant = freezed,
     Object? projects = freezed,
-    Object? value = freezed,
+    Object? statusName = freezed,
   }) {
     return _then(_$ProjectInfoStateImpl(
       createdAt: freezed == createdAt
@@ -176,9 +178,9 @@ class __$$ProjectInfoStateImplCopyWithImpl<$Res>
           ? _value.editedBy
           : editedBy // ignore: cast_nullable_to_non_nullable
               as String?,
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      statusID: freezed == statusID
+          ? _value.statusID
+          : statusID // ignore: cast_nullable_to_non_nullable
               as int?,
       mandantID: freezed == mandantID
           ? _value.mandantID
@@ -192,9 +194,9 @@ class __$$ProjectInfoStateImplCopyWithImpl<$Res>
           ? _value.projects
           : projects // ignore: cast_nullable_to_non_nullable
               as String?,
-      value: freezed == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
+      statusName: freezed == statusName
+          ? _value.statusName
+          : statusName // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -208,11 +210,11 @@ class _$ProjectInfoStateImpl implements _ProjectInfoState {
       this.createdBy,
       this.editedAt,
       this.editedBy,
-      this.id,
+      @JsonKey(name: 'id') this.statusID,
       this.mandantID,
       this.mandant,
       this.projects,
-      this.value});
+      @JsonKey(name: 'value') this.statusName});
 
   factory _$ProjectInfoStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProjectInfoStateImplFromJson(json);
@@ -226,7 +228,8 @@ class _$ProjectInfoStateImpl implements _ProjectInfoState {
   @override
   final String? editedBy;
   @override
-  final int? id;
+  @JsonKey(name: 'id')
+  final int? statusID;
   @override
   final int? mandantID;
   @override
@@ -234,11 +237,12 @@ class _$ProjectInfoStateImpl implements _ProjectInfoState {
   @override
   final String? projects;
   @override
-  final String? value;
+  @JsonKey(name: 'value')
+  final String? statusName;
 
   @override
   String toString() {
-    return 'ProjectInfoState(createdAt: $createdAt, createdBy: $createdBy, editedAt: $editedAt, editedBy: $editedBy, id: $id, mandantID: $mandantID, mandant: $mandant, projects: $projects, value: $value)';
+    return 'ProjectInfoState(createdAt: $createdAt, createdBy: $createdBy, editedAt: $editedAt, editedBy: $editedBy, statusID: $statusID, mandantID: $mandantID, mandant: $mandant, projects: $projects, statusName: $statusName)';
   }
 
   @override
@@ -254,19 +258,21 @@ class _$ProjectInfoStateImpl implements _ProjectInfoState {
                 other.editedAt == editedAt) &&
             (identical(other.editedBy, editedBy) ||
                 other.editedBy == editedBy) &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.statusID, statusID) ||
+                other.statusID == statusID) &&
             (identical(other.mandantID, mandantID) ||
                 other.mandantID == mandantID) &&
             (identical(other.mandant, mandant) || other.mandant == mandant) &&
             (identical(other.projects, projects) ||
                 other.projects == projects) &&
-            (identical(other.value, value) || other.value == value));
+            (identical(other.statusName, statusName) ||
+                other.statusName == statusName));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, createdAt, createdBy, editedAt,
-      editedBy, id, mandantID, mandant, projects, value);
+      editedBy, statusID, mandantID, mandant, projects, statusName);
 
   @JsonKey(ignore: true)
   @override
@@ -285,15 +291,16 @@ class _$ProjectInfoStateImpl implements _ProjectInfoState {
 
 abstract class _ProjectInfoState implements ProjectInfoState {
   factory _ProjectInfoState(
-      {final DateTime? createdAt,
-      final String? createdBy,
-      final DateTime? editedAt,
-      final String? editedBy,
-      final int? id,
-      final int? mandantID,
-      final String? mandant,
-      final String? projects,
-      final String? value}) = _$ProjectInfoStateImpl;
+          {final DateTime? createdAt,
+          final String? createdBy,
+          final DateTime? editedAt,
+          final String? editedBy,
+          @JsonKey(name: 'id') final int? statusID,
+          final int? mandantID,
+          final String? mandant,
+          final String? projects,
+          @JsonKey(name: 'value') final String? statusName}) =
+      _$ProjectInfoStateImpl;
 
   factory _ProjectInfoState.fromJson(Map<String, dynamic> json) =
       _$ProjectInfoStateImpl.fromJson;
@@ -307,7 +314,8 @@ abstract class _ProjectInfoState implements ProjectInfoState {
   @override
   String? get editedBy;
   @override
-  int? get id;
+  @JsonKey(name: 'id')
+  int? get statusID;
   @override
   int? get mandantID;
   @override
@@ -315,7 +323,8 @@ abstract class _ProjectInfoState implements ProjectInfoState {
   @override
   String? get projects;
   @override
-  String? get value;
+  @JsonKey(name: 'value')
+  String? get statusName;
   @override
   @JsonKey(ignore: true)
   _$$ProjectInfoStateImplCopyWith<_$ProjectInfoStateImpl> get copyWith =>

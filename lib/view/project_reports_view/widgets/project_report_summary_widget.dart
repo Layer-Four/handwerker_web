@@ -4,7 +4,7 @@ import '../../../constants/themes/app_color.dart';
 import '../../../models/customer_models/customer_credential/customer_credential.dart';
 import '../../../models/project_models/project_report_dm/project_report_dm.dart';
 import '../../shared_widgets/symetric_button_widget.dart';
-import 'invoice_preview_widget/project_customer_review_preview.dart';
+import '../invoice_preview.dart';
 import 'project_description_widget.dart';
 import 'project_report_summary_healine_widget.dart';
 import 'project_report_utilitis_view.dart';
@@ -25,9 +25,7 @@ class ProjectReportSummary extends StatelessWidget {
         children: [
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.24,
-            child: project.projectDescription != null
-                ? DescriptionFiedlWidget(project.projectDescription)
-                : const SizedBox.shrink(),
+            child: project.projectDescription != null ? DescriptionFiedlWidget(project.projectDescription) : const SizedBox.shrink(),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.55,
@@ -99,7 +97,7 @@ class ProjectReportSummary extends StatelessWidget {
                     text: 'Projektbericht erstellen',
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (context) => ProjectCustomerReviewPreviewWidget(
+                      builder: (context) => InvoicePreviewWidget(
                         project: project,
                         customer: customer,
                       ),

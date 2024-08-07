@@ -11,15 +11,17 @@ part 'project_report_dm.g.dart';
 class ProjectRepotsDM with _$ProjectRepotsDM {
   const factory ProjectRepotsDM({
     @Default([]) List<ProjectConsumable> consumables,
+    int? projectID,
     DateTime? dateOfStart,
     DateTime? dateOfTermination,
     String? projectDescription,
-    required String projectName,
+    String? projectName,
     double? projectRevenue,
     ProjectInfoState? projectState,
     @Default([]) List<ProjectTimeEntry> reportsList,
     @Default([]) List<ServiceProject> serviceList,
   }) = _ProjectRepotsDM;
-  factory ProjectRepotsDM.fromJson(Map<String, dynamic> json) => _$ProjectRepotsDMFromJson(json);
+  factory ProjectRepotsDM.fromJson(Map<String, dynamic> json) =>
+      _$ProjectRepotsDMFromJson(json);
   const ProjectRepotsDM._();
 }

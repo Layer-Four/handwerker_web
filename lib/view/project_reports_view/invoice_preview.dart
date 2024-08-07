@@ -2,20 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../models/customer_models/customer_credential/customer_credential.dart';
-import '../../../../models/project_models/project_report_dm/project_report_dm.dart';
-import '../../../../models/time_models/project_time_model/project_time_entry.dart';
-import '../../../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
-import 'invoice_consumable_widget.dart';
-import 'invoice_docu_widget.dart';
-import 'invoice_time_widget.dart';
-import 'project_customer_adress_widget.dart';
+import '../../models/customer_models/customer_credential/customer_credential.dart';
+import '../../models/project_models/project_report_dm/project_report_dm.dart';
+import '../../models/time_models/project_time_model/project_time_entry.dart';
+import '../../provider/data_provider/time_entry_provider/time_entry_provider.dart';
+import 'widgets/invoice_preview_widget/invoice_consumable_widget.dart';
+import 'widgets/invoice_preview_widget/invoice_docu_widget.dart';
+import 'widgets/invoice_preview_widget/invoice_time_widget.dart';
+import 'widgets/invoice_preview_widget/project_customer_adress_widget.dart';
 
-class ProjectCustomerReviewPreviewWidget extends ConsumerWidget {
+class InvoicePreviewWidget extends ConsumerWidget {
   final ProjectRepotsDM project;
   final CustomerCredentialDM customer;
-  const ProjectCustomerReviewPreviewWidget(
-      {super.key, required this.project, required this.customer});
+  const InvoicePreviewWidget({super.key, required this.project, required this.customer});
 
   @override
   Widget build(BuildContext context, ref) => Dialog(
@@ -54,11 +53,7 @@ class ProjectCustomerReviewPreviewWidget extends ConsumerWidget {
                   endIndent: 20,
                 ),
                 InvoiceTimeWidget(
-                  times: ref
-                      .watch(timeVMProvider.notifier)
-                      .entries
-                      .where((e) => e.project?.id == project.projectState?.id)
-                      .toList(),
+                  times: ref.watch(timeVMProvider.notifier).entries.where((e) => e.project?.id == project.projectID).toList(),
                 )
               ],
             ),

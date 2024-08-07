@@ -44,7 +44,8 @@ class InvoiceConsumableWidget extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    Text('${(e.consumableAmount! * e.consumablePrice).toStringAsFixed(2)}€'),
+                    Text(
+                        '${(e.consumableAmount * e.consumableNetPrice).toStringAsFixed(2)}€'),
                   ],
                 ),
               )

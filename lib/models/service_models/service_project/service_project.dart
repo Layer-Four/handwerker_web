@@ -9,5 +9,6 @@ class ServiceProject with _$ServiceProject {
     required int serviceAmount,
     required double servicePrice,
   }) = _ServiceProject;
-  factory ServiceProject.fromJson(Map<String, dynamic> json) => _$ServiceProjectFromJson(json);
+  factory ServiceProject.fromJson(Map<String, dynamic> json) =>
+      _$ServiceProjectFromJson(json);
 }

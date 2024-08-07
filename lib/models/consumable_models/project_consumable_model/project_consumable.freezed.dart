@@ -21,8 +21,10 @@ ProjectConsumable _$ProjectConsumableFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ProjectConsumable {
   String get consumableName => throw _privateConstructorUsedError;
-  int? get consumableAmount => throw _privateConstructorUsedError;
-  double get consumablePrice => throw _privateConstructorUsedError;
+  int get consumableAmount => throw _privateConstructorUsedError;
+  double get consumableNetPrice => throw _privateConstructorUsedError;
+  double? get consumableGrossPrice => throw _privateConstructorUsedError;
+  double? get consumableVAT => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +39,11 @@ abstract class $ProjectConsumableCopyWith<$Res> {
       _$ProjectConsumableCopyWithImpl<$Res, ProjectConsumable>;
   @useResult
   $Res call(
-      {String consumableName, int? consumableAmount, double consumablePrice});
+      {String consumableName,
+      int consumableAmount,
+      double consumableNetPrice,
+      double? consumableGrossPrice,
+      double? consumableVAT});
 }
 
 /// @nodoc
@@ -54,22 +60,32 @@ class _$ProjectConsumableCopyWithImpl<$Res, $Val extends ProjectConsumable>
   @override
   $Res call({
     Object? consumableName = null,
-    Object? consumableAmount = freezed,
-    Object? consumablePrice = null,
+    Object? consumableAmount = null,
+    Object? consumableNetPrice = null,
+    Object? consumableGrossPrice = freezed,
+    Object? consumableVAT = freezed,
   }) {
     return _then(_value.copyWith(
       consumableName: null == consumableName
           ? _value.consumableName
           : consumableName // ignore: cast_nullable_to_non_nullable
               as String,
-      consumableAmount: freezed == consumableAmount
+      consumableAmount: null == consumableAmount
           ? _value.consumableAmount
           : consumableAmount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      consumablePrice: null == consumablePrice
-          ? _value.consumablePrice
-          : consumablePrice // ignore: cast_nullable_to_non_nullable
+              as int,
+      consumableNetPrice: null == consumableNetPrice
+          ? _value.consumableNetPrice
+          : consumableNetPrice // ignore: cast_nullable_to_non_nullable
               as double,
+      consumableGrossPrice: freezed == consumableGrossPrice
+          ? _value.consumableGrossPrice
+          : consumableGrossPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
+      consumableVAT: freezed == consumableVAT
+          ? _value.consumableVAT
+          : consumableVAT // ignore: cast_nullable_to_non_nullable
+              as double?,
     ) as $Val);
   }
 }
@@ -83,7 +99,11 @@ abstract class _$$ProjectConsumableImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String consumableName, int? consumableAmount, double consumablePrice});
+      {String consumableName,
+      int consumableAmount,
+      double consumableNetPrice,
+      double? consumableGrossPrice,
+      double? consumableVAT});
 }
 
 /// @nodoc
@@ -98,22 +118,32 @@ class __$$ProjectConsumableImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? consumableName = null,
-    Object? consumableAmount = freezed,
-    Object? consumablePrice = null,
+    Object? consumableAmount = null,
+    Object? consumableNetPrice = null,
+    Object? consumableGrossPrice = freezed,
+    Object? consumableVAT = freezed,
   }) {
     return _then(_$ProjectConsumableImpl(
       consumableName: null == consumableName
           ? _value.consumableName
           : consumableName // ignore: cast_nullable_to_non_nullable
               as String,
-      consumableAmount: freezed == consumableAmount
+      consumableAmount: null == consumableAmount
           ? _value.consumableAmount
           : consumableAmount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      consumablePrice: null == consumablePrice
-          ? _value.consumablePrice
-          : consumablePrice // ignore: cast_nullable_to_non_nullable
+              as int,
+      consumableNetPrice: null == consumableNetPrice
+          ? _value.consumableNetPrice
+          : consumableNetPrice // ignore: cast_nullable_to_non_nullable
               as double,
+      consumableGrossPrice: freezed == consumableGrossPrice
+          ? _value.consumableGrossPrice
+          : consumableGrossPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
+      consumableVAT: freezed == consumableVAT
+          ? _value.consumableVAT
+          : consumableVAT // ignore: cast_nullable_to_non_nullable
+              as double?,
     ));
   }
 }
@@ -123,8 +153,10 @@ class __$$ProjectConsumableImplCopyWithImpl<$Res>
 class _$ProjectConsumableImpl implements _ProjectConsumable {
   const _$ProjectConsumableImpl(
       {required this.consumableName,
-      this.consumableAmount,
-      required this.consumablePrice});
+      required this.consumableAmount,
+      required this.consumableNetPrice,
+      this.consumableGrossPrice,
+      this.consumableVAT});
 
   factory _$ProjectConsumableImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProjectConsumableImplFromJson(json);
@@ -132,13 +164,17 @@ class _$ProjectConsumableImpl implements _ProjectConsumable {
   @override
   final String consumableName;
   @override
-  final int? consumableAmount;
+  final int consumableAmount;
   @override
-  final double consumablePrice;
+  final double consumableNetPrice;
+  @override
+  final double? consumableGrossPrice;
+  @override
+  final double? consumableVAT;
 
   @override
   String toString() {
-    return 'ProjectConsumable(consumableName: $consumableName, consumableAmount: $consumableAmount, consumablePrice: $consumablePrice)';
+    return 'ProjectConsumable(consumableName: $consumableName, consumableAmount: $consumableAmount, consumableNetPrice: $consumableNetPrice, consumableGrossPrice: $consumableGrossPrice, consumableVAT: $consumableVAT)';
   }
 
   @override
@@ -150,14 +186,18 @@ class _$ProjectConsumableImpl implements _ProjectConsumable {
                 other.consumableName == consumableName) &&
             (identical(other.consumableAmount, consumableAmount) ||
                 other.consumableAmount == consumableAmount) &&
-            (identical(other.consumablePrice, consumablePrice) ||
-                other.consumablePrice == consumablePrice));
+            (identical(other.consumableNetPrice, consumableNetPrice) ||
+                other.consumableNetPrice == consumableNetPrice) &&
+            (identical(other.consumableGrossPrice, consumableGrossPrice) ||
+                other.consumableGrossPrice == consumableGrossPrice) &&
+            (identical(other.consumableVAT, consumableVAT) ||
+                other.consumableVAT == consumableVAT));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, consumableName, consumableAmount, consumablePrice);
+  int get hashCode => Object.hash(runtimeType, consumableName, consumableAmount,
+      consumableNetPrice, consumableGrossPrice, consumableVAT);
 
   @JsonKey(ignore: true)
   @override
@@ -177,8 +217,10 @@ class _$ProjectConsumableImpl implements _ProjectConsumable {
 abstract class _ProjectConsumable implements ProjectConsumable {
   const factory _ProjectConsumable(
       {required final String consumableName,
-      final int? consumableAmount,
-      required final double consumablePrice}) = _$ProjectConsumableImpl;
+      required final int consumableAmount,
+      required final double consumableNetPrice,
+      final double? consumableGrossPrice,
+      final double? consumableVAT}) = _$ProjectConsumableImpl;
 
   factory _ProjectConsumable.fromJson(Map<String, dynamic> json) =
       _$ProjectConsumableImpl.fromJson;
@@ -186,9 +228,13 @@ abstract class _ProjectConsumable implements ProjectConsumable {
   @override
   String get consumableName;
   @override
-  int? get consumableAmount;
+  int get consumableAmount;
   @override
-  double get consumablePrice;
+  double get consumableNetPrice;
+  @override
+  double? get consumableGrossPrice;
+  @override
+  double? get consumableVAT;
   @override
   @JsonKey(ignore: true)
   _$$ProjectConsumableImplCopyWith<_$ProjectConsumableImpl> get copyWith =>
