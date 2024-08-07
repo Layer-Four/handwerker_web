@@ -10,8 +10,10 @@ _$ProjectConsumableImpl _$$ProjectConsumableImplFromJson(
         Map<String, dynamic> json) =>
     _$ProjectConsumableImpl(
       consumableName: json['consumableName'] as String,
-      consumableAmount: (json['consumableAmount'] as num?)?.toInt(),
-      consumablePrice: (json['consumablePrice'] as num).toDouble(),
+      consumableAmount: (json['consumableAmount'] as num).toInt(),
+      consumableNetPrice: (json['consumableNetPrice'] as num).toDouble(),
+      consumableGrossPrice: (json['consumableGrossPrice'] as num?)?.toDouble(),
+      consumableVAT: (json['consumableVAT'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$$ProjectConsumableImplToJson(
@@ -19,5 +21,7 @@ Map<String, dynamic> _$$ProjectConsumableImplToJson(
     <String, dynamic>{
       'consumableName': instance.consumableName,
       'consumableAmount': instance.consumableAmount,
-      'consumablePrice': instance.consumablePrice,
+      'consumableNetPrice': instance.consumableNetPrice,
+      'consumableGrossPrice': instance.consumableGrossPrice,
+      'consumableVAT': instance.consumableVAT,
     };

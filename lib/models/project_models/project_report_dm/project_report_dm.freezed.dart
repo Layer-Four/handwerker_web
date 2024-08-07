@@ -21,10 +21,11 @@ ProjectRepotsDM _$ProjectRepotsDMFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ProjectRepotsDM {
   List<ProjectConsumable> get consumables => throw _privateConstructorUsedError;
+  int? get projectID => throw _privateConstructorUsedError;
   DateTime? get dateOfStart => throw _privateConstructorUsedError;
   DateTime? get dateOfTermination => throw _privateConstructorUsedError;
   String? get projectDescription => throw _privateConstructorUsedError;
-  String get projectName => throw _privateConstructorUsedError;
+  String? get projectName => throw _privateConstructorUsedError;
   double? get projectRevenue => throw _privateConstructorUsedError;
   ProjectInfoState? get projectState => throw _privateConstructorUsedError;
   List<ProjectTimeEntry> get reportsList => throw _privateConstructorUsedError;
@@ -44,10 +45,11 @@ abstract class $ProjectRepotsDMCopyWith<$Res> {
   @useResult
   $Res call(
       {List<ProjectConsumable> consumables,
+      int? projectID,
       DateTime? dateOfStart,
       DateTime? dateOfTermination,
       String? projectDescription,
-      String projectName,
+      String? projectName,
       double? projectRevenue,
       ProjectInfoState? projectState,
       List<ProjectTimeEntry> reportsList,
@@ -70,10 +72,11 @@ class _$ProjectRepotsDMCopyWithImpl<$Res, $Val extends ProjectRepotsDM>
   @override
   $Res call({
     Object? consumables = null,
+    Object? projectID = freezed,
     Object? dateOfStart = freezed,
     Object? dateOfTermination = freezed,
     Object? projectDescription = freezed,
-    Object? projectName = null,
+    Object? projectName = freezed,
     Object? projectRevenue = freezed,
     Object? projectState = freezed,
     Object? reportsList = null,
@@ -84,6 +87,10 @@ class _$ProjectRepotsDMCopyWithImpl<$Res, $Val extends ProjectRepotsDM>
           ? _value.consumables
           : consumables // ignore: cast_nullable_to_non_nullable
               as List<ProjectConsumable>,
+      projectID: freezed == projectID
+          ? _value.projectID
+          : projectID // ignore: cast_nullable_to_non_nullable
+              as int?,
       dateOfStart: freezed == dateOfStart
           ? _value.dateOfStart
           : dateOfStart // ignore: cast_nullable_to_non_nullable
@@ -96,10 +103,10 @@ class _$ProjectRepotsDMCopyWithImpl<$Res, $Val extends ProjectRepotsDM>
           ? _value.projectDescription
           : projectDescription // ignore: cast_nullable_to_non_nullable
               as String?,
-      projectName: null == projectName
+      projectName: freezed == projectName
           ? _value.projectName
           : projectName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       projectRevenue: freezed == projectRevenue
           ? _value.projectRevenue
           : projectRevenue // ignore: cast_nullable_to_non_nullable
@@ -142,10 +149,11 @@ abstract class _$$ProjectRepotsDMImplCopyWith<$Res>
   @useResult
   $Res call(
       {List<ProjectConsumable> consumables,
+      int? projectID,
       DateTime? dateOfStart,
       DateTime? dateOfTermination,
       String? projectDescription,
-      String projectName,
+      String? projectName,
       double? projectRevenue,
       ProjectInfoState? projectState,
       List<ProjectTimeEntry> reportsList,
@@ -167,10 +175,11 @@ class __$$ProjectRepotsDMImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? consumables = null,
+    Object? projectID = freezed,
     Object? dateOfStart = freezed,
     Object? dateOfTermination = freezed,
     Object? projectDescription = freezed,
-    Object? projectName = null,
+    Object? projectName = freezed,
     Object? projectRevenue = freezed,
     Object? projectState = freezed,
     Object? reportsList = null,
@@ -181,6 +190,10 @@ class __$$ProjectRepotsDMImplCopyWithImpl<$Res>
           ? _value._consumables
           : consumables // ignore: cast_nullable_to_non_nullable
               as List<ProjectConsumable>,
+      projectID: freezed == projectID
+          ? _value.projectID
+          : projectID // ignore: cast_nullable_to_non_nullable
+              as int?,
       dateOfStart: freezed == dateOfStart
           ? _value.dateOfStart
           : dateOfStart // ignore: cast_nullable_to_non_nullable
@@ -193,10 +206,10 @@ class __$$ProjectRepotsDMImplCopyWithImpl<$Res>
           ? _value.projectDescription
           : projectDescription // ignore: cast_nullable_to_non_nullable
               as String?,
-      projectName: null == projectName
+      projectName: freezed == projectName
           ? _value.projectName
           : projectName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       projectRevenue: freezed == projectRevenue
           ? _value.projectRevenue
           : projectRevenue // ignore: cast_nullable_to_non_nullable
@@ -222,10 +235,11 @@ class __$$ProjectRepotsDMImplCopyWithImpl<$Res>
 class _$ProjectRepotsDMImpl extends _ProjectRepotsDM {
   const _$ProjectRepotsDMImpl(
       {final List<ProjectConsumable> consumables = const [],
+      this.projectID,
       this.dateOfStart,
       this.dateOfTermination,
       this.projectDescription,
-      required this.projectName,
+      this.projectName,
       this.projectRevenue,
       this.projectState,
       final List<ProjectTimeEntry> reportsList = const [],
@@ -248,13 +262,15 @@ class _$ProjectRepotsDMImpl extends _ProjectRepotsDM {
   }
 
   @override
+  final int? projectID;
+  @override
   final DateTime? dateOfStart;
   @override
   final DateTime? dateOfTermination;
   @override
   final String? projectDescription;
   @override
-  final String projectName;
+  final String? projectName;
   @override
   final double? projectRevenue;
   @override
@@ -279,7 +295,7 @@ class _$ProjectRepotsDMImpl extends _ProjectRepotsDM {
 
   @override
   String toString() {
-    return 'ProjectRepotsDM(consumables: $consumables, dateOfStart: $dateOfStart, dateOfTermination: $dateOfTermination, projectDescription: $projectDescription, projectName: $projectName, projectRevenue: $projectRevenue, projectState: $projectState, reportsList: $reportsList, serviceList: $serviceList)';
+    return 'ProjectRepotsDM(consumables: $consumables, projectID: $projectID, dateOfStart: $dateOfStart, dateOfTermination: $dateOfTermination, projectDescription: $projectDescription, projectName: $projectName, projectRevenue: $projectRevenue, projectState: $projectState, reportsList: $reportsList, serviceList: $serviceList)';
   }
 
   @override
@@ -289,6 +305,8 @@ class _$ProjectRepotsDMImpl extends _ProjectRepotsDM {
             other is _$ProjectRepotsDMImpl &&
             const DeepCollectionEquality()
                 .equals(other._consumables, _consumables) &&
+            (identical(other.projectID, projectID) ||
+                other.projectID == projectID) &&
             (identical(other.dateOfStart, dateOfStart) ||
                 other.dateOfStart == dateOfStart) &&
             (identical(other.dateOfTermination, dateOfTermination) ||
@@ -312,6 +330,7 @@ class _$ProjectRepotsDMImpl extends _ProjectRepotsDM {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_consumables),
+      projectID,
       dateOfStart,
       dateOfTermination,
       projectDescription,
@@ -339,10 +358,11 @@ class _$ProjectRepotsDMImpl extends _ProjectRepotsDM {
 abstract class _ProjectRepotsDM extends ProjectRepotsDM {
   const factory _ProjectRepotsDM(
       {final List<ProjectConsumable> consumables,
+      final int? projectID,
       final DateTime? dateOfStart,
       final DateTime? dateOfTermination,
       final String? projectDescription,
-      required final String projectName,
+      final String? projectName,
       final double? projectRevenue,
       final ProjectInfoState? projectState,
       final List<ProjectTimeEntry> reportsList,
@@ -355,13 +375,15 @@ abstract class _ProjectRepotsDM extends ProjectRepotsDM {
   @override
   List<ProjectConsumable> get consumables;
   @override
+  int? get projectID;
+  @override
   DateTime? get dateOfStart;
   @override
   DateTime? get dateOfTermination;
   @override
   String? get projectDescription;
   @override
-  String get projectName;
+  String? get projectName;
   @override
   double? get projectRevenue;
   @override

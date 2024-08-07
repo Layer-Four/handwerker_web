@@ -28,16 +28,15 @@ class UpdateCustomerWidget extends StatefulWidget {
 class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
   bool _isSnackbarShowed = false;
 
-  late final TextEditingController _nameController = TextEditingController();
-  late final TextEditingController _companyNameController = TextEditingController();
-  late final TextEditingController _streetController = TextEditingController();
-  late final TextEditingController _housenumberController = TextEditingController();
-  late final TextEditingController _cityController = TextEditingController();
-  late final TextEditingController _postNumberController = TextEditingController();
-  late final TextEditingController _emailController = TextEditingController();
-  late final TextEditingController _customerNumberController = TextEditingController();
-  late final TextEditingController _telephoneController = TextEditingController();
-  late final TextEditingController _contactController = TextEditingController();
+  late final TextEditingController _customerNameController,
+      _streetController,
+      _streetNrController,
+      _cityController,
+      _zipController,
+      _emailController,
+      _customerNumberController,
+      _phoneController,
+      _contactController;
 
   late final CustomerOvervewDM _initialCustomer;
 
@@ -45,28 +44,27 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
   void initState() {
     super.initState();
     _initialCustomer = widget.customer;
-    _companyNameController.text = _initialCustomer.customerCredentials.companyName;
-    _nameController.text = _initialCustomer.customerCredentials.contactName;
-    _streetController.text = _initialCustomer.customerCredentials.customerStreet ?? '';
-    _housenumberController.text = _initialCustomer.customerCredentials.customerStreetNr ?? '';
-    _cityController.text = _initialCustomer.customerCredentials.customerCity ?? '';
-    _postNumberController.text = _initialCustomer.customerCredentials.customerZipcode ?? '';
-    _emailController.text = _initialCustomer.customerCredentials.customerEmail ?? '';
-    _customerNumberController.text = _initialCustomer.customerCredentials.customerNumber ?? '';
-    _telephoneController.text = _initialCustomer.customerCredentials.customerPhone ?? '';
+    _customerNameController = TextEditingController(text: _initialCustomer.customerCredentials.companyName);
+    _contactController = TextEditingController(text: _initialCustomer.customerCredentials.contactName);
+    _streetController = TextEditingController(text: _initialCustomer.customerCredentials.customerStreet ?? '');
+    _streetNrController = TextEditingController(text: _initialCustomer.customerCredentials.customerStreetNr ?? '');
+    _cityController = TextEditingController(text: _initialCustomer.customerCredentials.customerCity ?? '');
+    _zipController = TextEditingController(text: _initialCustomer.customerCredentials.customerZipcode ?? '');
+    _emailController = TextEditingController(text: _initialCustomer.customerCredentials.customerEmail ?? '');
+    _customerNumberController = TextEditingController(text: _initialCustomer.customerCredentials.customerNumber ?? '');
+    _phoneController = TextEditingController(text: _initialCustomer.customerCredentials.customerPhone ?? '');
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _companyNameController.dispose();
+    _customerNameController.dispose();
     _streetController.dispose();
-    _housenumberController.dispose();
+    _streetNrController.dispose();
     _cityController.dispose();
-    _postNumberController.dispose();
+    _zipController.dispose();
     _emailController.dispose();
     _customerNumberController.dispose();
-    _telephoneController.dispose();
+    _phoneController.dispose();
     _contactController.dispose();
     super.dispose();
   }
@@ -106,18 +104,17 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.all(4),
-                            child: Text('Kontaktinformation',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text('Kontaktinformation', style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           buildTextField(
                             hintText: 'Kundenname',
-                            controller: _companyNameController,
+                            controller: _customerNameController,
                             context: context,
                           ),
                           const SizedBox(height: 5),
                           buildTextField(
                             hintText: 'Kontaktperson',
-                            controller: _nameController,
+                            controller: _contactController,
                             context: context,
                           ),
                         ],
@@ -147,7 +144,7 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                                 width: 100,
                                 child: buildTextField(
                                   hintText: 'Nr',
-                                  controller: _housenumberController,
+                                  controller: _streetNrController,
                                   context: context,
                                 ),
                               ),
@@ -169,7 +166,7 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                                 width: 100,
                                 child: buildTextField(
                                   hintText: 'PLZ',
-                                  controller: _postNumberController,
+                                  controller: _zipController,
                                   context: context,
                                 ),
                               ),
@@ -202,7 +199,7 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                           const SizedBox(height: 10),
                           buildTextField(
                             hintText: 'Telefon',
-                            controller: _telephoneController,
+                            controller: _phoneController,
                             context: context,
                           ),
                         ],
@@ -232,10 +229,7 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                                   padding: const EdgeInsets.all(16.0),
                                   child: SymmetricButton(
                                     text: 'Verwerfen',
-                                    textStyle: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium
-                                        ?.copyWith(color: AppColor.kPrimaryButtonColor),
+                                    textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
                                     color: AppColor.kWhite,
                                     onPressed: widget.onCancel,
                                   ),
@@ -247,61 +241,59 @@ class _UpdateCustomerWidgetState extends State<UpdateCustomerWidget> {
                                     onPressed: () async {
                                       if (_streetController.text.isEmpty &&
                                           _cityController.text.isEmpty &&
-                                          _companyNameController.text.isEmpty &&
-                                          _nameController.text.isEmpty &&
+                                          _customerNameController.text.isEmpty &&
                                           _contactController.text.isEmpty &&
                                           _customerNumberController.text.isEmpty &&
-                                          _telephoneController.text.isEmpty &&
-                                          _postNumberController.text.isEmpty) {
+                                          _phoneController.text.isEmpty &&
+                                          _zipController.text.isEmpty) {
                                         _showSnackBar('Bitte füllen Sie alle Felder aus.');
                                         return;
-                                      }
+                                      } else {
+                                        final x = CreateCustomerDM(
+                                          city: _cityController.text,
+                                          street: _streetController.text,
+                                          companyName: _customerNameController.text,
+                                          contactMail: _emailController.text,
+                                          contactPhone: _phoneController.text,
+                                          streetNr: _streetNrController.text,
+                                          zipcode: _zipController.text,
+                                          contactName: _contactController.text,
+                                          externalId: _customerNumberController.text,
+                                        );
 
-                                      final x = CreateCustomerDM(
-                                        city: _cityController.text,
-                                        street: _streetController.text,
-                                        companyName: _companyNameController.text,
-                                        contactMail: _emailController.text,
-                                        contactPhone: _telephoneController.text,
-                                        streetNr: _housenumberController.text,
-                                        zipcode: _postNumberController.text,
-                                        contactName: _nameController.text,
-                                        externalId: _customerNumberController.text,
-                                      );
+                                        try {
+                                          final success =
+                                              await ref.read(customerProvider.notifier).updateCustomer(x, _initialCustomer.customerID!);
+                                          if (success) {
+                                            if (widget.onSave != null) {
+                                              // Create updated CustomerOvervewDM
+                                              final updatedCustomer = CustomerOvervewDM(
+                                                customerID: _initialCustomer.customerID,
+                                                customerCredentials: CustomerCredentialDM(
+                                                  companyName: _customerNameController.text,
+                                                  contactName: _contactController.text,
+                                                  customerStreet: _streetController.text,
+                                                  customerStreetNr: _streetNrController.text,
+                                                  customerCity: _cityController.text,
+                                                  customerZipcode: _zipController.text,
+                                                  customerEmail: _emailController.text,
+                                                  customerNumber: _customerNumberController.text,
+                                                  customerPhone: _phoneController.text,
+                                                ),
+                                                numOfProjects: _initialCustomer.numOfProjects,
+                                                totalCostMaterial: _initialCustomer.totalCostMaterial,
+                                                totalTimeTracked: _initialCustomer.totalTimeTracked,
+                                                turnover: _initialCustomer.turnover,
+                                              );
 
-                                      try {
-                                        final success = await ref
-                                            .read(customerProvider.notifier)
-                                            .updateCustomer(x, _initialCustomer.customerID!);
-                                        if (success) {
-                                          if (widget.onSave != null) {
-                                            // Create updated CustomerOvervewDM
-                                            final updatedCustomer = CustomerOvervewDM(
-                                              customerID: _initialCustomer.customerID,
-                                              customerCredentials: CustomerCredentialDM(
-                                                companyName: _companyNameController.text,
-                                                contactName: _nameController.text,
-                                                customerStreet: _streetController.text,
-                                                customerStreetNr: _housenumberController.text,
-                                                customerCity: _cityController.text,
-                                                customerZipcode: _postNumberController.text,
-                                                customerEmail: _emailController.text,
-                                                customerNumber: _customerNumberController.text,
-                                                customerPhone: _telephoneController.text,
-                                              ),
-                                              numOfProjects: _initialCustomer.numOfProjects,
-                                              totalCostMaterial: _initialCustomer.totalCostMaterial,
-                                              totalTimeTracked: _initialCustomer.totalTimeTracked,
-                                              turnover: _initialCustomer.turnover,
-                                            );
-
-                                            widget.onSave!(updatedCustomer);
+                                              widget.onSave!(updatedCustomer);
+                                            }
+                                          } else {
+                                            _showSnackBar('Speichern fehlgeschlagen');
                                           }
-                                        } else {
-                                          _showSnackBar('Speichern fehlgeschlagen');
+                                        } catch (e) {
+                                          _showSnackBar('Ein Fehler ist aufgetreten');
                                         }
-                                      } catch (e) {
-                                        _showSnackBar('Ein Fehler ist aufgetreten');
                                       }
                                     },
                                   ),

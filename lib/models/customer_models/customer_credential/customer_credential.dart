@@ -19,7 +19,8 @@ class CustomerCredentialDM with _$CustomerCredentialDM {
     String? country,
   }) = _CustomerCredentialDM;
 
-  factory CustomerCredentialDM.fromJson(Map<String, dynamic> json) => _$CustomerCredentialDMFromJson(json);
+  factory CustomerCredentialDM.fromJson(Map<String, dynamic> json) =>
+      _$CustomerCredentialDMFromJson(json);
 
   const CustomerCredentialDM._();
 }

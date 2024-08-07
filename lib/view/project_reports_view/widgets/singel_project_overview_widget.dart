@@ -10,10 +10,12 @@ class SingelProjectOverviewWidget extends StatefulWidget {
   const SingelProjectOverviewWidget(this.report, this.customer, {super.key});
 
   @override
-  State<SingelProjectOverviewWidget> createState() => _SingelProjectOverviewWidgetState();
+  State<SingelProjectOverviewWidget> createState() =>
+      _SingelProjectOverviewWidgetState();
 }
 
-class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidget> {
+class _SingelProjectOverviewWidgetState
+    extends State<SingelProjectOverviewWidget> {
   late final ProjectRepotsDM _project;
   bool isContainerOpen = false;
   @override
@@ -35,17 +37,19 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.24,
                     child: Text(
-                      _project.projectName,
+                      _project.projectName ?? 'Kein Projektname',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.18,
-                    child: Text(_project.projectState?.value ?? '',
+                    child: Text(_project.projectState?.statusName ?? '',
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Utilitis.getStatusColor(_project.projectState?.value),
-                            )),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: Utilitis.getStatusColor(
+                                      _project.projectState?.statusName),
+                                )),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.17,
@@ -67,7 +71,9 @@ class _SingelProjectOverviewWidgetState extends State<SingelProjectOverviewWidge
                   Container(
                       alignment: Alignment.centerRight,
                       width: MediaQuery.of(context).size.width * 0.045,
-                      child: Icon(isContainerOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down))
+                      child: Icon(isContainerOpen
+                          ? Icons.arrow_drop_up
+                          : Icons.arrow_drop_down))
                 ],
               ),
             ),

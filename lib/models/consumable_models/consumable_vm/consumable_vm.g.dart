@@ -11,7 +11,9 @@ _$ConsumableVMImpl _$$ConsumableVMImplFromJson(Map<String, dynamic> json) =>
       amount: (json['amount'] as num).toInt(),
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String,
-      price: (json['price'] as num).toDouble(),
+      netPrice: (json['netPrice'] as num).toDouble(),
+      grossPrice: (json['grossPrice'] as num?)?.toDouble(),
+      vat: (json['vat'] as num?)?.toDouble(),
       unit: json['unit'] == null
           ? null
           : Unit.fromJson(json['unit'] as Map<String, dynamic>),
@@ -22,6 +24,8 @@ Map<String, dynamic> _$$ConsumableVMImplToJson(_$ConsumableVMImpl instance) =>
       'amount': instance.amount,
       'id': instance.id,
       'name': instance.name,
-      'price': instance.price,
+      'netPrice': instance.netPrice,
+      'grossPrice': instance.grossPrice,
+      'vat': instance.vat,
       'unit': instance.unit,
     };

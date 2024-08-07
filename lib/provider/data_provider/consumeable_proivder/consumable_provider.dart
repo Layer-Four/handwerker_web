@@ -7,7 +7,8 @@ import '../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../models/consumable_models/unit/unit.dart';
 
 final consumableProvider =
-    NotifierProvider<ConsumableNotifier, List<ConsumableVM>>(() => ConsumableNotifier());
+    NotifierProvider<ConsumableNotifier, List<ConsumableVM>>(
+        () => ConsumableNotifier());
 
 class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
   final List<Unit> _units = [];
@@ -36,7 +37,8 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
       for (var e in data) {
         final String? unitKey = e['materialUnitName'];
         if (unitKey != null) {
-          final searchedUnit = _units.firstWhere((unit) => unit.name == unitKey);
+          final searchedUnit =
+              _units.firstWhere((unit) => unit.name == unitKey);
           final material = ConsumableVM.wihUnitAndJson(e, searchedUnit);
           result.add(material);
         } else {
@@ -46,7 +48,8 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
 
       // Sort the result alphabetically by `name`
       // result.sort((a, b) => a.name.compareTo(b.name));
-      result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      result
+          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
       // Debugging: Print the sorted list to verify order
 
@@ -109,16 +112,20 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
         'name': consumable.name,
         'amount': consumable.amount,
         'materialUnitID': consumable.unit?.id,
-        'price': consumable.price,
+        'netPrice': consumable.netPrice,
+        'grossPrice': consumable.grossPrice,
+        'vat': consumable.vat,
       });
 
       if (response.statusCode != 200) {
-        throw Exception('Wrong Response occurred, status -> ${response.statusCode}');
+        throw Exception(
+            'Wrong Response occurred, status -> ${response.statusCode}');
       }
       final unitID = response.data['materialUnitID'];
       final searchedUnit = _units.firstWhere((e) => e.id == unitID);
 
-      final newConsumable = ConsumableVM.wihUnitAndJson(response.data, searchedUnit);
+      final newConsumable =
+          ConsumableVM.wihUnitAndJson(response.data, searchedUnit);
 
       state = [...state, newConsumable];
       return true;
@@ -136,7 +143,9 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
       'amount': consumable.amount,
       'name': consumable.name,
       'id': consumable.id,
-      'price': consumable.price,
+      'netPrice': consumable.netPrice,
+      'grossPrice': consumable.grossPrice,
+      'vat': consumable.vat,
       'materialUnitID': consumable.unit?.id,
     };
     try {
