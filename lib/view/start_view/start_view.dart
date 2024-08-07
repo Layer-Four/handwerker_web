@@ -26,17 +26,25 @@ class _StartViewState extends State<StartView> {
                       children: [
                         Text(
                           'Revolutionieren \nSie Ihr Handwerk',
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: const Color.fromARGB(192, 255, 255, 255),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 27),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(
+                                  color:
+                                      const Color.fromARGB(192, 255, 255, 255),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 27),
                         ),
                         Text(
                           'Alles, was Sie brauchen, in einer App!',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: const Color.fromARGB(255, 224, 142, 60),
-                              fontWeight: FontWeight.w800,
-                              fontSize: 15),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(
+                                  color:
+                                      const Color.fromARGB(255, 224, 142, 60),
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 15),
                         ),
                       ],
                     ),
@@ -61,7 +69,8 @@ class _StartViewState extends State<StartView> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              backgroundColor: const Color.fromARGB(255, 224, 142, 60),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 224, 142, 60),
                             ),
                             child: const Center(
                               child: Text(

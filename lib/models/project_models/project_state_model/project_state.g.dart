@@ -17,11 +17,11 @@ _$ProjectInfoStateImpl _$$ProjectInfoStateImplFromJson(
           ? null
           : DateTime.parse(json['editedAt'] as String),
       editedBy: json['editedBy'] as String?,
-      id: (json['id'] as num?)?.toInt(),
+      statusID: (json['id'] as num?)?.toInt(),
       mandantID: (json['mandantID'] as num?)?.toInt(),
       mandant: json['mandant'] as String?,
       projects: json['projects'] as String?,
-      value: json['value'] as String?,
+      statusName: json['value'] as String?,
     );
 
 Map<String, dynamic> _$$ProjectInfoStateImplToJson(
@@ -31,9 +31,9 @@ Map<String, dynamic> _$$ProjectInfoStateImplToJson(
       'createdBy': instance.createdBy,
       'editedAt': instance.editedAt?.toIso8601String(),
       'editedBy': instance.editedBy,
-      'id': instance.id,
+      'id': instance.statusID,
       'mandantID': instance.mandantID,
       'mandant': instance.mandant,
       'projects': instance.projects,
-      'value': instance.value,
+      'value': instance.statusName,
     };

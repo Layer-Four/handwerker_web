@@ -23,7 +23,9 @@ mixin _$ConsumableVM {
   int get amount => throw _privateConstructorUsedError;
   int? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  double get price => throw _privateConstructorUsedError;
+  double get netPrice => throw _privateConstructorUsedError;
+  double? get grossPrice => throw _privateConstructorUsedError;
+  double? get vat => throw _privateConstructorUsedError;
   Unit? get unit => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +40,14 @@ abstract class $ConsumableVMCopyWith<$Res> {
           ConsumableVM value, $Res Function(ConsumableVM) then) =
       _$ConsumableVMCopyWithImpl<$Res, ConsumableVM>;
   @useResult
-  $Res call({int amount, int? id, String name, double price, Unit? unit});
+  $Res call(
+      {int amount,
+      int? id,
+      String name,
+      double netPrice,
+      double? grossPrice,
+      double? vat,
+      Unit? unit});
 
   $UnitCopyWith<$Res>? get unit;
 }
@@ -59,7 +68,9 @@ class _$ConsumableVMCopyWithImpl<$Res, $Val extends ConsumableVM>
     Object? amount = null,
     Object? id = freezed,
     Object? name = null,
-    Object? price = null,
+    Object? netPrice = null,
+    Object? grossPrice = freezed,
+    Object? vat = freezed,
     Object? unit = freezed,
   }) {
     return _then(_value.copyWith(
@@ -75,10 +86,18 @@ class _$ConsumableVMCopyWithImpl<$Res, $Val extends ConsumableVM>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
+      netPrice: null == netPrice
+          ? _value.netPrice
+          : netPrice // ignore: cast_nullable_to_non_nullable
               as double,
+      grossPrice: freezed == grossPrice
+          ? _value.grossPrice
+          : grossPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
+      vat: freezed == vat
+          ? _value.vat
+          : vat // ignore: cast_nullable_to_non_nullable
+              as double?,
       unit: freezed == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
@@ -107,7 +126,14 @@ abstract class _$$ConsumableVMImplCopyWith<$Res>
       __$$ConsumableVMImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int amount, int? id, String name, double price, Unit? unit});
+  $Res call(
+      {int amount,
+      int? id,
+      String name,
+      double netPrice,
+      double? grossPrice,
+      double? vat,
+      Unit? unit});
 
   @override
   $UnitCopyWith<$Res>? get unit;
@@ -127,7 +153,9 @@ class __$$ConsumableVMImplCopyWithImpl<$Res>
     Object? amount = null,
     Object? id = freezed,
     Object? name = null,
-    Object? price = null,
+    Object? netPrice = null,
+    Object? grossPrice = freezed,
+    Object? vat = freezed,
     Object? unit = freezed,
   }) {
     return _then(_$ConsumableVMImpl(
@@ -143,10 +171,18 @@ class __$$ConsumableVMImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
+      netPrice: null == netPrice
+          ? _value.netPrice
+          : netPrice // ignore: cast_nullable_to_non_nullable
               as double,
+      grossPrice: freezed == grossPrice
+          ? _value.grossPrice
+          : grossPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
+      vat: freezed == vat
+          ? _value.vat
+          : vat // ignore: cast_nullable_to_non_nullable
+              as double?,
       unit: freezed == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
@@ -162,7 +198,9 @@ class _$ConsumableVMImpl extends _ConsumableVM {
       {required this.amount,
       this.id,
       required this.name,
-      required this.price,
+      required this.netPrice,
+      this.grossPrice,
+      this.vat,
       this.unit})
       : super._();
 
@@ -176,13 +214,17 @@ class _$ConsumableVMImpl extends _ConsumableVM {
   @override
   final String name;
   @override
-  final double price;
+  final double netPrice;
+  @override
+  final double? grossPrice;
+  @override
+  final double? vat;
   @override
   final Unit? unit;
 
   @override
   String toString() {
-    return 'ConsumableVM(amount: $amount, id: $id, name: $name, price: $price, unit: $unit)';
+    return 'ConsumableVM(amount: $amount, id: $id, name: $name, netPrice: $netPrice, grossPrice: $grossPrice, vat: $vat, unit: $unit)';
   }
 
   @override
@@ -193,13 +235,18 @@ class _$ConsumableVMImpl extends _ConsumableVM {
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.price, price) || other.price == price) &&
+            (identical(other.netPrice, netPrice) ||
+                other.netPrice == netPrice) &&
+            (identical(other.grossPrice, grossPrice) ||
+                other.grossPrice == grossPrice) &&
+            (identical(other.vat, vat) || other.vat == vat) &&
             (identical(other.unit, unit) || other.unit == unit));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, amount, id, name, price, unit);
+  int get hashCode => Object.hash(
+      runtimeType, amount, id, name, netPrice, grossPrice, vat, unit);
 
   @JsonKey(ignore: true)
   @override
@@ -220,7 +267,9 @@ abstract class _ConsumableVM extends ConsumableVM {
       {required final int amount,
       final int? id,
       required final String name,
-      required final double price,
+      required final double netPrice,
+      final double? grossPrice,
+      final double? vat,
       final Unit? unit}) = _$ConsumableVMImpl;
   const _ConsumableVM._() : super._();
 
@@ -234,7 +283,11 @@ abstract class _ConsumableVM extends ConsumableVM {
   @override
   String get name;
   @override
-  double get price;
+  double get netPrice;
+  @override
+  double? get grossPrice;
+  @override
+  double? get vat;
   @override
   Unit? get unit;
   @override

@@ -14,6 +14,7 @@ _$ProjectRepotsDMImpl _$$ProjectRepotsDMImplFromJson(
                   (e) => ProjectConsumable.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      projectID: (json['projectID'] as num?)?.toInt(),
       dateOfStart: json['dateOfStart'] == null
           ? null
           : DateTime.parse(json['dateOfStart'] as String),
@@ -21,7 +22,7 @@ _$ProjectRepotsDMImpl _$$ProjectRepotsDMImplFromJson(
           ? null
           : DateTime.parse(json['dateOfTermination'] as String),
       projectDescription: json['projectDescription'] as String?,
-      projectName: json['projectName'] as String,
+      projectName: json['projectName'] as String?,
       projectRevenue: (json['projectRevenue'] as num?)?.toDouble(),
       projectState: json['projectState'] == null
           ? null
@@ -41,6 +42,7 @@ Map<String, dynamic> _$$ProjectRepotsDMImplToJson(
         _$ProjectRepotsDMImpl instance) =>
     <String, dynamic>{
       'consumables': instance.consumables,
+      'projectID': instance.projectID,
       'dateOfStart': instance.dateOfStart?.toIso8601String(),
       'dateOfTermination': instance.dateOfTermination?.toIso8601String(),
       'projectDescription': instance.projectDescription,

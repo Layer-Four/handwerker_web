@@ -27,7 +27,8 @@ class ProjectOverViewNotifier extends Notifier<List<CustomerProjectsReportDM>> {
       }
       final List data = response.data.map((e) => e as Map).toList();
 
-      final reports = data.map((e) => CustomerProjectsReportDM.fromJson(e)).toList();
+      final reports =
+          data.map((e) => CustomerProjectsReportDM.fromJson(e)).toList();
 
       state = reports;
       return;

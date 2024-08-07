@@ -46,7 +46,7 @@ class ProjectUtilitisView extends StatelessWidget {
                 ? MediaQuery.of(context).size.width * 0.10
                 : MediaQuery.of(context).size.width * 0.2,
             child: Text(
-              '${(service == null ? consumable!.consumablePrice : service.servicePrice).toStringAsFixed(2)}€ (${calculateRevenue().toStringAsFixed(2)}€)',
+              '${(service == null ? consumable!.consumableNetPrice : service.servicePrice).toStringAsFixed(2)}€ (${calculateRevenue().toStringAsFixed(2)}€)',
               overflow: TextOverflow.clip,
               style: Theme.of(context).textTheme.titleMedium,
             ),
@@ -63,7 +63,7 @@ class ProjectUtilitisView extends StatelessWidget {
     }
     final unit = utilits as ProjectConsumable;
     // TODO: Update when Consumable List in CustomerProjectReoports get amount
-    return unit.consumablePrice * 1;
+    return unit.consumableNetPrice;
     // return unit.consumablePrice * unit.consumableAmount;
   }
 }

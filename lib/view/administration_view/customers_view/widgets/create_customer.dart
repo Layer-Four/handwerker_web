@@ -23,16 +23,15 @@ class CreateCustomerWidget extends StatefulWidget {
 
 class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
   bool _isSnackbarShowed = false;
-  late final TextEditingController _nameController = TextEditingController();
-  late final TextEditingController _companyNameController = TextEditingController();
+  late final TextEditingController _companyrNameCtrl = TextEditingController();
   late final TextEditingController _streetController = TextEditingController();
-  late final TextEditingController _housenumberController = TextEditingController();
+  late final TextEditingController _streetNrController = TextEditingController();
   late final TextEditingController _cityController = TextEditingController();
-  late final TextEditingController _postNumberController = TextEditingController();
+  late final TextEditingController _zipController = TextEditingController();
   late final TextEditingController _emailController = TextEditingController();
   late final TextEditingController _customerNumberController = TextEditingController();
-  late final TextEditingController _telephoneController = TextEditingController();
-  late final TextEditingController _contactController = TextEditingController();
+  late final TextEditingController _contactPhoneCtrl = TextEditingController();
+  late final TextEditingController _contactNameCtrl = TextEditingController();
 
   late CreateCustomerDM _createCustomer;
 
@@ -45,16 +44,15 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
   // Dispose of controllers
   @override
   void dispose() {
-    _nameController.dispose();
-    _companyNameController.dispose();
+    _companyrNameCtrl.dispose();
     _streetController.dispose();
-    _housenumberController.dispose();
+    _streetNrController.dispose();
     _cityController.dispose();
-    _postNumberController.dispose();
+    _zipController.dispose();
     _emailController.dispose();
     _customerNumberController.dispose();
-    _telephoneController.dispose();
-    _contactController.dispose();
+    _contactPhoneCtrl.dispose();
+    _contactNameCtrl.dispose();
     super.dispose();
   }
 
@@ -94,15 +92,12 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Kontaktinformation',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             buildTextField(
                               hintText: 'Kundenname',
-                              controller: _nameController,
+                              controller: _companyrNameCtrl,
                               context: context,
                             ),
                             const SizedBox(height: 5),
@@ -113,7 +108,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                             // ),
                             buildTextField(
                               hintText: 'Kontaktperson',
-                              controller: _contactController,
+                              controller: _contactNameCtrl,
                               context: context,
                             ),
                           ],
@@ -128,10 +123,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Adresse',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             Row(
@@ -149,7 +141,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                   flex: 1,
                                   child: buildTextField(
                                     hintText: 'Nr',
-                                    controller: _housenumberController,
+                                    controller: _streetNrController,
                                     context: context,
                                   ),
                                 ),
@@ -171,7 +163,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                   flex: 1,
                                   child: buildTextField(
                                     hintText: 'PLZ',
-                                    controller: _postNumberController,
+                                    controller: _zipController,
                                     context: context,
                                   ),
                                 ),
@@ -193,10 +185,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               padding: const EdgeInsets.all(4),
                               child: Text(
                                 'Sonstiges',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                             buildTextField(
@@ -207,7 +196,7 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                             const SizedBox(height: 10),
                             buildTextField(
                               hintText: 'Telefon',
-                              controller: _telephoneController,
+                              controller: _contactPhoneCtrl,
                               context: context,
                             ),
                           ],
@@ -242,10 +231,8 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                           padding: const EdgeInsets.all(16.0),
                                           child: SymmetricButton(
                                             text: 'Verwerfen',
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .labelMedium
-                                                ?.copyWith(color: AppColor.kPrimaryButtonColor),
+                                            textStyle:
+                                                Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
                                             color: AppColor.kWhite,
                                             onPressed: () {
                                               widget.onCancel();
@@ -258,50 +245,44 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                             text: 'Speichern',
                                             onPressed: () {
                                               if (_streetController.text.isEmpty &&
-                                                  _nameController.text.isEmpty &&
                                                   _cityController.text.isEmpty &&
-                                                  _companyNameController.text.isEmpty &&
-                                                  _contactController.text.isEmpty &&
+                                                  _companyrNameCtrl.text.isEmpty &&
+                                                  _contactNameCtrl.text.isEmpty &&
                                                   _customerNumberController.text.isEmpty &&
-                                                  _telephoneController.text.isEmpty &&
-                                                  _postNumberController.text.isEmpty) {
+                                                  _contactPhoneCtrl.text.isEmpty &&
+                                                  _zipController.text.isEmpty) {
                                                 _showSnackBar('Bitte füllen Sie alle Felder aus.');
                                                 return;
+                                              } else {
+                                                _createCustomer = _createCustomer.copyWith(
+                                                  city: _cityController.text,
+                                                  street: _streetController.text,
+                                                  companyName: _companyrNameCtrl.text,
+                                                  contactMail: _emailController.text,
+                                                  contactPhone: _contactPhoneCtrl.text,
+                                                  streetNr: _streetNrController.text,
+                                                  zipcode: _zipController.text,
+                                                  contactName: _contactNameCtrl.text,
+                                                  externalId: _customerNumberController.text,
+                                                );
+
+                                                ref.read(customerProvider.notifier).createCustomer(_createCustomer).then((success) {
+                                                  if (success) {
+                                                    _showSnackBar('Kunde erfolgreich hinzufügt');
+                                                    _companyrNameCtrl.clear();
+                                                    _cityController.clear();
+                                                    _contactNameCtrl.clear();
+                                                    _emailController.clear();
+                                                    _customerNumberController.clear();
+                                                    _zipController.clear();
+                                                    _contactPhoneCtrl.clear();
+                                                    _streetController.clear();
+                                                    _streetNrController.clear();
+                                                  } else {
+                                                    _showSnackBar('Speichern fehlgeschlagen');
+                                                  }
+                                                });
                                               }
-
-                                              _createCustomer = _createCustomer.copyWith(
-                                                city: _cityController.text,
-                                                street: _streetController.text,
-                                                companyName: _companyNameController.text,
-                                                contactMail: _emailController.text,
-                                                contactPhone: _telephoneController.text,
-                                                streetNr: _housenumberController.text,
-                                                zipcode: _postNumberController.text,
-                                                contactName: _nameController.text,
-                                                externalId: _customerNumberController.text,
-                                                // customerName: _contactController.text,
-                                              );
-
-                                              ref
-                                                  .read(customerProvider.notifier)
-                                                  .createCustomer(_createCustomer)
-                                                  .then((success) {
-                                                if (success) {
-                                                  _showSnackBar('Kunde erfolgreich hinzufügt');
-                                                  _nameController.clear();
-                                                  _companyNameController.clear();
-                                                  _cityController.clear();
-                                                  _contactController.clear();
-                                                  _emailController.clear();
-                                                  _customerNumberController.clear();
-                                                  _postNumberController.clear();
-                                                  _telephoneController.clear();
-                                                  _streetController.clear();
-                                                  _housenumberController.clear();
-                                                } else {
-                                                  _showSnackBar('Speichern fehlgeschlagen');
-                                                }
-                                              });
                                             },
                                           ),
                                         ),

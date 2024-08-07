@@ -5,13 +5,15 @@ import '../unit/unit.dart';
 part 'consumable_vm.freezed.dart';
 part 'consumable_vm.g.dart';
 
-@Freezed()
+@freezed
 class ConsumableVM with _$ConsumableVM {
   const factory ConsumableVM({
     required int amount,
     int? id,
     required String name,
-    required double price,
+    required double netPrice,
+    double? grossPrice,
+    double? vat,
     Unit? unit,
   }) = _ConsumableVM;
   const ConsumableVM._();
@@ -19,7 +21,9 @@ class ConsumableVM with _$ConsumableVM {
         amount: json['amount'],
         id: json['id'],
         name: json['name'],
-        price: json['price'],
+        netPrice: json['netPrice'],
+        grossPrice: json['grossPrice'],
+        vat: json['vat'],
         unit: unit,
       );
 
