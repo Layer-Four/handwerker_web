@@ -241,18 +241,6 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                         child: SymmetricButton(
                                           text: 'Speichern',
                                           onPressed: () {
-                                            // Log the content of each field
-                                            print('Street: ${_streetController.text}');
-                                            print('City: ${_cityController.text}');
-                                            print('Company Name: ${_companyNameController.text}');
-                                            print('Contact: ${_contactController.text}');
-                                            print('Customer Number: ${_customerNumberController.text}');
-                                            print('Telephone: ${_telephoneController.text}');
-                                            print('Post Number: ${_postNumberController.text}');
-                                            print('House Number: ${_housenumberController.text}');
-                                            print('Email: ${_emailController.text}');
-
-                                            // Check each field individually
                                             if (_streetController.text.isEmpty) {
                                               _showSnackBar('Bitte füllen Sie das Straße-Feld aus.');
                                               return;
@@ -290,7 +278,6 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                               return;
                                             }
 
-                                            // If we've made it this far, all fields are filled
                                             _createCustomer = _createCustomer.copyWith(
                                               city: _cityController.text,
                                               street: _streetController.text,
