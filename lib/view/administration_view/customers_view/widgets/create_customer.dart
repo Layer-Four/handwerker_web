@@ -41,7 +41,6 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
     _createCustomer = const CreateCustomerDM();
   }
 
-  // Dispose of controllers
   @override
   void dispose() {
     _companyrNameCtrl.dispose();
@@ -101,11 +100,6 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                               context: context,
                             ),
                             const SizedBox(height: 5),
-                            // buildTextField(
-                            //   hintText: 'Unternehmenname',
-                            //   controller: _companyNameController,
-                            //   context: context,
-                            // ),
                             buildTextField(
                               hintText: 'Kontaktperson',
                               controller: _contactNameCtrl,
@@ -209,7 +203,6 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             const SizedBox(height: 20),
-
                             const Padding(
                               padding: EdgeInsets.all(4),
                               child: Text(''),
@@ -231,8 +224,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                           padding: const EdgeInsets.all(16.0),
                                           child: SymmetricButton(
                                             text: 'Verwerfen',
-                                            textStyle:
-                                                Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColor.kPrimaryButtonColor),
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .labelMedium
+                                                ?.copyWith(color: AppColor.kPrimaryButtonColor),
                                             color: AppColor.kWhite,
                                             onPressed: () {
                                               widget.onCancel();
@@ -266,7 +261,10 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                                   externalId: _customerNumberController.text,
                                                 );
 
-                                                ref.read(customerProvider.notifier).createCustomer(_createCustomer).then((success) {
+                                                ref
+                                                    .read(customerProvider.notifier)
+                                                    .createCustomer(_createCustomer)
+                                                    .then((success) {
                                                   if (success) {
                                                     _showSnackBar('Kunde erfolgreich hinzufügt');
                                                     _companyrNameCtrl.clear();
@@ -294,11 +292,6 @@ class _CreateCustomerWidgetState extends State<CreateCustomerWidget> {
                                   // ),
                                   ),
                             ),
-                            // buildTextField(
-                            //   hintText: 'Kontaktperson',
-                            //   controller: _contactController,
-                            //   context: context,
-                            // ),
                           ],
                         ),
                       ),
