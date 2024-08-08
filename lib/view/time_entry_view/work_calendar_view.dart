@@ -80,7 +80,7 @@ class _WorkCalendarViewState extends ConsumerState<WorkCalendarView> {
 
     ref.read(timeVMProvider.notifier).loadEvents().then((i) {
       if (i.isEmpty) {
-        Future.delayed(const Duration(seconds: 1)).then((_) {
+        Future.delayed(const Duration(milliseconds: 300)).then((_) {
           _loadEvents();
         });
         return;

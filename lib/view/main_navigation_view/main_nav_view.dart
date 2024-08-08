@@ -45,13 +45,11 @@ class _MainViewNavigatorState extends ConsumerState<MainViewNavigator> {
                 // color: const Color.fromARGB(255, 238, 238, 238), //* Buchweis Lara
                 // color: const Color.fromARGB(255, 255, 250, 250),//* Ghost
                 // color: const Color.fromARGB(250, 251, 251, 251), //* own Marten
-                width: constrains.maxWidth <= 1000
-                    ? constrains.maxWidth - 50
-                    : ((constrains.maxWidth - 250)),
+                width: constrains.maxWidth <= 1000 ? constrains.maxWidth - 50 : ((constrains.maxWidth - 250)),
                 child: switch (view) {
                   MainView.home => const HomeBody(),
                   MainView.timeEntry => const WorkCalendarView(),
-                  MainView.projectCustomer => ProjectReportOverviewView(),
+                  MainView.projectCustomer => const ProjectReportOverviewView(),
                   MainView.consumables => const ConsumableBodyView(),
                   MainView.customer => const CustomerBody(),
                   MainView.projectManagement => const ProjectManagementBody(),
