@@ -9,7 +9,6 @@ import '../../models/customer_models/customer_create_model/create_customer_model
 import '../../models/customer_models/customer_overview_dm/customer_overvew_dm.dart';
 
 final customerProvider = NotifierProvider<CustomerNotifier, List<CustomerOvervewDM>>(() => CustomerNotifier());
-final customerProvider = NotifierProvider<CustomerNotifier, List<CustomerOvervewDM>>(() => CustomerNotifier());
 
 class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
   final Api _api = Api();
@@ -24,7 +23,6 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
     try {
       final response = await _api.getAllCustomers;
       if (response.statusCode != 200) {
-        throw Exception('Wrong response occurred, status -> ${response.statusCode} \n${response.data}');
         throw Exception('Wrong response occurred, status -> ${response.statusCode} \n${response.data}');
       }
 
