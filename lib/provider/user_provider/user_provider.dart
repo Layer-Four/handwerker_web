@@ -31,12 +31,33 @@ class UserNotifier extends Notifier<UserVM> {
   Future<bool> loginUser({
     required String password,
     required String userName,
-    String? mandatID,
+    // String? mandatID,
   }) async {
+    String? mID;
+    if (!userName.contains('@')) {
+      String? mIDTemp = await _api.getMandant;
+      if (mIDTemp == null) {
+        final usernameWithMandantID = userName.split('_');
+        if (usernameWithMandantID.length > 1) {
+          mID = usernameWithMandantID.first;
+          usernameWithMandantID.removeAt(0);
+          userName = usernameWithMandantID.join('_');
+          _api.storeMandant(mID);
+        } else {
+          throw Exception('we got nothin, check login');
+        }
+      }
+      mID = mIDTemp;
+      if (userName.startsWith(RegExp(r'^[0-9]+_'))) {
+        final between = userName.split(('_'));
+        between.removeAt(0);
+        userName = between.join('_');
+      }
+    }
     final Map<String, dynamic> json = {
       'username': userName,
       'password': password,
-      // 'mandant': mandatID ?? '1',
+      'mandant': mID,
     };
     try {
       final response = await _api.postloginUser(json);
@@ -103,5 +124,10 @@ class UserNotifier extends Notifier<UserVM> {
       log('Error on requestResetPassword $e');
     }
     return false;
+  }
+
+  deleteMandant() {
+    log('message');
+    _api.deleteMandant();
   }
 }

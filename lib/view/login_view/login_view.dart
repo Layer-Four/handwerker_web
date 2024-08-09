@@ -99,7 +99,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           CustomLoginTextField(
                             controller: _emailCon,
                             inputAction: TextInputAction.next,
-                            validator: validateEmail,
+                            //s    validator: validateEmail,
                             onFieldSubmitted: (_) => _submitLogin(),
                             onFocusChange: (hasFocus) {
                               setState(() => isUsernameFocused = hasFocus);
@@ -148,10 +148,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
   void reactionOfLogin(bool isSuccess) {
     setState(() => _isLoaded = false);
     if (isSuccess) {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
+      ref.watch(userProvider.notifier).isOTP
+          ? Navigator.of(context).pushReplacementNamed(AppRoutes.setPasswordScreen)
+          : Navigator.of(context).pushReplacementNamed(AppRoutes.viewScreen);
     } else {
-      showSnackBar(context,
-          'Anmeldung fehlgeschlagen.\nBitte überprüfen Sie Ihre Zugangsdaten und versuchen Sie es erneut.');
+      showSnackBar(
+          context, 'Anmeldung fehlgeschlagen.\nBitte überprüfen Sie Ihre Zugangsdaten und versuchen Sie es erneut.');
       _passCon.clear();
     }
   }
@@ -176,7 +178,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         setState(() {
           _isLoaded = false;
         });
-        showSnackBar(context, 'Leider hat es nicht geklappt: ${e.toString()}');
+        showSnackBar(context, 'Leider hat es nicht geklappt');
       }
     } else {
       showSnackBar(context, 'Ungültige Nutzernamme oder Passwort Eingabe');
@@ -188,10 +190,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
         child: Align(
           alignment: Alignment.topRight,
           child: GestureDetector(
+            onLongPress: () => ref.read(userProvider.notifier).deleteMandant(),
             child: const Text(
               'Passwort vergessen?',
               style: TextStyle(
-                color: AppColor.kWhite,
+//                color: AppColor.kWhite,
                 fontWeight: FontWeight.w700,
                 decorationColor: AppColor.kPrimaryButtonColor,
                 decorationThickness: 2.0,

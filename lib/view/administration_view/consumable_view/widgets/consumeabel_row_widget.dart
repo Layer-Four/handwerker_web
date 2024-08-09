@@ -95,7 +95,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
   void _saveData() {
     if (_hasChanges()) {
       final parsedPrice = double.parse(_priceController.text.replaceAll('€', ''));
-      final parsedAmount = int.parse(_amountController.text.replaceAll('€', ''));
+      final parsedAmount = double.parse(_amountController.text.replaceAll('€', ''));
       //TODO: implement grossPrice and Vat
       ConsumableVM updatedConsumable = ConsumableVM(
         id: widget.consumable.id,
@@ -179,7 +179,9 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                                   color: _isEditing ? Colors.grey[200] : const Color.fromARGB(249, 254, 255, 253),
                                 ),
                                 borderColor: _isUnitHovered ? AppColor.kPrimaryButtonColor : AppColor.kWhite,
-                                width: MediaQuery.of(context).size.width > 1100 ? 184 : ((MediaQuery.of(context).size.width * 0.18) - 16),
+                                width: MediaQuery.of(context).size.width > 1100
+                                    ? 184
+                                    : ((MediaQuery.of(context).size.width * 0.18) - 16),
                                 initalValue: _consumable.unit,
                                 items: widget.units
                                     .map(
@@ -241,7 +243,8 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                           _priceController.text = p0;
                           _priceController.selection = previousSelection;
                           setState(() {
-                            _consumable = _consumable.copyWith(netPrice: double.parse(_priceController.text.replaceAll('€', '')));
+                            _consumable =
+                                _consumable.copyWith(netPrice: double.parse(_priceController.text.replaceAll('€', '')));
                           });
                         },
                       ),
@@ -260,9 +263,13 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                                     builder: (context) => AskoForAgreement(
                                       message: 'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
                                       onAccept: () {
-                                        ref.read(consumableProvider.notifier).deleteConsumable(_consumable.id!).then((e) {
-                                          _showSnackBar(
-                                              e ? 'Eintrag erfolgreich gelöscht' : 'Es ist ein Fehler aufgetreten während dem Löschen');
+                                        ref
+                                            .read(consumableProvider.notifier)
+                                            .deleteConsumable(_consumable.id!)
+                                            .then((e) {
+                                          _showSnackBar(e
+                                              ? 'Eintrag erfolgreich gelöscht'
+                                              : 'Es ist ein Fehler aufgetreten während dem Löschen');
                                           Navigator.of(context).pop();
                                         });
                                       },
@@ -292,7 +299,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                               ConsumableVM updatedConsumable = ConsumableVM(
                                 id: widget.consumable.id,
                                 name: _titleController.text,
-                                amount: int.parse(_amountController.text),
+                                amount: double.parse(_amountController.text),
                                 unit: _currentUnit ?? _consumable.unit,
                                 netPrice: parsedPrice,
                                 grossPrice: 0,

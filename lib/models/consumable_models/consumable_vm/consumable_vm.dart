@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../consumable_dm/consumable_dm.dart';
 import '../unit/unit.dart';
 
 part 'consumable_vm.freezed.dart';
@@ -8,8 +9,8 @@ part 'consumable_vm.g.dart';
 @freezed
 class ConsumableVM with _$ConsumableVM {
   const factory ConsumableVM({
-    required int amount,
-    int? id,
+    required double amount,
+    String? id,
     required String name,
     required double netPrice,
     double? grossPrice,
@@ -17,13 +18,13 @@ class ConsumableVM with _$ConsumableVM {
     Unit? unit,
   }) = _ConsumableVM;
   const ConsumableVM._();
-  factory ConsumableVM.wihUnitAndJson(Map<String, dynamic> json, Unit? unit) => ConsumableVM(
-        amount: json['amount'],
-        id: json['id'],
-        name: json['name'],
-        netPrice: json['netPrice'],
-        grossPrice: json['grossPrice'],
-        vat: json['vat'],
+  factory ConsumableVM.wihUnitAndJson(ConsumableDM e, Unit? unit) => ConsumableVM(
+        amount: e.amount,
+        id: e.materialID,
+        name: e.name!,
+        netPrice: e.netPrice!,
+        grossPrice: e.grossPrice,
+        vat: e.vat,
         unit: unit,
       );
 

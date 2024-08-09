@@ -22,6 +22,7 @@ class _ProjectReportOverviewViewState extends ConsumerState<ProjectReportOvervie
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    checkisInit();
   }
 
   @override
@@ -30,26 +31,39 @@ class _ProjectReportOverviewViewState extends ConsumerState<ProjectReportOvervie
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    log(_isProviderInit.toString());
+  int c = 1;
+  void checkisInit() {
+    log(c.toString());
+    ref.read(projektReportProvider);
     if (_isProviderInit == false) {
-      if (ref.watch(projektReportProvider.notifier).isInit) _isProviderInit = true;
+      Future.delayed(const Duration(milliseconds: 100)).then((e) {
+        if (ref.watch(projektReportProvider.notifier).isInit) {
+          _isProviderInit = true;
+          return;
+        } else {
+          c++;
+          checkisInit();
+        }
+      });
     }
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            children: [
-              const SearchLineHeader(title: 'Berichte'),
-              const ProjectReportHeader(),
-              SizedBox(
-                height: 11 * 60,
-                child: _isProviderInit
-                    ? ref.watch(projektReportProvider).isEmpty
-                        ? const Center(child: Text('Keine Kunden und Projekte gefunden'))
+  }
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                const SearchLineHeader(title: 'Berichte'),
+                const ProjectReportHeader(),
+                SizedBox(
+                    height: 11 * 60,
+                    child: _isProviderInit
+                        ? ref.watch(projektReportProvider).isEmpty
+                            ? const Center(child: Text('Keine Kunden und Projekte gefunden'))
+                            : const WaitingMessageWidget('Lade Berichte')
                         : Scrollbar(
                             thumbVisibility: true,
                             controller: _scrollController,
@@ -61,13 +75,10 @@ class _ProjectReportOverviewViewState extends ConsumerState<ProjectReportOvervie
                                 ref.watch(projektReportProvider)[index],
                               ),
                             ),
-                          )
-                    : const WaitingMessageWidget('Lade Berichte'),
-              ),
-            ],
+                          )),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

@@ -3,12 +3,11 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../constants/api/api.dart';
+import '../../../models/consumable_models/consumable_dm/consumable_dm.dart';
 import '../../../models/consumable_models/consumable_vm/consumable_vm.dart';
 import '../../../models/consumable_models/unit/unit.dart';
 
-final consumableProvider =
-    NotifierProvider<ConsumableNotifier, List<ConsumableVM>>(
-        () => ConsumableNotifier());
+final consumableProvider = NotifierProvider<ConsumableNotifier, List<ConsumableVM>>(() => ConsumableNotifier());
 
 class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
   final List<Unit> _units = [];
@@ -34,22 +33,16 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
         );
       }
       final List data = response.data.map((e) => e).toList();
-      for (var e in data) {
-        final String? unitKey = e['materialUnitName'];
-        if (unitKey != null) {
-          final searchedUnit =
-              _units.firstWhere((unit) => unit.name == unitKey);
-          final material = ConsumableVM.wihUnitAndJson(e, searchedUnit);
-          result.add(material);
-        } else {
-          result.add(ConsumableVM.fromJson(e));
-        }
+      final dms = data.map((e) => ConsumableDM.fromJson(e));
+      for (var e in dms) {
+        final unit = Unit(id: e.materialUnitID!, name: e.materialUnitName!);
+        final material = ConsumableVM.wihUnitAndJson(e, unit);
+        result.add(material);
       }
 
       // Sort the result alphabetically by `name`
       // result.sort((a, b) => a.name.compareTo(b.name));
-      result
-          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
       // Debugging: Print the sorted list to verify order
 
@@ -66,8 +59,7 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
     try {
       final response = await _api.getAllUnits;
       if (response.statusCode != 200) {
-        throw Exception(
-            'Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
+        throw Exception('Wrong Response occurred, status -> ${response.statusCode}  \n${response.data}');
       }
       final List data = response.data as List;
       for (var e in data) {
@@ -87,9 +79,10 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
     }
   }
 
-  Future<bool> deleteConsumable(int id) async {
+// TODO: Check if there a Sting or intergerss
+  Future<bool> deleteConsumable(String id) async {
     try {
-      final response = await _api.deleteConsumable(id);
+      final response = await _api.deleteConsumable(int.parse(id));
       if (response.statusCode != 200) {
         throw Exception(
           'Error when attempting to deleteConsumable: ${response.statusCode}\n${response.data}',
@@ -118,14 +111,12 @@ class ConsumableNotifier extends Notifier<List<ConsumableVM>> {
       });
 
       if (response.statusCode != 200) {
-        throw Exception(
-            'Wrong Response occurred, status -> ${response.statusCode}');
+        throw Exception('Wrong Response occurred, status -> ${response.statusCode}');
       }
       final unitID = response.data['materialUnitID'];
       final searchedUnit = _units.firstWhere((e) => e.id == unitID);
 
-      final newConsumable =
-          ConsumableVM.wihUnitAndJson(response.data, searchedUnit);
+      final newConsumable = ConsumableVM.wihUnitAndJson(response.data, searchedUnit);
 
       state = [...state, newConsumable];
       return true;
