@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -99,78 +101,72 @@ class Api {
   Future<Response> get getProjectConsumableEntry => _api.get(_getProjectsConsumable);
   Future<Response> get getProjectsDM => _api.get('/project/list');
   Future<Response> get getProjectsTimeEntrys => _api.get(_getTimeTacks);
-  Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
   Future<Response> get getUserDataShort => _api.get(_getListUsersShort);
   Future<Response> get getUserDocumentationEntry => _api.get(_getUserProjectDocumentation);
   Future<Response> getProjectByCustomerID(int id) => _api.get('$_getProjectByCustomer$id');
   Future<Response> get getUserRoles => _api.get(_getUserRole);
   Future<Response> get getUserServiceList => _api.get(_getUserServiceList);
-  Future<Response> postCreateCustomer(Map<String, dynamic> json) =>
-      _api.post(_postCreateCustomer, data: json);
-  Future<Response> putUpdateCustomer(Map<String, dynamic> json) =>
-      _api.put(_putUpdateCustomer, data: json);
+  Future<Response> postCreateCustomer(Map<String, dynamic> json) => _api.post(_postCreateCustomer, data: json);
+  Future<Response> putUpdateCustomer(Map<String, dynamic> json) => _api.put(_putUpdateCustomer, data: json);
   Future<Response> get getReadAllProjects => _api.get(_getReadAllProjects);
 
-  Future<Response> postCreateProjectEntry(Map<String, dynamic> data) =>
-      _api.post(_postCreateProjectEntry, data: data);
+  Future<Response> postCreateProjectEntry(Map<String, dynamic> data) => _api.post(_postCreateProjectEntry, data: data);
 
-  Future<Response> putUpdateProjectEntry(Map<String, dynamic> data) =>
-      _api.put(_putUpdateProjectEntry, data: data);
+  Future<Response> putUpdateProjectEntry(Map<String, dynamic> data) => _api.put(_putUpdateProjectEntry, data: data);
 
-  Future<Response> delDeleteProjectEntry(int projectId) =>
-      _api.delete('$_delDeleteProjectEntry/$projectId');
+  Future<Response> delDeleteProjectEntry(int projectId) => _api.delete('$_delDeleteProjectEntry/$projectId');
 
   Future<Response> deleteService(int serviceID) => _api.delete('$_deleteService/$serviceID');
-  Future<Response> deleteConsumable(int serviceID) =>
-      _api.delete('$_deleteServiceMaterial/$serviceID');
+  Future<Response> deleteConsumable(int serviceID) => _api.delete('$_deleteServiceMaterial/$serviceID');
 
   Future<Response> deleteCustomer(int customerID) => _api.delete('$_deleteCustomer/$customerID');
-  void deleteToken() => _storage.then((value) {
-        if (value.getString('TOKEN')?.isNotEmpty ?? false) {
-          value.remove('TOKEN');
-        }
-        return;
-      });
 
   Future<Response> deleteUser(String userID) => _api.delete('$_deleteUser/$userID');
-  Future<Response> getDokuforProjectURL(int projectID) =>
-      _api.get('/project/$projectID/documentations');
+  Future<Response> getDokuforProjectURL(int projectID) => _api.get('/project/$projectID/documentations');
 
   Future<Response> getUserServiceByID(id) => _api.get(_getUserServiceListByID, data: id);
 
-  Future<Response> postCreateMaterial(Map<String, dynamic> data) =>
-      _api.post(_postcreateCardMaterial, data: data);
-  Future<Response> postCreateNewUser(Map<String, dynamic> user) =>
-      _api.post(_postNewUser, data: user);
-  Future<Response> postCreateService(Map<String, dynamic> json) =>
-      _api.post(_postCreateService, data: json);
+  Future<Response> postCreateMaterial(Map<String, dynamic> data) => _api.post(_postcreateCardMaterial, data: data);
+  Future<Response> postCreateNewUser(Map<String, dynamic> user) => _api.post(_postNewUser, data: user);
+  Future<Response> postCreateService(Map<String, dynamic> json) => _api.post(_postCreateService, data: json);
   Future<Response> postDocumentationEntry(data) => _api.post(_postDocumentationDay, data: data);
 
-  Future<Response> postloginUser(Map<String, dynamic> json) =>
-      _api.post(_postloginUser, data: json);
-  Future<Response> postProjectConsumable(Map<String, dynamic> json) =>
-      _api.post(_postProjectConsumabele, data: json);
+  Future<Response> postloginUser(Map<String, dynamic> json) => _api.post(_postloginUser, data: json);
+  Future<Response> postProjectConsumable(Map<String, dynamic> json) => _api.post(_postProjectConsumabele, data: json);
   Future<Response> postResetPasswordRequest(Map<String, dynamic> json) =>
       _api.post(_postResetPasswordRequest, data: json);
 
   Future<Response> postTimeEnty(Map<String, dynamic> json) => _api.post(_postTimeEntry, data: json);
-  Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) =>
-      _api.put(_putProjectWebMaterial, data: json);
+  Future<Response> putUpdateConsumableEntry(Map<String, dynamic> json) => _api.put(_putProjectWebMaterial, data: json);
 
   Future<Response> postUpdateDocumentationEntry(Map<String, dynamic> data) =>
       _api.post(_putDocumentationDay, data: data);
 
   Future<Response> postUpdateProjectConsumableEntry(Map<String, dynamic> data) =>
       _api.post(_putProjectMaterial, data: data);
-  Future<Response> putResetPassword(Map<String, dynamic> json) =>
-      _api.put(_putResetPassword, data: json);
-  Future<Response> putSetNewPassword(Map<String, dynamic> json) =>
-      _api.put(_putSetNewPassword, data: json);
-  Future<Response> putUpdateService(Map<String, dynamic> json) =>
-      _api.put(_putUpdateService, data: json);
+  Future<Response> putResetPassword(Map<String, dynamic> json) => _api.put(_putResetPassword, data: json);
+  Future<Response> putSetNewPassword(Map<String, dynamic> json) => _api.put(_putSetNewPassword, data: json);
+  Future<Response> putUpdateService(Map<String, dynamic> json) => _api.put(_putUpdateService, data: json);
 
   Future<Response> putUpdateUser(Map<String, dynamic> json) => _api.put(_putUpdateUser, data: json);
 
-  void storeToken(String token) async =>
-      await _storage.then((value) => value.setString('TOKEN', token));
+//---------------------- get, store, delete------------------------------|
+
+  Future<String?> get getToken async => await _storage.then((value) => value.getString('TOKEN'));
+  Future<String?> get getMandant async => await _storage.then((e) {
+        log('${e.getString('MANDANT')}');
+        return e.getString('MANDANT');
+      });
+  Future<String?> get getUsername async => await _storage.then((e) => e.getString('USERNAME'));
+  void storeToken(String token) => _storage.then((e) => e.setString('TOKEN', token));
+  void storeUserName(String name) => _storage.then((e) => e.setString('USERNAME', name));
+  void storeMandant(String mandantID) => _storage.then((e) {
+        e.setString('MANDANT', mandantID);
+        log('${e.getString('MANDANT')}');
+      });
+  void deleteMandant() => _storage.then((e) => e.remove('MANDANT'));
+  void deleteUserName() => _storage.then((e) => e.remove('USERNAME'));
+  void deleteToken() => _storage.then((e) => e.remove('TOKEN'));
+
+//---------------------- get, store, delete------------------------------|
 }

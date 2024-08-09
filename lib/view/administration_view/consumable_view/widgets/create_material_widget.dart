@@ -66,8 +66,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
     if (_isSnackbarShowed) return;
     setState(() => _isSnackbarShowed = true);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Center(child: Text(message)), duration: _snackbarDuration),
+      SnackBar(content: Center(child: Text(message)), duration: _snackbarDuration),
     );
     Future.delayed(_snackbarDuration).then(
       (_) => setState(() => _isSnackbarShowed = false),
@@ -76,9 +75,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        width: MediaQuery.of(context).size.width > 1000
-            ? 800
-            : MediaQuery.of(context).size.width,
+        width: MediaQuery.of(context).size.width > 1000 ? 800 : MediaQuery.of(context).size.width,
         child: Card(
           elevation: 6,
           child: Padding(
@@ -91,10 +88,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Text(
                     'Neues Material anlegen',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(color: AppColor.kGrey),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColor.kGrey),
                   ),
                 ),
                 Padding(
@@ -105,31 +99,23 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                       const Padding(padding: EdgeInsets.all(12)),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        width: MediaQuery.of(context).size.width > 850
-                            ? 180
-                            : MediaQuery.of(context).size.width * 0.2,
+                        width: MediaQuery.of(context).size.width > 850 ? 180 : MediaQuery.of(context).size.width * 0.2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Material',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 15),
                             TextField(
                               controller: _nameController,
-                              decoration:
-                                  Utilitis.textFieldDecoration('Material'),
+                              decoration: Utilitis.textFieldDecoration('Material'),
                               onChanged: (value) {
-                                TextSelection previousSelection =
-                                    _nameController.selection;
+                                TextSelection previousSelection = _nameController.selection;
                                 _nameController.text = value;
                                 _nameController.selection = previousSelection;
-                                setState(() => _consumable = _consumable
-                                    .copyWith(name: _nameController.text));
+                                setState(() => _consumable = _consumable.copyWith(name: _nameController.text));
                               },
                             ),
                           ],
@@ -137,18 +123,14 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        width: MediaQuery.of(context).size.width > 1000
-                            ? 180
-                            : MediaQuery.of(context).size.width * 0.20,
+                        width:
+                            MediaQuery.of(context).size.width > 1000 ? 180 : MediaQuery.of(context).size.width * 0.20,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Menge',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 15),
                             TextField(
@@ -157,22 +139,18 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                               onChanged: (value) {
                                 if (int.tryParse(value) == null) {
                                   _amountController.text =
-                                      _amountController.text.substring(
-                                          0, _amountController.text.length - 1);
-                                  return _showSnackBar(
-                                      'Bitte geben sie nur Zahlen ein');
+                                      _amountController.text.substring(0, _amountController.text.length - 1);
+                                  return _showSnackBar('Bitte geben sie nur Zahlen ein');
                                 }
                                 if (int.parse(value) > 10000) {
-                                  return _showSnackBar(
-                                      'Diese Zahl ist zu groß');
+                                  return _showSnackBar('Diese Zahl ist zu groß');
                                 }
-                                TextSelection previousSelection =
-                                    _amountController.selection;
+                                TextSelection previousSelection = _amountController.selection;
                                 _amountController.text = value;
                                 _amountController.selection = previousSelection;
                                 setState(
                                   () => _consumable = _consumable.copyWith(
-                                    amount: int.parse(_amountController.text),
+                                    amount: double.parse(_amountController.text),
                                   ),
                                 );
                               },
@@ -182,25 +160,20 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        width: MediaQuery.of(context).size.width > 1000
-                            ? 180
-                            : MediaQuery.of(context).size.width * 0.20,
+                        width:
+                            MediaQuery.of(context).size.width > 1000 ? 180 : MediaQuery.of(context).size.width * 0.20,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Einheit',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 15),
                             Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color:
-                                      const Color.fromARGB(255, 240, 237, 237),
+                                  color: const Color.fromARGB(255, 240, 237, 237),
                                 ),
                                 color: AppColor.kTextfieldColor,
                               ),
@@ -218,8 +191,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                     .toList(),
                                 onChanged: (Unit? newValue) {
                                   setState(() {
-                                    _consumable =
-                                        _consumable.copyWith(unit: newValue!);
+                                    _consumable = _consumable.copyWith(unit: newValue!);
                                     _selectedUnit = newValue;
                                   });
                                 },
@@ -230,29 +202,21 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        width: MediaQuery.of(context).size.width > 1000
-                            ? 180
-                            : MediaQuery.of(context).size.width * 0.20,
+                        width:
+                            MediaQuery.of(context).size.width > 1000 ? 180 : MediaQuery.of(context).size.width * 0.20,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Preis',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 15),
                             TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^\d*[\.\,]?\d{0,2}'))
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*[\.\,]?\d{0,2}'))],
                               keyboardType: TextInputType.number,
                               controller: _priceController,
-                              decoration:
-                                  Utilitis.textFieldDecoration('Preis/€'),
+                              decoration: Utilitis.textFieldDecoration('Preis/€'),
                               onChanged: (value) {
                                 if (value.contains(',')) {
                                   final list = value.split('');
@@ -268,17 +232,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                                 }
 
                                 if (double.parse(value) > 10000) {
-                                  return _showSnackBar(
-                                      'Diese Zahl ist zu groß');
+                                  return _showSnackBar('Diese Zahl ist zu groß');
                                 }
-                                TextSelection previousSelection =
-                                    _priceController.selection;
+                                TextSelection previousSelection = _priceController.selection;
                                 _priceController.text = value;
                                 _priceController.selection = previousSelection;
                                 setState(() {
-                                  _consumable = _consumable.copyWith(
-                                      netPrice:
-                                          double.parse(_priceController.text));
+                                  _consumable = _consumable.copyWith(netPrice: double.parse(_priceController.text));
                                 });
                               },
                             ),
@@ -292,15 +252,13 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5.0, vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12),
                       child: SymmetricButton(
                         text: 'Verwerfen',
                         color: AppColor.kWhite,
-                        textStyle:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: AppColor.kPrimaryButtonColor,
-                                ),
+                        textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+                              color: AppColor.kPrimaryButtonColor,
+                            ),
                         onPressed: () {
                           _nameController.clear();
                           _amountController.clear();
@@ -310,8 +268,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5.0, vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 12),
                       child: SymmetricButton(
                         text: 'Speichern',
                         onPressed: () {
@@ -322,10 +279,7 @@ class _CreateMaterialCardState extends ConsumerState<CreateMaterialCard> {
                             _showSnackBar('Bitte füllen Sie alle Felder aus.');
                             return;
                           }
-                          ref
-                              .read(consumableProvider.notifier)
-                              .createConsumable(_consumable)
-                              .then((e) {
+                          ref.read(consumableProvider.notifier).createConsumable(_consumable).then((e) {
                             e
                                 ? {
                                     _nameController.clear(),

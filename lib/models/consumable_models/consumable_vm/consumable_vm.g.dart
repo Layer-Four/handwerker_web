@@ -8,8 +8,8 @@ part of 'consumable_vm.dart';
 
 _$ConsumableVMImpl _$$ConsumableVMImplFromJson(Map<String, dynamic> json) =>
     _$ConsumableVMImpl(
-      amount: (json['amount'] as num).toInt(),
-      id: (json['id'] as num?)?.toInt(),
+      amount: (json['amount'] as num).toDouble(),
+      id: json['id'] as String?,
       name: json['name'] as String,
       netPrice: (json['netPrice'] as num).toDouble(),
       grossPrice: (json['grossPrice'] as num?)?.toDouble(),

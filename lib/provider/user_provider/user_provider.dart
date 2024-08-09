@@ -33,10 +33,26 @@ class UserNotifier extends Notifier<UserVM> {
     required String userName,
     // String? mandatID,
   }) async {
+    String? mID;
+    if (!userName.contains('@')) {
+      String? mIDTemp = await _api.getMandant;
+      if (mIDTemp == null) {
+        final usernameWithMandantID = userName.split('_');
+        if (usernameWithMandantID.length > 1) {
+          mID = usernameWithMandantID.first;
+          usernameWithMandantID.removeAt(0);
+          userName = usernameWithMandantID.join('_');
+          _api.storeMandant(mID);
+        } else {
+          throw Exception('we got nothin, check login');
+        }
+      }
+      mID = mIDTemp;
+    }
     final Map<String, dynamic> json = {
       'username': userName,
       'password': password,
-      'mandant': null,
+      'mandant': mID,
     };
     try {
       final response = await _api.postloginUser(json);

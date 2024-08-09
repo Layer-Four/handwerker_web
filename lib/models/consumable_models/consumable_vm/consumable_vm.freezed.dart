@@ -20,8 +20,8 @@ ConsumableVM _$ConsumableVMFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ConsumableVM {
-  int get amount => throw _privateConstructorUsedError;
-  int? get id => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   double get netPrice => throw _privateConstructorUsedError;
   double? get grossPrice => throw _privateConstructorUsedError;
@@ -41,8 +41,8 @@ abstract class $ConsumableVMCopyWith<$Res> {
       _$ConsumableVMCopyWithImpl<$Res, ConsumableVM>;
   @useResult
   $Res call(
-      {int amount,
-      int? id,
+      {double amount,
+      String? id,
       String name,
       double netPrice,
       double? grossPrice,
@@ -77,11 +77,11 @@ class _$ConsumableVMCopyWithImpl<$Res, $Val extends ConsumableVM>
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -127,8 +127,8 @@ abstract class _$$ConsumableVMImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int amount,
-      int? id,
+      {double amount,
+      String? id,
       String name,
       double netPrice,
       double? grossPrice,
@@ -162,11 +162,11 @@ class __$$ConsumableVMImplCopyWithImpl<$Res>
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -208,9 +208,9 @@ class _$ConsumableVMImpl extends _ConsumableVM {
       _$$ConsumableVMImplFromJson(json);
 
   @override
-  final int amount;
+  final double amount;
   @override
-  final int? id;
+  final String? id;
   @override
   final String name;
   @override
@@ -264,8 +264,8 @@ class _$ConsumableVMImpl extends _ConsumableVM {
 
 abstract class _ConsumableVM extends ConsumableVM {
   const factory _ConsumableVM(
-      {required final int amount,
-      final int? id,
+      {required final double amount,
+      final String? id,
       required final String name,
       required final double netPrice,
       final double? grossPrice,
@@ -277,9 +277,9 @@ abstract class _ConsumableVM extends ConsumableVM {
       _$ConsumableVMImpl.fromJson;
 
   @override
-  int get amount;
+  double get amount;
   @override
-  int? get id;
+  String? get id;
   @override
   String get name;
   @override

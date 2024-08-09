@@ -8,13 +8,13 @@ class ConsumableDM with _$ConsumableDM {
   const factory ConsumableDM({
     @Default(1) double amount,
     int? id,
-    int? materialUnitID,
+    required int materialUnitID,
     String? name,
     String? materialID,
     double? netPrice,
     double? grossPrice,
     double? vat,
-    String? materialUnitName,
+    required String materialUnitName,
   }) = _ConsumableDM;
   factory ConsumableDM.fromJson(Map<String, dynamic> json) => _$ConsumableDMFromJson(json);
 }
