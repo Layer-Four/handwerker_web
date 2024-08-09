@@ -48,6 +48,11 @@ class UserNotifier extends Notifier<UserVM> {
         }
       }
       mID = mIDTemp;
+      if (userName.startsWith(RegExp(r'^[0-9]+_'))) {
+        final between = userName.split(('_'));
+        between.removeAt(0);
+        userName = between.join('_');
+      }
     }
     final Map<String, dynamic> json = {
       'username': userName,
@@ -119,5 +124,10 @@ class UserNotifier extends Notifier<UserVM> {
       log('Error on requestResetPassword $e');
     }
     return false;
+  }
+
+  deleteMandant() {
+    log('message');
+    _api.deleteMandant();
   }
 }

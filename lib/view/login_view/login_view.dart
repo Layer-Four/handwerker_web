@@ -190,10 +190,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
         child: Align(
           alignment: Alignment.topRight,
           child: GestureDetector(
+            onLongPress: () => ref.read(userProvider.notifier).deleteMandant(),
             child: const Text(
               'Passwort vergessen?',
               style: TextStyle(
-                color: AppColor.kWhite,
+//                color: AppColor.kWhite,
                 fontWeight: FontWeight.w700,
                 decorationColor: AppColor.kPrimaryButtonColor,
                 decorationThickness: 2.0,
