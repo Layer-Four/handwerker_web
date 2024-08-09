@@ -42,16 +42,16 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
     _currentUnit = _consumable.unit;
     _titleController = TextEditingController(text: _consumable.name);
     _amountController = TextEditingController(text: _consumable.amount.toString());
-    _priceController = TextEditingController(text: '${_consumable.price}€');
+    _priceController = TextEditingController(text: '${_consumable.netPrice}€');
 
     _initialTitle = _consumable.name;
     _initialAmount = _consumable.amount.toStringAsFixed(0);
-    _initialPrice = '${_consumable.price}€';
+    _initialPrice = '${_consumable.netPrice}€';
     _initialUnit = _consumable.unit;
 
     // Initialize initial values
     _initialTitle = _consumable.name;
-    _initialPrice = '${_consumable.price}€';
+    _initialPrice = '${_consumable.netPrice}€';
   }
 
   @override
@@ -83,9 +83,8 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
         if (_priceController.text != _initialPrice) _priceController.text = _initialPrice;
       });
 
-  Color getBorderColor(bool isHovered) => isHovered
-      ? AppColor.kTextfieldBorder
-      : Colors.transparent; // Changed to transparent when not hovered
+  Color getBorderColor(bool isHovered) =>
+      isHovered ? AppColor.kTextfieldBorder : Colors.transparent; // Changed to transparent when not hovered
 
   bool _hasChanges() =>
       _amountController.text != _initialAmount ||
@@ -97,23 +96,26 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
     if (_hasChanges()) {
       final parsedPrice = double.parse(_priceController.text.replaceAll('€', ''));
       final parsedAmount = int.parse(_amountController.text.replaceAll('€', ''));
+      //TODO: implement grossPrice and Vat
       ConsumableVM updatedConsumable = ConsumableVM(
         id: widget.consumable.id,
         name: _titleController.text,
-        price: parsedPrice,
+        netPrice: parsedPrice,
         amount: parsedAmount,
+        grossPrice: 0,
+        vat: 0,
         unit: _currentUnit,
       );
       // Update local state
       setState(() {
         _consumable = _consumable.copyWith(
-          price: parsedPrice,
+          netPrice: parsedPrice,
           name: _titleController.text,
           amount: parsedAmount,
           unit: _currentUnit,
         );
         _initialTitle = _consumable.name;
-        _initialPrice = '${_consumable.price}€';
+        _initialPrice = '${_consumable.netPrice}€';
         _initialUnit = _consumable.unit;
         _initialAmount = _consumable.amount.toStringAsFixed(0);
       });
@@ -122,9 +124,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
       ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable).then((e) {
         Utilitis.showSnackBar(
           context,
-          e
-              ? 'Material wurde erfolgreich geändert'
-              : 'Leider hat es nicht funktioniert. Versuchen Sie es erneut.',
+          e ? 'Material wurde erfolgreich geändert' : 'Leider hat es nicht funktioniert. Versuchen Sie es erneut.',
         );
       });
       //  TODO: Check if resets field also after update Consumable
@@ -176,15 +176,10 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                                   border: Border.all(
                                     color: const Color.fromARGB(255, 240, 237, 237),
                                   ),
-                                  color: _isEditing
-                                      ? Colors.grey[200]
-                                      : const Color.fromARGB(249, 254, 255, 253),
+                                  color: _isEditing ? Colors.grey[200] : const Color.fromARGB(249, 254, 255, 253),
                                 ),
-                                borderColor:
-                                    _isUnitHovered ? AppColor.kPrimaryButtonColor : AppColor.kWhite,
-                                width: MediaQuery.of(context).size.width > 1100
-                                    ? 184
-                                    : ((MediaQuery.of(context).size.width * 0.18) - 16),
+                                borderColor: _isUnitHovered ? AppColor.kPrimaryButtonColor : AppColor.kWhite,
+                                width: MediaQuery.of(context).size.width > 1100 ? 184 : ((MediaQuery.of(context).size.width * 0.18) - 16),
                                 initalValue: _consumable.unit,
                                 items: widget.units
                                     .map(
@@ -197,8 +192,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleMedium
-                                                ?.copyWith(
-                                                    color: _isEditing ? null : AppColor.kGrey),
+                                                ?.copyWith(color: _isEditing ? null : AppColor.kGrey),
                                           ),
                                         ),
                                       ),
@@ -247,8 +241,7 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                           _priceController.text = p0;
                           _priceController.selection = previousSelection;
                           setState(() {
-                            _consumable = _consumable.copyWith(
-                                price: double.parse(_priceController.text.replaceAll('€', '')));
+                            _consumable = _consumable.copyWith(netPrice: double.parse(_priceController.text.replaceAll('€', '')));
                           });
                         },
                       ),
@@ -265,16 +258,11 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                               : () => showDialog(
                                     context: context,
                                     builder: (context) => AskoForAgreement(
-                                      message:
-                                          'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
+                                      message: 'Sind Sie sicher, dass Sie dieses Material löschen wollen?',
                                       onAccept: () {
-                                        ref
-                                            .read(consumableProvider.notifier)
-                                            .deleteConsumable(_consumable.id!)
-                                            .then((e) {
-                                          _showSnackBar(e
-                                              ? 'Eintrag erfolgreich gelöscht'
-                                              : 'Es ist ein Fehler aufgetreten während dem Löschen');
+                                        ref.read(consumableProvider.notifier).deleteConsumable(_consumable.id!).then((e) {
+                                          _showSnackBar(
+                                              e ? 'Eintrag erfolgreich gelöscht' : 'Es ist ein Fehler aufgetreten während dem Löschen');
                                           Navigator.of(context).pop();
                                         });
                                       },
@@ -306,13 +294,12 @@ class _ConsumebaleDataRowState extends ConsumerState<ConsumebaleDataRow> {
                                 name: _titleController.text,
                                 amount: int.parse(_amountController.text),
                                 unit: _currentUnit ?? _consumable.unit,
-                                price: parsedPrice,
+                                netPrice: parsedPrice,
+                                grossPrice: 0,
+                                vat: 0,
                               );
 
-                              ref
-                                  .read(consumableProvider.notifier)
-                                  .updateConsumable(updatedConsumable)
-                                  .then((b) {
+                              ref.read(consumableProvider.notifier).updateConsumable(updatedConsumable).then((b) {
                                 if (b) {
                                   // ignore: unused_result
                                   ref.refresh(consumableProvider);

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'project_state.freezed.dart';
@@ -10,11 +12,12 @@ class ProjectInfoState with _$ProjectInfoState {
     String? createdBy,
     DateTime? editedAt,
     String? editedBy,
-    int? id,
+    @JsonKey(name: 'id') int? statusID,
     int? mandantID,
     String? mandant,
     String? projects,
-    String? value,
+    @JsonKey(name: 'value') String? statusName,
   }) = _ProjectInfoState;
-  factory ProjectInfoState.fromJson(Map<String, dynamic> json) => _$ProjectInfoStateFromJson(json);
+  factory ProjectInfoState.fromJson(Map<String, dynamic> json) =>
+      _$ProjectInfoStateFromJson(json);
 }

@@ -5,11 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/api/api.dart';
 import '../../models/customer_models/customer_create_model/create_customer_model.dart';
-import '../../models/customer_models/customer_credential/customer_credential.dart';
+
 import '../../models/customer_models/customer_overview_dm/customer_overvew_dm.dart';
 
-final customerProvider =
-    NotifierProvider<CustomerNotifier, List<CustomerOvervewDM>>(() => CustomerNotifier());
+final customerProvider = NotifierProvider<CustomerNotifier, List<CustomerOvervewDM>>(() => CustomerNotifier());
 
 class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
   final Api _api = Api();
@@ -24,16 +23,12 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
     try {
       final response = await _api.getAllCustomers;
       if (response.statusCode != 200) {
-        throw Exception(
-            'Wrong response occurred, status -> ${response.statusCode} \n${response.data}');
+        throw Exception('Wrong response occurred, status -> ${response.statusCode} \n${response.data}');
       }
 
       final List data = response.data as List;
-      final List<CustomerOvervewDM> result =
-          data.map((e) => CustomerOvervewDM.fromJson(e as Map<String, dynamic>)).toList();
-      result.sort((a, b) => a.customerCredentials.companyName
-          .toLowerCase()
-          .compareTo(b.customerCredentials.companyName.toLowerCase()));
+      final List<CustomerOvervewDM> result = data.map((e) => CustomerOvervewDM.fromJson(e as Map<String, dynamic>)).toList();
+      result.sort((a, b) => a.customerCredentials.companyName.toLowerCase().compareTo(b.customerCredentials.companyName.toLowerCase()));
 
       state = result;
     } on DioException catch (e) {
@@ -51,22 +46,22 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
 
       if (response.statusCode == 200) {
         // Process the response and update local state
-        final createdCustomer = CreateCustomerDM.fromJson(response.data);
-        final credential = CustomerCredentialDM(
-          contactName: createdCustomer.contactName ?? 'Kein Kontaktperson',
-          companyName: createdCustomer.companyName ?? 'Kein Firmennamen',
-          customerCity: createdCustomer.city,
-          customerEmail: createdCustomer.contactMail,
-          customerNumber: createdCustomer.externalId,
-          customerPhone: createdCustomer.contactPhone,
-          customerStreet: createdCustomer.street,
-          customerStreetNr: createdCustomer.streetNr,
-          customerZipcode: createdCustomer.zipcode,
-        );
+        // final createdCustomer = CreateCustomerDM.fromJson(response.data);
+        // final credential = CustomerCredentialDM(
+        //   contactName: createdCustomer.contactName ?? 'Kein Kontaktperson',
+        //   companyName: createdCustomer.companyName ?? 'Kein Firmennamen',
+        //   customerCity: createdCustomer.city,
+        //   customerEmail: createdCustomer.contactMail,
+        //   customerNumber: createdCustomer.externalId,
+        //   customerPhone: createdCustomer.contactPhone,
+        //   customerStreet: createdCustomer.street,
+        //   customerStreetNr: createdCustomer.streetNr,
+        //   customerZipcode: createdCustomer.zipcode,
+        // );
 
         // Update local state
-        state = [...state, CustomerOvervewDM(customerCredentials: credential)];
-
+        // state = [...state, CustomerOvervewDM(customerCredentials: credential)];
+        loadAllCustomers();
         return true; // Indicate success
       } else {
         // Log failure response
@@ -97,8 +92,7 @@ class CustomerNotifier extends Notifier<List<CustomerOvervewDM>> {
       final response = await _api.putUpdateCustomer(json);
       if (response.statusCode != 200) {
         log('Update response: ${response.data}');
-        throw Exception(
-            'Exception on updateCustomer status -> ${response.statusCode}\n${response.data}');
+        throw Exception('Exception on updateCustomer status -> ${response.statusCode}\n${response.data}');
       }
       await loadAllCustomers();
       return true;
